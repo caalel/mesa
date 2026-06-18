@@ -13,6 +13,8 @@
 
 - Controllers must remain thin.
 - Business logic belongs to Services.
+- Services must use dependency injection.
+- Avoid static methods in Services.
 - Validation belongs to Requests.
 - Models represent domain entities.
 
@@ -23,6 +25,10 @@
 - One behavior per test.
 - Unit tests for Services.
 - Feature tests for HTTP flows.
+- Tests must explicitly import the classes they use.
+- Never introduce aliases or autoload hacks to satisfy tests.
+- Prefer refactoring test imports instead of adding infrastructure complexity.
+- Tests may be refactored as long as the tested behavior remains the same.
 
 ## Refactoring
 
