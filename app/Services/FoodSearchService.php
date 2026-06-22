@@ -10,7 +10,7 @@ class FoodSearchService
     public function search(string $name): Collection
     {
         return Food::query()
-                    ->where('name', $name)
+                    ->where('name', 'like', "%{$name}%")
                     ->get();
     }
 }
