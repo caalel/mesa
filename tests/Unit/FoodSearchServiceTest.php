@@ -85,3 +85,30 @@ it('returns foods matching the searched name regardless of case', function () {
     expect($uppercaseFoods)->toHaveCount(1);
     expect($uppercaseFoods->first()->name)->toBe('Banana');
 });
+
+it('returns an empty collection when no food matches the searched name', function () {
+    // Arrange
+    Food::factory()->create([
+        'name' => 'Banana',
+        'calories_per_100g' => 89,
+        'protein_per_100g' => 1.1,
+        'carbs_per_100g' => 22.8,
+        'fat_per_100g' => 0.3,
+    ]);
+
+    Food::factory()->create([
+        'name' => 'Maçã',
+        'calories_per_100g' => 52,
+        'protein_per_100g' => 0.3,
+        'carbs_per_100g' => 13.8,
+        'fat_per_100g' => 0.2,
+    ]);
+
+    $service = new FoodSearchService();
+
+    // Act
+    $foods = $service->search('Laranja');
+
+    // Assert
+    expect($foods)->toBeEmpty();
+});
