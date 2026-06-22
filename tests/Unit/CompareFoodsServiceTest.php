@@ -115,3 +115,18 @@ it('throws an exception when food A nutritional value is less than zero', functi
         foodBValuePer100g: $foodBValuePer100g,
     ))->toThrow(\InvalidArgumentException::class, 'The nutritional value must be greater than zero.');
 });
+
+it('throws an exception when food B nutritional value is zero', function () {
+    // Arrange
+    $foodAValuePer100g = 100;
+    $foodAWeight = 100;
+    $foodBValuePer100g = 0;
+    $service = new CompareFoodsService();
+
+    // Act / Assert
+    expect(fn () => $service->calculateEquivalentWeight(
+        foodAValuePer100g: $foodAValuePer100g,
+        foodAWeight: $foodAWeight,
+        foodBValuePer100g: $foodBValuePer100g,
+    ))->toThrow(\InvalidArgumentException::class, 'The nutritional value must be greater than zero.');
+});
