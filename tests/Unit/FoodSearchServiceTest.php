@@ -62,3 +62,26 @@ it('returns only foods partially matching the searched name', function () {
     expect($foods)->toHaveCount(1);
     expect($foods->first()->name)->toBe('Banana');
 });
+
+it('returns foods matching the searched name regardless of case', function () {
+    // Arrange
+    Food::factory()->create([
+        'name' => 'Banana',
+        'calories_per_100g' => 89,
+        'protein_per_100g' => 1.1,
+        'carbs_per_100g' => 22.8,
+        'fat_per_100g' => 0.3,
+    ]);
+
+    $service = new FoodSearchService();
+
+    // Act
+    $lowercaseFoods = $service->search('banana');
+    $uppercaseFoods = $service->search('BANANA');
+
+    // Assert
+    expect($lowercaseFoods)->toHaveCount(1);
+    expect($lowercaseFoods->first()->name)->toBe('Banana');
+    expect($uppercaseFoods)->toHaveCount(1);
+    expect($uppercaseFoods->first()->name)->toBe('Banana');
+});
