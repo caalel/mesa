@@ -112,3 +112,40 @@ it('returns an empty collection when no food matches the searched name', functio
     // Assert
     expect($foods)->toBeEmpty();
 });
+
+it('returns multiple foods when more than one food matches the searched name', function () {
+    // Arrange
+    Food::factory()->create([
+        'name' => 'Banana',
+        'calories_per_100g' => 89,
+        'protein_per_100g' => 1.1,
+        'carbs_per_100g' => 22.8,
+        'fat_per_100g' => 0.3,
+    ]);
+
+    Food::factory()->create([
+        'name' => 'Banana Prata',
+        'calories_per_100g' => 98,
+        'protein_per_100g' => 1.3,
+        'carbs_per_100g' => 26,
+        'fat_per_100g' => 0.1,
+    ]);
+
+    Food::factory()->create([
+        'name' => 'Maçã',
+        'calories_per_100g' => 52,
+        'protein_per_100g' => 0.3,
+        'carbs_per_100g' => 13.8,
+        'fat_per_100g' => 0.2,
+    ]);
+
+    $service = new FoodSearchService();
+
+    // Act
+    $foods = $service->search('Ban');
+
+    // Assert
+    expect($foods)->toHaveCount(2);
+    expect($foods->pluck('name')->all())->toContain('Banana');
+    expect($foods->pluck('name')->all())->toContain('Banana Prata');
+});
