@@ -10,6 +10,10 @@ class CompareFoodsService
             throw new \InvalidArgumentException('The weight must be greater than zero.');
         }
 
+        if ($foodAValuePer100g <= 0) {
+            throw new \InvalidArgumentException('The nutritional value must be greater than zero.');
+        }
+
         return round(($foodAValuePer100g * $foodAWeight) / $foodBValuePer100g, 2);
     }
 }
