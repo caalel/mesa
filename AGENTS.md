@@ -48,3 +48,6 @@
 - At the start of a new work session, read `AGENTS.md` alone before any other file.
 - On Windows sandboxed shells, avoid parallel initial reads for required context files.
 - Prefer simple PowerShell reads with `login: false` for initial project instructions.
+- Permission warnings for `vendor/pestphp/pest/.temp/test-results` may occur in the Codex sandbox.
+- Ignore those warnings if the tests execute normally.
+- Do not change project permissions to fix Codex sandbox warnings.
