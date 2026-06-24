@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\FoodSearchRequest;
 use App\Services\FoodSearchService;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class FoodSearchController extends Controller
@@ -12,7 +12,7 @@ class FoodSearchController extends Controller
     {
     }
 
-    public function __invoke(Request $request): Response
+    public function __invoke(FoodSearchRequest $request): Response
     {
         $foods = $this->foodSearchService->search($request->query('query', ''));
 

@@ -29,3 +29,15 @@ it('returns only foods matching the search query through HTTP', function () {
         ->assertSee('Banana')
         ->assertDontSee('Maçã');
 });
+
+it('returns unprocessable entity when the search query is missing', function () {
+    $response = $this->get('/foods/search');
+
+    $response->assertUnprocessable();
+});
+
+it('returns unprocessable entity when the search query is empty', function () {
+    $response = $this->get('/foods/search?query=');
+
+    $response->assertUnprocessable();
+});
