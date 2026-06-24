@@ -42,3 +42,9 @@
 - Explain important decisions.
 - Prefer small incremental changes.
 - Never implement unrelated features.
+
+## Agent Workflow
+
+- At the start of a new work session, read `AGENTS.md` alone before any other file.
+- On Windows sandboxed shells, avoid parallel initial reads for required context files.
+- Prefer simple PowerShell reads with `login: false` for initial project instructions.
