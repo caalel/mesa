@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ComparatorRequest;
 use App\Models\Food;
 use App\Services\CompareFoodsService;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class ComparatorController extends Controller
@@ -13,7 +13,7 @@ class ComparatorController extends Controller
     {
     }
 
-    public function __invoke(Request $request): Response
+    public function __invoke(ComparatorRequest $request): Response
     {
         $foodA = Food::findOrFail($request->input('food_a_id'));
         $foodB = Food::findOrFail($request->input('food_b_id'));
