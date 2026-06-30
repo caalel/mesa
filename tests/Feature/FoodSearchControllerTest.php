@@ -31,13 +31,13 @@ it('returns only foods matching the search query through HTTP', function () {
 });
 
 it('returns unprocessable entity when the search query is missing', function () {
-    $response = $this->get('/foods/search');
-
-    $response->assertUnprocessable();
+    $this->get('/foods/search')
+        ->assertUnprocessable()
+        ->assertInvalid('query');
 });
 
 it('returns unprocessable entity when the search query is empty', function () {
-    $response = $this->get('/foods/search?query=');
-
-    $response->assertUnprocessable();
+    $this->get('/foods/search?query=')
+        ->assertUnprocessable()
+        ->assertInvalid('query');
 });
