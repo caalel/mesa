@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Collection;
 
 class FoodSearchService
 {
-    public function search(string $name): Collection
+    public function search(string $namePt): Collection
     {
         return Food::query()
-                    ->where('name', 'like', "%{$name}%")
+                    ->where('name_pt', 'like', "%{$namePt}%")
                     ->get();
     }
 }

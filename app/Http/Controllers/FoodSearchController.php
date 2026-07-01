@@ -16,6 +16,6 @@ class FoodSearchController extends Controller
     {
         $foods = $this->foodSearchService->search($request->query('query', ''));
 
-        return response(implode(',', $foods->pluck('name')->toArray()));
+        return response(implode(',', $foods->pluck('name_pt')->toArray()));
     }
 }

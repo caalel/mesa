@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('foods', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name_pt');
+            $table->string('name_en')->nullable();
             $table->decimal('calories_per_100g', 8, 2);
             $table->decimal('protein_per_100g', 8, 2);
             $table->decimal('carbs_per_100g', 8, 2);

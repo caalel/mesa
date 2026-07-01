@@ -88,7 +88,7 @@ it('returns 422 when food_b_id does not exist', function () {
 function validComparatorPayload(array $overrides = []): array
 {
     $foodA = Food::factory()->create([
-        'name' => 'Banana',
+        'name_pt' => 'Banana',
         'calories_per_100g' => 89,
         'protein_per_100g' => 0,
         'carbs_per_100g' => 0,
@@ -96,7 +96,7 @@ function validComparatorPayload(array $overrides = []): array
     ]);
 
     $foodB = Food::factory()->create([
-        'name' => 'Apple',
+        'name_pt' => 'Maçã',
         'calories_per_100g' => 52,
         'protein_per_100g' => 0,
         'carbs_per_100g' => 0,

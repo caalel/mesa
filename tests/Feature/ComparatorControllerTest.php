@@ -7,7 +7,7 @@ uses(RefreshDatabase::class);
 
 it('compares two foods through HTTP', function () {
     $banana = Food::factory()->create([
-        'name' => 'Banana',
+        'name_pt' => 'Banana',
         'calories_per_100g' => 89,
         'protein_per_100g' => 0,
         'carbs_per_100g' => 0,
@@ -15,7 +15,7 @@ it('compares two foods through HTTP', function () {
     ]);
 
     $maca = Food::factory()->create([
-        'name' => 'Maçã',
+        'name_pt' => 'Maçã',
         'calories_per_100g' => 52,
         'protein_per_100g' => 0,
         'carbs_per_100g' => 0,
