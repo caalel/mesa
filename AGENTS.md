@@ -18,6 +18,15 @@
 - Validation belongs to Requests.
 - Models represent domain entities.
 
+## UI and Localization
+
+- User-facing interface text must use Laravel localization keys instead of hardcoded strings.
+- Interface translation and dynamic food name translation are separate concerns.
+- Food names use explicit database columns.
+- `name_pt` is required.
+- `name_en` is nullable.
+- Do not introduce a translatable package or JSON translation fields without an explicit architectural decision.
+
 ## Tests
 
 - Use Pest.
@@ -46,6 +55,7 @@
 ## Agent Workflow
 
 - At the start of a new work session, read `AGENTS.md` alone before any other file.
+- For UI tasks, read `docs/design.md` after `docs/architecture.md`.
 - On Windows sandboxed shells, avoid parallel initial reads for required context files.
 - Prefer simple PowerShell reads with `login: false` for initial project instructions.
 - Permission warnings for `vendor/pestphp/pest/.temp/test-results` may occur in the Codex sandbox.
