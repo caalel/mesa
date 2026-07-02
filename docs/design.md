@@ -68,6 +68,86 @@ The user should never need to understand IDs, nutritional values per 100 g, or i
 
 ---
 
+## Nutritional Comparator Interaction Flow
+
+The home page is the nutritional comparator.
+
+The comparator will be implemented as a class-based, full-page Livewire component.
+
+---
+
+### User Flow
+
+1. The user searches and selects Food A.
+2. The search field is replaced by the selected food and an **Alterar** action.
+3. The user enters the Food A weight in grams.
+4. A summary card for Food A is displayed.
+5. The user searches and selects Food B.
+6. The search field is replaced by the selected food and an **Alterar** action.
+7. The user clicks **Comparar**.
+8. The comparison result is displayed below the form.
+
+---
+
+### Food A Summary Card
+
+After Food A is selected and its weight is informed, the interface should display:
+
+* Food name.
+* Selected weight in grams.
+* Calories for the selected weight.
+
+The calorie calculation must use `NutritionalValuesCalculatorService`.
+
+Example:
+
+```text
+Banana
+100 g
+89 kcal
+```
+
+---
+
+### Result Card
+
+The main result should communicate calorie equivalence clearly.
+
+Example:
+
+```text
+100 g de Banana ≈ 171 g de Maçã
+em calorias
+```
+
+Supporting text:
+
+```text
+100 g de Banana possuem aproximadamente 89 kcal.
+
+171,15 g de Maçã possuem aproximadamente 89 kcal.
+```
+
+The equivalent weight shown in the main result may be rounded for readability, while the supporting text may present the precise value.
+
+---
+
+### Component Responsibilities
+
+The Livewire component is responsible for:
+
+* managing the interface state;
+* searching foods using `FoodSearchService`;
+* calculating calories using `NutritionalValuesCalculatorService`;
+* calculating equivalent weight using `CompareFoodsService`.
+
+The component must not:
+
+* duplicate business rules already implemented in Services;
+* call internal HTTP endpoints such as `/foods/search` or `/compare`.
+
+---
+
 ## Page Structure
 
 ### Desktop
