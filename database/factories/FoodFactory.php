@@ -18,7 +18,12 @@ class FoodFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name_pt' => $this->faker->unique()->words(2, true),
+            'name_en' => null,
+            'calories_per_100g' => 100,
+            'protein_per_100g' => 1,
+            'carbs_per_100g' => 20,
+            'fat_per_100g' => 1,
         ];
     }
 }

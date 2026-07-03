@@ -11,18 +11,10 @@ it('returns only foods matching the searched Portuguese name', function () {
     // Arrange
     Food::factory()->create([
         'name_pt' => 'Banana',
-        'calories_per_100g' => 89,
-        'protein_per_100g' => 1.1,
-        'carbs_per_100g' => 22.8,
-        'fat_per_100g' => 0.3,
     ]);
 
     Food::factory()->create([
         'name_pt' => 'Maçã',
-        'calories_per_100g' => 52,
-        'protein_per_100g' => 0.3,
-        'carbs_per_100g' => 13.8,
-        'fat_per_100g' => 0.2,
     ]);
 
     $service = new FoodSearchService();
@@ -39,18 +31,10 @@ it('returns only foods partially matching the searched Portuguese name', functio
     // Arrange
     Food::factory()->create([
         'name_pt' => 'Banana',
-        'calories_per_100g' => 89,
-        'protein_per_100g' => 1.1,
-        'carbs_per_100g' => 22.8,
-        'fat_per_100g' => 0.3,
     ]);
 
     Food::factory()->create([
         'name_pt' => 'Maçã',
-        'calories_per_100g' => 52,
-        'protein_per_100g' => 0.3,
-        'carbs_per_100g' => 13.8,
-        'fat_per_100g' => 0.2,
     ]);
 
     $service = new FoodSearchService();
@@ -67,10 +51,6 @@ it('returns foods matching the searched Portuguese name regardless of case', fun
     // Arrange
     Food::factory()->create([
         'name_pt' => 'Banana',
-        'calories_per_100g' => 89,
-        'protein_per_100g' => 1.1,
-        'carbs_per_100g' => 22.8,
-        'fat_per_100g' => 0.3,
     ]);
 
     $service = new FoodSearchService();
@@ -90,18 +70,10 @@ it('returns an empty collection when no food matches the searched Portuguese nam
     // Arrange
     Food::factory()->create([
         'name_pt' => 'Banana',
-        'calories_per_100g' => 89,
-        'protein_per_100g' => 1.1,
-        'carbs_per_100g' => 22.8,
-        'fat_per_100g' => 0.3,
     ]);
 
     Food::factory()->create([
         'name_pt' => 'Maçã',
-        'calories_per_100g' => 52,
-        'protein_per_100g' => 0.3,
-        'carbs_per_100g' => 13.8,
-        'fat_per_100g' => 0.2,
     ]);
 
     $service = new FoodSearchService();
@@ -117,26 +89,14 @@ it('returns multiple foods when more than one food matches the searched Portugue
     // Arrange
     Food::factory()->create([
         'name_pt' => 'Banana',
-        'calories_per_100g' => 89,
-        'protein_per_100g' => 1.1,
-        'carbs_per_100g' => 22.8,
-        'fat_per_100g' => 0.3,
     ]);
 
     Food::factory()->create([
         'name_pt' => 'Banana Prata',
-        'calories_per_100g' => 98,
-        'protein_per_100g' => 1.3,
-        'carbs_per_100g' => 26,
-        'fat_per_100g' => 0.1,
     ]);
 
     Food::factory()->create([
         'name_pt' => 'Maçã',
-        'calories_per_100g' => 52,
-        'protein_per_100g' => 0.3,
-        'carbs_per_100g' => 13.8,
-        'fat_per_100g' => 0.2,
     ]);
 
     $service = new FoodSearchService();
