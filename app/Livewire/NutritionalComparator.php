@@ -13,9 +13,13 @@ class NutritionalComparator extends Component
 {
     public string $foodASearch = '';
 
+    public string $foodBSearch = '';
+
     public string $foodAWeight = '';
 
     public ?int $foodAId = null;
+
+    public ?int $foodBId = null;
 
     protected FoodSearchService $foodSearchService;
 
@@ -35,7 +39,9 @@ class NutritionalComparator extends Component
 
         return view('livewire.nutritional-comparator', [
             'selectedFoodA' => $selectedFoodA,
+            'selectedFoodB' => $this->selectedFoodB(),
             'foodAResults' => $this->foodAResults(),
+            'foodBResults' => $this->foodBResults(),
             'foodASummary' => $this->foodASummary($selectedFoodA),
         ]);
     }
@@ -54,6 +60,18 @@ class NutritionalComparator extends Component
         $this->foodAWeight = '';
     }
 
+    public function selectFoodB(int $foodId): void
+    {
+        $this->foodBId = $foodId;
+        $this->foodBSearch = '';
+    }
+
+    public function changeFoodB(): void
+    {
+        $this->foodBId = null;
+        $this->foodBSearch = '';
+    }
+
     private function foodAResults(): Collection
     {
         if ($this->foodAId !== null) {
@@ -69,6 +87,21 @@ class NutritionalComparator extends Component
             ->take(8);
     }
 
+    private function foodBResults(): Collection
+    {
+        if ($this->foodBId !== null) {
+            return collect();
+        }
+
+        if (mb_strlen($this->foodBSearch) < 2) {
+            return collect();
+        }
+
+        return $this->foodSearchService
+            ->search($this->foodBSearch)
+            ->take(8);
+    }
+
     private function selectedFoodA(): ?Food
     {
         if ($this->foodAId === null) {
@@ -76,6 +109,15 @@ class NutritionalComparator extends Component
         }
 
         return Food::find($this->foodAId);
+    }
+
+    private function selectedFoodB(): ?Food
+    {
+        if ($this->foodBId === null) {
+            return null;
+        }
+
+        return Food::find($this->foodBId);
     }
 
     /**

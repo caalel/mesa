@@ -44,8 +44,23 @@
     <section>
         <h2>{{ __('ui.compare.food_b_section') }}</h2>
 
-        <label for="food-b-search">{{ __('ui.compare.search_food') }}</label>
-        <input id="food-b-search" type="text" disabled>
+        @if ($selectedFoodB)
+            <p>{{ $selectedFoodB->name_pt }}</p>
+            <button type="button" wire:click="changeFoodB">{{ __('ui.compare.change_food') }}</button>
+        @else
+            <label for="food-b-search">{{ __('ui.compare.search_food') }}</label>
+            <input id="food-b-search" type="text" wire:model.live.debounce.300ms="foodBSearch">
+
+            <ul>
+                @foreach ($foodBResults as $food)
+                    <li>
+                        <button type="button" wire:click="selectFoodB({{ $food->id }})">
+                            {{ $food->name_pt }}
+                        </button>
+                    </li>
+                @endforeach
+            </ul>
+        @endif
     </section>
 
     <button type="button" disabled>{{ __('ui.compare.submit') }}</button>

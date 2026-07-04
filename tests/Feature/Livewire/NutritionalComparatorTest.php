@@ -176,3 +176,70 @@ it('does not show the Food A calories summary when the weight is not numeric', f
         ->set('foodAWeight', 'invalid')
         ->assertDontSeeHtml('data-testid="food-a-summary"');
 });
+
+it('shows foods matching the Food B portuguese name search when the user types at least two characters', function () {
+    Food::factory()->create([
+        'name_pt' => 'Maçã',
+    ]);
+
+    Food::factory()->create([
+        'name_pt' => 'Mamão',
+    ]);
+
+    Food::factory()->create([
+        'name_pt' => 'Banana',
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->set('foodBSearch', 'Ma')
+        ->assertSee('Maçã')
+        ->assertSee('Mamão')
+        ->assertDontSee('Banana');
+});
+
+it('does not show Food B results when the user types less than two characters', function () {
+    Food::factory()->create([
+        'name_pt' => 'Maçã',
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->set('foodBSearch', 'M')
+        ->assertDontSee('Maçã');
+});
+
+it('shows the selected Food B and hides the search state when the user selects a result', function () {
+    $maca = Food::factory()->create([
+        'name_pt' => 'Maçã',
+    ]);
+
+    Food::factory()->create([
+        'name_pt' => 'Mamão',
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->set('foodBSearch', 'Ma')
+        ->call('selectFoodB', $maca->id)
+        ->assertSee('Maçã')
+        ->assertDontSee('Mamão')
+        ->assertDontSeeHtml('id="food-b-search"')
+        ->assertSee(__('ui.compare.change_food'));
+});
+
+it('returns Food B to the search state when the user changes the selected food', function () {
+    $maca = Food::factory()->create([
+        'name_pt' => 'Maçã',
+    ]);
+
+    Food::factory()->create([
+        'name_pt' => 'Laranja',
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->set('foodBSearch', 'Ma')
+        ->call('selectFoodB', $maca->id)
+        ->call('changeFoodB')
+        ->assertDontSee('Maçã')
+        ->assertSeeHtml('id="food-b-search"')
+        ->set('foodBSearch', 'La')
+        ->assertSee('Laranja');
+});
