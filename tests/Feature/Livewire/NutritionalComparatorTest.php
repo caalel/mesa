@@ -89,3 +89,90 @@ it('returns Food A to the search state when the user changes the selected food',
         ->set('foodASearch', 'Me')
         ->assertSee('Melancia');
 });
+
+it('shows the Food A weight and calories summary when the selected food has a valid weight', function () {
+    $banana = Food::factory()->create([
+        'name_pt' => 'Banana',
+        'calories_per_100g' => 128,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $banana->id)
+        ->set('foodAWeight', 50)
+        ->assertSeeHtml('data-testid="food-a-summary"')
+        ->assertSee('50')
+        ->assertSee('64');
+});
+
+it('preserves decimal Food A weight when calculating the calories summary', function () {
+    $banana = Food::factory()->create([
+        'name_pt' => 'Banana',
+        'calories_per_100g' => 128,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $banana->id)
+        ->set('foodAWeight', '50.5')
+        ->assertSeeHtml('data-testid="food-a-summary"')
+        ->assertSee('50.5')
+        ->assertSee('64.64');
+});
+
+it('does not show the Food A calories summary when no Food A is selected', function () {
+    Food::factory()->create([
+        'name_pt' => 'Banana',
+        'calories_per_100g' => 128,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->set('foodAWeight', 50)
+        ->assertDontSeeHtml('data-testid="food-a-summary"');
+});
+
+it('does not show the Food A calories summary when the weight is empty', function () {
+    $banana = Food::factory()->create([
+        'name_pt' => 'Banana',
+        'calories_per_100g' => 128,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $banana->id)
+        ->set('foodAWeight', '')
+        ->assertDontSeeHtml('data-testid="food-a-summary"');
+});
+
+it('does not show the Food A calories summary when the weight is zero', function () {
+    $banana = Food::factory()->create([
+        'name_pt' => 'Banana',
+        'calories_per_100g' => 128,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $banana->id)
+        ->set('foodAWeight', 0)
+        ->assertDontSeeHtml('data-testid="food-a-summary"');
+});
+
+it('does not show the Food A calories summary when the weight is negative', function () {
+    $banana = Food::factory()->create([
+        'name_pt' => 'Banana',
+        'calories_per_100g' => 128,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $banana->id)
+        ->set('foodAWeight', -50)
+        ->assertDontSeeHtml('data-testid="food-a-summary"');
+});
+
+it('does not show the Food A calories summary when the weight is not numeric', function () {
+    $banana = Food::factory()->create([
+        'name_pt' => 'Banana',
+        'calories_per_100g' => 128,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $banana->id)
+        ->set('foodAWeight', 'invalid')
+        ->assertDontSeeHtml('data-testid="food-a-summary"');
+});

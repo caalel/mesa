@@ -4,8 +4,8 @@ namespace App\Services;
 
 class NutritionalValuesCalculatorService
 {
-    public function calculateValue(int $valuePer100g, int $weight): int
+    public function calculateValue(int|float $valuePer100g, int|float $weight): float
     {
-        return (int) round(($valuePer100g * $weight) / 100);
+        return round(($valuePer100g * $weight) / 100, 2);
     }
 }

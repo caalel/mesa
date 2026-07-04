@@ -24,8 +24,21 @@
         @endif
 
         <label for="food-a-quantity">{{ __('ui.compare.quantity_label') }}</label>
-        <input id="food-a-quantity" type="number" disabled>
+        <input
+            id="food-a-quantity"
+            type="number"
+            wire:model.live="foodAWeight"
+            @disabled(! $selectedFoodA)
+        >
         <span>{{ __('ui.compare.grams_unit') }}</span>
+
+        @if ($foodASummary)
+            <div data-testid="food-a-summary">
+                <p>{{ $foodASummary['food']->name_pt }}</p>
+                <p>{{ $foodASummary['weight'] }} {{ __('ui.compare.grams_unit') }}</p>
+                <p>{{ $foodASummary['calories'] }} kcal</p>
+            </div>
+        @endif
     </section>
 
     <section>
