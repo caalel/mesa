@@ -52,3 +52,40 @@ it('does not show Food A results when the user types less than two characters', 
         ->set('foodASearch', 'B')
         ->assertDontSee('Banana');
 });
+
+it('shows the selected Food A and hides the search state when the user selects a result', function () {
+    $banana = Food::factory()->create([
+        'name_pt' => 'Banana',
+    ]);
+
+    Food::factory()->create([
+        'name_pt' => 'Banana Prata',
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->set('foodASearch', 'Ba')
+        ->call('selectFoodA', $banana->id)
+        ->assertSee('Banana')
+        ->assertDontSee('Banana Prata')
+        ->assertDontSeeHtml('id="food-a-search"')
+        ->assertSee(__('ui.compare.change_food'));
+});
+
+it('returns Food A to the search state when the user changes the selected food', function () {
+    $banana = Food::factory()->create([
+        'name_pt' => 'Banana',
+    ]);
+
+    Food::factory()->create([
+        'name_pt' => 'Melancia',
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->set('foodASearch', 'Ba')
+        ->call('selectFoodA', $banana->id)
+        ->call('changeFoodA')
+        ->assertDontSee('Banana')
+        ->assertSeeHtml('id="food-a-search"')
+        ->set('foodASearch', 'Me')
+        ->assertSee('Melancia');
+});
