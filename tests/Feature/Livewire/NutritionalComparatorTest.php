@@ -104,7 +104,7 @@ it('shows the Food A weight and calories summary when the selected food has a va
         ->assertSee('64');
 });
 
-it('preserves decimal Food A weight when calculating the calories summary', function () {
+it('formats decimal Food A weight and calories summary using pt-BR numbers', function () {
     $banana = Food::factory()->create([
         'name_pt' => 'Banana',
         'calories_per_100g' => 128,
@@ -114,8 +114,8 @@ it('preserves decimal Food A weight when calculating the calories summary', func
         ->call('selectFoodA', $banana->id)
         ->set('foodAWeight', '50.5')
         ->assertSeeHtml('data-testid="food-a-summary"')
-        ->assertSee('50.5')
-        ->assertSee('64.64');
+        ->assertSee('50,5 g')
+        ->assertSee('64,64 kcal');
 });
 
 it('does not show the Food A calories summary when no Food A is selected', function () {

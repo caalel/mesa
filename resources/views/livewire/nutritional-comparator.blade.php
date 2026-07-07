@@ -35,8 +35,8 @@
         @if ($foodASummary)
             <div data-testid="food-a-summary">
                 <p>{{ $foodASummary['food']->name_pt }}</p>
-                <p>{{ $foodASummary['weight'] }} {{ __('ui.compare.grams_unit') }}</p>
-                <p>{{ $foodASummary['calories'] }} kcal</p>
+                <p>{{ $foodASummary['formatted_weight'] }} {{ __('ui.compare.grams_unit') }}</p>
+                <p>{{ $foodASummary['formatted_calories'] }} kcal</p>
             </div>
         @endif
     </section>

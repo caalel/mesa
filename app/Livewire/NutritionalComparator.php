@@ -192,7 +192,7 @@ class NutritionalComparator extends Component
     }
 
     /**
-     * @return array{food: Food, weight: int|float, calories: float}|null
+     * @return array{food: Food, weight: int|float, calories: float, formatted_weight: string, formatted_calories: string}|null
      */
     private function foodASummary(?Food $selectedFoodA): ?array
     {
@@ -210,13 +210,17 @@ class NutritionalComparator extends Component
             return null;
         }
 
+        $calories = $this->nutritionalValuesCalculatorService->calculateValue(
+            valuePer100g: (float) $selectedFoodA->calories_per_100g,
+            weight: $weight,
+        );
+
         return [
             'food' => $selectedFoodA,
             'weight' => $weight,
-            'calories' => $this->nutritionalValuesCalculatorService->calculateValue(
-                valuePer100g: (float) $selectedFoodA->calories_per_100g,
-                weight: $weight,
-            ),
+            'calories' => $calories,
+            'formatted_weight' => $this->formatNumber($weight),
+            'formatted_calories' => $this->formatNumber($calories),
         ];
     }
 }
