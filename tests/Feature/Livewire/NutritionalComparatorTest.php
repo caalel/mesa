@@ -378,8 +378,18 @@ it('shows the comparison result when compare is called with valid state', functi
         ->assertSee('Banana')
         ->assertSee('171,15 g')
         ->assertSee('Maçã')
-        ->assertSee('100 g de Banana ≈ 171,15 g de Maçã.')
-        ->assertSee('Para consumir as mesmas calorias contidas em 100 g de Banana, você precisaria consumir cerca de 171,15 g de Maçã.');
+        ->assertSee(__('ui.compare.calorie_equivalence', [
+            'foodAWeight' => '100',
+            'foodAName' => 'Banana',
+            'foodBWeight' => '171,15',
+            'foodBName' => 'Maçã',
+        ]))
+        ->assertSee(__('ui.compare.calorie_equivalence_description', [
+            'foodAWeight' => '100',
+            'foodAName' => 'Banana',
+            'foodBWeight' => '171,15',
+            'foodBName' => 'Maçã',
+        ]));
 });
 
 it('shows the comparison result preserving decimal Food A weight', function () {
