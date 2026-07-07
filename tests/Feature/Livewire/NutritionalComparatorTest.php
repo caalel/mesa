@@ -381,3 +381,43 @@ it('shows the comparison result when compare is called with valid state', functi
         ->assertSee('100 g de Banana ≈ 171,15 g de Maçã.')
         ->assertSee('Para consumir as mesmas calorias contidas em 100 g de Banana, você precisaria consumir cerca de 171,15 g de Maçã.');
 });
+
+it('shows the comparison result preserving decimal Food A weight', function () {
+    $banana = Food::factory()->create([
+        'name_pt' => 'Banana',
+        'calories_per_100g' => 89,
+    ]);
+    $maca = Food::factory()->create([
+        'name_pt' => 'Maçã',
+        'calories_per_100g' => 52,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $banana->id)
+        ->set('foodAWeight', '50.5')
+        ->call('selectFoodB', $maca->id)
+        ->call('compare')
+        ->assertSeeHtml('data-testid="comparison-result"')
+        ->assertSee('50,5 g')
+        ->assertSee('86,43 g');
+});
+
+it('clears the comparison result immediately when Food A weight changes', function () {
+    $banana = Food::factory()->create([
+        'name_pt' => 'Banana',
+        'calories_per_100g' => 89,
+    ]);
+    $maca = Food::factory()->create([
+        'name_pt' => 'Maçã',
+        'calories_per_100g' => 52,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $banana->id)
+        ->set('foodAWeight', 100)
+        ->call('selectFoodB', $maca->id)
+        ->call('compare')
+        ->assertSeeHtml('data-testid="comparison-result"')
+        ->set('foodAWeight', 120)
+        ->assertDontSeeHtml('data-testid="comparison-result"');
+});

@@ -107,9 +107,9 @@ class NutritionalComparator extends Component
 
         $foodAWeight = (float) $this->foodAWeight;
         $foodBWeight = $this->compareFoodsService->calculateEquivalentWeight(
-            foodAValuePer100g: (int) $foodA->calories_per_100g,
-            foodAWeight: (int) $foodAWeight,
-            foodBValuePer100g: (int) $foodB->calories_per_100g,
+            foodAValuePer100g: (float) $foodA->calories_per_100g,
+            foodAWeight: $foodAWeight,
+            foodBValuePer100g: (float) $foodB->calories_per_100g,
         );
 
         $this->comparisonResult = [
@@ -118,6 +118,11 @@ class NutritionalComparator extends Component
             'food_b_weight' => $this->formatNumber($foodBWeight),
             'food_b_name' => $foodB->name_pt,
         ];
+    }
+
+    public function updatedFoodAWeight(): void
+    {
+        $this->comparisonResult = null;
     }
 
     private function foodAResults(): Collection
