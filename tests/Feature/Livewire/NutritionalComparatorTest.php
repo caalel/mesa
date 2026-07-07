@@ -53,6 +53,26 @@ it('does not show Food A results when the user types less than two characters', 
         ->assertDontSee('Banana');
 });
 
+it('shows Food A results when the search has leading and trailing spaces', function () {
+    Food::factory()->create([
+        'name_pt' => 'Banana',
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->set('foodASearch', '  Banana  ')
+        ->assertSee('Banana');
+});
+
+it('does not show Food A results when the search contains only spaces', function () {
+    Food::factory()->create([
+        'name_pt' => 'Banana',
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->set('foodASearch', '   ')
+        ->assertDontSee('Banana');
+});
+
 it('shows the selected Food A and hides the search state when the user selects a result', function () {
     $banana = Food::factory()->create([
         'name_pt' => 'Banana',
@@ -204,6 +224,26 @@ it('does not show Food B results when the user types less than two characters', 
 
     Livewire::test(NutritionalComparator::class)
         ->set('foodBSearch', 'M')
+        ->assertDontSee('Maçã');
+});
+
+it('shows Food B results when the search has leading and trailing spaces', function () {
+    Food::factory()->create([
+        'name_pt' => 'Maçã',
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->set('foodBSearch', '  Maçã  ')
+        ->assertSee('Maçã');
+});
+
+it('does not show Food B results when the search contains only spaces', function () {
+    Food::factory()->create([
+        'name_pt' => 'Maçã',
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->set('foodBSearch', '   ')
         ->assertDontSee('Maçã');
 });
 

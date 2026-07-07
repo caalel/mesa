@@ -131,12 +131,14 @@ class NutritionalComparator extends Component
             return collect();
         }
 
-        if (mb_strlen($this->foodASearch) < 2) {
+        $search = trim($this->foodASearch);
+
+        if (mb_strlen($search) < 2) {
             return collect();
         }
 
         return $this->foodSearchService
-            ->search($this->foodASearch)
+            ->search($search)
             ->take(8);
     }
 
@@ -146,12 +148,14 @@ class NutritionalComparator extends Component
             return collect();
         }
 
-        if (mb_strlen($this->foodBSearch) < 2) {
+        $search = trim($this->foodBSearch);
+
+        if (mb_strlen($search) < 2) {
             return collect();
         }
 
         return $this->foodSearchService
-            ->search($this->foodBSearch)
+            ->search($search)
             ->take(8);
     }
 
