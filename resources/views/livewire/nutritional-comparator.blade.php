@@ -63,5 +63,34 @@
         @endif
     </section>
 
-    <button type="button" disabled>{{ __('ui.compare.submit') }}</button>
+    @if ($canCompare)
+        <button type="button" wire:click="compare" data-testid="compare-button-enabled">
+            {{ __('ui.compare.submit') }}
+        </button>
+    @else
+        <button type="button" data-testid="compare-button-disabled" disabled>
+            {{ __('ui.compare.submit') }}
+        </button>
+    @endif
+
+    @if ($comparisonResult)
+        <section data-testid="comparison-result">
+            <p>
+                {{ __('ui.compare.calorie_equivalence', [
+                    'foodAWeight' => $comparisonResult['food_a_weight'],
+                    'foodAName' => $comparisonResult['food_a_name'],
+                    'foodBWeight' => $comparisonResult['food_b_weight'],
+                    'foodBName' => $comparisonResult['food_b_name'],
+                ]) }}
+            </p>
+            <p>
+                {{ __('ui.compare.calorie_equivalence_description', [
+                    'foodAWeight' => $comparisonResult['food_a_weight'],
+                    'foodAName' => $comparisonResult['food_a_name'],
+                    'foodBWeight' => $comparisonResult['food_b_weight'],
+                    'foodBName' => $comparisonResult['food_b_name'],
+                ]) }}
+            </p>
+        </section>
+    @endif
 </div>

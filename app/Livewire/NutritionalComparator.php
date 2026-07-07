@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Food;
+use App\Services\CompareFoodsService;
 use App\Services\FoodSearchService;
 use App\Services\NutritionalValuesCalculatorService;
 use Illuminate\Contracts\View\View;
@@ -21,14 +22,23 @@ class NutritionalComparator extends Component
 
     public ?int $foodBId = null;
 
+    /**
+     * @var array{food_a_weight: string, food_a_name: string, food_b_weight: string, food_b_name: string}|null
+     */
+    public ?array $comparisonResult = null;
+
+    protected CompareFoodsService $compareFoodsService;
+
     protected FoodSearchService $foodSearchService;
 
     protected NutritionalValuesCalculatorService $nutritionalValuesCalculatorService;
 
     public function boot(
+        CompareFoodsService $compareFoodsService,
         FoodSearchService $foodSearchService,
         NutritionalValuesCalculatorService $nutritionalValuesCalculatorService,
     ): void {
+        $this->compareFoodsService = $compareFoodsService;
         $this->foodSearchService = $foodSearchService;
         $this->nutritionalValuesCalculatorService = $nutritionalValuesCalculatorService;
     }
@@ -36,13 +46,17 @@ class NutritionalComparator extends Component
     public function render(): View
     {
         $selectedFoodA = $this->selectedFoodA();
+        $selectedFoodB = $this->selectedFoodB();
+        $canCompare = $this->canCompare();
 
         return view('livewire.nutritional-comparator', [
             'selectedFoodA' => $selectedFoodA,
-            'selectedFoodB' => $this->selectedFoodB(),
+            'selectedFoodB' => $selectedFoodB,
             'foodAResults' => $this->foodAResults(),
             'foodBResults' => $this->foodBResults(),
             'foodASummary' => $this->foodASummary($selectedFoodA),
+            'canCompare' => $canCompare,
+            'comparisonResult' => $this->comparisonResult,
         ]);
     }
 
@@ -51,6 +65,7 @@ class NutritionalComparator extends Component
         $this->foodAId = $foodId;
         $this->foodASearch = '';
         $this->foodAWeight = '';
+        $this->comparisonResult = null;
     }
 
     public function changeFoodA(): void
@@ -58,18 +73,51 @@ class NutritionalComparator extends Component
         $this->foodAId = null;
         $this->foodASearch = '';
         $this->foodAWeight = '';
+        $this->comparisonResult = null;
     }
 
     public function selectFoodB(int $foodId): void
     {
         $this->foodBId = $foodId;
         $this->foodBSearch = '';
+        $this->comparisonResult = null;
     }
 
     public function changeFoodB(): void
     {
         $this->foodBId = null;
         $this->foodBSearch = '';
+        $this->comparisonResult = null;
+    }
+
+    public function compare(): void
+    {
+        $this->comparisonResult = null;
+
+        if (! $this->canCompare()) {
+            return;
+        }
+
+        $foodA = $this->selectedFoodA();
+        $foodB = $this->selectedFoodB();
+
+        if ($foodA === null || $foodB === null) {
+            return;
+        }
+
+        $foodAWeight = (float) $this->foodAWeight;
+        $foodBWeight = $this->compareFoodsService->calculateEquivalentWeight(
+            foodAValuePer100g: (int) $foodA->calories_per_100g,
+            foodAWeight: (int) $foodAWeight,
+            foodBValuePer100g: (int) $foodB->calories_per_100g,
+        );
+
+        $this->comparisonResult = [
+            'food_a_weight' => $this->formatNumber($foodAWeight),
+            'food_a_name' => $foodA->name_pt,
+            'food_b_weight' => $this->formatNumber($foodBWeight),
+            'food_b_name' => $foodB->name_pt,
+        ];
     }
 
     private function foodAResults(): Collection
@@ -118,6 +166,24 @@ class NutritionalComparator extends Component
         }
 
         return Food::find($this->foodBId);
+    }
+
+    private function canCompare(): bool
+    {
+        if ($this->foodAId === null || $this->foodBId === null) {
+            return false;
+        }
+
+        if (! is_numeric($this->foodAWeight)) {
+            return false;
+        }
+
+        return (float) $this->foodAWeight > 0;
+    }
+
+    private function formatNumber(int|float $value): string
+    {
+        return rtrim(rtrim(number_format((float) $value, 2, ',', '.'), '0'), ',');
     }
 
     /**

@@ -243,3 +243,141 @@ it('returns Food B to the search state when the user changes the selected food',
         ->set('foodBSearch', 'La')
         ->assertSee('Laranja');
 });
+
+it('keeps the compare button disabled when Food A is not selected', function () {
+    $maca = Food::factory()->create([
+        'name_pt' => 'Maçã',
+        'calories_per_100g' => 52,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->set('foodAWeight', 100)
+        ->call('selectFoodB', $maca->id)
+        ->assertSeeHtml('data-testid="compare-button-disabled"');
+});
+
+it('keeps the compare button disabled when Food A weight is missing', function () {
+    $banana = Food::factory()->create([
+        'name_pt' => 'Banana',
+        'calories_per_100g' => 89,
+    ]);
+    $maca = Food::factory()->create([
+        'name_pt' => 'Maçã',
+        'calories_per_100g' => 52,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $banana->id)
+        ->call('selectFoodB', $maca->id)
+        ->assertSeeHtml('data-testid="compare-button-disabled"');
+});
+
+it('keeps the compare button disabled when Food A weight is zero', function () {
+    $banana = Food::factory()->create([
+        'name_pt' => 'Banana',
+        'calories_per_100g' => 89,
+    ]);
+    $maca = Food::factory()->create([
+        'name_pt' => 'Maçã',
+        'calories_per_100g' => 52,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $banana->id)
+        ->set('foodAWeight', 0)
+        ->call('selectFoodB', $maca->id)
+        ->assertSeeHtml('data-testid="compare-button-disabled"');
+});
+
+it('keeps the compare button disabled when Food A weight is negative', function () {
+    $banana = Food::factory()->create([
+        'name_pt' => 'Banana',
+        'calories_per_100g' => 89,
+    ]);
+    $maca = Food::factory()->create([
+        'name_pt' => 'Maçã',
+        'calories_per_100g' => 52,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $banana->id)
+        ->set('foodAWeight', -100)
+        ->call('selectFoodB', $maca->id)
+        ->assertSeeHtml('data-testid="compare-button-disabled"');
+});
+
+it('keeps the compare button disabled when Food A weight is not numeric', function () {
+    $banana = Food::factory()->create([
+        'name_pt' => 'Banana',
+        'calories_per_100g' => 89,
+    ]);
+    $maca = Food::factory()->create([
+        'name_pt' => 'Maçã',
+        'calories_per_100g' => 52,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $banana->id)
+        ->set('foodAWeight', 'invalid')
+        ->call('selectFoodB', $maca->id)
+        ->assertSeeHtml('data-testid="compare-button-disabled"');
+});
+
+it('keeps the compare button disabled when Food B is not selected', function () {
+    $banana = Food::factory()->create([
+        'name_pt' => 'Banana',
+        'calories_per_100g' => 89,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $banana->id)
+        ->set('foodAWeight', 100)
+        ->assertSeeHtml('data-testid="compare-button-disabled"');
+});
+
+it('enables the compare button when Food A, valid weight, and Food B are selected', function () {
+    $banana = Food::factory()->create([
+        'name_pt' => 'Banana',
+        'calories_per_100g' => 89,
+    ]);
+    $maca = Food::factory()->create([
+        'name_pt' => 'Maçã',
+        'calories_per_100g' => 52,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $banana->id)
+        ->set('foodAWeight', 100)
+        ->call('selectFoodB', $maca->id)
+        ->assertSeeHtml('data-testid="compare-button-enabled"');
+});
+
+it('does not show a comparison result when compare is called with incomplete state', function () {
+    Livewire::test(NutritionalComparator::class)
+        ->call('compare')
+        ->assertDontSeeHtml('data-testid="comparison-result"');
+});
+
+it('shows the comparison result when compare is called with valid state', function () {
+    $banana = Food::factory()->create([
+        'name_pt' => 'Banana',
+        'calories_per_100g' => 89,
+    ]);
+    $maca = Food::factory()->create([
+        'name_pt' => 'Maçã',
+        'calories_per_100g' => 52,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $banana->id)
+        ->set('foodAWeight', 100)
+        ->call('selectFoodB', $maca->id)
+        ->call('compare')
+        ->assertSeeHtml('data-testid="comparison-result"')
+        ->assertSee('100 g')
+        ->assertSee('Banana')
+        ->assertSee('171,15 g')
+        ->assertSee('Maçã')
+        ->assertSee('100 g de Banana ≈ 171,15 g de Maçã.')
+        ->assertSee('Para consumir as mesmas calorias contidas em 100 g de Banana, você precisaria consumir cerca de 171,15 g de Maçã.');
+});
