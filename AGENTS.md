@@ -61,3 +61,12 @@
 - Permission warnings for `vendor/pestphp/pest/.temp/test-results` may occur in the Codex sandbox.
 - Ignore those warnings if the tests execute normally.
 - Do not change project permissions to fix Codex sandbox warnings.
+
+## Encoding and file editing
+
+- Treat project files as UTF-8 without BOM.
+- Do not rewrite an entire file just because a patch failed due to accented characters or symbols.
+- Before replacing text with special characters, confirm the real file contents with an appropriate UTF-8 read.
+- Prefer small edits by line or by blocks delimited with stable ASCII context.
+- Only rewrite an entire file when there is a real technical reason and after preserving its existing contents exactly.
+- After any edit caused by an encoding issue, review the diff to ensure there were no accidental changes outside the requested section.
