@@ -1,7 +1,7 @@
 <div class="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
-    <header class="mb-8 space-y-2">
-        <h1>{{ __('ui.compare.title') }}</h1>
-        <p>{{ __('ui.compare.subtitle') }}</p>
+    <header class="mb-10 max-w-2xl space-y-3 lg:mb-12">
+        <h1 class="text-3xl font-semibold leading-tight text-[var(--color-text-primary)] sm:text-4xl">{{ __('ui.compare.title') }}</h1>
+        <p class="text-base leading-7 text-[var(--color-text-secondary)] sm:text-lg">{{ __('ui.compare.subtitle') }}</p>
     </header>
 
     <div class="space-y-8">
