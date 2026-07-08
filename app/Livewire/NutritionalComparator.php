@@ -48,15 +48,23 @@ class NutritionalComparator extends Component
         $selectedFoodA = $this->selectedFoodA();
         $selectedFoodB = $this->selectedFoodB();
         $canCompare = $this->canCompare();
+        $foodAResults = $this->foodAResults();
+        $foodBResults = $this->foodBResults();
 
         return view('livewire.nutritional-comparator', [
             'selectedFoodA' => $selectedFoodA,
             'selectedFoodB' => $selectedFoodB,
-            'foodAResults' => $this->foodAResults(),
-            'foodBResults' => $this->foodBResults(),
+            'foodAResults' => $foodAResults,
+            'foodBResults' => $foodBResults,
             'foodASummary' => $this->foodASummary($selectedFoodA),
             'canCompare' => $canCompare,
             'comparisonResult' => $this->comparisonResult,
+            'foodAHasNoResults' => $this->foodAId === null
+                && mb_strlen(trim($this->foodASearch)) >= 2
+                && $foodAResults->isEmpty(),
+            'foodBHasNoResults' => $this->foodBId === null
+                && mb_strlen(trim($this->foodBSearch)) >= 2
+                && $foodBResults->isEmpty(),
         ]);
     }
 

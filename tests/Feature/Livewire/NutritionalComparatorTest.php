@@ -53,6 +53,11 @@ it('does not show Food A results when the user types less than two characters', 
         ->assertDontSee('Banana');
 });
 
+it('shows helpful text for the Food A search field', function () {
+    Livewire::test(NutritionalComparator::class)
+        ->assertSee(__('ui.compare.search_help'));
+});
+
 it('shows Food A results when the search has leading and trailing spaces', function () {
     Food::factory()->create([
         'name_pt' => 'Banana',
@@ -71,6 +76,16 @@ it('does not show Food A results when the search contains only spaces', function
     Livewire::test(NutritionalComparator::class)
         ->set('foodASearch', '   ')
         ->assertDontSee('Banana');
+});
+
+it('shows an empty state when Food A search has no results', function () {
+    Food::factory()->create([
+        'name_pt' => 'Banana',
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->set('foodASearch', 'Abacaxi')
+        ->assertSee(__('ui.compare.no_foods_found'));
 });
 
 it('shows the selected Food A and hides the search state when the user selects a result', function () {
@@ -197,6 +212,11 @@ it('does not show the Food A calories summary when the weight is not numeric', f
         ->assertDontSeeHtml('data-testid="food-a-summary"');
 });
 
+it('shows the translated quantity placeholder', function () {
+    Livewire::test(NutritionalComparator::class)
+        ->assertSeeHtml('placeholder="'.__('ui.compare.quantity_placeholder').'"');
+});
+
 it('shows foods matching the Food B portuguese name search when the user types at least two characters', function () {
     Food::factory()->create([
         'name_pt' => 'Maçã',
@@ -227,6 +247,11 @@ it('does not show Food B results when the user types less than two characters', 
         ->assertDontSee('Maçã');
 });
 
+it('shows helpful text for the Food B search field', function () {
+    Livewire::test(NutritionalComparator::class)
+        ->assertSee(__('ui.compare.search_help'));
+});
+
 it('shows Food B results when the search has leading and trailing spaces', function () {
     Food::factory()->create([
         'name_pt' => 'Maçã',
@@ -245,6 +270,16 @@ it('does not show Food B results when the search contains only spaces', function
     Livewire::test(NutritionalComparator::class)
         ->set('foodBSearch', '   ')
         ->assertDontSee('Maçã');
+});
+
+it('shows an empty state when Food B search has no results', function () {
+    Food::factory()->create([
+        'name_pt' => 'Banana',
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->set('foodBSearch', 'Abacaxi')
+        ->assertSee(__('ui.compare.no_foods_found'));
 });
 
 it('shows the selected Food B and hides the search state when the user selects a result', function () {

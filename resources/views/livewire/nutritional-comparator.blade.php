@@ -18,6 +18,7 @@
                     <div class="space-y-3">
                         <label class="block text-sm font-medium text-[var(--color-text-secondary)]" for="food-a-search">{{ __('ui.compare.search_food') }}</label>
                         <input class="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2.5 text-[var(--color-text-primary)] focus:border-[var(--color-primary-green)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary-green)] disabled:cursor-not-allowed disabled:bg-[var(--color-background)] disabled:text-[var(--color-text-secondary)] disabled:opacity-70" id="food-a-search" type="text" wire:model.live.debounce.300ms="foodASearch">
+                        <p class="text-sm text-[var(--color-text-secondary)]">{{ __('ui.compare.search_help') }}</p>
 
                         <ul class="space-y-2">
                             @foreach ($foodAResults as $food)
@@ -28,6 +29,10 @@
                                 </li>
                             @endforeach
                         </ul>
+
+                        @if ($foodAHasNoResults)
+                            <p class="text-sm text-[var(--color-text-secondary)]">{{ __('ui.compare.no_foods_found') }}</p>
+                        @endif
                     </div>
                 @endif
 
@@ -38,6 +43,7 @@
                             class="min-w-0 flex-1 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2.5 text-[var(--color-text-primary)] focus:border-[var(--color-primary-green)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary-green)] disabled:cursor-not-allowed disabled:bg-[var(--color-background)] disabled:text-[var(--color-text-secondary)] disabled:opacity-70"
                             id="food-a-quantity"
                             type="number"
+                            placeholder="{{ __('ui.compare.quantity_placeholder') }}"
                             wire:model.live="foodAWeight"
                             @disabled(! $selectedFoodA)
                         >
@@ -66,6 +72,7 @@
                     <div class="space-y-3">
                         <label class="block text-sm font-medium text-[var(--color-text-secondary)]" for="food-b-search">{{ __('ui.compare.search_food') }}</label>
                         <input class="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2.5 text-[var(--color-text-primary)] focus:border-[var(--color-primary-green)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary-green)] disabled:cursor-not-allowed disabled:bg-[var(--color-background)] disabled:text-[var(--color-text-secondary)] disabled:opacity-70" id="food-b-search" type="text" wire:model.live.debounce.300ms="foodBSearch">
+                        <p class="text-sm text-[var(--color-text-secondary)]">{{ __('ui.compare.search_help') }}</p>
 
                         <ul class="space-y-2">
                             @foreach ($foodBResults as $food)
@@ -76,6 +83,10 @@
                                 </li>
                             @endforeach
                         </ul>
+
+                        @if ($foodBHasNoResults)
+                            <p class="text-sm text-[var(--color-text-secondary)]">{{ __('ui.compare.no_foods_found') }}</p>
+                        @endif
                     </div>
                 @endif
             </section>
