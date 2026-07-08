@@ -46,10 +46,10 @@
                 </div>
 
                 @if ($foodASummary)
-                    <div data-testid="food-a-summary">
-                        <p class="break-words">{{ $foodASummary['food']->name_pt }}</p>
-                        <p>{{ $foodASummary['formatted_weight'] }} {{ __('ui.compare.grams_unit') }}</p>
-                        <p>{{ $foodASummary['formatted_calories'] }} kcal</p>
+                    <div class="space-y-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-background)] p-4" data-testid="food-a-summary">
+                        <p class="break-words text-sm font-medium leading-5 text-[var(--color-text-primary)]">{{ $foodASummary['food']->name_pt }}</p>
+                        <p class="text-sm text-[var(--color-text-secondary)]">{{ $foodASummary['formatted_weight'] }} {{ __('ui.compare.grams_unit') }}</p>
+                        <p class="text-lg font-semibold leading-6 text-[var(--color-primary-green)]">{{ $foodASummary['formatted_calories'] }} kcal</p>
                     </div>
                 @endif
             </section>
