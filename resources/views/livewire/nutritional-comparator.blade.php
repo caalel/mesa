@@ -5,14 +5,14 @@
     </header>
 
     <div class="space-y-8">
-        <div class="grid gap-6 lg:grid-cols-2 lg:gap-8">
-            <section class="space-y-6 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 sm:p-6">
+        <div class="grid gap-6 lg:grid-cols-2 lg:items-start lg:gap-8">
+            <section class="min-w-0 space-y-6 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 sm:p-6">
                 <h2 class="text-lg font-semibold leading-6 text-[var(--color-text-primary)]">{{ __('ui.compare.food_a_section') }}</h2>
 
                 @if ($selectedFoodA)
-                    <div class="space-y-3">
-                        <p>{{ $selectedFoodA->name_pt }}</p>
-                        <button type="button" wire:click="changeFoodA">{{ __('ui.compare.change_food') }}</button>
+                    <div class="flex min-w-0 items-start justify-between gap-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-light-green)] p-4">
+                        <p class="min-w-0 break-words text-base font-semibold leading-6 text-[var(--color-text-primary)]">{{ $selectedFoodA->name_pt }}</p>
+                        <button class="shrink-0 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-1.5 text-sm font-medium text-[var(--color-primary-green)] hover:border-[var(--color-primary-green)]" type="button" wire:click="changeFoodA">{{ __('ui.compare.change_food') }}</button>
                     </div>
                 @else
                     <div class="space-y-3">
@@ -22,7 +22,7 @@
                         <ul class="space-y-2">
                             @foreach ($foodAResults as $food)
                                 <li>
-                                    <button class="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-left text-sm text-[var(--color-text-primary)] hover:bg-[var(--color-light-green)]" type="button" wire:click="selectFoodA({{ $food->id }})">
+                                    <button class="w-full break-words rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-left text-sm text-[var(--color-text-primary)] hover:bg-[var(--color-light-green)]" type="button" wire:click="selectFoodA({{ $food->id }})">
                                         {{ $food->name_pt }}
                                     </button>
                                 </li>
@@ -47,20 +47,20 @@
 
                 @if ($foodASummary)
                     <div data-testid="food-a-summary">
-                        <p>{{ $foodASummary['food']->name_pt }}</p>
+                        <p class="break-words">{{ $foodASummary['food']->name_pt }}</p>
                         <p>{{ $foodASummary['formatted_weight'] }} {{ __('ui.compare.grams_unit') }}</p>
                         <p>{{ $foodASummary['formatted_calories'] }} kcal</p>
                     </div>
                 @endif
             </section>
 
-            <section class="space-y-6 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 sm:p-6">
+            <section class="min-w-0 space-y-6 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 sm:p-6">
                 <h2 class="text-lg font-semibold leading-6 text-[var(--color-text-primary)]">{{ __('ui.compare.food_b_section') }}</h2>
 
                 @if ($selectedFoodB)
-                    <div class="space-y-3">
-                        <p>{{ $selectedFoodB->name_pt }}</p>
-                        <button type="button" wire:click="changeFoodB">{{ __('ui.compare.change_food') }}</button>
+                    <div class="flex min-w-0 items-start justify-between gap-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-light-green)] p-4">
+                        <p class="min-w-0 break-words text-base font-semibold leading-6 text-[var(--color-text-primary)]">{{ $selectedFoodB->name_pt }}</p>
+                        <button class="shrink-0 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-1.5 text-sm font-medium text-[var(--color-primary-green)] hover:border-[var(--color-primary-green)]" type="button" wire:click="changeFoodB">{{ __('ui.compare.change_food') }}</button>
                     </div>
                 @else
                     <div class="space-y-3">
@@ -70,7 +70,7 @@
                         <ul class="space-y-2">
                             @foreach ($foodBResults as $food)
                                 <li>
-                                    <button class="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-left text-sm text-[var(--color-text-primary)] hover:bg-[var(--color-light-green)]" type="button" wire:click="selectFoodB({{ $food->id }})">
+                                    <button class="w-full break-words rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-left text-sm text-[var(--color-text-primary)] hover:bg-[var(--color-light-green)]" type="button" wire:click="selectFoodB({{ $food->id }})">
                                         {{ $food->name_pt }}
                                     </button>
                                 </li>
@@ -95,7 +95,7 @@
 
         @if ($comparisonResult)
             <section class="w-full" data-testid="comparison-result">
-                <p>
+                <p class="break-words">
                     {{ __('ui.compare.calorie_equivalence', [
                         'foodAWeight' => $comparisonResult['food_a_weight'],
                         'foodAName' => $comparisonResult['food_a_name'],
@@ -103,7 +103,7 @@
                         'foodBName' => $comparisonResult['food_b_name'],
                     ]) }}
                 </p>
-                <p>
+                <p class="break-words">
                     {{ __('ui.compare.calorie_equivalence_description', [
                         'foodAWeight' => $comparisonResult['food_a_weight'],
                         'foodAName' => $comparisonResult['food_a_name'],
