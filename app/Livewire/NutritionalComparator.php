@@ -59,12 +59,8 @@ class NutritionalComparator extends Component
             'foodASummary' => $this->foodASummary($selectedFoodA),
             'canCompare' => $canCompare,
             'comparisonResult' => $this->comparisonResult,
-            'foodAHasNoResults' => $this->foodAId === null
-                && mb_strlen(trim($this->foodASearch)) >= 2
-                && $foodAResults->isEmpty(),
-            'foodBHasNoResults' => $this->foodBId === null
-                && mb_strlen(trim($this->foodBSearch)) >= 2
-                && $foodBResults->isEmpty(),
+            'foodAHasNoResults' => $this->hasNoSearchResults($this->foodAId, $this->foodASearch, $foodAResults),
+            'foodBHasNoResults' => $this->hasNoSearchResults($this->foodBId, $this->foodBSearch, $foodBResults),
         ]);
     }
 
@@ -137,11 +133,21 @@ class NutritionalComparator extends Component
 
     private function foodAResults(): Collection
     {
-        if ($this->foodAId !== null) {
+        return $this->searchResults($this->foodAId, $this->foodASearch);
+    }
+
+    private function foodBResults(): Collection
+    {
+        return $this->searchResults($this->foodBId, $this->foodBSearch);
+    }
+
+    private function searchResults(?int $selectedFoodId, string $search): Collection
+    {
+        if ($selectedFoodId !== null) {
             return collect();
         }
 
-        $search = trim($this->foodASearch);
+        $search = trim($search);
 
         if (mb_strlen($search) < 2) {
             return collect();
@@ -152,21 +158,11 @@ class NutritionalComparator extends Component
             ->take(8);
     }
 
-    private function foodBResults(): Collection
+    private function hasNoSearchResults(?int $selectedFoodId, string $search, Collection $results): bool
     {
-        if ($this->foodBId !== null) {
-            return collect();
-        }
-
-        $search = trim($this->foodBSearch);
-
-        if (mb_strlen($search) < 2) {
-            return collect();
-        }
-
-        return $this->foodSearchService
-            ->search($search)
-            ->take(8);
+        return $selectedFoodId === null
+            && mb_strlen(trim($search)) >= 2
+            && $results->isEmpty();
     }
 
     private function selectedFoodA(): ?Food
