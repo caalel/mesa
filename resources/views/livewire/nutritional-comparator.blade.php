@@ -16,13 +16,13 @@
                     </div>
                 @else
                     <div class="space-y-3">
-                        <label for="food-a-search">{{ __('ui.compare.search_food') }}</label>
-                        <input id="food-a-search" type="text" wire:model.live.debounce.300ms="foodASearch">
+                        <label class="block text-sm font-medium text-[var(--color-text-secondary)]" for="food-a-search">{{ __('ui.compare.search_food') }}</label>
+                        <input class="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2.5 text-[var(--color-text-primary)] focus:border-[var(--color-primary-green)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary-green)] disabled:cursor-not-allowed disabled:bg-[var(--color-background)] disabled:text-[var(--color-text-secondary)] disabled:opacity-70" id="food-a-search" type="text" wire:model.live.debounce.300ms="foodASearch">
 
-                        <ul>
+                        <ul class="space-y-2">
                             @foreach ($foodAResults as $food)
                                 <li>
-                                    <button type="button" wire:click="selectFoodA({{ $food->id }})">
+                                    <button class="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-left text-sm text-[var(--color-text-primary)] hover:bg-[var(--color-light-green)]" type="button" wire:click="selectFoodA({{ $food->id }})">
                                         {{ $food->name_pt }}
                                     </button>
                                 </li>
@@ -32,14 +32,17 @@
                 @endif
 
                 <div class="space-y-2">
-                    <label for="food-a-quantity">{{ __('ui.compare.quantity_label') }}</label>
-                    <input
-                        id="food-a-quantity"
-                        type="number"
-                        wire:model.live="foodAWeight"
-                        @disabled(! $selectedFoodA)
-                    >
-                    <span>{{ __('ui.compare.grams_unit') }}</span>
+                    <label class="block text-sm font-medium text-[var(--color-text-secondary)]" for="food-a-quantity">{{ __('ui.compare.quantity_label') }}</label>
+                    <div class="flex items-center gap-2">
+                        <input
+                            class="min-w-0 flex-1 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2.5 text-[var(--color-text-primary)] focus:border-[var(--color-primary-green)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary-green)] disabled:cursor-not-allowed disabled:bg-[var(--color-background)] disabled:text-[var(--color-text-secondary)] disabled:opacity-70"
+                            id="food-a-quantity"
+                            type="number"
+                            wire:model.live="foodAWeight"
+                            @disabled(! $selectedFoodA)
+                        >
+                        <span class="shrink-0 text-sm font-medium text-[var(--color-text-secondary)]">{{ __('ui.compare.grams_unit') }}</span>
+                    </div>
                 </div>
 
                 @if ($foodASummary)
@@ -61,13 +64,13 @@
                     </div>
                 @else
                     <div class="space-y-3">
-                        <label for="food-b-search">{{ __('ui.compare.search_food') }}</label>
-                        <input id="food-b-search" type="text" wire:model.live.debounce.300ms="foodBSearch">
+                        <label class="block text-sm font-medium text-[var(--color-text-secondary)]" for="food-b-search">{{ __('ui.compare.search_food') }}</label>
+                        <input class="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2.5 text-[var(--color-text-primary)] focus:border-[var(--color-primary-green)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary-green)] disabled:cursor-not-allowed disabled:bg-[var(--color-background)] disabled:text-[var(--color-text-secondary)] disabled:opacity-70" id="food-b-search" type="text" wire:model.live.debounce.300ms="foodBSearch">
 
-                        <ul>
+                        <ul class="space-y-2">
                             @foreach ($foodBResults as $food)
                                 <li>
-                                    <button type="button" wire:click="selectFoodB({{ $food->id }})">
+                                    <button class="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-left text-sm text-[var(--color-text-primary)] hover:bg-[var(--color-light-green)]" type="button" wire:click="selectFoodB({{ $food->id }})">
                                         {{ $food->name_pt }}
                                     </button>
                                 </li>
