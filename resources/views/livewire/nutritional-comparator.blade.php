@@ -10,10 +10,7 @@
                 <h2 class="text-lg font-semibold leading-6 text-[var(--color-text-primary)]">{{ __('ui.compare.food_a_section') }}</h2>
 
                 @if ($selectedFoodA)
-                    <div class="flex min-w-0 items-start justify-between gap-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-light-green)] p-4">
-                        <p class="min-w-0 break-words text-base font-semibold leading-6 text-[var(--color-text-primary)]">{{ $selectedFoodA->name_pt }}</p>
-                        <button class="shrink-0 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-1.5 text-sm font-medium text-[var(--color-primary-green)] hover:border-[var(--color-primary-green)]" type="button" wire:click="changeFoodA">{{ __('ui.compare.change_food') }}</button>
-                    </div>
+                    <x-compare-selected-food :name="$selectedFoodA->name_pt" wire:click="changeFoodA" />
                 @else
                     <div class="space-y-3">
                         <label class="block text-sm font-medium text-[var(--color-text-secondary)]" for="food-a-search">{{ __('ui.compare.search_food') }}</label>
@@ -22,11 +19,7 @@
 
                         <ul class="space-y-2">
                             @foreach ($foodAResults as $food)
-                                <li>
-                                    <button class="w-full break-words rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-left text-sm text-[var(--color-text-primary)] hover:bg-[var(--color-light-green)]" type="button" wire:click="selectFoodA({{ $food->id }})">
-                                        {{ $food->name_pt }}
-                                    </button>
-                                </li>
+                                <x-compare-search-result-item :food="$food" select-action="selectFoodA" />
                             @endforeach
                         </ul>
 
@@ -64,10 +57,7 @@
                 <h2 class="text-lg font-semibold leading-6 text-[var(--color-text-primary)]">{{ __('ui.compare.food_b_section') }}</h2>
 
                 @if ($selectedFoodB)
-                    <div class="flex min-w-0 items-start justify-between gap-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-light-green)] p-4">
-                        <p class="min-w-0 break-words text-base font-semibold leading-6 text-[var(--color-text-primary)]">{{ $selectedFoodB->name_pt }}</p>
-                        <button class="shrink-0 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-1.5 text-sm font-medium text-[var(--color-primary-green)] hover:border-[var(--color-primary-green)]" type="button" wire:click="changeFoodB">{{ __('ui.compare.change_food') }}</button>
-                    </div>
+                    <x-compare-selected-food :name="$selectedFoodB->name_pt" wire:click="changeFoodB" />
                 @else
                     <div class="space-y-3">
                         <label class="block text-sm font-medium text-[var(--color-text-secondary)]" for="food-b-search">{{ __('ui.compare.search_food') }}</label>
@@ -76,11 +66,7 @@
 
                         <ul class="space-y-2">
                             @foreach ($foodBResults as $food)
-                                <li>
-                                    <button class="w-full break-words rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-left text-sm text-[var(--color-text-primary)] hover:bg-[var(--color-light-green)]" type="button" wire:click="selectFoodB({{ $food->id }})">
-                                        {{ $food->name_pt }}
-                                    </button>
-                                </li>
+                                <x-compare-search-result-item :food="$food" select-action="selectFoodB" />
                             @endforeach
                         </ul>
 
