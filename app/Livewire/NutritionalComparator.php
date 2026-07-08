@@ -118,6 +118,8 @@ class NutritionalComparator extends Component
             'food_b_weight' => $this->formatNumber($foodBWeight),
             'food_b_name' => $foodB->name_pt,
         ];
+
+        $this->dispatch('comparison-result-shown');
     }
 
     public function updatedFoodAWeight(): void

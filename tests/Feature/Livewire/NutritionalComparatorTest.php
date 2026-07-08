@@ -432,6 +432,24 @@ it('shows the comparison result when compare is called with valid state', functi
         ]));
 });
 
+it('dispatches an event when the comparison result is shown', function () {
+    $banana = Food::factory()->create([
+        'name_pt' => 'Banana',
+        'calories_per_100g' => 89,
+    ]);
+    $maca = Food::factory()->create([
+        'name_pt' => 'MaÃ§Ã£',
+        'calories_per_100g' => 52,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $banana->id)
+        ->set('foodAWeight', 100)
+        ->call('selectFoodB', $maca->id)
+        ->call('compare')
+        ->assertDispatched('comparison-result-shown');
+});
+
 it('shows the comparison result preserving decimal Food A weight', function () {
     $banana = Food::factory()->create([
         'name_pt' => 'Banana',

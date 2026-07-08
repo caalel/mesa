@@ -94,8 +94,13 @@
         </div>
 
         @if ($comparisonResult)
-            <section class="w-full" data-testid="comparison-result">
-                <p class="break-words">
+            <section
+                class="w-full space-y-4 rounded-2xl border border-[var(--color-border)] border-l-4 border-l-[var(--color-warm-accent)] bg-[var(--color-surface)] p-5 sm:p-6"
+                x-data
+                x-on:comparison-result-shown.window="$el.scrollIntoView({ behavior: 'smooth', block: 'start' })"
+                data-testid="comparison-result"
+            >
+                <p class="break-words text-2xl font-semibold leading-tight text-[var(--color-text-primary)] sm:text-3xl">
                     {{ __('ui.compare.calorie_equivalence', [
                         'foodAWeight' => $comparisonResult['food_a_weight'],
                         'foodAName' => $comparisonResult['food_a_name'],
@@ -103,7 +108,7 @@
                         'foodBName' => $comparisonResult['food_b_name'],
                     ]) }}
                 </p>
-                <p class="break-words">
+                <p class="break-words border-t border-[var(--color-border)] pt-4 text-sm leading-6 text-[var(--color-text-secondary)] sm:text-base">
                     {{ __('ui.compare.calorie_equivalence_description', [
                         'foodAWeight' => $comparisonResult['food_a_weight'],
                         'foodAName' => $comparisonResult['food_a_name'],
