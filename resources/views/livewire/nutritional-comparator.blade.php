@@ -83,11 +83,11 @@
 
         <div class="flex justify-center">
             @if ($canCompare)
-                <button type="button" wire:click="compare" data-testid="compare-button-enabled">
+                <button class="w-full cursor-pointer rounded-lg bg-[var(--color-primary-green)] px-6 py-3 text-sm font-semibold text-white hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-green)] focus:ring-offset-2 sm:w-auto sm:min-w-48" type="button" wire:click="compare" data-testid="compare-button-enabled">
                     {{ __('ui.compare.submit') }}
                 </button>
             @else
-                <button type="button" data-testid="compare-button-disabled" disabled>
+                <button class="w-full cursor-not-allowed rounded-lg border border-[var(--color-border)] bg-[var(--color-background)] px-6 py-3 text-sm font-semibold text-[var(--color-text-secondary)] opacity-70 sm:w-auto sm:min-w-48" type="button" data-testid="compare-button-disabled" disabled>
                     {{ __('ui.compare.submit') }}
                 </button>
             @endif
