@@ -6,35 +6,41 @@
 
     <div class="space-y-8">
         <div class="grid gap-6 lg:grid-cols-2 lg:gap-8">
-            <section class="space-y-4">
-                <h2>{{ __('ui.compare.food_a_section') }}</h2>
+            <section class="space-y-6 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 sm:p-6">
+                <h2 class="text-lg font-semibold leading-6 text-[var(--color-text-primary)]">{{ __('ui.compare.food_a_section') }}</h2>
 
                 @if ($selectedFoodA)
-                    <p>{{ $selectedFoodA->name_pt }}</p>
-                    <button type="button" wire:click="changeFoodA">{{ __('ui.compare.change_food') }}</button>
+                    <div class="space-y-3">
+                        <p>{{ $selectedFoodA->name_pt }}</p>
+                        <button type="button" wire:click="changeFoodA">{{ __('ui.compare.change_food') }}</button>
+                    </div>
                 @else
-                    <label for="food-a-search">{{ __('ui.compare.search_food') }}</label>
-                    <input id="food-a-search" type="text" wire:model.live.debounce.300ms="foodASearch">
+                    <div class="space-y-3">
+                        <label for="food-a-search">{{ __('ui.compare.search_food') }}</label>
+                        <input id="food-a-search" type="text" wire:model.live.debounce.300ms="foodASearch">
 
-                    <ul>
-                        @foreach ($foodAResults as $food)
-                            <li>
-                                <button type="button" wire:click="selectFoodA({{ $food->id }})">
-                                    {{ $food->name_pt }}
-                                </button>
-                            </li>
-                        @endforeach
-                    </ul>
+                        <ul>
+                            @foreach ($foodAResults as $food)
+                                <li>
+                                    <button type="button" wire:click="selectFoodA({{ $food->id }})">
+                                        {{ $food->name_pt }}
+                                    </button>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
                 @endif
 
-                <label for="food-a-quantity">{{ __('ui.compare.quantity_label') }}</label>
-                <input
-                    id="food-a-quantity"
-                    type="number"
-                    wire:model.live="foodAWeight"
-                    @disabled(! $selectedFoodA)
-                >
-                <span>{{ __('ui.compare.grams_unit') }}</span>
+                <div class="space-y-2">
+                    <label for="food-a-quantity">{{ __('ui.compare.quantity_label') }}</label>
+                    <input
+                        id="food-a-quantity"
+                        type="number"
+                        wire:model.live="foodAWeight"
+                        @disabled(! $selectedFoodA)
+                    >
+                    <span>{{ __('ui.compare.grams_unit') }}</span>
+                </div>
 
                 @if ($foodASummary)
                     <div data-testid="food-a-summary">
@@ -45,25 +51,29 @@
                 @endif
             </section>
 
-            <section class="space-y-4">
-                <h2>{{ __('ui.compare.food_b_section') }}</h2>
+            <section class="space-y-6 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 sm:p-6">
+                <h2 class="text-lg font-semibold leading-6 text-[var(--color-text-primary)]">{{ __('ui.compare.food_b_section') }}</h2>
 
                 @if ($selectedFoodB)
-                    <p>{{ $selectedFoodB->name_pt }}</p>
-                    <button type="button" wire:click="changeFoodB">{{ __('ui.compare.change_food') }}</button>
+                    <div class="space-y-3">
+                        <p>{{ $selectedFoodB->name_pt }}</p>
+                        <button type="button" wire:click="changeFoodB">{{ __('ui.compare.change_food') }}</button>
+                    </div>
                 @else
-                    <label for="food-b-search">{{ __('ui.compare.search_food') }}</label>
-                    <input id="food-b-search" type="text" wire:model.live.debounce.300ms="foodBSearch">
+                    <div class="space-y-3">
+                        <label for="food-b-search">{{ __('ui.compare.search_food') }}</label>
+                        <input id="food-b-search" type="text" wire:model.live.debounce.300ms="foodBSearch">
 
-                    <ul>
-                        @foreach ($foodBResults as $food)
-                            <li>
-                                <button type="button" wire:click="selectFoodB({{ $food->id }})">
-                                    {{ $food->name_pt }}
-                                </button>
-                            </li>
-                        @endforeach
-                    </ul>
+                        <ul>
+                            @foreach ($foodBResults as $food)
+                                <li>
+                                    <button type="button" wire:click="selectFoodB({{ $food->id }})">
+                                        {{ $food->name_pt }}
+                                    </button>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
                 @endif
             </section>
         </div>
