@@ -153,6 +153,21 @@ it('formats decimal Food A weight and calories summary using pt-BR numbers', fun
         ->assertSee('64,64 kcal');
 });
 
+it('shows a less than value for positive Food A summary calories lower than one hundredth', function () {
+    $banana = Food::factory()->create([
+        'name_pt' => 'Banana Prata',
+        'calories_per_100g' => 0.01,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $banana->id)
+        ->set('foodAWeight', 1)
+        ->assertSeeHtml('data-testid="food-a-summary"')
+        ->assertSee('1 g')
+        ->assertSee('< 0,01 kcal')
+        ->assertDontSee('0 kcal');
+});
+
 it('does not show the Food A calories summary when no Food A is selected', function () {
     Food::factory()->create([
         'name_pt' => 'Banana',
@@ -521,6 +536,66 @@ it('shows the comparison result when compare is called with valid state', functi
             'foodAWeight' => '100',
             'foodAName' => 'Banana',
             'foodBWeight' => '171,15',
+            'foodBName' => 'Maçã',
+        ]));
+});
+
+it('shows the comparison result using a less than phrase for positive equivalent weight lower than one hundredth', function () {
+    $banana = Food::factory()->create([
+        'name_pt' => 'Banana Prata',
+        'calories_per_100g' => 0.01,
+    ]);
+    $maca = Food::factory()->create([
+        'name_pt' => 'Maçã',
+        'calories_per_100g' => 52,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $banana->id)
+        ->set('foodAWeight', 1)
+        ->call('selectFoodB', $maca->id)
+        ->call('compare')
+        ->assertSeeHtml('data-testid="comparison-result"')
+        ->assertSee(__('ui.compare.calorie_equivalence_less_than', [
+            'foodAWeight' => '1',
+            'foodAName' => 'Banana Prata',
+            'foodBWeight' => '0,01',
+            'foodBName' => 'Maçã',
+        ]))
+        ->assertDontSee(__('ui.compare.calorie_equivalence', [
+            'foodAWeight' => '1',
+            'foodAName' => 'Banana Prata',
+            'foodBWeight' => '0',
+            'foodBName' => 'Maçã',
+        ]));
+});
+
+it('shows the comparison result description using a less than phrase for positive equivalent weight lower than one hundredth', function () {
+    $banana = Food::factory()->create([
+        'name_pt' => 'Banana Prata',
+        'calories_per_100g' => 0.01,
+    ]);
+    $maca = Food::factory()->create([
+        'name_pt' => 'Maçã',
+        'calories_per_100g' => 52,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $banana->id)
+        ->set('foodAWeight', 1)
+        ->call('selectFoodB', $maca->id)
+        ->call('compare')
+        ->assertSeeHtml('data-testid="comparison-result"')
+        ->assertSee(__('ui.compare.calorie_equivalence_less_than_description', [
+            'foodAWeight' => '1',
+            'foodAName' => 'Banana Prata',
+            'foodBWeight' => '0,01',
+            'foodBName' => 'Maçã',
+        ]))
+        ->assertDontSee(__('ui.compare.calorie_equivalence_description', [
+            'foodAWeight' => '1',
+            'foodAName' => 'Banana Prata',
+            'foodBWeight' => '0',
             'foodBName' => 'Maçã',
         ]));
 });

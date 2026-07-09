@@ -18,10 +18,10 @@ it('calculates a nutritional value for a given weight', function () {
     expect($value)->toBe(64.0);
 });
 
-it('calculates a decimal nutritional value rounded to two decimal places', function () {
+it('calculates a decimal nutritional value without rounding', function () {
     // Arrange
-    $valuePer100g = 128;
-    $weight = 50.5;
+    $valuePer100g = 0.01;
+    $weight = 1;
     $calculator = new NutritionalValuesCalculatorService();
 
     // Act
@@ -31,5 +31,6 @@ it('calculates a decimal nutritional value rounded to two decimal places', funct
     );
 
     // Assert
-    expect($value)->toBe(64.64);
+    expect($value)->toBeFloat();
+    expect(abs($value - 0.0001))->toBeLessThan(0.000000000001);
 });

@@ -16,6 +16,8 @@ return [
         'food_b_section' => 'Alimento para comparar',
         'submit' => 'Comparar',
         'calorie_equivalence' => ':foodAWeight g de :foodAName ≈ :foodBWeight g de :foodBName.',
+        'calorie_equivalence_less_than' => ':foodAWeight g de :foodAName equivale a menos de :foodBWeight g de :foodBName em calorias.',
         'calorie_equivalence_description' => 'Para consumir as mesmas calorias contidas em :foodAWeight g de :foodAName, você precisaria consumir cerca de :foodBWeight g de :foodBName.',
+        'calorie_equivalence_less_than_description' => 'Para consumir as mesmas calorias contidas em :foodAWeight g de :foodAName, você precisaria consumir menos de :foodBWeight g de :foodBName.',
     ],
 ];

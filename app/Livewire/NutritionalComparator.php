@@ -14,6 +14,8 @@ class NutritionalComparator extends Component
 {
     private const MAX_FOOD_A_WEIGHT_IN_GRAMS = 10000;
 
+    private const MIN_DISPLAYABLE_POSITIVE_VALUE = 0.01;
+
     public string $foodASearch = '';
 
     public string $foodBSearch = '';
@@ -25,7 +27,7 @@ class NutritionalComparator extends Component
     public ?int $foodBId = null;
 
     /**
-     * @var array{food_a_weight: string, food_a_name: string, food_b_weight: string, food_b_name: string}|null
+     * @var array{food_a_weight: string, food_a_name: string, food_b_weight: string, food_b_name: string, food_b_weight_is_less_than_minimum: bool}|null
      */
     public ?array $comparisonResult = null;
 
@@ -120,12 +122,14 @@ class NutritionalComparator extends Component
             foodAWeight: $foodAWeight,
             foodBValuePer100g: (float) $foodB->calories_per_100g,
         );
+        $foodBWeightIsLessThanMinimum = $this->isPositiveValueBelowDisplayMinimum($foodBWeight);
 
         $this->comparisonResult = [
             'food_a_weight' => $this->formatNumber($foodAWeight),
             'food_a_name' => $foodA->name_pt,
-            'food_b_weight' => $this->formatNumber($foodBWeight),
+            'food_b_weight' => $foodBWeightIsLessThanMinimum ? $this->formatNumber(self::MIN_DISPLAYABLE_POSITIVE_VALUE) : $this->formatNumber($foodBWeight),
             'food_b_name' => $foodB->name_pt,
+            'food_b_weight_is_less_than_minimum' => $foodBWeightIsLessThanMinimum,
         ];
 
         $this->dispatch('comparison-result-shown');
@@ -219,6 +223,22 @@ class NutritionalComparator extends Component
         return rtrim(rtrim(number_format((float) $value, 2, ',', '.'), '0'), ',');
     }
 
+    private function formatDisplayNumber(int|float $value): string
+    {
+        if ($this->isPositiveValueBelowDisplayMinimum($value)) {
+            return '< '.$this->formatNumber(self::MIN_DISPLAYABLE_POSITIVE_VALUE);
+        }
+
+        return $this->formatNumber($value);
+    }
+
+    private function isPositiveValueBelowDisplayMinimum(int|float $value): bool
+    {
+        $value = (float) $value;
+
+        return $value > 0 && $value < self::MIN_DISPLAYABLE_POSITIVE_VALUE;
+    }
+
     /**
      * @return array{food: Food, weight: int|float, calories: float, formatted_weight: string, formatted_calories: string}|null
      */
@@ -248,7 +268,7 @@ class NutritionalComparator extends Component
             'weight' => $weight,
             'calories' => $calories,
             'formatted_weight' => $this->formatNumber($weight),
-            'formatted_calories' => $this->formatNumber($calories),
+            'formatted_calories' => $this->formatDisplayNumber($calories),
         ];
     }
 }

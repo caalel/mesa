@@ -22,6 +22,6 @@ class CompareFoodsService
             throw new \InvalidArgumentException('The nutritional value must be greater than zero.');
         }
 
-        return round(($foodAValuePer100g * $foodAWeight) / $foodBValuePer100g, 2);
+        return ($foodAValuePer100g * $foodAWeight) / $foodBValuePer100g;
     }
 }

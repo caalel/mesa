@@ -38,7 +38,7 @@ it('keeps the equivalent weight equal to the original weight when both foods hav
     expect($equivalentWeight)->toEqual(80);
 });
 
-it('calculates the equivalent weight with two decimal places when the result is decimal', function () {
+it('calculates the equivalent weight without rounding when the result is decimal', function () {
     // Arrange
     $foodAValuePer100g = 100;
     $foodAWeight = 50;
@@ -53,7 +53,8 @@ it('calculates the equivalent weight with two decimal places when the result is 
     );
 
     // Assert
-    expect($equivalentWeight)->toEqual(16.67);
+    expect($equivalentWeight)->toBeFloat();
+    expect(abs($equivalentWeight - (50 / 3)))->toBeLessThan(0.000000000001);
 });
 
 it('throws an exception when food A weight is zero', function () {
