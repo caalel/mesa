@@ -42,6 +42,10 @@
                         >
                         <span class="shrink-0 text-sm font-medium text-[var(--color-text-secondary)]">{{ __('ui.compare.grams_unit') }}</span>
                     </div>
+
+                    @if ($foodAWeightExceedsMaximum)
+                        <p class="text-sm text-[var(--color-error)]">{{ __('ui.compare.quantity_too_high', ['max' => $formattedFoodAWeightMaximum]) }}</p>
+                    @endif
                 </div>
 
                 @if ($foodASummary)

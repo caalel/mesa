@@ -12,6 +12,8 @@ use Livewire\Component;
 
 class NutritionalComparator extends Component
 {
+    private const MAX_FOOD_A_WEIGHT_IN_GRAMS = 10000;
+
     public string $foodASearch = '';
 
     public string $foodBSearch = '';
@@ -50,6 +52,7 @@ class NutritionalComparator extends Component
         $canCompare = $this->canCompare();
         $foodAResults = $this->foodAResults();
         $foodBResults = $this->foodBResults();
+        $foodAWeightExceedsMaximum = $this->foodAWeightExceedsMaximum();
 
         return view('livewire.nutritional-comparator', [
             'selectedFoodA' => $selectedFoodA,
@@ -61,6 +64,8 @@ class NutritionalComparator extends Component
             'comparisonResult' => $this->comparisonResult,
             'foodAHasNoResults' => $this->hasNoSearchResults($this->foodAId, $this->foodASearch, $foodAResults),
             'foodBHasNoResults' => $this->hasNoSearchResults($this->foodBId, $this->foodBSearch, $foodBResults),
+            'foodAWeightExceedsMaximum' => $foodAWeightExceedsMaximum,
+            'formattedFoodAWeightMaximum' => $this->formatNumber(self::MAX_FOOD_A_WEIGHT_IN_GRAMS),
         ]);
     }
 
@@ -189,11 +194,24 @@ class NutritionalComparator extends Component
             return false;
         }
 
+        return $this->hasValidFoodAWeight();
+    }
+
+    private function hasValidFoodAWeight(): bool
+    {
         if (! is_numeric($this->foodAWeight)) {
             return false;
         }
 
-        return (float) $this->foodAWeight > 0;
+        $weight = (float) $this->foodAWeight;
+
+        return $weight > 0 && $weight <= self::MAX_FOOD_A_WEIGHT_IN_GRAMS;
+    }
+
+    private function foodAWeightExceedsMaximum(): bool
+    {
+        return is_numeric($this->foodAWeight)
+            && (float) $this->foodAWeight > self::MAX_FOOD_A_WEIGHT_IN_GRAMS;
     }
 
     private function formatNumber(int|float $value): string
@@ -216,7 +234,7 @@ class NutritionalComparator extends Component
 
         $weight = (float) $this->foodAWeight;
 
-        if ($weight <= 0) {
+        if (! $this->hasValidFoodAWeight()) {
             return null;
         }
 

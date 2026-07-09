@@ -212,6 +212,30 @@ it('does not show the Food A calories summary when the weight is not numeric', f
         ->assertDontSeeHtml('data-testid="food-a-summary"');
 });
 
+it('does not show the Food A calories summary when the weight is greater than 10000 grams', function () {
+    $banana = Food::factory()->create([
+        'name_pt' => 'Banana',
+        'calories_per_100g' => 128,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $banana->id)
+        ->set('foodAWeight', 10001)
+        ->assertDontSeeHtml('data-testid="food-a-summary"');
+});
+
+it('shows a friendly message when Food A weight is greater than 10000 grams', function () {
+    $banana = Food::factory()->create([
+        'name_pt' => 'Banana',
+        'calories_per_100g' => 128,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $banana->id)
+        ->set('foodAWeight', 10001)
+        ->assertSee(__('ui.compare.quantity_too_high', ['max' => '10.000']));
+});
+
 it('shows the translated quantity placeholder', function () {
     Livewire::test(NutritionalComparator::class)
         ->assertSeeHtml('placeholder="'.__('ui.compare.quantity_placeholder').'"');
@@ -398,6 +422,40 @@ it('keeps the compare button disabled when Food A weight is not numeric', functi
         ->assertSeeHtml('data-testid="compare-button-disabled"');
 });
 
+it('enables the compare button when Food A weight is exactly 10000 grams', function () {
+    $banana = Food::factory()->create([
+        'name_pt' => 'Banana',
+        'calories_per_100g' => 89,
+    ]);
+    $maca = Food::factory()->create([
+        'name_pt' => 'Maçã',
+        'calories_per_100g' => 52,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $banana->id)
+        ->set('foodAWeight', 10000)
+        ->call('selectFoodB', $maca->id)
+        ->assertSeeHtml('data-testid="compare-button-enabled"');
+});
+
+it('keeps the compare button disabled when Food A weight is greater than 10000 grams', function () {
+    $banana = Food::factory()->create([
+        'name_pt' => 'Banana',
+        'calories_per_100g' => 89,
+    ]);
+    $maca = Food::factory()->create([
+        'name_pt' => 'Maçã',
+        'calories_per_100g' => 52,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $banana->id)
+        ->set('foodAWeight', 10001)
+        ->call('selectFoodB', $maca->id)
+        ->assertSeeHtml('data-testid="compare-button-disabled"');
+});
+
 it('keeps the compare button disabled when Food B is not selected', function () {
     $banana = Food::factory()->create([
         'name_pt' => 'Banana',
@@ -473,7 +531,7 @@ it('dispatches an event when the comparison result is shown', function () {
         'calories_per_100g' => 89,
     ]);
     $maca = Food::factory()->create([
-        'name_pt' => 'MaÃ§Ã£',
+        'name_pt' => 'Maçã',
         'calories_per_100g' => 52,
     ]);
 

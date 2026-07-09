@@ -10,6 +10,7 @@ return [
         'no_foods_found' => 'Nenhum alimento encontrado.',
         'quantity_label' => 'Quantidade',
         'quantity_placeholder' => 'Informe a quantidade em gramas.',
+        'quantity_too_high' => 'Informe uma quantidade de até :max g para comparar.',
         'grams_unit' => 'g',
         'change_food' => 'Alterar',
         'food_b_section' => 'Alimento para comparar',
