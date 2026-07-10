@@ -56,7 +56,6 @@ class NutritionalComparator extends Component
         $canCompare = $this->canCompare();
         $foodAResults = $this->foodAResults();
         $foodBResults = $this->foodBResults();
-        $foodAWeightExceedsMaximum = $this->foodAWeightExceedsMaximum();
 
         return view('livewire.nutritional-comparator', [
             'selectedFoodA' => $selectedFoodA,
@@ -70,8 +69,7 @@ class NutritionalComparator extends Component
             'comparisonResult' => $this->comparisonResult,
             'foodAHasNoResults' => $this->hasNoSearchResults($this->foodAId, $this->foodASearch, $foodAResults),
             'foodBHasNoResults' => $this->hasNoSearchResults($this->foodBId, $this->foodBSearch, $foodBResults),
-            'foodAWeightExceedsMaximum' => $foodAWeightExceedsMaximum,
-            'formattedFoodAWeightMaximum' => $this->formatNumber(self::MAX_FOOD_A_WEIGHT_IN_GRAMS),
+            'foodAWeightValidationMessage' => $this->foodAWeightValidationMessage(),
         ]);
     }
 
@@ -236,6 +234,29 @@ class NutritionalComparator extends Component
     {
         return is_numeric($this->foodAWeight)
             && (float) $this->foodAWeight > self::MAX_FOOD_A_WEIGHT_IN_GRAMS;
+    }
+
+    private function foodAWeightValidationMessage(): ?string
+    {
+        if ($this->foodAWeight === '') {
+            return null;
+        }
+
+        if (! is_numeric($this->foodAWeight)) {
+            return __('ui.compare.quantity_must_be_numeric');
+        }
+
+        if ((float) $this->foodAWeight <= 0) {
+            return __('ui.compare.quantity_must_be_positive');
+        }
+
+        if ($this->foodAWeightExceedsMaximum()) {
+            return __('ui.compare.quantity_too_high', [
+                'max' => $this->formatNumber(self::MAX_FOOD_A_WEIGHT_IN_GRAMS),
+            ]);
+        }
+
+        return null;
     }
 
     private function formatNumber(int|float $value): string
