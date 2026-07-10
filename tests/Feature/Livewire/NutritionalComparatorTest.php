@@ -58,6 +58,18 @@ it('shows helpful text for the Food A search field', function () {
         ->assertSee(__('ui.compare.search_help'));
 });
 
+it('hides helpful text for the Food A search field when the search has two characters', function () {
+    $maca = Food::factory()->create([
+        'name_pt' => 'Maçã',
+        'calories_per_100g' => 52,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodB', $maca->id)
+        ->set('foodASearch', 'Ba')
+        ->assertDontSee(__('ui.compare.search_help'));
+});
+
 it('shows Food A results when the search has leading and trailing spaces', function () {
     Food::factory()->create([
         'name_pt' => 'Banana',
@@ -366,6 +378,18 @@ it('does not show Food B results when the user types less than two characters', 
 it('shows helpful text for the Food B search field', function () {
     Livewire::test(NutritionalComparator::class)
         ->assertSee(__('ui.compare.search_help'));
+});
+
+it('hides helpful text for the Food B search field when the search has two characters', function () {
+    $banana = Food::factory()->create([
+        'name_pt' => 'Banana',
+        'calories_per_100g' => 89,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $banana->id)
+        ->set('foodBSearch', 'Ma')
+        ->assertDontSee(__('ui.compare.search_help'));
 });
 
 it('shows Food B results when the search has leading and trailing spaces', function () {
