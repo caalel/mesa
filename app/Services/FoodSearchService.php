@@ -11,6 +11,8 @@ class FoodSearchService
     {
         return Food::query()
                     ->where('name_pt', 'like', "%{$namePt}%")
+                    ->orderBy('name_pt')
+                    ->limit(8)
                     ->get();
     }
 }

@@ -109,3 +109,43 @@ it('returns multiple foods when more than one food matches the searched Portugue
     expect($foods->pluck('name_pt')->all())->toContain('Banana');
     expect($foods->pluck('name_pt')->all())->toContain('Banana Prata');
 });
+
+it('returns matching foods ordered by Portuguese name', function () {
+    // Arrange
+    Food::factory()->create([
+        'name_pt' => 'Banana Prata',
+    ]);
+
+    Food::factory()->create([
+        'name_pt' => 'Banana',
+    ]);
+
+    Food::factory()->create([
+        'name_pt' => 'Banana Nanica',
+    ]);
+
+    // Act
+    $foods = app(FoodSearchService::class)->search('Banana');
+
+    // Assert
+    expect($foods->pluck('name_pt')->all())->toBe([
+        'Banana',
+        'Banana Nanica',
+        'Banana Prata',
+    ]);
+});
+
+it('returns at most eight matching foods', function () {
+    // Arrange
+    foreach (range(1, 10) as $index) {
+        Food::factory()->create([
+            'name_pt' => 'Banana '.$index,
+        ]);
+    }
+
+    // Act
+    $foods = app(FoodSearchService::class)->search('Banana');
+
+    // Assert
+    expect($foods)->toHaveCount(8);
+});

@@ -170,9 +170,7 @@ class NutritionalComparator extends Component
             return collect();
         }
 
-        return $this->foodSearchService
-            ->search($search)
-            ->take(8);
+        return $this->foodSearchService->search($search);
     }
 
     private function hasNoSearchResults(?int $selectedFoodId, string $search, Collection $results): bool
