@@ -168,6 +168,34 @@ it('shows a less than value for positive Food A summary calories lower than one 
         ->assertDontSee('0 kcal');
 });
 
+it('does not show the Food A calories summary when Food A has unavailable calorie data', function () {
+    $agua = Food::factory()->create([
+        'name_pt' => 'Água',
+        'calories_per_100g' => 0,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $agua->id)
+        ->set('foodAWeight', 100)
+        ->assertDontSeeHtml('data-testid="food-a-summary"');
+});
+
+it('disables the Food A quantity input when Food A has unavailable calorie data', function () {
+    $agua = Food::factory()->create([
+        'name_pt' => 'Água',
+        'calories_per_100g' => 0,
+    ]);
+
+    $html = Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $agua->id)
+        ->html();
+
+    preg_match('/<input\b[^>]*id="food-a-quantity"[^>]*>/s', $html, $matches);
+
+    expect($matches)->not->toBeEmpty();
+    expect($matches[0])->toContain('disabled');
+});
+
 it('does not show the Food A calories summary when no Food A is selected', function () {
     Food::factory()->create([
         'name_pt' => 'Banana',
@@ -500,8 +528,95 @@ it('enables the compare button when Food A, valid weight, and Food B are selecte
         ->assertSeeHtml('data-testid="compare-button-enabled"');
 });
 
+it('keeps the compare button disabled when Food A has unavailable calorie data', function () {
+    $agua = Food::factory()->create([
+        'name_pt' => 'Água',
+        'calories_per_100g' => 0,
+    ]);
+    $maca = Food::factory()->create([
+        'name_pt' => 'Maçã',
+        'calories_per_100g' => 52,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $agua->id)
+        ->set('foodAWeight', 100)
+        ->call('selectFoodB', $maca->id)
+        ->assertSeeHtml('data-testid="compare-button-disabled"');
+});
+
+it('keeps the compare button disabled when Food B has unavailable calorie data', function () {
+    $banana = Food::factory()->create([
+        'name_pt' => 'Banana',
+        'calories_per_100g' => 89,
+    ]);
+    $agua = Food::factory()->create([
+        'name_pt' => 'Água',
+        'calories_per_100g' => 0,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $banana->id)
+        ->set('foodAWeight', 100)
+        ->call('selectFoodB', $agua->id)
+        ->assertSeeHtml('data-testid="compare-button-disabled"');
+});
+
+it('keeps the compare button disabled when Food B has negative calorie data', function () {
+    $banana = Food::factory()->create([
+        'name_pt' => 'Banana',
+        'calories_per_100g' => 89,
+    ]);
+    $agua = Food::factory()->create([
+        'name_pt' => 'Água',
+        'calories_per_100g' => -1,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $banana->id)
+        ->set('foodAWeight', 100)
+        ->call('selectFoodB', $agua->id)
+        ->assertSeeHtml('data-testid="compare-button-disabled"');
+});
+
 it('does not show a comparison result when compare is called with incomplete state', function () {
     Livewire::test(NutritionalComparator::class)
+        ->call('compare')
+        ->assertDontSeeHtml('data-testid="comparison-result"');
+});
+
+it('does not show a comparison result when compare is called with Food A unavailable calorie data', function () {
+    $agua = Food::factory()->create([
+        'name_pt' => 'Água',
+        'calories_per_100g' => 0,
+    ]);
+    $maca = Food::factory()->create([
+        'name_pt' => 'Maçã',
+        'calories_per_100g' => 52,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $agua->id)
+        ->set('foodAWeight', 100)
+        ->call('selectFoodB', $maca->id)
+        ->call('compare')
+        ->assertDontSeeHtml('data-testid="comparison-result"');
+});
+
+it('does not show a comparison result when compare is called with Food B unavailable calorie data', function () {
+    $banana = Food::factory()->create([
+        'name_pt' => 'Banana',
+        'calories_per_100g' => 89,
+    ]);
+    $agua = Food::factory()->create([
+        'name_pt' => 'Água',
+        'calories_per_100g' => 0,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $banana->id)
+        ->set('foodAWeight', 100)
+        ->call('selectFoodB', $agua->id)
         ->call('compare')
         ->assertDontSeeHtml('data-testid="comparison-result"');
 });
@@ -616,6 +731,46 @@ it('dispatches an event when the comparison result is shown', function () {
         ->call('selectFoodB', $maca->id)
         ->call('compare')
         ->assertDispatched('comparison-result-shown');
+});
+
+it('does not dispatch an event when compare is called with unavailable calorie data', function () {
+    $banana = Food::factory()->create([
+        'name_pt' => 'Banana',
+        'calories_per_100g' => 89,
+    ]);
+    $agua = Food::factory()->create([
+        'name_pt' => 'Água',
+        'calories_per_100g' => 0,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $banana->id)
+        ->set('foodAWeight', 100)
+        ->call('selectFoodB', $agua->id)
+        ->call('compare')
+        ->assertNotDispatched('comparison-result-shown');
+});
+
+it('shows a friendly message when Food A has unavailable calorie data', function () {
+    $agua = Food::factory()->create([
+        'name_pt' => 'Água',
+        'calories_per_100g' => 0,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $agua->id)
+        ->assertSee(__('ui.compare.calorie_data_unavailable'));
+});
+
+it('shows a friendly message when Food B has unavailable calorie data', function () {
+    $agua = Food::factory()->create([
+        'name_pt' => 'Água',
+        'calories_per_100g' => 0,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodB', $agua->id)
+        ->assertSee(__('ui.compare.calorie_data_unavailable'));
 });
 
 it('shows the comparison result preserving decimal Food A weight', function () {

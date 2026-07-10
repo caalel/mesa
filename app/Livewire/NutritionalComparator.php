@@ -51,6 +51,8 @@ class NutritionalComparator extends Component
     {
         $selectedFoodA = $this->selectedFoodA();
         $selectedFoodB = $this->selectedFoodB();
+        $foodAHasUnavailableCalorieData = $this->foodHasUnavailableCalorieData($selectedFoodA);
+        $foodBHasUnavailableCalorieData = $this->foodHasUnavailableCalorieData($selectedFoodB);
         $canCompare = $this->canCompare();
         $foodAResults = $this->foodAResults();
         $foodBResults = $this->foodBResults();
@@ -62,6 +64,8 @@ class NutritionalComparator extends Component
             'foodAResults' => $foodAResults,
             'foodBResults' => $foodBResults,
             'foodASummary' => $this->foodASummary($selectedFoodA),
+            'foodAHasUnavailableCalorieData' => $foodAHasUnavailableCalorieData,
+            'foodBHasUnavailableCalorieData' => $foodBHasUnavailableCalorieData,
             'canCompare' => $canCompare,
             'comparisonResult' => $this->comparisonResult,
             'foodAHasNoResults' => $this->hasNoSearchResults($this->foodAId, $this->foodASearch, $foodAResults),
@@ -113,6 +117,10 @@ class NutritionalComparator extends Component
         $foodB = $this->selectedFoodB();
 
         if ($foodA === null || $foodB === null) {
+            return;
+        }
+
+        if ($this->foodHasUnavailableCalorieData($foodA) || $this->foodHasUnavailableCalorieData($foodB)) {
             return;
         }
 
@@ -198,7 +206,19 @@ class NutritionalComparator extends Component
             return false;
         }
 
+        $foodA = $this->selectedFoodA();
+        $foodB = $this->selectedFoodB();
+
+        if ($this->foodHasUnavailableCalorieData($foodA) || $this->foodHasUnavailableCalorieData($foodB)) {
+            return false;
+        }
+
         return $this->hasValidFoodAWeight();
+    }
+
+    private function foodHasUnavailableCalorieData(?Food $food): bool
+    {
+        return $food !== null && (float) $food->calories_per_100g <= 0;
     }
 
     private function hasValidFoodAWeight(): bool
@@ -245,6 +265,10 @@ class NutritionalComparator extends Component
     private function foodASummary(?Food $selectedFoodA): ?array
     {
         if ($selectedFoodA === null) {
+            return null;
+        }
+
+        if ($this->foodHasUnavailableCalorieData($selectedFoodA)) {
             return null;
         }
 

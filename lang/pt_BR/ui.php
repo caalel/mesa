@@ -11,6 +11,7 @@ return [
         'quantity_label' => 'Quantidade',
         'quantity_placeholder' => 'Informe a quantidade em gramas.',
         'quantity_too_high' => 'Informe uma quantidade de até :max g para comparar.',
+        'calorie_data_unavailable' => 'Dados calóricos indisponíveis para comparação.',
         'grams_unit' => 'g',
         'change_food' => 'Alterar',
         'food_b_section' => 'Alimento para comparar',

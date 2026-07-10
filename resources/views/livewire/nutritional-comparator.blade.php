@@ -11,6 +11,9 @@
 
                 @if ($selectedFoodA)
                     <x-compare-selected-food :name="$selectedFoodA->name_pt" wire:click="changeFoodA" />
+                    @if ($foodAHasUnavailableCalorieData)
+                        <p class="text-sm text-[var(--color-error)]">{{ __('ui.compare.calorie_data_unavailable') }}</p>
+                    @endif
                 @else
                     <div class="space-y-3">
                         <label class="block text-sm font-medium text-[var(--color-text-secondary)]" for="food-a-search">{{ __('ui.compare.search_food') }}</label>
@@ -38,7 +41,7 @@
                             type="number"
                             placeholder="{{ __('ui.compare.quantity_placeholder') }}"
                             wire:model.live="foodAWeight"
-                            @disabled(! $selectedFoodA)
+                            @disabled(! $selectedFoodA || $foodAHasUnavailableCalorieData)
                         >
                         <span class="shrink-0 text-sm font-medium text-[var(--color-text-secondary)]">{{ __('ui.compare.grams_unit') }}</span>
                     </div>
@@ -62,6 +65,9 @@
 
                 @if ($selectedFoodB)
                     <x-compare-selected-food :name="$selectedFoodB->name_pt" wire:click="changeFoodB" />
+                    @if ($foodBHasUnavailableCalorieData)
+                        <p class="text-sm text-[var(--color-error)]">{{ __('ui.compare.calorie_data_unavailable') }}</p>
+                    @endif
                 @else
                     <div class="space-y-3">
                         <label class="block text-sm font-medium text-[var(--color-text-secondary)]" for="food-b-search">{{ __('ui.compare.search_food') }}</label>
