@@ -3,6 +3,10 @@
 declare(strict_types=1);
 
 /**
+ * Derives the nutrition-app CSV from the normalized brolesi source without changing the input file.
+ * Missing values, original precision, and scientific notation such as `1e-05` are preserved;
+ * only negative carbohydrates are normalized to zero.
+ *
  * @return array{records: int, empty_calories: int}
  */
 function prepareTacoCsv(string $inputPath, string $outputPath): array
@@ -64,15 +68,19 @@ function prepareTacoCsv(string $inputPath, string $outputPath): array
     while (($row = fgetcsv($input, null, ',', '"', '')) !== false) {
         $carbohydrates = $row[$columnIndexes['carboidrato_g']] ?? '';
 
+        // Small negative values come from the source's calculation by difference
+        // and have no practical nutritional meaning, so they are normalized to zero.
         if (is_numeric($carbohydrates) && (float) $carbohydrates < 0) {
             $carbohydrates = '0';
         }
 
         $calories = $row[$columnIndexes['energia_kcal']] ?? '';
 
+        // Preserve source precision, empty fields, and scientific notation without rounding.
         fputcsv($output, [
             $row[$columnIndexes['numero_alimento']] ?? '',
             $row[$columnIndexes['descricao']] ?? '',
+            // English names will come from a separate reviewed translation dataset.
             '',
             $calories,
             $row[$columnIndexes['proteina_g']] ?? '',

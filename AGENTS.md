@@ -8,6 +8,10 @@
 - Avoid premature abstractions.
 - Follow Laravel conventions.
 - Prefer readability over cleverness.
+- Add concise comments or docblocks only for non-obvious domain rules, data transformations,
+  external-source quirks, or decision rationale.
+- Do not add comments that merely restate the code; prefer clear names and small methods.
+- Document why a normalization or workaround changes source data and the original condition it represents.
 
 ## Architecture
 

@@ -12,8 +12,10 @@ use Livewire\Component;
 
 class NutritionalComparator extends Component
 {
+    // Practical UX and domain limit for one food comparison in the MVP.
     private const MAX_FOOD_A_WEIGHT_IN_GRAMS = 10000;
 
+    // Avoid displaying zero for positive values below 0.01.
     private const MIN_DISPLAYABLE_POSITIVE_VALUE = 0.01;
 
     public string $foodASearch = '';
@@ -221,6 +223,7 @@ class NutritionalComparator extends Component
 
     private function foodHasUnavailableCalorieData(?Food $food): bool
     {
+        // Zero or negative calories cannot produce a meaningful caloric equivalence.
         return $food !== null && (float) $food->calories_per_100g <= 0;
     }
 
