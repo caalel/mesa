@@ -1,0 +1,7 @@
+source_code,action,calories_per_100g,protein_per_100g,carbs_per_100g,fat_per_100g,data_source,source_reference,notes
+450,remove,,,,,taco,,"Incomplete composition and no reliable complementary source was found."
+457,override,39,2.98,5.95,0.36,tbca,BRC0070G,"Missing nutritional values filled using TBCA data for skimmed UHT cow's milk."
+458,override,65,2.35,7.16,3.04,tbca,BRC0044G,"Missing nutritional values filled using the TBCA average for whole UHT cow's milk samples."
+516,remove,,,,,taco,,"Food with 0 kcal and no practical use for caloric equivalence."
+517,remove,,,,,taco,,"Food with 0 kcal and no practical use for caloric equivalence."
+591,remove,,,,,taco,,"Incomplete composition and no reliable specific source for raw green coconut was found."
