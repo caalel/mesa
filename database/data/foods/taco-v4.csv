@@ -257,20 +257,20 @@ source_code,name_pt,name_en,calories_per_100g,protein_per_100g,carbs_per_100g,fa
 256,"Uva, Itália, crua",,52.873100000000065,0.7463768115942029,13.573333333333345,0.20333333333333334
 257,"Uva, Rubi, crua",,49.061289999999964,0.6083333333333333,12.69533333333333,0.157
 258,"Uva, suco concentrado, envasado",,57.655359999999995,1e-05,14.708000000000002,1e-05
-259,"Azeite, de dendê",,884.0,,,100.0
-260,"Azeite, de oliva, extra virgem",,884.0,,,100.0
+259,"Azeite, de dendê",,884,0,0,100
+260,"Azeite, de oliva, extra virgem",,884,0,0,100
 261,"Manteiga, com sal",,725.9689268459988,0.4147000074386597,0.0632999925613329,82.361
 262,"Manteiga, sem sal",,757.5404607259967,0.3955600070953369,0.0,86.03933333333333
 263,"Margarina, com óleo hidrogenado, com sal (65% de lipídeos)",,596.1195169563294,1e-05,0.0,67.43433333333334
 264,"Margarina, com óleo hidrogenado, sem sal (80% de lipídeos)",,722.525625804901,1e-05,0.0,81.73366666666665
 265,"Margarina, com óleo interesterificado, com sal (65%de lipídeos)",,594.4516933333332,1e-05,0.0,67.24566666666665
 266,"Margarina, com óleo interesterificado, sem sal (65% de lipídeos)",,593.1374902381897,1e-05,0.0,67.097
-267,"Óleo, de babaçu",,884.0,,,100.0
-268,"Óleo, de canola",,884.0,,,100.0
-269,"Óleo, de girassol",,884.0,,,100.0
-270,"Óleo, de milho",,884.0,,,100.0
-271,"Óleo, de pequi",,884.0,,,100.0
-272,"Óleo, de soja",,884.0,,,100.0
+267,"Óleo, de babaçu",,884,0,0,100
+268,"Óleo, de canola",,884,0,0,100
+269,"Óleo, de girassol",,884,0,0,100
+270,"Óleo, de milho",,884,0,0,100
+271,"Óleo, de pequi",,884,0,0,100
+272,"Óleo, de soja",,884,0,0,100
 273,"Abadejo, filé, congelado, assado",,111.6155034511884,23.525,0.0,1.2376666666666667
 274,"Abadejo, filé, congelado,cozido",,91.10354839555423,19.34583333333333,0.0,0.9420000000000001
 275,"Abadejo, filé, congelado, cru",,59.11303324858347,13.083333333333332,0.0,0.36
@@ -469,7 +469,6 @@ source_code,name_pt,name_en,calories_per_100g,protein_per_100g,carbs_per_100g,fa
 469,"Queijo, ricota",,139.73177999999996,12.6005,3.7861666666666673,8.108666666666666
 470,"Bebida isotônica, sabores variados",,25.613333333333344,0.0,6.4033333333333395,0.0
 471,"Café, infusão 10%",,9.070868599613517,0.7125,1.478666666666667,0.06933333333333334
-472,"Cana, aguardente 1",,215.6616,,,
 473,"Cana, caldo de",,65.34359826898573,1e-05,18.151000000000003,1e-05
 474,"Cerveja, pilsen 2",,40.72018855062866,0.5625,3.3175,1e-05
 475,"Chá, erva-doce, infusão 5%",,1.3970599738756386,0.0,0.3913333333333213,0.0
