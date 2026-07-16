@@ -317,20 +317,20 @@ A dedicated database will be used for automated tests.
 Example:
 
 ```text
-nutrition_app
-nutrition_app_testing
+mesa
+mesa_testing
 ```
 
 Production environment:
 
 ```env
-DB_DATABASE=nutrition_app
+DB_DATABASE=mesa
 ```
 
 Testing environment:
 
 ```env
-DB_DATABASE=nutrition_app_testing
+DB_DATABASE=mesa_testing
 ```
 
 Tests use Laravel's `RefreshDatabase` trait to guarantee isolation.

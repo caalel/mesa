@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Derives the nutrition-app CSV from the immutable normalized brolesi source and TACO decisions.
+ * Derives the MESA CSV from the immutable normalized brolesi source and TACO decisions.
  * Missing values, original precision, and scientific notation such as `1e-05` are preserved;
  * only negative source carbohydrates are normalized to zero.
  *

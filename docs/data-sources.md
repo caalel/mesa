@@ -1,6 +1,6 @@
 # Data Sources
 
-This document describes the origin, preparation, normalization, review decisions, and licensing considerations for the food composition dataset used by nutrition-app.
+This document describes the origin, preparation, normalization, review decisions, and licensing considerations for the food composition dataset used by MESA.
 
 The application does not consume third-party composition tables directly at runtime. Instead, it uses a reviewed and reproducible CSV generated inside the project from immutable source material and explicit project-level decisions.
 
@@ -14,7 +14,7 @@ database/data/foods/taco-v4.csv
 
 It contains 592 food records.
 
-Each record exposes only the fields required by the current nutrition-app domain:
+Each record exposes only the fields required by the current MESA domain:
 
 ```text
 source_code
@@ -79,7 +79,7 @@ Repository:
 
 The repository provides scripts and structured files derived from the official TACO spreadsheet.
 
-The nutrition-app project uses this processing work as a technical starting point. The repository is not treated as the scientific authority for the nutritional values.
+The MESA project uses this processing work as a technical starting point. The repository is not treated as the scientific authority for the nutritional values.
 
 The distinction is:
 
@@ -118,7 +118,7 @@ The script:
 5. applies reviewed nutritional overrides;
 6. excludes reviewed records marked for removal;
 7. normalizes documented source artifacts;
-8. writes the simplified nutrition-app CSV;
+8. writes the simplified MESA CSV;
 9. reports generation totals.
 
 The expected generation summary is:
@@ -258,7 +258,7 @@ NA carbohydrates
 100 g lipids
 ```
 
-For the nutrition-app data model, these reviewed non-applicable macronutrient values are represented as:
+For the MESA data model, these reviewed non-applicable macronutrient values are represented as:
 
 ```text
 884 kcal
@@ -354,7 +354,7 @@ No sufficiently specific and reliable complementary source was found for the exa
 Reason:
 
 ```text
-Calories exist, but all macronutrients used by nutrition-app are absent in TACO.
+Calories exist, but all macronutrients used by MESA are absent in TACO.
 ```
 
 The record contains caloric energy but does not provide the protein, carbohydrate, or lipid values required by the current application model.
@@ -513,7 +513,7 @@ Commercial use may require replacing the TBCA values with another permitted sour
 
 ## Scope and limitations
 
-This dataset is designed for the current nutrition-app MVP.
+This dataset is designed for the current MESA MVP.
 
 It is not intended to be:
 
