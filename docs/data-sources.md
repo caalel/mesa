@@ -4,6 +4,15 @@ This document describes the origin, preparation, normalization, review decisions
 
 The application does not consume third-party composition tables directly at runtime. Instead, it uses a reviewed and reproducible CSV generated inside the project from immutable source material and explicit project-level decisions.
 
+## Food source identity
+
+Each persisted food has an external identity formed by the required string fields
+`data_source`, `source_code`, and `source_version`. The combination is unique.
+`data_source` uses technical identifiers such as `taco`.
+
+This identity will be used by a future importer for idempotent upserts. The importer is
+not implemented yet.
+
 ## Final dataset
 
 The final application dataset is stored at:

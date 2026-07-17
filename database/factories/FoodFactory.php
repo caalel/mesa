@@ -24,6 +24,9 @@ class FoodFactory extends Factory
             'protein_per_100g' => 1,
             'carbs_per_100g' => 20,
             'fat_per_100g' => 1,
+            'data_source' => 'taco',
+            'source_code' => $this->faker->unique()->uuid(),
+            'source_version' => '4',
         ];
     }
 }

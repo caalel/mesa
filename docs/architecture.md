@@ -182,17 +182,24 @@ Attributes:
 * id
 * name_pt
 * name_en (nullable)
-* calories
-* protein
-* carbs
-* fat
-* source
+* calories_per_100g
+* protein_per_100g
+* carbs_per_100g
+* fat_per_100g
+* data_source
+* source_code
+* source_version
 * created_at
 * updated_at
 
 Nutritional values are stored per 100g.
 
 Calculated values are never persisted.
+
+`data_source`, `source_code`, and `source_version` are required strings that form the
+external identity of a food. Their combination is unique. `data_source` uses technical
+identifiers such as `taco`; this identity will support future idempotent upserts when an
+importer is implemented.
 
 ---
 
