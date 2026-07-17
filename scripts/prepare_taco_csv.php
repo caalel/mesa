@@ -163,7 +163,7 @@ function loadTacoOverrides(string $overridesPath): array
         'protein_per_100g',
         'carbs_per_100g',
         'fat_per_100g',
-        'data_source',
+        'nutrient_source',
         'source_reference',
         'notes',
     ];

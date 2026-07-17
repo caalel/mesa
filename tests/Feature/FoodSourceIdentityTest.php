@@ -41,7 +41,7 @@ it('allows the same source code from different data sources', function () {
     ]);
 
     Food::factory()->create([
-        'data_source' => 'tbca',
+        'data_source' => 'usda',
         'source_code' => '1',
         'source_version' => '4',
     ]);

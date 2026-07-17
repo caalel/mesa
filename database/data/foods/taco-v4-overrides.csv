@@ -1,4 +1,4 @@
-source_code,action,calories_per_100g,protein_per_100g,carbs_per_100g,fat_per_100g,data_source,source_reference,notes
+source_code,action,calories_per_100g,protein_per_100g,carbs_per_100g,fat_per_100g,nutrient_source,source_reference,notes
 259,override,884,0,0,100,taco,,"TACO reports protein and carbohydrates as NA; MESA represents these non-applicable values as zero."
 260,override,884,0,0,100,taco,,"TACO reports protein and carbohydrates as NA; MESA represents these non-applicable values as zero."
 267,override,884,0,0,100,taco,,"TACO reports protein and carbohydrates as NA; MESA represents these non-applicable values as zero."
@@ -8,8 +8,8 @@ source_code,action,calories_per_100g,protein_per_100g,carbs_per_100g,fat_per_100
 271,override,884,0,0,100,taco,,"TACO reports protein and carbohydrates as NA; MESA represents these non-applicable values as zero."
 272,override,884,0,0,100,taco,,"TACO reports protein and carbohydrates as NA; MESA represents these non-applicable values as zero."
 450,remove,,,,,taco,,"Incomplete composition and no reliable complementary source was found."
-457,override,39,2.98,5.95,0.36,tbca,BRC0070G,"Missing nutritional values filled using TBCA data for skimmed UHT cow's milk."
-458,override,65,2.35,7.16,3.04,tbca,BRC0044G,"Missing nutritional values filled using the TBCA average for whole UHT cow's milk samples."
+457,override,34,3.37,4.96,0.08,usda,171269,"Missing nutritional values filled using USDA FoodData Central data for generic nonfat fluid cow's milk; the USDA record is not specifically identified as UHT, so this is an approximate nutritional match."
+458,override,61,3.15,4.80,3.25,usda,171265,"Missing nutritional values filled using USDA FoodData Central data for generic whole fluid cow's milk with 3.25% milkfat; the USDA record is not specifically identified as UHT, so this is an approximate nutritional match."
 472,remove,,,,,taco,,"Calories exist, but all macronutrients used by MESA are absent in TACO."
 516,remove,,,,,taco,,"Food with 0 kcal and no practical use for caloric equivalence."
 517,remove,,,,,taco,,"Food with 0 kcal and no practical use for caloric equivalence."

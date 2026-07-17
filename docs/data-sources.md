@@ -288,55 +288,56 @@ conversion.
 
 Each substitution must be reviewed according to the meaning of the source field and the requirements of the application domain.
 
-## Complementary TBCA data
+## Complementary USDA FoodData Central data
 
-Two TACO records with incomplete composition data were complemented with values from:
-
-> Tabela Brasileira de Composição de Alimentos - TBCA
-
-Official website:
-
-* https://www.tbca.net.br/
+TACO 4 remains the primary scientific source and the external identity of every record.
+The records below retain their TACO `source_code` values. Their missing nutrients are
+complemented with generic USDA FoodData Central records.
 
 ### TACO 457
 
 ```text
 TACO code: 457
 TACO description: Leite, de vaca, desnatado, UHT
-TBCA reference: BRC0070G
+USDA FoodData Central FDC ID: 171269
+USDA food: Milk, nonfat, fluid, with added vitamin A and vitamin D (fat free or skim)
 ```
 
 Values used per 100 g:
 
 ```text
-Calories: 39 kcal
-Protein: 2.98 g
-Carbohydrates: 5.95 g
-Fat: 0.36 g
+Calories: 34 kcal
+Protein: 3.37 g
+Carbohydrates: 4.96 g
+Fat: 0.08 g
 ```
 
-The TBCA reference corresponds to skimmed UHT cow's milk.
+The USDA record is generic nonfat fluid cow's milk and is not specifically identified as
+UHT. It is therefore an approximate nutritional match, not an exact processing match.
 
 ### TACO 458
 
 ```text
 TACO code: 458
 TACO description: Leite, de vaca, integral
-TBCA reference: BRC0044G
+USDA FoodData Central FDC ID: 171265
+USDA food: Milk, whole, 3.25% milkfat, with added vitamin D
 ```
 
 Values used per 100 g:
 
 ```text
-Calories: 65 kcal
-Protein: 2.35 g
-Carbohydrates: 7.16 g
-Fat: 3.04 g
+Calories: 61 kcal
+Protein: 3.15 g
+Carbohydrates: 4.80 g
+Fat: 3.25 g
 ```
 
-The TBCA reference corresponds to an average of whole UHT cow's milk samples.
+The USDA record is generic whole fluid cow's milk with 3.25% milkfat and is not
+specifically identified as UHT. It is therefore an approximate nutritional match, not an
+exact processing match.
 
-The TBCA values are stored exactly as reviewed in:
+The USDA values are stored exactly as reviewed in:
 
 ```text
 database/data/foods/taco-v4-overrides.csv
@@ -444,7 +445,7 @@ The following codes contain reviewed oil overrides:
 272
 ```
 
-The following codes contain complementary TBCA data:
+The following codes contain complementary USDA FoodData Central data:
 
 ```text
 457
@@ -491,34 +492,19 @@ The repository software is provided without warranty.
 
 When code or substantial portions of the repository are included in this project, the corresponding MIT copyright and permission notice must be preserved.
 
-### TBCA
+### USDA FoodData Central
 
-The two complementary milk entries are derived from TBCA records:
+The two complementary milk entries use generic USDA FoodData Central records:
 
 ```text
-BRC0070G
-BRC0044G
+171269
+171265
 ```
 
-The TBCA website states that:
-
-* source citation is mandatory when its information is used;
-* commercialization is not permitted;
-* total or partial alteration of its content is not permitted;
-* the material is identified under CC BY-NC-ND 4.0.
-
-The project therefore:
-
-* uses only two reviewed entries;
-* preserves the selected values as published;
-* identifies the exact TBCA record codes;
-* attributes the TBCA explicitly;
-* does not present these values as original TACO measurements;
-* treats the current usage as non-commercial.
-
-These two entries must be reviewed again before any commercial use, monetization, licensing, or paid distribution of the application or its dataset.
-
-Commercial use may require replacing the TBCA values with another permitted source or obtaining explicit authorization from the TBCA maintainers.
+USDA FoodData Central data is available in the public domain / CC0. It was selected to
+reduce the redistribution and potential commercial-use risk associated with the former
+complementary source. These values are documented approximations and are not presented as
+original TACO measurements.
 
 ## Scope and limitations
 
@@ -527,7 +513,6 @@ This dataset is designed for the current MESA MVP.
 It is not intended to be:
 
 * a complete reproduction of TACO;
-* a complete reproduction of TBCA;
 * a medical or clinical nutrition database;
 * a substitute for professional nutritional guidance;
 * a guarantee that every food product matches every commercial formulation;

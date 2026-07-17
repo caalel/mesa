@@ -53,7 +53,7 @@ CSV;
 function tacoOverridesWithRows(string $rows = ''): string
 {
     return <<<CSV
-source_code,action,calories_per_100g,protein_per_100g,carbs_per_100g,fat_per_100g,data_source,source_reference,notes
+source_code,action,calories_per_100g,protein_per_100g,carbs_per_100g,fat_per_100g,nutrient_source,source_reference,notes
 {$rows}
 CSV;
 }
@@ -150,7 +150,7 @@ it('keeps every input row including incomplete records', function () {
 it('applies an override while preserving the food identity fields', function () {
     $input = prepareTacoCsvFixture(tacoInputWithRows('10,Leite original,50,3,4,2'));
     $output = prepareTacoCsvOutputPath();
-    $overrides = prepareTacoCsvOverridesFixture('10,override,39,2.98,5.95,0.36,tbca,BRC0070G,Updated values');
+    $overrides = prepareTacoCsvOverridesFixture('10,override,39,2.98,5.95,0.36,usda,171269,Updated values');
 
     $result = prepareTacoCsv($input, $output, $overrides);
 
@@ -183,7 +183,7 @@ it('fails when the overrides CSV cannot be opened', function () {
 it('fails when a required overrides column is missing', function () {
     $input = prepareTacoCsvFixture(tacoInputWithRows('14,Alimento,10,1,2,3'));
     $output = prepareTacoCsvOutputPath();
-    $overrides = prepareTacoCsvFixture("source_code,action,calories_per_100g,protein_per_100g,carbs_per_100g,fat_per_100g,data_source,source_reference\n");
+    $overrides = prepareTacoCsvFixture("source_code,action,calories_per_100g,protein_per_100g,carbs_per_100g,fat_per_100g,nutrient_source,source_reference\n");
 
     expect(fn () => prepareTacoCsv($input, $output, $overrides))
         ->toThrow(InvalidArgumentException::class, 'Missing required overrides column: notes');
@@ -210,7 +210,7 @@ it('fails when an override action is invalid', function () {
 it('fails when an override nutritional value is missing', function () {
     $input = prepareTacoCsvFixture(tacoInputWithRows('17,Alimento,10,1,2,3'));
     $output = prepareTacoCsvOutputPath();
-    $overrides = prepareTacoCsvOverridesFixture('17,override,,2,3,4,tbca,REF,Missing calories');
+    $overrides = prepareTacoCsvOverridesFixture('17,override,,2,3,4,usda,REF,Missing calories');
 
     expect(fn () => prepareTacoCsv($input, $output, $overrides))
         ->toThrow(InvalidArgumentException::class, 'Override source_code 17 requires calories_per_100g');
@@ -219,7 +219,7 @@ it('fails when an override nutritional value is missing', function () {
 it('fails when an override nutritional value is not numeric', function () {
     $input = prepareTacoCsvFixture(tacoInputWithRows('18,Alimento,10,1,2,3'));
     $output = prepareTacoCsvOutputPath();
-    $overrides = prepareTacoCsvOverridesFixture('18,override,10,invalid,3,4,tbca,REF,Invalid protein');
+    $overrides = prepareTacoCsvOverridesFixture('18,override,10,invalid,3,4,usda,REF,Invalid protein');
 
     expect(fn () => prepareTacoCsv($input, $output, $overrides))
         ->toThrow(InvalidArgumentException::class, 'Override source_code 18 has non-numeric protein_per_100g');
