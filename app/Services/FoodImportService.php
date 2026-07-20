@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Food;
 use InvalidArgumentException;
 use RuntimeException;
 
@@ -102,5 +103,37 @@ class FoodImportService
         } finally {
             fclose($csv);
         }
+    }
+
+    /**
+     * @return array{valid_count: int, invalid_rows: array<int, array{line: int, errors: array<int, string>}>}
+     */
+    public function import(string $path, string $dataSource, string $sourceVersion): array
+    {
+        $prepared = $this->prepare($path, $dataSource, $sourceVersion);
+
+        if ($prepared['valid_rows'] !== []) {
+            Food::query()->upsert(
+                $prepared['valid_rows'],
+                [
+                    'data_source',
+                    'source_code',
+                    'source_version',
+                ],
+                [
+                    'name_pt',
+                    'name_en',
+                    'calories_per_100g',
+                    'protein_per_100g',
+                    'carbs_per_100g',
+                    'fat_per_100g',
+                ],
+            );
+        }
+
+        return [
+            'valid_count' => count($prepared['valid_rows']),
+            'invalid_rows' => $prepared['invalid_rows'],
+        ];
     }
 }
