@@ -165,3 +165,30 @@ it('returns foods containing every search term even when they are separated', fu
     expect($names)->toContain('Leite, de vaca, integral');
     expect($names)->not->toContain('Leite, de vaca, desnatado');
 });
+
+it('orders matching foods by relevance before alphabetical order', function () {
+    Food::factory()->create([
+        'name_pt' => 'Canjica, com leite integral',
+    ]);
+
+    Food::factory()->create([
+        'name_pt' => 'Leite integral',
+    ]);
+
+    Food::factory()->create([
+        'name_pt' => 'Leite, de vaca, integral',
+    ]);
+
+    Food::factory()->create([
+        'name_pt' => 'Leite, de vaca, integral, pó',
+    ]);
+
+    $foods = app(FoodSearchService::class)->search('leite integral');
+
+    expect($foods->pluck('name_pt')->all())->toBe([
+        'Leite integral',
+        'Leite, de vaca, integral',
+        'Leite, de vaca, integral, pó',
+        'Canjica, com leite integral',
+    ]);
+});
