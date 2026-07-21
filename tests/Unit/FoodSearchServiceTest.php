@@ -149,3 +149,19 @@ it('returns at most eight matching foods', function () {
     // Assert
     expect($foods)->toHaveCount(8);
 });
+
+it('returns foods containing every search term even when they are separated', function () {
+    Food::factory()->create([
+        'name_pt' => 'Leite, de vaca, integral',
+    ]);
+
+    Food::factory()->create([
+        'name_pt' => 'Leite, de vaca, desnatado',
+    ]);
+
+    $foods = app(FoodSearchService::class)->search('leite integral');
+    $names = $foods->pluck('name_pt')->all();
+
+    expect($names)->toContain('Leite, de vaca, integral');
+    expect($names)->not->toContain('Leite, de vaca, desnatado');
+});
