@@ -1,531 +1,158 @@
-# Design Direction
+# MESA Design
 
-## Purpose
+## Purpose and Direction
 
-This document defines the initial UI/UX and visual identity direction for the application.
+This document describes the current interface of the MESA MVP: its visual
+direction, comparator flow, interface states, and interaction behavior.
 
-The product should feel like a clear, trustworthy nutritional utility. It should not resemble a generic startup template, a wellness app full of motivational language, or an AI-generated interface with decorative excess.
-
-The design direction is:
-
-> Editorial sobriety with technical clarity.
-
-The interface should be:
-
-* Objective and readable.
-* Friendly without looking childish.
-* Clean without feeling empty.
-* Focused on nutritional information hierarchy.
-* Built with few elements, where every element has a purpose.
-
----
-
-## Frontend Stack
-
-The interface will use:
-
-* Livewire for interactive behavior.
-* Blade for HTML structure.
-* Tailwind CSS for styling.
-* CSS variables for visual identity tokens.
-
-No component library should be added initially.
-
-Avoid DaisyUI, Flowbite, prebuilt UI kits, or any library that imposes a generic visual identity. Tailwind should be used in a simple and deliberate way, with reusable visual patterns created only when repetition or complexity justifies them.
-
----
-
-## Home Page Strategy
-
-Initially, the home page is the nutritional comparator itself.
-
-There should be no separate landing page before the user reaches the tool.
-
-Current route intention:
-
-```text
-/ → Nutritional Comparator
-```
-
-When the Meal Calculator feature exists, the home page may evolve into a hub where the user chooses between the available tools.
-
----
-
-## Main User Flow
-
-1. The user opens the home page.
-2. The user searches for Food A while typing.
-3. The user selects Food A.
-4. The user enters the quantity of Food A in grams.
-5. The user searches for Food B while typing.
-6. The user selects Food B.
-7. The user clicks “Compare”.
-8. The result appears on the same page, below the form.
-
-The search experience should use Livewire and update while the user types. A debounce should be used to avoid a database query for every keystroke.
-
-The user should never need to understand IDs, nutritional values per 100 g, or internal calculation logic.
-
----
-
-## Nutritional Comparator Interaction Flow
-
-The home page is the nutritional comparator.
-
-The comparator will be implemented as a class-based, full-page Livewire component.
-
----
-
-### User Flow
-
-1. The user searches and selects Food A.
-2. The search field is replaced by the selected food and an **Alterar** action.
-3. The user enters the Food A weight in grams.
-4. A summary card for Food A is displayed.
-5. The user searches and selects Food B.
-6. The search field is replaced by the selected food and an **Alterar** action.
-7. The user clicks **Comparar**.
-8. The comparison result is displayed below the form.
-
----
-
-### Food A Summary Card
-
-After Food A is selected and its weight is informed, the interface should display:
-
-* Food name.
-* Selected weight in grams.
-* Calories for the selected weight.
-
-The calorie calculation must use `NutritionalValuesCalculatorService`.
-
-Example:
-
-```text
-Banana
-100 g
-89 kcal
-```
-
----
-
-### Result Card
-
-The main result should communicate calorie equivalence clearly.
-
-Example:
-
-```text
-100 g de Banana ≈ 171 g de Maçã
-em calorias
-```
-
-Supporting text:
-
-```text
-100 g de Banana possuem aproximadamente 89 kcal.
-
-171,15 g de Maçã possuem aproximadamente 89 kcal.
-```
-
-The equivalent weight shown in the main result may be rounded for readability, while the supporting text may present the precise value.
-
----
-
-### Component Responsibilities
-
-The Livewire component is responsible for:
-
-* managing the interface state;
-* searching foods using `FoodSearchService`;
-* calculating calories using `NutritionalValuesCalculatorService`;
-* calculating equivalent weight using `CompareFoodsService`.
-
-The component must not:
-
-* duplicate business rules already implemented in Services;
-* call internal HTTP endpoints such as `/foods/search` or `/compare`.
-
----
-
-## Page Structure
-
-### Desktop
-
-The main form should use two columns:
-
-```text
-Food A card                  Food B card
-Food selection               Food selection
-Food A quantity
-
-              Compare button
-
-              Result card
-```
-
-Food A and Food B are placed side by side.
-
-The comparison button is centered below both cards.
-
-The result occupies the full width below the form.
-
-### Mobile
-
-The layout should become a single column:
-
-```text
-Food A card
-Food A quantity
-Food B card
-Compare button
-Result card
-```
-
-The mobile experience must preserve the same order and clarity without hiding essential information.
-
----
-
-## Initial Interface Copy
-
-### Page title
-
-```text
-Compare alimentos
-```
-
-### Page subtitle
-
-```text
-Descubra quanto de um alimento equivale a outro em calorias.
-```
-
-### Food A section
-
-```text
-Alimento de referência
-```
-
-### Food B section
-
-```text
-Alimento para comparar
-```
-
-### Quantity label
-
-```text
-Quantidade
-```
-
-The quantity input should clearly communicate grams:
-
-```text
-[ 100 ] g
-```
-
-### Main action
-
-```text
-Comparar
-```
-
----
-
-## Result Presentation
-
-The result is the main moment of the interface and must have the strongest visual hierarchy on the page.
-
-The primary result should use an approximate equivalence symbol, not an equality symbol.
-
-Example:
-
-```text
-100 g de Banana ≈ 171 g de Maçã
-em calorias
-```
-
-The primary result may round the equivalent amount for visual simplicity.
-
-Supporting text should provide context and may show the more precise value:
-
-```text
-100 g de Banana possuem aproximadamente 89 kcal.
-
-Para consumir uma quantidade parecida de calorias,
-você precisaria de cerca de 171,15 g de Maçã.
-```
-
-The interface must make it clear that this is a calorie equivalence, not complete nutritional equivalence between foods.
-
----
-
-## Search and Selection States
-
-The search input should provide clear, practical feedback.
-
-Examples:
-
-```text
-Digite pelo menos 2 caracteres para buscar um alimento.
-```
-
-```text
-Nenhum alimento encontrado.
-```
-
-After selection, the selected food should be visible as a normal field state with a clear action to change it.
-
-Avoid oversized pills, decorative tags, or excessive badges.
-
-The comparison button should only be enabled when:
-
-* Food A is selected.
-* Food B is selected.
-* Food A quantity is greater than zero.
-
----
-
-## Visual Identity
-
-### Color Tokens
-
-```text
-Background:        #F6F5F1
-Surface:           #FFFFFF
-Primary text:      #1D2620
-Secondary text:    #667066
-Border:            #DCE1DA
-Primary green:     #315E46
-Light green:       #EAF1EB
-Warm accent:       #C7803D
-Error:             #B42318
-```
-
-### Color Usage
-
-* Use the warm background as the main page background.
-* Use white surfaces for cards and form controls.
-* Use the primary green for main actions, active states, and focus states.
-* Use light green for the result area and subtle positive emphasis.
-* Use the warm accent sparingly for small, intentional details only.
-* Use the error color only for validation feedback and destructive states.
-
-Gradients should not be used as a decorative element.
-
----
+The design is sober, editorial, technical, and clear. It prioritizes contrast,
+readability, and information hierarchy. Surfaces are simple and functional, with
+no decorative gradients, glassmorphism, or heavy shadows.
 
 ## Typography
 
-Primary typeface:
+IBM Plex Sans is the primary typeface. It is loaded globally from Bunny Fonts with
+weights 400, 500, and 600. The font stack retains `sans-serif` as a fallback.
 
-```text
-IBM Plex Sans
-```
+The interface uses regular text for content, medium weight for labels and secondary
+actions, and semibold weight for headings, selected food names, primary actions,
+and results.
 
-Typography should feel technical, readable, and human without looking excessively futuristic or startup-like.
+## Visual Tokens
 
-Initial hierarchy:
+The current CSS tokens are:
 
-```text
-Page title:      32–36 px, weight 600
-Subtitle:        16–18 px, weight 400
-Section title:   16–18 px, weight 600
-Labels:          14 px, weight 500
-Body text:       15–16 px
-Main result:     28–36 px, weight 600
-```
+| Token | Value | Use |
+| --- | --- | --- |
+| Background | `#F6F5F1` | Page background and subtle inactive surfaces. |
+| Surface | `#FFFFFF` | Cards, controls, and header hover surface. |
+| Primary text | `#1D2620` | Headings and primary content. |
+| Secondary text | `#667066` | Supporting text and labels. |
+| Border | `#DCE1DA` | Cards, controls, and content separators. |
+| Primary green | `#315E46` | Main action, focus states, and emphasis. |
+| Light green | `#EAF1EB` | Selected-food state and interactive highlights. |
+| Warm accent | `#C7803D` | Result-card left border. |
+| Error | `#B42318` | Validation and unavailable-calorie feedback. |
 
-Avoid oversized titles that consume most of the viewport.
+## Global Header
 
-Numbers in the result should be visually easy to scan.
+The global header contains the `MESA` brand on the left and the `Comparador` link
+on the right. It is transparent in its normal state. On hover or `focus-within`,
+the navigation gains a rounded white surface and a subtle shadow.
 
----
+The header has no active-route indicator, extra links, or tools.
 
-## Cards and Surfaces
+## Page Structure
 
-Cards should be restrained and functional.
+The comparator page contains:
 
-Use:
+1. the global header;
+2. a main area with the title `Compare alimentos` and its introductory text;
+3. the Food A card;
+4. the Food B card;
+5. the Food A summary, when applicable;
+6. the comparison button;
+7. the result block, after a successful comparison.
 
-* White surface.
-* 1 px border.
-* Border color: `#DCE1DA`.
-* Border radius between 12 px and 16 px.
-* Consistent internal spacing.
-* No heavy shadow.
+Each food card contains either a search state or a selected-food state. The selected
+state displays the food name and the `Alterar` action.
 
-Avoid:
+The comparator uses the Blade components `compare-search-result-item` and
+`compare-selected-food` to structure search results and selected-food controls.
 
-* Cards inside cards unless there is a clear structural reason.
-* Oversized rounded corners.
-* Floating effects.
-* Excessive visual separation between minor sections.
+## Comparator Flow
 
-The result card may use a light green background or border treatment to distinguish it from the form without becoming visually loud.
+1. The user searches for and selects Food A.
+2. The user enters Food A weight.
+3. A valid Food A selection and weight display a calorie summary.
+4. The user searches for and selects Food B.
+5. When the comparison is available, the user selects `Comparar`.
+6. The result appears below the form and the page scrolls smoothly to it.
 
----
+The same food can be selected on both sides. In that case, its equivalent weight is
+mathematically the same as the entered Food A weight.
 
-## Design Rules
+## Food Search and Selection
 
-The interface must avoid “AI slop” patterns.
+Search starts after at least two characters and uses a 300 ms Livewire debounce.
+It searches `name_pt` and returns at most eight results.
 
-Do not use:
+Every typed term is required. Terms may be separated by other words or punctuation
+in the food name. More direct matches are shown before other compatible results,
+with alphabetical order as the tiebreaker.
 
-* Decorative gradients.
-* Glassmorphism.
-* Excessive rounded cards.
-* Heavy shadows.
-* Cards inside cards without need.
-* Generic dashboard layouts.
-* Decorative charts without a real user need.
-* Excessive pills, chips, badges, or tags.
-* Icons in every label or button.
-* Unnecessary animations.
-* Emoji in the interface.
-* Generic wellness or motivational copy.
-* Visual elements that do not improve understanding or action.
+Before two characters, the interface shows `Digite pelo menos 2 caracteres para
+buscar.` When no match is found, it shows `Nenhum alimento encontrado.` A selected
+food replaces its search field and can be changed with `Alterar`.
 
-Examples of copy to avoid:
+## Food A Weight and Validation
 
-```text
-Transforme sua jornada alimentar.
-```
+Food A weight accepts either a point or a comma as the decimal separator. Both forms
+are interpreted as the same numeric value.
 
-```text
-Encontre sua nutrição ideal.
-```
+The value must be numeric, greater than zero, and no more than 10,000 g. The input
+uses the placeholder `Informe a quantidade em gramas.`
 
-Use practical and direct language instead.
+The interface provides friendly feedback for:
 
----
+* a non-numeric value;
+* zero or a negative value;
+* a weight above the maximum.
 
-## Interaction Principles
+Changing Food A weight clears any previous result.
 
-The interface should explain what the user can do next.
+## Comparison Availability and Unavailable Data
 
-Errors and empty states must be actionable.
+The `Comparar` action is available only when Food A and Food B are selected, both
+have positive calorie values available, and Food A weight is valid and within the
+maximum.
 
-Good example:
+Foods with zero or negative calories display `Dados calóricos indisponíveis para
+comparação.` They cannot participate in a caloric equivalence. When Food A has
+unavailable calorie data, its weight input is disabled; unavailable data on either
+side prevents comparison.
 
-```text
-Digite pelo menos 2 caracteres para buscar um alimento.
-```
+Changing either selected food also clears a previous result.
 
-Bad example:
+## Summary and Result
 
-```text
-Oops! Parece que ainda não encontramos sua nutrição ideal.
-```
+The Food A summary shows its name, formatted weight, and calories calculated from
+the entered weight. Values use pt-BR number formatting.
 
-Animations, when eventually used, must communicate feedback or state changes. They should not exist only to make the interface appear modern.
+The result presents an approximate caloric equivalence and uses a warm-accent left
+border to distinguish it from the form. Positive values below `0,01` are displayed
+as `< 0,01` instead of zero.
 
----
+After a successful comparison, the page scrolls smoothly to bring the result into view.
 
-## Component Strategy
+## Responsive Layout
 
-The initial comparator should be implemented as one class-based, full-page Livewire component.
+On smaller screens, the Food A and Food B cards stack in a single column. At larger
+layout widths, they are displayed in two columns, with the comparison control and
+result below them.
 
-Expected initial structure:
+Cards and controls use constrained widths, `min-w-0`, and responsive spacing to
+avoid overflow. Food names, search results, and result text can break across lines;
+controls remain usable at mobile widths.
 
-```text
-app/Livewire/NutritionalComparator.php
-resources/views/livewire/nutritional-comparator.blade.php
-```
+## Language and Interface Copy
 
-The component should manage interface state and delegate business rules to existing services.
+The current interface is pt-BR. User-facing text is centralized in
+`lang/pt_BR/ui.php` and rendered through localization keys.
 
-It should use:
+## Accessibility and Interaction
 
-```text
-FoodSearchService
-CompareFoodsService
-```
+The interface uses native buttons for actions and links for navigation. Form inputs
+have associated labels, and validation or empty states provide textual feedback.
 
-Do not split the initial comparator into multiple child Livewire components prematurely.
+Interactive controls expose visible focus styles. Native controls support keyboard
+interaction, while disabled comparison and unavailable-calorie states communicate
+their status visually and through text. This document does not claim a complete
+accessibility or WCAG audit.
 
-Extract child components only when repeated patterns or real complexity justify it.
+## Documentation Boundaries
 
----
-
-## Localization and Food Naming Strategy
-
-The application should be prepared for future multilingual support from the beginning.
-
-Interface translation and food name translation are separate concerns.
-
----
-
-### Interface Translation
-
-User-facing interface text must use Laravel localization files with PHP arrays.
-
-Initial structure:
-
-```text
-lang/
-├── pt_BR/
-│   └── ui.php
-└── en/
-    └── ui.php
-```
-
-The initial interface language is `pt_BR`.
-
-The future English interface locale is `en`.
-
-User-facing text must not be hardcoded directly in Blade templates or Livewire components.
-
-Use translation keys grouped by feature or screen:
-
-```php
-return [
-    'compare' => [
-        'title' => 'Compare alimentos',
-        'subtitle' => 'Descubra quanto de um alimento equivale a outro em calorias.',
-        'food_a_section' => 'Alimento de referência',
-        'food_b_section' => 'Alimento para comparar',
-        'quantity_label' => 'Quantidade',
-        'submit' => 'Comparar',
-    ],
-];
-```
-
-Internal code identifiers, database columns, routes, services, and model names remain in English and must not be translated.
-
----
-
-### Food Name Translation
-
-Food names are dynamic database data and must not use Laravel interface translation files.
-
-The `foods` table must use explicit columns:
-
-```text
-name_pt: required
-name_en: nullable
-```
-
-The application will not use a JSON translation column or a translatable package at this stage.
-
-Display rule:
-
-```text
-Locale pt_BR:
-display name_pt
-
-Locale en:
-display name_en
-fallback to name_pt when name_en is null
-```
-
-Current search rule:
-
-```text
-Locale pt_BR:
-search by name_pt
-```
-
-When the English interface is implemented, English search behavior and minimum translation coverage for food names must be defined separately.
-
-A missing English translation must never result in an empty food name. The fallback display value is `name_pt`.
+Current architecture, services, persistence, integration, and technical operations
+are documented in [`docs/architecture.md`](architecture.md). Dataset provenance and
+scientific decisions are documented in [`docs/data-sources.md`](data-sources.md).
+Development conventions are defined in [`AGENTS.md`](../AGENTS.md).
