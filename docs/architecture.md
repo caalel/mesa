@@ -1,439 +1,168 @@
-# Architecture
+# MESA Architecture
 
-## Architectural Style
+## Purpose
 
-The application follows a Laravel Full Stack approach with Blade views and MVC as the foundation.
+MESA is an MVP that compares foods through caloric equivalence. The user selects a
+reference food, enters its weight, and chooses a second food. The application then
+calculates and displays the amount of the second food that provides approximately
+the same number of calories.
 
-To keep business logic isolated from controllers, a Service Layer is adopted.
+## Current Stack
 
-Goal:
+* PHP 8.3.
+* Laravel 13.
+* Livewire 4.
+* Blade.
+* Tailwind CSS 4.
+* Vite.
+* MySQL.
+* Pest/PHPUnit.
 
-* Keep controllers thin.
-* Centralize business logic.
-* Improve maintainability and testability.
-* Avoid unnecessary complexity.
+## Application Architecture
 
----
+The application uses Laravel's MVC foundation with Blade and Livewire. Controllers
+and Livewire components coordinate HTTP and interface state; services contain the
+focused business and data-import operations.
 
-## Project Structure
+### Components
 
-```text
-app/
-├── Http/
-│   ├── Controllers/
-│   └── Requests/
-│
-├── Models/
-│   ├── Food.php
-│   ├── Meal.php
-│   └── MealItem.php
-│
-├── Services/
-│   ├── FoodSearchService.php
-│   ├── CompareFoodsService.php
-│   └── MealCalculatorService.php
-│
-└── Providers/
-```
+* `Food` represents a persisted food and its nutritional data per 100 g.
+* `NutritionalComparator` is the full-page Livewire component for food selection,
+  weight validation, summaries, and comparison results.
+* `CompareFoodsService` calculates the equivalent weight from caloric values.
+* `NutritionalValuesCalculatorService` calculates a nutritional value for a given
+  weight.
+* `FoodSearchService` queries and ranks Portuguese food-name search results.
+* `FoodImportService` validates compatible CSV rows and imports them with upserts.
+* `ImportFoodsCommand` exposes CSV imports through Artisan.
+* `FoodSeeder` imports the official CSV through `FoodImportService`.
+* `DatabaseSeeder` calls `FoodSeeder`.
 
----
+## HTTP Routes
 
-## Layer Responsibilities
-
-### Controllers
-
-Controllers are responsible for:
-
-* Receiving HTTP requests.
-* Calling Request validation classes.
-* Delegating business rules to Services.
-* Returning views or responses.
-
-Controllers must remain thin.
-
----
-
-### Requests
-
-Requests are responsible for:
-
-* Input validation.
-* Data sanitization when necessary.
-
-Business rules must not be implemented inside Request classes.
-
----
-
-### Services
-
-Services contain the application's business logic.
-
-Responsibilities include:
-
-* Food search.
-* Food comparison.
-* Meal calculations.
-
-Services should remain focused on a single responsibility.
-
----
-
-### Models
-
-Models represent domain entities.
-
-Current models:
-
-* Food
-* Meal
-* MealItem
-
----
-
-## Persistence Strategy
-
-Only the Food model is persisted during V1.
-
-Meal and MealItem are part of the domain model but are not persisted.
-
-Reasons:
-
-* No authentication system exists yet.
-* Meals do not need to be recovered.
-* Reduces implementation complexity.
-* Keeps the focus on validating the core features.
-
-Future versions may introduce:
-
-* User authentication.
-* Saved meals.
-* Meal history.
-
----
-
-## Database
-
-Current database tables:
-
-```text
-foods
-```
-
-Future tables:
-
-```text
-meals
-meal_items
-users
-```
-
----
-
-## Services
-
-### FoodSearchService
-
-Responsible for searching foods.
-
----
-
-### CompareFoodsService
-
-Responsible for calculating caloric equivalence between foods.
-
----
-
-### MealCalculatorService
-
-Responsible for calculating meal nutritional totals.
-
----
-
-## Routes
-
-Home page:
+### Interface
 
 ```text
 GET /
 ```
 
-Comparator:
+Renders `NutritionalComparator`.
+
+### Existing HTTP endpoints
 
 ```text
-GET /compare
+GET  /foods/search
 POST /compare
 ```
 
-Meal Calculator:
+The Livewire interface uses services directly and does not call these endpoints
+internally.
+
+### Artisan command
+
+`foods:import` is an Artisan command, not an HTTP route.
+
+## Food Search
+
+Food searches use `name_pt`. Every searched term is required, but terms do not
+need to be contiguous in the food name. The query returns at most eight results.
+
+Results are ranked in the database as follows:
+
+1. names that start with the full search string;
+2. names that start with the first searched term;
+3. other names that contain every searched term;
+4. alphabetical order by `name_pt` within the same level.
+
+## Caloric Comparison
+
+Nutritional values are stored per 100 g. Equivalence is calculated from calories,
+not from complete nutritional equivalence.
+
+Food A weight accepts a point or comma as its decimal separator. The component
+normalizes the value only for validation and calculations, preserving the public
+input state. The weight must be greater than zero and no more than 10,000 g.
+
+The same food may be selected on both sides. Foods with zero or negative calories
+cannot produce a caloric equivalence. Food summaries and comparison results use
+pt-BR number formatting.
+
+## Persistence and Source Identity
+
+The `foods` table stores:
 
 ```text
-GET /meal
-POST /meal
+id
+name_pt
+name_en
+calories_per_100g
+protein_per_100g
+carbs_per_100g
+fat_per_100g
+data_source
+source_code
+source_version
+created_at
+updated_at
 ```
 
----
+`data_source`, `source_code`, and `source_version` form a unique external source
+identity. This constraint lets imports be idempotent for a source and version.
 
-## Database Modeling
-
-### Foods Table
-
-Attributes:
-
-* id
-* name_pt
-* name_en (nullable)
-* calories_per_100g
-* protein_per_100g
-* carbs_per_100g
-* fat_per_100g
-* data_source
-* source_code
-* source_version
-* created_at
-* updated_at
-
-Nutritional values are stored per 100g.
-
-Calculated values are never persisted.
-
-`data_source`, `source_code`, and `source_version` are required strings that form the
-external identity of a food. Their combination is unique. `data_source` uses technical
-identifiers such as `taco`; this identity will support future idempotent upserts when an
-importer is implemented.
-
----
-
-## Data Source Strategy
-
-Primary source:
-
-* TACO database stored locally.
-
-Fallback source:
-
-* USDA API.
-
-Future improvement:
-
-* Local cache for external data.
-
-Goal:
-
-Maintain fast searches while avoiding full dependency on external APIs.
-
----
-
-## Internationalization
-
-Internal language:
-
-* Code in English.
-* Database in English.
-* Documentation in English.
-* Commits in English.
-
-User interface:
-
-* Prepared for future multi-language support.
-* Portuguese and English planned.
-* Initial implementation kept simple.
-
----
-
-## Testing Strategy
-
-The project follows Test-Driven Development (TDD).
-
-Rule:
-
-Never write production code without a failing test that justifies it.
-
-Cycle:
+## Data Pipeline
 
 ```text
-Red
-↓
-Green
-↓
-Refactor
+TACO 4
+→ brolesi/taco
+→ explicit overrides
+→ preparation script
+→ taco-v4.csv
+→ FoodImportService
+→ database
 ```
 
----
+TACO 4 is the primary dataset. The preparation script generates the official
+`database/data/foods/taco-v4.csv` file. USDA FoodData Central values are used only
+in documented overrides of that prepared dataset, never as a runtime API or
+fallback.
 
-## Testing Tools
+Scientific provenance, transformations, overrides, and attribution belong in
+[`docs/data-sources.md`](data-sources.md).
 
-Framework:
+## Import Operations
 
-* Pest
-
-Test types:
-
-* Unit tests
-* Feature tests
-
-Goal:
-
-Maintain a high ratio between tests and production code.
-
----
-
-## Design Principles
-
-* Keep things simple.
-* Avoid premature optimization.
-* Avoid unnecessary abstractions.
-* Prefer convention over configuration.
-* Follow Laravel standards whenever possible.
-* Add complexity only when justified by real requirements.
-
----
-
-## Test Architecture
-
-Folder structure:
-
-```text
-tests/
-├── Feature/
-│   CompareControllerTest.php
-│   MealControllerTest.php
-│
-├── Unit/
-│   CompareFoodsServiceTest.php
-│   MealCalculatorServiceTest.php
-│
-├── Datasets/
-│
-└── Pest.php
+```bash
+php artisan foods:import
+php artisan foods:import --dry-run
+php artisan foods:import --path=/caminho/arquivo.csv
+php artisan db:seed
+php artisan migrate:fresh --seed
 ```
 
-Principles:
+`--dry-run` validates a CSV without persisting rows. `--path` selects another
+compatible CSV. The command and seeder reuse `FoodImportService`, whose
+`upsert()` operation keeps imports idempotent.
 
-* One test file per class.
-* Prefer simple and descriptive test names.
-* Use Pest's `it()` syntax.
-* Separate Unit and Feature tests.
-* Prioritize business rules and edge cases.
+## Databases
 
----
+Development uses the MySQL `mesa` database. Tests use the dedicated MySQL
+`mesa_testing` database configured by `.env.testing`.
 
-## Database Testing
+`phpunit.xml` sets `APP_ENV=testing`, which allows Laravel to load
+`.env.testing`; it does not declare the test database name directly. Tests use
+`RefreshDatabase` where database isolation is required.
 
-A dedicated database will be used for automated tests.
+## Testing and Build
 
-Example:
+The suite includes unit coverage for services and the data pipeline, plus feature
+coverage for imports, the Artisan command, seeders, HTTP endpoints, Livewire, and
+search and comparison rules.
 
-```text
-mesa
-mesa_testing
+```bash
+php artisan test
+npm.cmd run build
 ```
 
-Production environment:
-
-```env
-DB_DATABASE=mesa
-```
-
-Testing environment:
-
-```env
-DB_DATABASE=mesa_testing
-```
-
-Tests use Laravel's `RefreshDatabase` trait to guarantee isolation.
-
-Goal:
-
-Ensure reproducible tests and avoid affecting production data.
-
----
-
-## Implementation Plan
-
-Order of implementation:
-
-1. Project setup.
-2. Foods migration.
-3. Food model.
-4. Food factory.
-5. CompareFoodsService.
-6. Comparator feature.
-7. MealCalculatorService.
-8. Meal feature.
-9. TACO import.
-10. UI improvements.
-
-The project will be developed incrementally through small TDD cycles.
-
----
-
-## Commit Philosophy
-
-Commits should remain small and focused.
-
-Examples:
-
-```text
-test: add equivalent food weight calculation
-
-feat: implement equivalent food weight calculation
-
-test: add zero grams validation
-
-feat: prevent zero grams
-```
-
-Large commits containing multiple responsibilities should be avoided.
-
----
-
-## AI Workflow
-
-The project adopts an AI-assisted pair programming approach inspired by XP practices.
-
-Responsibilities:
-
-Developer:
-
-* Architecture.
-* Design decisions.
-* Domain modeling.
-* Code review.
-* Accept or reject changes.
-
-AI Agent:
-
-* Code generation.
-* Boilerplate.
-* Refactoring.
-* Test implementation.
-
-Rule:
-
-The AI assists the development process but never replaces human decision-making.
-
----
-
-## TDD Workflow
-
-Development cycle:
-
-```text
-Write test
-↓
-RED
-↓
-Minimal implementation
-↓
-GREEN
-↓
-Refactor
-↓
-Commit
-↓
-Repeat
-```
-
-Fundamental rule:
-
-Never write production code without a failing test that justifies that code.
+Development conventions, including TDD, are defined in
+[`AGENTS.md`](../AGENTS.md). Interface behavior and visual direction belong in
+[`docs/design.md`](design.md).
