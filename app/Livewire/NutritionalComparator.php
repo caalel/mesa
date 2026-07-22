@@ -126,7 +126,7 @@ class NutritionalComparator extends Component
             return;
         }
 
-        $foodAWeight = (float) $this->foodAWeight;
+        $foodAWeight = (float) $this->normalizedFoodAWeight();
         $foodBWeight = $this->compareFoodsService->calculateEquivalentWeight(
             foodAValuePer100g: (float) $foodA->calories_per_100g,
             foodAWeight: $foodAWeight,
@@ -229,32 +229,38 @@ class NutritionalComparator extends Component
 
     private function hasValidFoodAWeight(): bool
     {
-        if (! is_numeric($this->foodAWeight)) {
+        $weight = $this->normalizedFoodAWeight();
+
+        if (! is_numeric($weight)) {
             return false;
         }
 
-        $weight = (float) $this->foodAWeight;
+        $weight = (float) $weight;
 
         return $weight > 0 && $weight <= self::MAX_FOOD_A_WEIGHT_IN_GRAMS;
     }
 
     private function foodAWeightExceedsMaximum(): bool
     {
-        return is_numeric($this->foodAWeight)
-            && (float) $this->foodAWeight > self::MAX_FOOD_A_WEIGHT_IN_GRAMS;
+        $weight = $this->normalizedFoodAWeight();
+
+        return is_numeric($weight)
+            && (float) $weight > self::MAX_FOOD_A_WEIGHT_IN_GRAMS;
     }
 
     private function foodAWeightValidationMessage(): ?string
     {
-        if ($this->foodAWeight === '') {
+        $weight = $this->normalizedFoodAWeight();
+
+        if ($weight === '') {
             return null;
         }
 
-        if (! is_numeric($this->foodAWeight)) {
+        if (! is_numeric($weight)) {
             return __('ui.compare.quantity_must_be_numeric');
         }
 
-        if ((float) $this->foodAWeight <= 0) {
+        if ((float) $weight <= 0) {
             return __('ui.compare.quantity_must_be_positive');
         }
 
@@ -265,6 +271,11 @@ class NutritionalComparator extends Component
         }
 
         return null;
+    }
+
+    private function normalizedFoodAWeight(): string
+    {
+        return str_replace(',', '.', trim((string) $this->foodAWeight));
     }
 
     private function formatNumber(int|float $value): string
@@ -301,11 +312,13 @@ class NutritionalComparator extends Component
             return null;
         }
 
-        if (! is_numeric($this->foodAWeight)) {
+        $weight = $this->normalizedFoodAWeight();
+
+        if (! is_numeric($weight)) {
             return null;
         }
 
-        $weight = (float) $this->foodAWeight;
+        $weight = (float) $weight;
 
         if (! $this->hasValidFoodAWeight()) {
             return null;

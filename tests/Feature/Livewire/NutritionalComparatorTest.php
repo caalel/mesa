@@ -885,3 +885,28 @@ it('clears the comparison result immediately when Food A weight changes', functi
         ->set('foodAWeight', 120)
         ->assertDontSeeHtml('data-testid="comparison-result"');
 });
+
+it('compares foods when Food A weight uses a comma decimal separator', function () {
+    $foodA = Food::factory()->create([
+        'name_pt' => 'Alimento A',
+        'calories_per_100g' => 100,
+    ]);
+    $foodB = Food::factory()->create([
+        'name_pt' => 'Alimento B',
+        'calories_per_100g' => 50,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $foodA->id)
+        ->set('foodAWeight', '50,5')
+        ->call('selectFoodB', $foodB->id)
+        ->call('compare')
+        ->assertSet('comparisonResult', [
+            'food_a_weight' => '50,5',
+            'food_a_name' => 'Alimento A',
+            'food_b_weight' => '101',
+            'food_b_name' => 'Alimento B',
+            'food_b_weight_is_less_than_minimum' => false,
+        ])
+        ->assertDontSee(__('ui.compare.quantity_must_be_numeric'));
+});
