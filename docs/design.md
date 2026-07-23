@@ -36,7 +36,7 @@ The current CSS tokens are:
 
 ## Global Header
 
-The global header contains the `MESA` brand on the left and the `Comparador` link
+The global header contains the `MESA` brand on the left and a link to the comparator
 on the right. It is transparent in its normal state. On hover or `focus-within`,
 the navigation gains a rounded white surface and a subtle shadow.
 
@@ -47,7 +47,7 @@ The header has no active-route indicator, extra links, or tools.
 The comparator page contains:
 
 1. the global header;
-2. a main area with the title `Compare alimentos` and its introductory text;
+2. a main area with the comparator title and introductory text;
 3. the Food A card;
 4. the Food B card;
 5. the Food A summary, when applicable;
@@ -55,7 +55,7 @@ The comparator page contains:
 7. the result block, after a successful comparison.
 
 Each food card contains either a search state or a selected-food state. The selected
-state displays the food name and the `Alterar` action.
+state displays the food name and an action that returns the card to its search state.
 
 The comparator uses the Blade components `compare-search-result-item` and
 `compare-selected-food` to structure search results and selected-food controls.
@@ -66,7 +66,7 @@ The comparator uses the Blade components `compare-search-result-item` and
 2. The user enters Food A weight.
 3. A valid Food A selection and weight display a calorie summary.
 4. The user searches for and selects Food B.
-5. When the comparison is available, the user selects `Comparar`.
+5. When all required inputs are valid, the user triggers the comparison.
 6. The result appears below the form and the page scrolls smoothly to it.
 
 The same food can be selected on both sides. In that case, its equivalent weight is
@@ -81,9 +81,10 @@ Every typed term is required. Terms may be separated by other words or punctuati
 in the food name. More direct matches are shown before other compatible results,
 with alphabetical order as the tiebreaker.
 
-Before two characters, the interface shows `Digite pelo menos 2 caracteres para
-buscar.` When no match is found, it shows `Nenhum alimento encontrado.` A selected
-food replaces its search field and can be changed with `Alterar`.
+Before the minimum length, the interface provides guidance about the search
+requirement. When no match is found, it provides friendly empty-state feedback. A
+selected food replaces its search field and can be changed to reopen that search
+state.
 
 ## Food A Weight and Validation
 
@@ -91,7 +92,7 @@ Food A weight accepts either a point or a comma as the decimal separator. Both f
 are interpreted as the same numeric value.
 
 The value must be numeric, greater than zero, and no more than 10,000 g. The input
-uses the placeholder `Informe a quantidade em gramas.`
+placeholder communicates that the field expects a weight in grams.
 
 The interface provides friendly feedback for:
 
@@ -103,12 +104,12 @@ Changing Food A weight clears any previous result.
 
 ## Comparison Availability and Unavailable Data
 
-The `Comparar` action is available only when Food A and Food B are selected, both
+The comparison action is available only when Food A and Food B are selected, both
 have positive calorie values available, and Food A weight is valid and within the
 maximum.
 
-Foods with zero or negative calories display `Dados calóricos indisponíveis para
-comparação.` They cannot participate in a caloric equivalence. When Food A has
+Foods with zero or negative calories present clear textual feedback about unavailable
+calorie data. They cannot participate in a caloric equivalence. When Food A has
 unavailable calorie data, its weight input is disabled; unavailable data on either
 side prevents comparison.
 
