@@ -1,58 +1,173 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# MESA
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+**Medidor de Equivalência e Síntese Alimentar**
 
-## About Laravel
+MESA calculates caloric equivalence between foods. The user selects a reference food, enters its weight, and chooses a second food. The application then displays the amount of the second food that provides approximately the same number of calories.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## About the project
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+MESA is a Laravel and Livewire MVP focused on clear, practical food comparison. The current interface is localized in pt-BR, and all nutritional data is prepared and stored locally, so food search and comparison do not depend on external APIs at runtime.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Features
 
-## Learning Laravel
+- Multi-term food search with relevance-based result ranking.
+- A maximum of eight search results.
+- Selection and replacement of Food A and Food B.
+- Weight input that accepts a point or comma as the decimal separator.
+- Friendly validation feedback and a maximum weight of 10,000 g.
+- Selection of the same food on both sides.
+- Calorie summary for the reference food.
+- Approximate caloric-equivalence calculation.
+- pt-BR number formatting, with positive values below `0.01` displayed as `< 0,01` instead of zero.
+- Automatic smooth scrolling to the result.
+- Responsive interface.
+- Local prepared nutritional dataset.
+- Idempotent food imports.
+- Artisan import command with dry-run support.
+- Database seeder integrated with Laravel's standard seeding flow.
+- Automated tests.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Technologies
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- PHP 8.3
+- Laravel 13
+- Livewire 4
+- Blade
+- Tailwind CSS 4
+- Vite
+- MySQL
+- Pest/PHPUnit
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+## Nutritional data
 
-## Agentic Development
+TACO 4 is the primary scientific source, while `brolesi/taco` is the normalized technical processing source. Preparation decisions and overrides are explicit and reproducible. The prepared CSV currently contains 592 foods.
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+USDA FoodData Central complements only the nutritional values of TACO codes 457 and 458; TACO identity remains preserved for both records. The application does not query USDA or any other nutritional API at runtime.
+
+[Data sources and preparation](docs/data-sources.md)
+
+## Requirements
+
+- PHP 8.3 or later
+- Composer
+- Node.js and npm
+- MySQL
+
+## Installation
+
+Clone the repository and install the PHP and frontend dependencies:
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+git clone <REPOSITORY_URL>
+cd mesa
+composer install
+npm install
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Create the local environment file:
 
-## Contributing
+```bash
+cp .env.example .env
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+On Windows:
 
-## Code of Conduct
+```powershell
+copy .env.example .env
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Generate the application key:
 
-## Security Vulnerabilities
+```bash
+php artisan key:generate
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Create a MySQL database and configure its connection in `.env`. Never commit database credentials.
+
+Create the schema, import the official food dataset, and compile frontend assets:
+
+```bash
+php artisan migrate --seed
+npm run build
+```
+
+`migrate --seed` creates the schema and imports the official food dataset.
+
+## Running the application
+
+Use Laravel's standard development flow:
+
+```bash
+php artisan serve
+npm run dev
+```
+
+`php artisan serve` starts Laravel's local server, and `npm run dev` starts Vite for frontend development. These commands are optional when the project is served through Laragon, Docker, Valet, Herd, or another local web server.
+
+## Food import commands
+
+```bash
+php artisan foods:import --dry-run
+php artisan foods:import
+```
+
+The dry run validates the CSV without persisting data. The normal command inserts or updates valid foods, and imports are idempotent. By default, the command uses `database/data/foods/taco-v4.csv`.
+
+`php artisan migrate --seed` already imports the official dataset through the seeder. See [Architecture](docs/architecture.md) for advanced import details.
+
+## Test environment
+
+Tests must use a database separate from development. The project uses `.env.testing`; the current local convention is a MySQL database named `mesa_testing`, but another developer may use a different test database name. Credentials must not be committed, and tests must never point to a development or production database.
+
+To configure the test environment:
+
+1. Copy or create `.env.testing` from `.env.example`.
+2. Set `APP_ENV=testing`.
+3. Configure a separate MySQL database.
+4. Generate or copy an application key if required by the environment.
+
+## Tests and build
+
+```bash
+php artisan test
+npm run build
+```
+
+The test command validates domain, Livewire, HTTP, import, command, seeder, and integration behavior. The build command validates production frontend asset compilation.
+
+## Technical decisions
+
+- Domain and import logic are isolated in services.
+- TDD is used for behavior changes.
+- Multi-term matching and relevance ranking run in the database.
+- Imports are idempotent through composite source identity.
+- A local, reproducible dataset replaces runtime nutritional APIs.
+- Livewire provides interactive, server-driven UI behavior.
+
+[Architecture](docs/architecture.md)<br>
+[Interface design](docs/design.md)
+
+## MVP limitations
+
+- Equivalence is based only on calories.
+- Nutritional values are references per 100 g.
+- Real composition may vary by brand, origin, preparation, and processing.
+- The project does not replace professional nutritional guidance.
+- The MVP has no authentication.
+- The MVP has no user-created custom foods.
+- Search does not include typo-tolerant fuzzy matching.
+
+## Documentation
+
+- [Architecture](docs/architecture.md)
+- [Interface design](docs/design.md)
+- [Data sources and preparation](docs/data-sources.md)
+- [Agent instructions](AGENTS.md) — instructions for coding agents working on this repository.
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+The MESA source code is available under the [MIT License](LICENSE).
+
+Nutritional datasets and third-party source materials retain their own attribution
+and licensing terms, documented in
+[Data sources and preparation](docs/data-sources.md).

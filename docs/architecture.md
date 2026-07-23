@@ -134,14 +134,14 @@ Scientific provenance, transformations, overrides, and attribution belong in
 ```bash
 php artisan foods:import
 php artisan foods:import --dry-run
-php artisan foods:import --path=/caminho/arquivo.csv
+php artisan foods:import --path=/path/to/custom-foods.csv
 php artisan db:seed
 php artisan migrate:fresh --seed
 ```
 
-`--dry-run` validates a CSV without persisting rows. `--path` selects another
-compatible CSV. The command and seeder reuse `FoodImportService`, whose
-`upsert()` operation keeps imports idempotent.
+`--dry-run` validates a CSV without persisting rows. The `--path` option allows a
+custom path to be provided for another compatible CSV file. The command and seeder
+reuse `FoodImportService`, whose `upsert()` operation keeps imports idempotent.
 
 ## Databases
 
