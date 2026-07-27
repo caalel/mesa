@@ -62,7 +62,7 @@ Clone the repository and install the PHP and frontend dependencies:
 git clone <REPOSITORY_URL>
 cd mesa
 composer install
-npm install
+npm ci
 ```
 
 Create the local environment file:
@@ -102,8 +102,8 @@ composer setup
 ```
 
 It generates the application key, runs the migrations, imports the official
-dataset through the seeder, installs the frontend dependencies, and builds the
-frontend assets.
+dataset through the seeder, installs the frontend dependencies from the
+lockfile, and builds the frontend assets.
 
 The script can create `.env` from `.env.example` when the file is missing, but the
 database connection must be configured before the migration step.
