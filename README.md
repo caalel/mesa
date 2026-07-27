@@ -4,6 +4,8 @@
 
 MESA calculates caloric equivalence between foods. The user selects a reference food, enters its weight, and chooses a second food. The application then displays the amount of the second food that provides approximately the same number of calories.
 
+![MESA desktop food comparison](docs/screenshots/mesa-comparison-desktop.png)
+
 ## About the project
 
 MESA is a Laravel and Livewire MVP focused on clear, practical food comparison. The current interface is localized in pt-BR, and all nutritional data is prepared and stored locally, so food search and comparison do not depend on external APIs at runtime.
@@ -26,6 +28,22 @@ MESA is a Laravel and Livewire MVP focused on clear, practical food comparison. 
 - Artisan import command with dry-run support.
 - Database seeder integrated with Laravel's standard seeding flow.
 - Automated tests.
+
+## Screenshots
+
+### Multi-term food search
+
+![MESA multi-term food search](docs/screenshots/mesa-food-search.png)
+
+### Responsive mobile comparison
+
+<p align="center">
+    <img
+        src="docs/screenshots/mesa-comparison-mobile.png"
+        alt="MESA mobile food comparison"
+        width="390"
+    >
+</p>
 
 ## Technologies
 
