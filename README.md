@@ -77,7 +77,7 @@ USDA FoodData Central complements only the nutritional values of TACO codes 457 
 Clone the repository and install the PHP and frontend dependencies:
 
 ```bash
-git clone <REPOSITORY_URL>
+git clone https://github.com/caalel/mesa.git
 cd mesa
 composer install
 npm ci
