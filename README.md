@@ -50,7 +50,8 @@ USDA FoodData Central complements only the nutritional values of TACO codes 457 
 
 - PHP 8.3 or later
 - Composer
-- Node.js and npm
+- Node.js 20.19+ or 22.12+
+- npm
 - MySQL
 
 ## Installation
