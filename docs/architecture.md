@@ -146,11 +146,16 @@ reuse `FoodImportService`, whose `upsert()` operation keeps imports idempotent.
 ## Databases
 
 Development uses the MySQL `mesa` database. Tests use the dedicated MySQL
-`mesa_testing` database configured by `.env.testing`.
+`mesa_testing` database.
 
-`phpunit.xml` sets `APP_ENV=testing`, which allows Laravel to load
-`.env.testing`; it does not declare the test database name directly. Tests use
-`RefreshDatabase` where database isolation is required.
+`phpunit.xml` imposes `APP_ENV=testing`, `DB_CONNECTION=mysql`, and
+`DB_DATABASE=mesa_testing`. `.env.testing` supplies only the local connection
+details: host, port, username, and password. `.env.testing.example` is the
+public template and contains no real credentials.
+
+If the test database does not exist or the connection fails, the suite fails
+instead of using the development database. Tests use `RefreshDatabase` where
+database isolation is required.
 
 ## Testing and Build
 

@@ -117,14 +117,21 @@ The dry run validates the CSV without persisting data. The normal command insert
 
 ## Test environment
 
-Tests must use a database separate from development. The project uses `.env.testing`; the current local convention is a MySQL database named `mesa_testing`, but another developer may use a different test database name. Credentials must not be committed, and tests must never point to a development or production database.
+Tests use a dedicated MySQL database named `mesa_testing`, never the development database. Create it locally, then create the local test environment file:
 
-To configure the test environment:
+```bash
+cp .env.testing.example .env.testing
+php artisan key:generate --env=testing
+```
 
-1. Copy or create `.env.testing` from `.env.example`.
-2. Set `APP_ENV=testing`.
-3. Configure a separate MySQL database.
-4. Generate or copy an application key if required by the environment.
+On Windows:
+
+```powershell
+copy .env.testing.example .env.testing
+php artisan key:generate --env=testing
+```
+
+The key-generation command writes the application key to `.env.testing`. Configure in that file only the local connection details (host, port, user, and password). Never commit real credentials. The project has technical protection that keeps the suite on the dedicated test database; if it is unavailable, tests fail instead of using the development database. See [Architecture](docs/architecture.md) for technical details.
 
 ## Tests and build
 
