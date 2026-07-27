@@ -93,6 +93,22 @@ npm run build
 
 `migrate --seed` creates the schema and imports the official food dataset.
 
+After creating the MySQL database and configuring its connection in `.env`, you
+may run the optional setup shortcut:
+
+```bash
+composer setup
+```
+
+It generates the application key, runs the migrations, imports the official
+dataset through the seeder, installs the frontend dependencies, and builds the
+frontend assets.
+
+The script can create `.env` from `.env.example` when the file is missing, but the
+database connection must be configured before the migration step.
+
+The manual steps above remain available when you need to run each stage separately.
+
 ## Running the application
 
 Use Laravel's standard development flow:
