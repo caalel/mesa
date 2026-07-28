@@ -1,6 +1,8 @@
 <?php
 
 it('renders the nutritional comparator initial screen', function () {
+    $this->withoutVite();
+
     $response = $this->get('/');
 
     $response
