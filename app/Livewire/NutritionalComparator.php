@@ -280,7 +280,11 @@ class NutritionalComparator extends Component
 
     private function formatNumber(int|float $value): string
     {
-        return rtrim(rtrim(number_format((float) $value, 2, ',', '.'), '0'), ',');
+        $isEnglishLocale = app()->getLocale() === 'en';
+        $decimalSeparator = $isEnglishLocale ? '.' : ',';
+        $thousandsSeparator = $isEnglishLocale ? ',' : '.';
+
+        return rtrim(rtrim(number_format((float) $value, 2, $decimalSeparator, $thousandsSeparator), '0'), $decimalSeparator);
     }
 
     private function formatDisplayNumber(int|float $value): string
