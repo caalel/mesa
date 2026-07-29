@@ -9,3 +9,9 @@ Route::get('/', NutritionalComparator::class);
 
 Route::get('/foods/search', FoodSearchController::class);
 Route::post('/compare', ComparatorController::class);
+
+Route::post('/locale/{locale}', function (string $locale) {
+    session(['locale' => $locale]);
+
+    return back();
+})->whereIn('locale', ['en', 'pt_BR'])->name('locale.switch');
