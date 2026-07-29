@@ -3,6 +3,7 @@
 use App\Livewire\NutritionalComparator;
 use App\Models\Food;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\App;
 use Livewire\Livewire;
 
 uses(RefreshDatabase::class);
@@ -163,6 +164,38 @@ it('formats decimal Food A weight and calories summary using pt-BR numbers', fun
         ->assertSeeHtml('data-testid="food-a-summary"')
         ->assertSee('50,5 g')
         ->assertSee('64,64 kcal');
+});
+
+it('formats Food A summary numbers using pt-BR thousand and decimal separators', function () {
+    App::setLocale('pt_BR');
+
+    $banana = Food::factory()->create([
+        'name_pt' => 'Banana',
+        'calories_per_100g' => 100,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $banana->id)
+        ->set('foodAWeight', '1234.56')
+        ->assertSeeHtml('data-testid="food-a-summary"')
+        ->assertSee('1.234,56 g')
+        ->assertSee('1.234,56 kcal');
+});
+
+it('formats Food A summary numbers using English thousand and decimal separators', function () {
+    App::setLocale('en');
+
+    $banana = Food::factory()->create([
+        'name_pt' => 'Banana',
+        'calories_per_100g' => 100,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $banana->id)
+        ->set('foodAWeight', '1234.56')
+        ->assertSeeHtml('data-testid="food-a-summary"')
+        ->assertSee('1,234.56 g')
+        ->assertSee('1,234.56 kcal');
 });
 
 it('shows a less than value for positive Food A summary calories lower than one hundredth', function () {
