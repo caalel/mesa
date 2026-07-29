@@ -1,0 +1,30 @@
+<?php
+
+return [
+    'navigation' => [
+        'comparator' => 'Comparator',
+    ],
+    'compare' => [
+        'title' => 'Compare foods',
+        'subtitle' => 'Find out how much of one food is equivalent to another in calories.',
+        'food_a_section' => 'Reference food',
+        'search_food' => 'Search for a food',
+        'search_help' => 'Enter at least 2 characters to search.',
+        'no_foods_found' => 'No foods found.',
+        'quantity_label' => 'Amount',
+        'quantity_placeholder' => 'Enter the amount in grams.',
+        'quantity_too_high' => 'Enter an amount of up to :max g to compare.',
+        'calorie_data_unavailable' => 'Calorie data unavailable for comparison.',
+        'quantity_must_be_numeric' => 'Enter a valid amount in grams.',
+        'quantity_must_be_positive' => 'Enter an amount greater than zero.',
+        'grams_unit' => 'g',
+        'calories_unit' => 'kcal',
+        'change_food' => 'Change',
+        'food_b_section' => 'Food to compare',
+        'submit' => 'Compare',
+        'calorie_equivalence' => ':foodAWeight g of :foodAName ≈ :foodBWeight g of :foodBName.',
+        'calorie_equivalence_less_than' => ':foodAWeight g of :foodAName ≈ less than :foodBWeight g of :foodBName.',
+        'calorie_equivalence_description' => 'To match the calories in :foodAWeight g of :foodAName, you would need about :foodBWeight g of :foodBName.',
+        'calorie_equivalence_less_than_description' => 'To match the calories in :foodAWeight g of :foodAName, you would need less than :foodBWeight g of :foodBName.',
+    ],
+];

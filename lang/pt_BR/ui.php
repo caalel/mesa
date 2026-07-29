@@ -18,6 +18,7 @@ return [
         'quantity_must_be_numeric' => 'Informe uma quantidade válida em gramas.',
         'quantity_must_be_positive' => 'Informe uma quantidade maior que zero.',
         'grams_unit' => 'g',
+        'calories_unit' => 'kcal',
         'change_food' => 'Alterar',
         'food_b_section' => 'Alimento para comparar',
         'submit' => 'Comparar',
