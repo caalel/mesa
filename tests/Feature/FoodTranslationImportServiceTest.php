@@ -156,3 +156,106 @@ it('does not update any food when a source code is unknown for the source versio
 
     expect($food->refresh()->name_en)->toBe('Existing translation');
 });
+
+it('does not update any food when the translation CSV contains a duplicate source code', function () {
+    $firstFood = Food::factory()->create([
+        'data_source' => 'taco',
+        'source_code' => '008',
+        'source_version' => '4',
+        'name_en' => 'Existing first translation',
+    ]);
+    $secondFood = Food::factory()->create([
+        'data_source' => 'taco',
+        'source_code' => '009',
+        'source_version' => '4',
+        'name_en' => 'Existing second translation',
+    ]);
+    $csvPath = foodTranslationCsv(<<<CSV
+        source_code,name_en
+        008,First translation
+        008,Duplicate translation
+        009,Second translation
+        CSV);
+
+    expect(fn () => (new FoodTranslationImportService())->import(
+        path: $csvPath,
+        dataSource: 'taco',
+        sourceVersion: '4',
+    ))->toThrow(InvalidArgumentException::class);
+
+    expect($firstFood->refresh()->name_en)->toBe('Existing first translation');
+    expect($secondFood->refresh()->name_en)->toBe('Existing second translation');
+});
+
+it('does not update any food when a food has no translation row in the CSV', function () {
+    $firstFood = Food::factory()->create([
+        'data_source' => 'taco',
+        'source_code' => '010',
+        'source_version' => '4',
+        'name_en' => 'Existing first translation',
+    ]);
+    $secondFood = Food::factory()->create([
+        'data_source' => 'taco',
+        'source_code' => '011',
+        'source_version' => '4',
+        'name_en' => 'Existing second translation',
+    ]);
+    $csvPath = foodTranslationCsv(<<<CSV
+        source_code,name_en
+        010,First translation
+        CSV);
+
+    expect(fn () => (new FoodTranslationImportService())->import(
+        path: $csvPath,
+        dataSource: 'taco',
+        sourceVersion: '4',
+    ))->toThrow(InvalidArgumentException::class);
+
+    expect($firstFood->refresh()->name_en)->toBe('Existing first translation');
+    expect($secondFood->refresh()->name_en)->toBe('Existing second translation');
+});
+
+it('does not update any food when the translation CSV header is invalid', function () {
+    $food = Food::factory()->create([
+        'data_source' => 'taco',
+        'source_code' => '012',
+        'source_version' => '4',
+        'name_en' => 'Existing translation',
+    ]);
+    $csvPath = foodTranslationCsv(<<<CSV
+        name_en,source_code
+        Updated translation,012
+        CSV);
+
+    expect(fn () => (new FoodTranslationImportService())->import(
+        path: $csvPath,
+        dataSource: 'taco',
+        sourceVersion: '4',
+    ))->toThrow(InvalidArgumentException::class);
+
+    expect($food->refresh()->name_en)->toBe('Existing translation');
+});
+
+it('does not update any food when the translation CSV does not exist', function () {
+    $food = Food::factory()->create([
+        'data_source' => 'taco',
+        'source_code' => '013',
+        'source_version' => '4',
+        'name_en' => 'Existing translation',
+    ]);
+    $csvPath = tempnam(sys_get_temp_dir(), 'missing-food-translation-import-');
+
+    if ($csvPath === false) {
+        throw new RuntimeException('Could not create missing CSV path.');
+    }
+
+    unlink($csvPath);
+
+    expect(fn () => (new FoodTranslationImportService())->import(
+        path: $csvPath,
+        dataSource: 'taco',
+        sourceVersion: '4',
+    ))->toThrow(InvalidArgumentException::class);
+
+    expect($food->refresh()->name_en)->toBe('Existing translation');
+});

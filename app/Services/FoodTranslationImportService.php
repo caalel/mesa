@@ -11,17 +11,18 @@ class FoodTranslationImportService
     public function import(string $path, string $dataSource, string $sourceVersion): void
     {
         $translations = $this->readTranslations($path);
+        $csvSourceCodes = array_column($translations, 'source_code');
+        $existingSourceCodes = Food::query()
+            ->where('data_source', $dataSource)
+            ->where('source_version', $sourceVersion)
+            ->pluck('source_code')
+            ->all();
 
-        foreach ($translations as $translation) {
-            $exists = Food::query()
-                ->where('data_source', $dataSource)
-                ->where('source_code', $translation['source_code'])
-                ->where('source_version', $sourceVersion)
-                ->exists();
+        sort($csvSourceCodes);
+        sort($existingSourceCodes);
 
-            if (! $exists) {
-                throw new InvalidArgumentException("Unknown source_code: {$translation['source_code']}");
-            }
+        if ($csvSourceCodes !== $existingSourceCodes) {
+            throw new InvalidArgumentException('CSV must contain each food source code for this source version exactly once.');
         }
 
         DB::transaction(function () use ($translations, $dataSource, $sourceVersion): void {
@@ -40,6 +41,10 @@ class FoodTranslationImportService
      */
     private function readTranslations(string $path): array
     {
+        if (! is_file($path) || ! is_readable($path)) {
+            throw new InvalidArgumentException("Could not open CSV: {$path}");
+        }
+
         $csv = fopen($path, 'r');
 
         if ($csv === false) {
@@ -54,6 +59,7 @@ class FoodTranslationImportService
             }
 
             $translations = [];
+            $sourceCodes = [];
             $line = 1;
 
             while (($row = fgetcsv($csv, null, ',', '"', '')) !== false) {
@@ -70,10 +76,15 @@ class FoodTranslationImportService
                     throw new InvalidArgumentException("Invalid CSV row: {$line}");
                 }
 
+                if (array_key_exists($sourceCode, $sourceCodes)) {
+                    throw new InvalidArgumentException("Duplicate source_code: {$sourceCode}");
+                }
+
                 $translations[] = [
                     'source_code' => $sourceCode,
                     'name_en' => $nameEn,
                 ];
+                $sourceCodes[$sourceCode] = true;
             }
 
             return $translations;
