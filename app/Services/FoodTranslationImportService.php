@@ -8,7 +8,32 @@ use InvalidArgumentException;
 
 class FoodTranslationImportService
 {
-    public function import(string $path, string $dataSource, string $sourceVersion): void
+    public function validate(string $path, string $dataSource, string $sourceVersion): int
+    {
+        return count($this->prepareTranslations($path, $dataSource, $sourceVersion));
+    }
+
+    public function import(string $path, string $dataSource, string $sourceVersion): int
+    {
+        $translations = $this->prepareTranslations($path, $dataSource, $sourceVersion);
+
+        DB::transaction(function () use ($translations, $dataSource, $sourceVersion): void {
+            foreach ($translations as $translation) {
+                Food::query()
+                    ->where('data_source', $dataSource)
+                    ->where('source_code', $translation['source_code'])
+                    ->where('source_version', $sourceVersion)
+                    ->update(['name_en' => $translation['name_en']]);
+            }
+        });
+
+        return count($translations);
+    }
+
+    /**
+     * @return array<int, array{source_code: string, name_en: string}>
+     */
+    private function prepareTranslations(string $path, string $dataSource, string $sourceVersion): array
     {
         $translations = $this->readTranslations($path);
         $csvSourceCodes = array_column($translations, 'source_code');
@@ -25,15 +50,7 @@ class FoodTranslationImportService
             throw new InvalidArgumentException('CSV must contain each food source code for this source version exactly once.');
         }
 
-        DB::transaction(function () use ($translations, $dataSource, $sourceVersion): void {
-            foreach ($translations as $translation) {
-                Food::query()
-                    ->where('data_source', $dataSource)
-                    ->where('source_code', $translation['source_code'])
-                    ->where('source_version', $sourceVersion)
-                    ->update(['name_en' => $translation['name_en']]);
-            }
-        });
+        return $translations;
     }
 
     /**
