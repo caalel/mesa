@@ -94,6 +94,24 @@ it('generates the expected header and maps input columns', function () {
     ])->and($result)->toBe(['records' => 1, 'overridden' => 0, 'removed' => 0, 'empty_calories' => 0]);
 });
 
+it('removes external spaces from Portuguese food names while preserving their data', function () {
+    $input = prepareTacoCsvFixture(tacoInputWithRows('20,"  Couve, manteiga, refogada  ",29,1.7,4.4,0.9'));
+    $output = prepareTacoCsvOutputPath();
+    $overrides = prepareTacoCsvOverridesFixture();
+
+    prepareTacoCsv($input, $output, $overrides);
+
+    expect(readPrepareTacoCsv($output)[1])->toBe([
+        '20',
+        'Couve, manteiga, refogada',
+        '',
+        '29',
+        '1.7',
+        '4.4',
+        '0.9',
+    ]);
+});
+
 it('writes name en as an empty field', function () {
     $input = prepareTacoCsvFixture(tacoInputWithRows('2,Banana,89,1.1,23,0.3'));
     $output = prepareTacoCsvOutputPath();

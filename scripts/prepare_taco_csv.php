@@ -111,7 +111,7 @@ function prepareTacoCsv(string $inputPath, string $outputPath, string $overrides
         // Preserve source precision, empty fields, and scientific notation without rounding.
         fputcsv($output, [
             $sourceCode,
-            $row[$columnIndexes['descricao']] ?? '',
+            trim($row[$columnIndexes['descricao']] ?? ''),
             // English names will come from a separate reviewed translation dataset.
             '',
             $calories,
