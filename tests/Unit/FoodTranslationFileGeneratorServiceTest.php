@@ -6,6 +6,12 @@ use Tests\TestCase;
 
 uses(TestCase::class);
 
+/*
+|--------------------------------------------------------------------------
+| Helpers
+|--------------------------------------------------------------------------
+*/
+
 afterEach(function () {
     foreach (glob(sys_get_temp_dir().DIRECTORY_SEPARATOR.'food-translation-generator-*') ?: [] as $path) {
         File::deleteDirectory($path);
@@ -72,6 +78,12 @@ function expectGenerationToLeaveDestinationUnchanged(string $catalogPath, string
 
     expect(file_get_contents($outputPath))->toBe($originalContents);
 }
+
+/*
+|--------------------------------------------------------------------------
+| Tests
+|--------------------------------------------------------------------------
+*/
 
 it('generates the operational translation CSV from a compatible approved catalog', function () {
     $directory = foodTranslationGeneratorDirectory();

@@ -7,6 +7,12 @@ use Illuminate\Support\Facades\File;
 
 uses(RefreshDatabase::class);
 
+/*
+|--------------------------------------------------------------------------
+| Helpers
+|--------------------------------------------------------------------------
+*/
+
 afterEach(function () {
     foreach (glob(sys_get_temp_dir().DIRECTORY_SEPARATOR.'food-translation-import-*') ?: [] as $path) {
         @unlink($path);
@@ -39,6 +45,12 @@ function foodTranslationSnapshot(Food $food): array
         'fat_per_100g' => (float) $food->fat_per_100g,
     ];
 }
+
+/*
+|--------------------------------------------------------------------------
+| Tests
+|--------------------------------------------------------------------------
+*/
 
 it('updates English names for a valid translation CSV', function () {
     $firstFood = Food::factory()->create([

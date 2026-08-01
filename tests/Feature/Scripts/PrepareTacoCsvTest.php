@@ -2,6 +2,12 @@
 
 require_once dirname(__DIR__, 3).DIRECTORY_SEPARATOR.'scripts'.DIRECTORY_SEPARATOR.'prepare_taco_csv.php';
 
+/*
+|--------------------------------------------------------------------------
+| Helpers
+|--------------------------------------------------------------------------
+*/
+
 function prepareTacoCsvFixture(string $contents): string
 {
     $path = tempnam(sys_get_temp_dir(), 'prepare-taco-input-');
@@ -68,6 +74,12 @@ afterEach(function () {
         @unlink($path);
     }
 });
+
+/*
+|--------------------------------------------------------------------------
+| Tests
+|--------------------------------------------------------------------------
+*/
 
 it('generates the expected header and maps input columns', function () {
     $input = prepareTacoCsvFixture(tacoInputWithRows('1,"Arroz, cozido",123.5,2.5,25,1'));

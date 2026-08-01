@@ -7,11 +7,23 @@ use Illuminate\Support\Facades\File;
 
 uses(RefreshDatabase::class);
 
+/*
+|--------------------------------------------------------------------------
+| Helpers
+|--------------------------------------------------------------------------
+*/
+
 afterEach(function () {
     foreach (glob(sys_get_temp_dir().DIRECTORY_SEPARATOR.'food-import-feature-*') ?: [] as $path) {
         @unlink($path);
     }
 });
+
+/*
+|--------------------------------------------------------------------------
+| Tests
+|--------------------------------------------------------------------------
+*/
 
 it('inserts valid foods from a CSV import', function () {
     $csvPath = tempnam(sys_get_temp_dir(), 'food-import-feature-');

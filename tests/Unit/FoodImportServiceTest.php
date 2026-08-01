@@ -6,11 +6,23 @@ use Tests\TestCase;
 
 uses(TestCase::class);
 
+/*
+|--------------------------------------------------------------------------
+| Helpers
+|--------------------------------------------------------------------------
+*/
+
 afterEach(function () {
     foreach (glob(sys_get_temp_dir().DIRECTORY_SEPARATOR.'food-import-*') ?: [] as $path) {
         @unlink($path);
     }
 });
+
+/*
+|--------------------------------------------------------------------------
+| Tests
+|--------------------------------------------------------------------------
+*/
 
 it('prepares valid food rows for import', function () {
     $csvPath = tempnam(sys_get_temp_dir(), 'food-import-');

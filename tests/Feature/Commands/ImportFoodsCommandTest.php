@@ -6,11 +6,23 @@ use Illuminate\Support\Facades\File;
 
 uses(RefreshDatabase::class);
 
+/*
+|--------------------------------------------------------------------------
+| Helpers
+|--------------------------------------------------------------------------
+*/
+
 afterEach(function () {
     foreach (glob(sys_get_temp_dir().DIRECTORY_SEPARATOR.'foods-import-command-*') ?: [] as $path) {
         @unlink($path);
     }
 });
+
+/*
+|--------------------------------------------------------------------------
+| Tests
+|--------------------------------------------------------------------------
+*/
 
 it('does not persist foods during a dry run', function () {
     $csvPath = tempnam(sys_get_temp_dir(), 'foods-import-command-');

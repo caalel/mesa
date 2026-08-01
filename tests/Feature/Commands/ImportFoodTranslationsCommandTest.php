@@ -6,6 +6,12 @@ use Illuminate\Support\Facades\File;
 
 uses(RefreshDatabase::class);
 
+/*
+|--------------------------------------------------------------------------
+| Helpers
+|--------------------------------------------------------------------------
+*/
+
 afterEach(function () {
     foreach (glob(sys_get_temp_dir().DIRECTORY_SEPARATOR.'food-translation-command-*') ?: [] as $path) {
         @unlink($path);
@@ -24,6 +30,12 @@ function foodTranslationCommandCsv(string $contents): string
 
     return $path;
 }
+
+/*
+|--------------------------------------------------------------------------
+| Tests
+|--------------------------------------------------------------------------
+*/
 
 it('imports food translations using the default source and version', function () {
     $firstFood = Food::factory()->create([
