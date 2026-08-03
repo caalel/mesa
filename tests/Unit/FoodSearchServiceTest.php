@@ -3,9 +3,67 @@
 use App\Models\Food;
 use App\Services\FoodSearchService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\App;
 use Tests\TestCase;
 
 uses(TestCase::class, RefreshDatabase::class);
+
+it('searches Portuguese names when the locale is pt_BR', function () {
+    Food::factory()->create([
+        'name_pt' => 'Arroz integral',
+        'name_en' => 'Brown rice',
+    ]);
+    Food::factory()->create([
+        'name_pt' => 'Feijao preto',
+        'name_en' => 'Black beans',
+    ]);
+
+    App::setLocale('pt_BR');
+    $service = new FoodSearchService();
+
+    expect($service->search('Arroz')->pluck('name_pt')->all())->toBe(['Arroz integral'])
+        ->and($service->search('Brown'))->toBeEmpty();
+});
+
+it('searches English names when the locale is en', function () {
+    Food::factory()->create([
+        'name_pt' => 'Arroz integral',
+        'name_en' => 'Brown rice',
+    ]);
+    Food::factory()->create([
+        'name_pt' => 'Feijao preto',
+        'name_en' => 'Black beans',
+    ]);
+
+    App::setLocale('en');
+    $service = new FoodSearchService();
+
+    expect($service->search('Brown')->pluck('name_en')->all())->toBe(['Brown rice'])
+        ->and($service->search('Feijao'))->toBeEmpty();
+});
+
+it('orders English search results by relevance and English name when the locale is en', function () {
+    Food::factory()->create([
+        'name_pt' => 'Zeta arroz',
+        'name_en' => 'Rice alpha',
+    ]);
+    Food::factory()->create([
+        'name_pt' => 'Alpha arroz',
+        'name_en' => 'Brown rice',
+    ]);
+    Food::factory()->create([
+        'name_pt' => 'Beta arroz',
+        'name_en' => 'Rice beta',
+    ]);
+
+    App::setLocale('en');
+
+    expect((new FoodSearchService())->search('rice')->pluck('name_en')->all())->toBe([
+        'Rice alpha',
+        'Rice beta',
+        'Brown rice',
+    ]);
+});
 
 it('returns only foods matching the searched Portuguese name', function () {
     // Arrange
