@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\File;
 */
 
 afterEach(function () {
-    foreach (glob(sys_get_temp_dir().DIRECTORY_SEPARATOR.'food-translation-generation-command-*') ?: [] as $path) {
+    foreach (glob(sys_get_temp_dir().DIRECTORY_SEPARATOR.'gf*.tmp') ?: [] as $path) {
         File::deleteDirectory($path);
     }
 
@@ -19,7 +19,7 @@ afterEach(function () {
 
 function foodTranslationGenerationCommandDirectory(): string
 {
-    $path = tempnam(sys_get_temp_dir(), 'food-translation-generation-command-');
+    $path = tempnam(sys_get_temp_dir(), 'gfd');
 
     if ($path === false || ! unlink($path) || ! mkdir($path)) {
         throw new RuntimeException('Could not create CSV fixture directory.');

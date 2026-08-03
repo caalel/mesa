@@ -8,9 +8,9 @@ require_once dirname(__DIR__, 3).DIRECTORY_SEPARATOR.'scripts'.DIRECTORY_SEPARAT
 |--------------------------------------------------------------------------
 */
 
-function prepareTacoCsvFixture(string $contents): string
+function prepareTacoCsvFixture(string $contents, string $prefix = 'pti'): string
 {
-    $path = tempnam(sys_get_temp_dir(), 'prepare-taco-input-');
+    $path = tempnam(sys_get_temp_dir(), $prefix);
 
     if ($path === false) {
         throw new RuntimeException('Could not create input fixture.');
@@ -23,13 +23,26 @@ function prepareTacoCsvFixture(string $contents): string
 
 function prepareTacoCsvOutputPath(): string
 {
-    $path = tempnam(sys_get_temp_dir(), 'prepare-taco-output-');
+    $path = tempnam(sys_get_temp_dir(), 'pto');
 
     if ($path === false) {
         throw new RuntimeException('Could not create output fixture.');
     }
 
-    unlink($path);
+    if (! unlink($path)) {
+        throw new RuntimeException('Could not prepare output fixture path.');
+    }
+
+    return $path;
+}
+
+function prepareTacoCsvMissingPath(string $prefix): string
+{
+    $path = tempnam(sys_get_temp_dir(), $prefix);
+
+    if ($path === false || ! unlink($path)) {
+        throw new RuntimeException('Could not prepare missing CSV fixture path.');
+    }
 
     return $path;
 }
@@ -66,7 +79,7 @@ function tacoOverridesWithRows(string $rows = ''): string
 
 function prepareTacoCsvOverridesFixture(string $rows = ''): string
 {
-    return prepareTacoCsvFixture(tacoOverridesWithRows($rows));
+    return prepareTacoCsvFixture(tacoOverridesWithRows($rows), 'ptv');
 }
 
 function tacoTranslationsWithRows(string $rows = ''): string
@@ -79,7 +92,7 @@ function tacoTranslationsWithRows(string $rows = ''): string
 
 function prepareTacoCsvTranslationsFixture(string $rows = ''): string
 {
-    return prepareTacoCsvFixture(tacoTranslationsWithRows($rows));
+    return prepareTacoCsvFixture(tacoTranslationsWithRows($rows), 'ptt');
 }
 
 function prepareTacoCsvTranslationsForSourceCodes(string ...$sourceCodes): string
@@ -91,7 +104,7 @@ function prepareTacoCsvTranslationsForSourceCodes(string ...$sourceCodes): strin
 }
 
 afterEach(function () {
-    foreach (glob(sys_get_temp_dir().DIRECTORY_SEPARATOR.'prepare-taco-*') ?: [] as $path) {
+    foreach (glob(sys_get_temp_dir().DIRECTORY_SEPARATOR.'pt*.tmp') ?: [] as $path) {
         @unlink($path);
     }
 });
@@ -235,7 +248,7 @@ it('removes a record declared by an override decision', function () {
 it('fails when the overrides CSV cannot be opened', function () {
     $input = prepareTacoCsvFixture(tacoInputWithRows('13,Alimento,10,1,2,3'));
     $output = prepareTacoCsvOutputPath();
-    $overrides = sys_get_temp_dir().DIRECTORY_SEPARATOR.'missing-taco-overrides.csv';
+    $overrides = prepareTacoCsvMissingPath('ptm');
     $translations = prepareTacoCsvTranslationsForSourceCodes('13');
 
     expect(fn () => prepareTacoCsv($input, $output, $overrides, $translations))
@@ -245,7 +258,7 @@ it('fails when the overrides CSV cannot be opened', function () {
 it('fails when a required overrides column is missing', function () {
     $input = prepareTacoCsvFixture(tacoInputWithRows('14,Alimento,10,1,2,3'));
     $output = prepareTacoCsvOutputPath();
-    $overrides = prepareTacoCsvFixture("source_code,action,calories_per_100g,protein_per_100g,carbs_per_100g,fat_per_100g,nutrient_source,source_reference\n");
+    $overrides = prepareTacoCsvFixture("source_code,action,calories_per_100g,protein_per_100g,carbs_per_100g,fat_per_100g,nutrient_source,source_reference\n", 'ptv');
     $translations = prepareTacoCsvTranslationsForSourceCodes('14');
 
     expect(fn () => prepareTacoCsv($input, $output, $overrides, $translations))
@@ -343,11 +356,7 @@ it('fails when the translations CSV cannot be opened', function () {
     $input = prepareTacoCsvFixture(tacoInputWithRows('34,Alimento,10,1,2,3'));
     $output = prepareTacoCsvOutputPath();
     $overrides = prepareTacoCsvOverridesFixture();
-    $translations = sys_get_temp_dir().DIRECTORY_SEPARATOR.'missing-taco-translations.csv';
-
-    if (file_exists($translations)) {
-        unlink($translations);
-    }
+    $translations = prepareTacoCsvMissingPath('ptn');
 
     expect(fn () => prepareTacoCsv($input, $output, $overrides, $translations))
         ->toThrow(RuntimeException::class, 'Could not open translations CSV')
@@ -358,7 +367,7 @@ it('fails when the translations CSV header is not source code and name_en', func
     $input = prepareTacoCsvFixture(tacoInputWithRows('35,Alimento,10,1,2,3'));
     $output = prepareTacoCsvOutputPath();
     $overrides = prepareTacoCsvOverridesFixture();
-    $translations = prepareTacoCsvFixture("source_code,english_name\n35,Food");
+    $translations = prepareTacoCsvFixture("source_code,english_name\n35,Food", 'ptt');
 
     expect(fn () => prepareTacoCsv($input, $output, $overrides, $translations))
         ->toThrow(InvalidArgumentException::class, 'Translations CSV header must be source_code,name_en')

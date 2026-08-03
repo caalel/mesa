@@ -13,7 +13,7 @@ uses(TestCase::class);
 */
 
 afterEach(function () {
-    foreach (glob(sys_get_temp_dir().DIRECTORY_SEPARATOR.'food-import-*') ?: [] as $path) {
+    foreach (glob(sys_get_temp_dir().DIRECTORY_SEPARATOR.'fiu*.tmp') ?: [] as $path) {
         @unlink($path);
     }
 });
@@ -25,7 +25,7 @@ afterEach(function () {
 */
 
 it('prepares valid food rows for import', function () {
-    $csvPath = tempnam(sys_get_temp_dir(), 'food-import-');
+    $csvPath = tempnam(sys_get_temp_dir(), 'fiu');
 
     if ($csvPath === false) {
         throw new RuntimeException('Could not create CSV fixture.');
@@ -72,7 +72,7 @@ it('prepares valid food rows for import', function () {
 });
 
 it('trims English names in valid food rows', function () {
-    $csvPath = tempnam(sys_get_temp_dir(), 'food-import-');
+    $csvPath = tempnam(sys_get_temp_dir(), 'fiu');
 
     if ($csvPath === false) {
         throw new RuntimeException('Could not create CSV fixture.');
@@ -89,7 +89,7 @@ it('trims English names in valid food rows', function () {
 });
 
 it('separates invalid food rows from valid food rows', function () {
-    $csvPath = tempnam(sys_get_temp_dir(), 'food-import-');
+    $csvPath = tempnam(sys_get_temp_dir(), 'fiu');
 
     if ($csvPath === false) {
         throw new RuntimeException('Could not create CSV fixture.');
@@ -144,7 +144,7 @@ it('separates invalid food rows from valid food rows', function () {
 });
 
 it('rejects a CSV without every required header', function () {
-    $csvPath = tempnam(sys_get_temp_dir(), 'food-import-');
+    $csvPath = tempnam(sys_get_temp_dir(), 'fiu');
 
     if ($csvPath === false) {
         throw new RuntimeException('Could not create CSV fixture.');
@@ -165,7 +165,7 @@ it('rejects a CSV without every required header', function () {
 });
 
 it('rejects a food row with an empty English name', function () {
-    $csvPath = tempnam(sys_get_temp_dir(), 'food-import-');
+    $csvPath = tempnam(sys_get_temp_dir(), 'fiu');
 
     if ($csvPath === false) {
         throw new RuntimeException('Could not create CSV fixture.');
@@ -185,7 +185,7 @@ it('rejects a food row with an empty English name', function () {
 });
 
 it('rejects a food row with a whitespace-only English name', function () {
-    $csvPath = tempnam(sys_get_temp_dir(), 'food-import-');
+    $csvPath = tempnam(sys_get_temp_dir(), 'fiu');
 
     if ($csvPath === false) {
         throw new RuntimeException('Could not create CSV fixture.');

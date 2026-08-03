@@ -13,7 +13,7 @@ uses(RefreshDatabase::class);
 */
 
 afterEach(function () {
-    foreach (glob(sys_get_temp_dir().DIRECTORY_SEPARATOR.'foods-import-command-*') ?: [] as $path) {
+    foreach (glob(sys_get_temp_dir().DIRECTORY_SEPARATOR.'ifi*.tmp') ?: [] as $path) {
         @unlink($path);
     }
 });
@@ -25,7 +25,7 @@ afterEach(function () {
 */
 
 it('does not persist foods during a dry run', function () {
-    $csvPath = tempnam(sys_get_temp_dir(), 'foods-import-command-');
+    $csvPath = tempnam(sys_get_temp_dir(), 'ifi');
 
     if ($csvPath === false) {
         throw new RuntimeException('Could not create CSV fixture.');
@@ -49,7 +49,7 @@ it('does not persist foods during a dry run', function () {
 });
 
 it('persists foods during a normal import', function () {
-    $csvPath = tempnam(sys_get_temp_dir(), 'foods-import-command-');
+    $csvPath = tempnam(sys_get_temp_dir(), 'ifi');
 
     if ($csvPath === false) {
         throw new RuntimeException('Could not create CSV fixture.');
@@ -72,7 +72,7 @@ it('persists foods during a normal import', function () {
 });
 
 it('displays invalid rows while persisting valid foods', function () {
-    $csvPath = tempnam(sys_get_temp_dir(), 'foods-import-command-');
+    $csvPath = tempnam(sys_get_temp_dir(), 'ifi');
 
     if ($csvPath === false) {
         throw new RuntimeException('Could not create CSV fixture.');
@@ -96,7 +96,7 @@ it('displays invalid rows while persisting valid foods', function () {
 });
 
 it('fails when the CSV header is invalid', function () {
-    $csvPath = tempnam(sys_get_temp_dir(), 'foods-import-command-');
+    $csvPath = tempnam(sys_get_temp_dir(), 'ifi');
 
     if ($csvPath === false) {
         throw new RuntimeException('Could not create CSV fixture.');

@@ -13,14 +13,14 @@ uses(TestCase::class);
 */
 
 afterEach(function () {
-    foreach (glob(sys_get_temp_dir().DIRECTORY_SEPARATOR.'food-translation-generator-*') ?: [] as $path) {
+    foreach (glob(sys_get_temp_dir().DIRECTORY_SEPARATOR.'ft*.tmp') ?: [] as $path) {
         File::deleteDirectory($path);
     }
 });
 
 function foodTranslationGeneratorDirectory(): string
 {
-    $path = tempnam(sys_get_temp_dir(), 'food-translation-generator-');
+    $path = tempnam(sys_get_temp_dir(), 'ftd');
 
     if ($path === false || ! unlink($path) || ! mkdir($path)) {
         throw new RuntimeException('Could not create CSV fixture directory.');

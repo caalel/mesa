@@ -14,7 +14,7 @@ uses(RefreshDatabase::class);
 */
 
 afterEach(function () {
-    foreach (glob(sys_get_temp_dir().DIRECTORY_SEPARATOR.'food-import-feature-*') ?: [] as $path) {
+    foreach (glob(sys_get_temp_dir().DIRECTORY_SEPARATOR.'fif*.tmp') ?: [] as $path) {
         @unlink($path);
     }
 });
@@ -26,7 +26,7 @@ afterEach(function () {
 */
 
 it('inserts valid foods from a CSV import', function () {
-    $csvPath = tempnam(sys_get_temp_dir(), 'food-import-feature-');
+    $csvPath = tempnam(sys_get_temp_dir(), 'fif');
 
     if ($csvPath === false) {
         throw new RuntimeException('Could not create CSV fixture.');
@@ -79,7 +79,7 @@ it('inserts valid foods from a CSV import', function () {
 });
 
 it('does not duplicate foods when importing the same CSV again', function () {
-    $csvPath = tempnam(sys_get_temp_dir(), 'food-import-feature-');
+    $csvPath = tempnam(sys_get_temp_dir(), 'fif');
 
     if ($csvPath === false) {
         throw new RuntimeException('Could not create CSV fixture.');
@@ -109,8 +109,8 @@ it('does not duplicate foods when importing the same CSV again', function () {
 });
 
 it('updates an existing food when its source identity is imported again', function () {
-    $initialCsvPath = tempnam(sys_get_temp_dir(), 'food-import-feature-');
-    $updatedCsvPath = tempnam(sys_get_temp_dir(), 'food-import-feature-');
+    $initialCsvPath = tempnam(sys_get_temp_dir(), 'fif');
+    $updatedCsvPath = tempnam(sys_get_temp_dir(), 'fif');
 
     if ($initialCsvPath === false || $updatedCsvPath === false) {
         throw new RuntimeException('Could not create CSV fixture.');
@@ -161,7 +161,7 @@ it('updates an existing food when its source identity is imported again', functi
 });
 
 it('does not persist invalid food rows', function () {
-    $csvPath = tempnam(sys_get_temp_dir(), 'food-import-feature-');
+    $csvPath = tempnam(sys_get_temp_dir(), 'fif');
 
     if ($csvPath === false) {
         throw new RuntimeException('Could not create CSV fixture.');
