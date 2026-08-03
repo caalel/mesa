@@ -33,7 +33,7 @@ it('prepares valid food rows for import', function () {
 
     File::put($csvPath, <<<CSV
         source_code,name_pt,name_en,calories_per_100g,protein_per_100g,carbs_per_100g,fat_per_100g
-        001,Leite desnatado,,34,3.37,4.96,0.08
+        001,Leite desnatado,Skim milk,34,3.37,4.96,0.08
         002,Alimento trace,Trace food,10,1,1e-05,0.5
         CSV);
 
@@ -48,7 +48,7 @@ it('prepares valid food rows for import', function () {
     expect($result['valid_rows'])->toBe([
         [
             'name_pt' => 'Leite desnatado',
-            'name_en' => null,
+            'name_en' => 'Skim milk',
             'calories_per_100g' => 34.0,
             'protein_per_100g' => 3.37,
             'carbs_per_100g' => 4.96,
@@ -80,10 +80,10 @@ it('separates invalid food rows from valid food rows', function () {
 
     File::put($csvPath, <<<CSV
         source_code,name_pt,name_en,calories_per_100g,protein_per_100g,carbs_per_100g,fat_per_100g
-        100,Alimento valido,,10,1,2,3
-        ,Sem codigo,,10,1,2,3
-        102,Nutriente invalido,,invalid,1,2,3
-        103,Nutriente negativo,,10,1,-2,3
+        100,Alimento valido,Valid food,10,1,2,3
+        ,Sem codigo,Missing code,10,1,2,3
+        102,Nutriente invalido,Invalid nutrient,invalid,1,2,3
+        103,Nutriente negativo,Negative nutrient,10,1,-2,3
         CSV);
 
     $service = new FoodImportService();
@@ -97,7 +97,7 @@ it('separates invalid food rows from valid food rows', function () {
     expect($result['valid_rows'])->toBe([
         [
             'name_pt' => 'Alimento valido',
-            'name_en' => null,
+            'name_en' => 'Valid food',
             'calories_per_100g' => 10.0,
             'protein_per_100g' => 1.0,
             'carbs_per_100g' => 2.0,
@@ -145,4 +145,44 @@ it('rejects a CSV without every required header', function () {
         dataSource: 'taco',
         sourceVersion: '4',
     ))->toThrow(InvalidArgumentException::class);
+});
+
+it('rejects a food row with an empty English name', function () {
+    $csvPath = tempnam(sys_get_temp_dir(), 'food-import-');
+
+    if ($csvPath === false) {
+        throw new RuntimeException('Could not create CSV fixture.');
+    }
+
+    File::put($csvPath, <<<CSV
+        source_code,name_pt,name_en,calories_per_100g,protein_per_100g,carbs_per_100g,fat_per_100g
+        104,Alimento sem ingles,,10,1,2,3
+        CSV);
+
+    $result = (new FoodImportService())->prepare($csvPath, 'taco', '4');
+
+    expect($result['valid_rows'])->toBeEmpty()
+        ->and($result['invalid_rows'])->toBe([
+            ['line' => 2, 'errors' => ['name_en']],
+        ]);
+});
+
+it('rejects a food row with a whitespace-only English name', function () {
+    $csvPath = tempnam(sys_get_temp_dir(), 'food-import-');
+
+    if ($csvPath === false) {
+        throw new RuntimeException('Could not create CSV fixture.');
+    }
+
+    File::put($csvPath, <<<CSV
+        source_code,name_pt,name_en,calories_per_100g,protein_per_100g,carbs_per_100g,fat_per_100g
+        105,Alimento sem ingles,   ,10,1,2,3
+        CSV);
+
+    $result = (new FoodImportService())->prepare($csvPath, 'taco', '4');
+
+    expect($result['valid_rows'])->toBeEmpty()
+        ->and($result['invalid_rows'])->toBe([
+            ['line' => 2, 'errors' => ['name_en']],
+        ]);
 });

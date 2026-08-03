@@ -57,13 +57,13 @@ it('updates English names for a valid translation CSV', function () {
         'data_source' => 'taco',
         'source_code' => '001',
         'source_version' => '4',
-        'name_en' => null,
+        'name_en' => 'Existing first translation',
     ]);
     $secondFood = Food::factory()->create([
         'data_source' => 'taco',
         'source_code' => '002',
         'source_version' => '4',
-        'name_en' => null,
+        'name_en' => 'Existing second translation',
     ]);
     $csvPath = foodTranslationCsv(<<<CSV
         source_code,name_en
@@ -89,7 +89,7 @@ it('preserves every non-translation field when importing English names', functio
         'source_code' => '003',
         'source_version' => '4',
         'name_pt' => 'Leite, de vaca, integral',
-        'name_en' => null,
+        'name_en' => 'Existing whole milk translation',
         'calories_per_100g' => 61,
         'protein_per_100g' => 3.15,
         'carbs_per_100g' => 4.8,

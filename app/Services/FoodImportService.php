@@ -9,7 +9,7 @@ use RuntimeException;
 class FoodImportService
 {
     /**
-     * @return array{valid_rows: array<int, array<string, float|string|null>>, invalid_rows: array<int, array{line: int, errors: array<int, string>}>}
+     * @return array{valid_rows: array<int, array<string, float|string>>, invalid_rows: array<int, array{line: int, errors: array<int, string>}>}
      */
     public function prepare(string $path, string $dataSource, string $sourceVersion): array
     {
@@ -57,7 +57,7 @@ class FoodImportService
 
                 $errors = [];
 
-                foreach (['source_code', 'name_pt'] as $column) {
+                foreach (['source_code', 'name_pt', 'name_en'] as $column) {
                     if (trim($values[$column]) === '') {
                         $errors[] = $column;
                     }
@@ -85,7 +85,7 @@ class FoodImportService
 
                 $validRows[] = [
                     'name_pt' => $values['name_pt'],
-                    'name_en' => $values['name_en'] === '' ? null : $values['name_en'],
+                    'name_en' => $values['name_en'],
                     'calories_per_100g' => (float) $values['calories_per_100g'],
                     'protein_per_100g' => (float) $values['protein_per_100g'],
                     'carbs_per_100g' => (float) $values['carbs_per_100g'],

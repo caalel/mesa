@@ -42,13 +42,13 @@ it('imports food translations using the default source and version', function ()
         'data_source' => 'taco',
         'source_code' => '001',
         'source_version' => '4',
-        'name_en' => null,
+        'name_en' => 'Existing first translation',
     ]);
     $secondFood = Food::factory()->create([
         'data_source' => 'taco',
         'source_code' => '002',
         'source_version' => '4',
-        'name_en' => null,
+        'name_en' => 'Existing second translation',
     ]);
     $csvPath = foodTranslationCommandCsv(<<<CSV
         source_code,name_en
@@ -71,13 +71,13 @@ it('does not persist translations during a valid dry run', function () {
         'data_source' => 'taco',
         'source_code' => '003',
         'source_version' => '4',
-        'name_en' => null,
+        'name_en' => 'Existing white rice translation',
     ]);
     $secondFood = Food::factory()->create([
         'data_source' => 'taco',
         'source_code' => '004',
         'source_version' => '4',
-        'name_en' => null,
+        'name_en' => 'Existing brown rice translation',
     ]);
     $csvPath = foodTranslationCommandCsv(<<<CSV
         source_code,name_en
@@ -92,8 +92,8 @@ it('does not persist translations during a valid dry run', function () {
         ->expectsOutput('Dry run: 2 food translations would be imported.')
         ->assertSuccessful();
 
-    expect($firstFood->refresh()->name_en)->toBeNull();
-    expect($secondFood->refresh()->name_en)->toBeNull();
+    expect($firstFood->refresh()->name_en)->toBe('Existing white rice translation');
+    expect($secondFood->refresh()->name_en)->toBe('Existing brown rice translation');
 });
 
 it('fails a dry run without updating foods when the translation CSV is invalid', function () {

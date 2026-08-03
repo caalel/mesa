@@ -19,7 +19,7 @@ class FoodFactory extends Factory
     {
         return [
             'name_pt' => $this->faker->unique()->words(2, true),
-            'name_en' => null,
+            'name_en' => $this->faker->unique()->words(2, true),
             'calories_per_100g' => 100,
             'protein_per_100g' => 1,
             'carbs_per_100g' => 20,

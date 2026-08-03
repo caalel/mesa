@@ -34,7 +34,7 @@ it('inserts valid foods from a CSV import', function () {
 
     File::put($csvPath, <<<CSV
         source_code,name_pt,name_en,calories_per_100g,protein_per_100g,carbs_per_100g,fat_per_100g
-        001,Leite desnatado,,34,3.37,4.96,0.08
+        001,Leite desnatado,Skim milk,34,3.37,4.96,0.08
         002,Leite integral,Whole milk,61,3.15,4.80,3.25
         CSV);
 
@@ -65,7 +65,7 @@ it('inserts valid foods from a CSV import', function () {
 
     expect($persistedFood)->toBe([
         'name_pt' => 'Leite desnatado',
-        'name_en' => null,
+        'name_en' => 'Skim milk',
         'calories_per_100g' => 34.0,
         'data_source' => 'taco',
         'source_code' => '001',
@@ -87,8 +87,8 @@ it('does not duplicate foods when importing the same CSV again', function () {
 
     File::put($csvPath, <<<CSV
         source_code,name_pt,name_en,calories_per_100g,protein_per_100g,carbs_per_100g,fat_per_100g
-        001,Leite desnatado,,34,3.37,4.96,0.08
-        002,Leite integral,,61,3.15,4.80,3.25
+        001,Leite desnatado,Skim milk,34,3.37,4.96,0.08
+        002,Leite integral,Whole milk,61,3.15,4.80,3.25
         CSV);
 
     $service = new FoodImportService();
@@ -118,11 +118,11 @@ it('updates an existing food when its source identity is imported again', functi
 
     File::put($initialCsvPath, <<<CSV
         source_code,name_pt,name_en,calories_per_100g,protein_per_100g,carbs_per_100g,fat_per_100g
-        001,Leite desnatado,,34,3.37,4.96,0.08
+        001,Leite desnatado,Skim milk,34,3.37,4.96,0.08
         CSV);
     File::put($updatedCsvPath, <<<CSV
         source_code,name_pt,name_en,calories_per_100g,protein_per_100g,carbs_per_100g,fat_per_100g
-        001,Leite desnatado atualizado,,40,3.50,5,0.10
+        001,Leite desnatado atualizado,Updated skim milk,40,3.50,5,0.10
         CSV);
 
     $service = new FoodImportService();
@@ -169,8 +169,8 @@ it('does not persist invalid food rows', function () {
 
     File::put($csvPath, <<<CSV
         source_code,name_pt,name_en,calories_per_100g,protein_per_100g,carbs_per_100g,fat_per_100g
-        001,Leite desnatado,,34,3.37,4.96,0.08
-        002,Nutriente invalido,,invalid,1,2,3
+        001,Leite desnatado,Skim milk,34,3.37,4.96,0.08
+        002,Nutriente invalido,Invalid nutrient,invalid,1,2,3
         CSV);
 
     $service = new FoodImportService();

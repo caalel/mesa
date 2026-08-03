@@ -345,6 +345,10 @@ it('fails when the translations CSV cannot be opened', function () {
     $overrides = prepareTacoCsvOverridesFixture();
     $translations = sys_get_temp_dir().DIRECTORY_SEPARATOR.'missing-taco-translations.csv';
 
+    if (file_exists($translations)) {
+        unlink($translations);
+    }
+
     expect(fn () => prepareTacoCsv($input, $output, $overrides, $translations))
         ->toThrow(RuntimeException::class, 'Could not open translations CSV')
         ->and(file_exists($output))->toBeFalse();
