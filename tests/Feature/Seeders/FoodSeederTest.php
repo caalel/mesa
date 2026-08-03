@@ -35,3 +35,56 @@ it('imports foods through the default database seeder', function () {
 
     expect(Food::query()->count())->toBe($expectedCount);
 });
+
+it('imports all 592 foods from the canonical CSV', function () {
+    $this->seed(FoodSeeder::class);
+
+    expect(Food::query()->count())->toBe(592);
+});
+
+it('imports English names for every food', function () {
+    $this->seed(FoodSeeder::class);
+
+    expect(Food::query()->whereNull('name_en')->count())->toBe(0)
+        ->and(Food::query()->where('name_en', '')->count())->toBe(0);
+});
+
+it('imports canonical Portuguese and English names for selected foods', function () {
+    $this->seed(FoodSeeder::class);
+
+    expect(Food::query()->where([
+        'data_source' => 'taco',
+        'source_version' => '4',
+        'source_code' => '443',
+    ])->sole()->only([
+        'data_source',
+        'source_version',
+        'source_code',
+        'name_pt',
+        'name_en',
+    ]))->toBe([
+        'data_source' => 'taco',
+        'source_version' => '4',
+        'source_code' => '443',
+        'name_pt' => 'Salame',
+        'name_en' => 'Salami',
+    ]);
+
+    expect(Food::query()->where([
+        'data_source' => 'taco',
+        'source_version' => '4',
+        'source_code' => '1',
+    ])->sole()->only([
+        'data_source',
+        'source_version',
+        'source_code',
+        'name_pt',
+        'name_en',
+    ]))->toBe([
+        'data_source' => 'taco',
+        'source_version' => '4',
+        'source_code' => '1',
+        'name_pt' => 'Arroz, integral, cozido',
+        'name_en' => 'Cooked brown rice',
+    ]);
+});
