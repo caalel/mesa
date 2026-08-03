@@ -831,6 +831,36 @@ it('shows the comparison result when compare is called with valid state', functi
         ]));
 });
 
+it('shows localized English food names in the comparison result', function () {
+    App::setLocale('en');
+
+    $brownRice = Food::factory()->create([
+        'name_pt' => 'Arroz integral',
+        'name_en' => 'Brown rice',
+        'calories_per_100g' => 111,
+    ]);
+    $blackBeans = Food::factory()->create([
+        'name_pt' => 'Feijão preto',
+        'name_en' => 'Black beans',
+        'calories_per_100g' => 222,
+    ]);
+
+    $component = Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $brownRice->id)
+        ->set('foodAWeight', 100)
+        ->call('selectFoodB', $blackBeans->id)
+        ->call('compare');
+
+    expect($component->get('comparisonResult')['food_a_name'])->toBe('Brown rice');
+    expect($component->get('comparisonResult')['food_b_name'])->toBe('Black beans');
+
+    $component
+        ->assertSee('Brown rice')
+        ->assertSee('Black beans')
+        ->assertDontSee('Arroz integral')
+        ->assertDontSee('Feijão preto');
+});
+
 it('shows the comparison result using a less than phrase for positive equivalent weight lower than one hundredth', function () {
     $banana = Food::factory()->create([
         'name_pt' => 'Banana Prata',
