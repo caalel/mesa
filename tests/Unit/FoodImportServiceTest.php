@@ -71,6 +71,23 @@ it('prepares valid food rows for import', function () {
     ])->and($result['invalid_rows'])->toBeEmpty();
 });
 
+it('trims English names in valid food rows', function () {
+    $csvPath = tempnam(sys_get_temp_dir(), 'food-import-');
+
+    if ($csvPath === false) {
+        throw new RuntimeException('Could not create CSV fixture.');
+    }
+
+    File::put($csvPath, <<<CSV
+        source_code,name_pt,name_en,calories_per_100g,protein_per_100g,carbs_per_100g,fat_per_100g
+        003,Leite desnatado,  Skim milk  ,34,3.37,4.96,0.08
+        CSV);
+
+    $result = (new FoodImportService())->prepare($csvPath, 'taco', '4');
+
+    expect($result['valid_rows'][0]['name_en'])->toBe('Skim milk');
+});
+
 it('separates invalid food rows from valid food rows', function () {
     $csvPath = tempnam(sys_get_temp_dir(), 'food-import-');
 

@@ -85,7 +85,7 @@ class FoodImportService
 
                 $validRows[] = [
                     'name_pt' => $values['name_pt'],
-                    'name_en' => $values['name_en'],
+                    'name_en' => trim($values['name_en']),
                     'calories_per_100g' => (float) $values['calories_per_100g'],
                     'protein_per_100g' => (float) $values['protein_per_100g'],
                     'carbs_per_100g' => (float) $values['carbs_per_100g'],
