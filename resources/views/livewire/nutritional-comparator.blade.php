@@ -10,7 +10,7 @@
                 <h2 class="text-lg font-semibold leading-6 text-[var(--color-text-primary)]">{{ __('ui.compare.food_a_section') }}</h2>
 
                 @if ($selectedFoodA)
-                    <x-compare-selected-food :name="$selectedFoodA->name_pt" wire:click="changeFoodA" />
+                    <x-compare-selected-food :name="$selectedFoodA->localized_name" wire:click="changeFoodA" />
                     @if ($foodAHasUnavailableCalorieData)
                         <p class="text-sm text-[var(--color-error)]">{{ __('ui.compare.calorie_data_unavailable') }}</p>
                     @endif
@@ -55,7 +55,7 @@
 
                 @if ($foodASummary)
                     <div class="space-y-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-background)] p-4" data-testid="food-a-summary">
-                        <p class="break-words text-sm font-medium leading-5 text-[var(--color-text-primary)]">{{ $foodASummary['food']->name_pt }}</p>
+                        <p class="break-words text-sm font-medium leading-5 text-[var(--color-text-primary)]">{{ $foodASummary['food']->localized_name }}</p>
                         <p class="text-sm text-[var(--color-text-secondary)]">{{ $foodASummary['formatted_weight'] }} {{ __('ui.compare.grams_unit') }}</p>
                         <p class="text-lg font-semibold leading-6 text-[var(--color-primary-green)]">{{ $foodASummary['formatted_calories'] }} {{ __('ui.compare.calories_unit') }}</p>
                     </div>
@@ -66,7 +66,7 @@
                 <h2 class="text-lg font-semibold leading-6 text-[var(--color-text-primary)]">{{ __('ui.compare.food_b_section') }}</h2>
 
                 @if ($selectedFoodB)
-                    <x-compare-selected-food :name="$selectedFoodB->name_pt" wire:click="changeFoodB" />
+                    <x-compare-selected-food :name="$selectedFoodB->localized_name" wire:click="changeFoodB" />
                     @if ($foodBHasUnavailableCalorieData)
                         <p class="text-sm text-[var(--color-error)]">{{ __('ui.compare.calorie_data_unavailable') }}</p>
                     @endif

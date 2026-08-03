@@ -40,6 +40,20 @@ it('shows foods matching the Food A portuguese name search when the user types a
         ->assertDontSee('Maçã');
 });
 
+it('shows localized English names in Food A search results', function () {
+    App::setLocale('en');
+
+    Food::factory()->create([
+        'name_pt' => 'Arroz integral',
+        'name_en' => 'Brown rice',
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->set('foodASearch', 'Brown')
+        ->assertSee('Brown rice')
+        ->assertDontSee('Arroz integral');
+});
+
 it('does not show Food A results when the user types less than two characters', function () {
     Food::factory()->create([
         'name_pt' => 'Banana',
@@ -119,6 +133,19 @@ it('shows the selected Food A and hides the search state when the user selects a
         ->assertSee(__('ui.compare.change_food'));
 });
 
+it('shows the localized English name for selected Food A', function () {
+    App::setLocale('en');
+
+    $brownRice = Food::factory()->create([
+        'name_pt' => 'Arroz integral',
+        'name_en' => 'Brown rice',
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $brownRice->id)
+        ->assertSee('Brown rice');
+});
+
 it('returns Food A to the search state when the user changes the selected food', function () {
     $banana = Food::factory()->create([
         'name_pt' => 'Banana',
@@ -150,6 +177,22 @@ it('shows the Food A weight and calories summary when the selected food has a va
         ->assertSeeHtml('data-testid="food-a-summary"')
         ->assertSee('50')
         ->assertSee('64');
+});
+
+it('shows the localized English name in the Food A summary', function () {
+    App::setLocale('en');
+
+    $brownRice = Food::factory()->create([
+        'name_pt' => 'Arroz integral',
+        'name_en' => 'Brown rice',
+        'calories_per_100g' => 128,
+    ]);
+
+    $component = Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $brownRice->id)
+        ->set('foodAWeight', 50);
+
+    expect(substr_count($component->html(), 'Brown rice'))->toBe(2);
 });
 
 it('formats decimal Food A weight and calories summary using pt-BR numbers', function () {
@@ -398,6 +441,20 @@ it('shows foods matching the Food B portuguese name search when the user types a
         ->assertDontSee('Banana');
 });
 
+it('shows localized English names in Food B search results', function () {
+    App::setLocale('en');
+
+    Food::factory()->create([
+        'name_pt' => 'Feijão preto',
+        'name_en' => 'Black beans',
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->set('foodBSearch', 'Black')
+        ->assertSee('Black beans')
+        ->assertDontSee('Feijão preto');
+});
+
 it('does not show Food B results when the user types less than two characters', function () {
     Food::factory()->create([
         'name_pt' => 'Maçã',
@@ -471,6 +528,19 @@ it('shows the selected Food B and hides the search state when the user selects a
         ->assertDontSee('Mamão')
         ->assertDontSeeHtml('id="food-b-search"')
         ->assertSee(__('ui.compare.change_food'));
+});
+
+it('shows the localized English name for selected Food B', function () {
+    App::setLocale('en');
+
+    $blackBeans = Food::factory()->create([
+        'name_pt' => 'Feijão preto',
+        'name_en' => 'Black beans',
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodB', $blackBeans->id)
+        ->assertSee('Black beans');
 });
 
 it('returns Food B to the search state when the user changes the selected food', function () {
