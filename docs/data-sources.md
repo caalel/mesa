@@ -8,18 +8,19 @@ during food search or caloric comparison.
 ## Source Chain
 
 ```text
-TACO 4
-→ brolesi/taco
-→ explicit overrides
-→ scripts/prepare_taco_csv.php
-→ database/data/foods/taco-v4.csv
-→ FoodImportService
-→ database
+taco-v4-en-translation-catalog.csv
+    → php artisan foods:generate-translations
+taco-v4-en-translations.csv
+    → php scripts/prepare_taco_csv.php
+taco-v4.csv
+    → FoodSeeder or php artisan foods:import
+foods table
 ```
 
-TACO 4 is the primary scientific source. `brolesi/taco` is the technical source
-used to extract and normalize the official spreadsheet; it is not the scientific
-authority for the food values.
+The catalog is Brazilian: its identity, selection, and source nomenclature are
+based on TACO 4. `brolesi/taco` is the technical source used to extract and
+normalize the official spreadsheet; it is not the scientific authority for the
+food values.
 
 ### Primary Scientific Source
 
@@ -46,13 +47,35 @@ The normalized input was derived from:
 
 Repository: https://github.com/brolesi/taco
 
+### Complementary Sources
+
+USDA FoodData Central is used only as a complementary nutrient source for specific,
+documented override decisions. It currently complements TACO codes 457 and 458.
+It does not replace the TACO identity, source code, or source version of those
+records.
+
+## English Food-Name Editorial Policy
+
+`name_en` is an editorial translation for localized search and presentation. It is
+not a mapping of the Brazilian catalog to equivalent foods in USDA or another
+international database: the food source remains Brazilian and TACO-based.
+
+Some English names deliberately preserve Portuguese words, preparations, or
+ingredients when no precise English equivalent exists, or when a literal translation
+would distort cultural or culinary identity. The translations aim for clarity, but
+do not claim perfect linguistic equivalence. A value in `name_en` does not imply
+that an equivalent foreign food exists nutritionally or culturally. English search
+uses the text stored in `name_en`.
+
 ## Pipeline Files
 
 | File | Role |
 | --- | --- |
 | `database/data/foods/taco-composicao-brolesi.csv` | Immutable preserved technical input derived from `brolesi/taco`. |
+| `database/data/foods/taco-v4-en-translation-catalog.csv` | Editorial catalog of English food names, approval status, and review notes. |
+| `database/data/foods/taco-v4-en-translations.csv` | Generated, versioned operational translation artifact. |
 | `database/data/foods/taco-v4-overrides.csv` | Auditable declarative decisions for overrides, removals, sources, references, and notes. |
-| `scripts/prepare_taco_csv.php` | Reproducibly prepares the official MESA CSV from the input and decisions. |
+| `scripts/prepare_taco_csv.php` | Reproducibly prepares the official MESA CSV from the input, decisions, and translations. |
 | `database/data/foods/taco-v4.csv` | Generated official dataset and the CSV imported by the application. |
 
 The immutable input is not edited for project-specific corrections. The generated
@@ -60,8 +83,9 @@ CSV must not be manually edited.
 
 ## Current Prepared Dataset
 
-`database/data/foods/taco-v4.csv` contains 592 foods. The final count results from
-the source processing and documented decisions: 10 overrides and 5 removed records.
+`database/data/foods/taco-v4.csv` contains 592 foods. The final count reflects the
+documented processing decisions: 10 records receive nutritional overrides without
+affecting the total, and 5 records are removed from the source dataset.
 
 Its columns are:
 
@@ -76,16 +100,23 @@ fat_per_100g
 ```
 
 The preparation preserves Portuguese descriptions, source codes, source precision,
-optional empty fields unless explicitly resolved, and positive scientific notation such as
-`1e-05`. A positive trace value must not be converted to zero. English names are
-empty in the current prepared dataset. Missing nutritional values are not converted to zero
-without an explicit reviewed decision.
+optional empty nutritional fields unless explicitly resolved, and positive scientific
+notation such as `1e-05`. A positive trace value must not be converted to zero.
+English names are required and must cover every final food. Missing nutritional
+values are not converted to zero without an explicit reviewed decision.
 
 ## Reproducible Transformations
 
-The preparation script validates the expected source and overrides headers, required
-decision fields, supported actions, duplicate override codes, numeric override
-values, and that every override references an existing TACO code. It then applies
+`foods:generate-translations` validates the editorial catalog header, required
+English names, approved review status, duplicate source codes, and its exact order
+and Portuguese names against the configured canonical source. It then writes the
+operational `source_code,name_en` file.
+
+The preparation script validates the expected source, overrides, and translation
+headers; required decision fields; supported actions; duplicate override codes;
+numeric override values; and that every override references an existing TACO code.
+It requires exactly one valid English translation for every final food and rejects
+unknown, duplicate, empty, or otherwise invalid translation records. It then applies
 decisions, excludes removed records, normalizes negative source carbohydrates when
 there is no explicit override, writes the simplified CSV, and reports totals.
 
@@ -185,9 +216,10 @@ Generic coconut or coconut-water sources were not treated as equivalent to TACO 
 ## Validation and Audit
 
 The preparation and import pipeline is covered by automated tests. The preparation
-script audits its source and override inputs as described above. `FoodImportService`
-validates compatible final CSVs for their expected header, required `source_code`
-and `name_pt`, numeric nutritional values, and non-negative nutritional values.
+script audits its source, override, and translation inputs as described above.
+`FoodImportService` validates compatible final CSVs for their expected header,
+required `source_code`, `name_pt`, and `name_en`, numeric nutritional values, and
+non-negative nutritional values.
 
 The final dataset audit confirms:
 
@@ -197,6 +229,7 @@ The final dataset audit confirms:
 0 empty source codes
 0 duplicate source codes
 0 empty Portuguese names
+0 empty English names
 0 empty calories
 0 empty proteins
 0 empty carbohydrates
@@ -212,9 +245,7 @@ USDA overrides, and preservation of positive `1e-05` traces.
 Persisted foods have a unique composite source identity:
 
 ```text
-data_source
-source_code
-source_version
+data_source + source_version + source_code
 ```
 
 `FoodImportService` reads and validates compatible CSVs. Valid rows are persisted
@@ -224,11 +255,32 @@ details of the import architecture are in [`docs/architecture.md`](architecture.
 
 ## Dataset Operations
 
+### Clean Clone and Normal Use
+
+The canonical CSV and required generated artifacts are versioned. A clean clone
+does not need to run the translation generator or preparation script before
+migrations and seeding:
+
+```bash
+php artisan migrate --seed
+```
+
+### Dataset Maintenance
+
+When maintaining editorial translations or source decisions, update the appropriate
+catalog or overrides file, generate the operational translation CSV, prepare the
+canonical CSV, and review the generated diffs before validating imports and tests.
+
 ### Regenerate the Official CSV
 
 ```bash
+php artisan foods:generate-translations
 php scripts/prepare_taco_csv.php
 ```
+
+The translation command accepts optional `--catalog`, `--source`, and `--output`
+paths. The preparation script accepts four optional positional paths, in order:
+input source, output canonical CSV, overrides CSV, and translations CSV.
 
 ### Audit Without Persisting
 
@@ -242,8 +294,9 @@ php artisan foods:import --dry-run
 php artisan foods:import
 ```
 
-Without a path option, the command uses `database/data/foods/taco-v4.csv`. See
-[`docs/architecture.md`](architecture.md) for the complete import operation.
+Without a path option, the command uses `database/data/foods/taco-v4.csv`; `--path`
+supplies another compatible CSV. See [`docs/architecture.md`](architecture.md) for
+the complete import operation.
 
 ## Licensing and Attribution
 

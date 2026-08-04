@@ -36,11 +36,13 @@ The current CSS tokens are:
 
 ## Global Header
 
-The global header contains the `MESA` brand on the left and a link to the comparator
-on the right. It is transparent in its normal state. On hover or `focus-within`,
-the navigation gains a rounded white surface and a subtle shadow.
+The global header contains the `MESA` brand on the left, a link to the comparator,
+and a `PT`/`EN` language selector on the right. It is transparent in its normal
+state. On hover or `focus-within`, the navigation gains a rounded white surface and
+a subtle shadow.
 
-The header has no active-route indicator, extra links, or tools.
+The header has no active-route indicator or additional tools beyond the comparator
+link and language selector.
 
 ## Page Structure
 
@@ -75,7 +77,9 @@ mathematically the same as the entered Food A weight.
 ## Food Search and Selection
 
 Search starts after at least two characters and uses a 300 ms Livewire debounce.
-It searches `name_pt` and returns at most eight results.
+It searches only the food-name column for the active locale (`name_pt` for `pt_BR`,
+`name_en` for `en`) and returns at most eight results. There is intentionally no
+fallback between the two columns.
 
 Every typed term is required. Terms may be separated by other words or punctuation
 in the food name. More direct matches are shown before other compatible results,
@@ -117,8 +121,10 @@ Changing either selected food also clears a previous result.
 
 ## Summary and Result
 
-The Food A summary shows its name, formatted weight, and calories calculated from
-the entered weight. Values use pt-BR number formatting.
+The Food A summary shows its localized name, formatted weight, and calories
+calculated from the entered weight. Values use number formatting for the active
+locale. Search results, selected foods, summaries, and comparison results all use
+`localized_name`.
 
 The result presents an approximate caloric equivalence and uses a warm-accent left
 border to distinguish it from the form. Positive values below `0,01` are displayed
@@ -138,8 +144,19 @@ controls remain usable at mobile widths.
 
 ## Language and Interface Copy
 
-The current interface is pt-BR. User-facing text is centralized in
-`lang/pt_BR/ui.php` and rendered through localization keys.
+The interface supports `pt_BR` and `en`. User-facing text is centralized in
+`lang/pt_BR/ui.php` and `lang/en/ui.php` and rendered through localization keys.
+A valid locale stored in the session takes precedence; otherwise, the initial
+request uses `Accept-Language`, mapping Portuguese variants to `pt_BR`, English to
+`en`, and unsupported languages to `pt_BR`. The header selector lets the user
+change this choice manually.
+
+Food-name localization is separate from interface-copy localization. English food
+names are editorial translations of the Brazilian catalog, and may deliberately
+retain Brazilian Portuguese terms where a literal English equivalent would be less
+clear or would distort the food's culinary identity. The active locale determines
+which stored name is searched and displayed; it does not imply an international
+food-database equivalence.
 
 ## Accessibility and Interaction
 
