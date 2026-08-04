@@ -1,0 +1,593 @@
+source_code,name_en
+1,Cooked brown rice
+2,Raw brown rice
+3,Cooked type 1 rice
+4,Raw type 1 rice
+5,Cooked type 2 rice
+6,Raw type 2 rice
+7,Uncooked oat flakes
+8,Sweet cornstarch cookies
+9,Chocolate-filled sweet cookies
+10,Strawberry-filled sweet cookies
+11,Chocolate-filled wafer cookies
+12,Strawberry-filled wafer cookies
+13,Savory cream crackers
+14,Cake mix
+15,Ready-to-eat cassava cake
+16,Ready-to-eat chocolate cake
+17,Ready-to-eat coconut cake
+18,Ready-to-eat corn cake
+19,Raw white canjica corn
+20,Canjica with whole milk (Brazilian hominy dish)
+21,Salted corn flakes
+22,Unsalted corn flakes
+23,Corn-based infant cereal
+24,"Wheat, barley, and oat cereal mix for smoothies"
+25,Corn breakfast cereal
+26,Sweetened corn breakfast cereal
+27,Cream of rice cereal powder
+28,Cream of corn cereal powder
+29,Curau (Brazilian fresh corn pudding)
+30,Curau mix (Brazilian fresh corn pudding mix)
+31,Enriched rice flour
+32,Whole-grain rye flour
+33,Yellow corn flour
+34,Breadcrumbs
+35,Wheat flour
+36,Milk-based cereal flour
+37,Cooked fresh lasagna sheets
+38,Uncooked fresh lasagna sheets
+39,Instant noodles
+40,Uncooked wheat pasta
+41,Uncooked wheat pasta with eggs
+42,Raw cornstarch
+43,Raw cornmeal
+44,Raw fresh corn
+45,"Canned sweet corn, drained"
+46,Traditional porridge powder
+47,Precooked pamonha for boiling (Brazilian corn cake)
+48,Oat sandwich bread
+49,Soy bread
+50,Sandwich bread with added gluten
+51,Corn sandwich bread
+52,Whole-wheat sandwich bread
+53,Brazilian French roll
+54,Pão sovado (Brazilian kneaded wheat bread)
+55,Uncooked meat-filled pastel (Brazilian savory pastry)
+56,Fried meat-filled pastel (Brazilian savory pastry)
+57,Uncooked cheese-filled pastel (Brazilian savory pastry)
+58,Fried cheese-filled pastel (Brazilian savory pastry)
+59,Uncooked pastel dough
+60,Fried pastel dough
+61,Unsalted popcorn with soybean oil
+62,Precooked polenta
+63,Toast made from Brazilian French rolls
+64,Cooked kabocha squash
+65,Raw kabocha squash
+66,Raw Menina Brasileira squash
+67,Raw moranga squash
+68,Sautéed moranga squash
+69,Raw butternut squash
+70,Cooked Italian zucchini
+71,Raw Italian zucchini
+72,Sautéed Italian zucchini
+73,Raw Paulista zucchini
+74,Raw Swiss chard
+75,Raw watercress
+76,Raw celery
+77,Raw iceberg lettuce
+78,Raw curly-leaf lettuce
+79,Raw butterhead lettuce
+80,Raw red leaf lettuce
+81,Raw alfavaca (Brazilian basil)
+82,Raw garlic
+83,Raw leek
+84,Raw almeirão (Brazilian chicory greens)
+85,Sautéed almeirão (Brazilian chicory greens)
+86,Cooked arracacha
+87,Raw arracacha
+88,Cooked sweet potato
+89,Raw sweet potato
+90,Commercial potato chips
+91,Cooked white potato
+92,Raw white potato
+93,Fried white potato
+94,Sautéed white potatoes
+95,Cooked eggplant
+96,Raw eggplant
+97,Cooked beet
+98,Raw beet
+99,Sweet cassava starch biscuits
+100,Cooked broccoli
+101,Raw broccoli
+102,Cooked cará yam
+103,Raw cará yam
+104,Raw caruru greens
+105,Raw Catalonha chicory
+106,Sautéed Catalonha chicory
+107,Raw onion
+108,Raw scallions
+109,Cooked carrot
+110,Raw carrot
+111,Raw endive
+112,Cooked chayote
+113,Raw chayote
+114,Dried cilantro leaves
+115,Raw couve-manteiga (Brazilian collard greens)
+116,Sautéed couve-manteiga (Brazilian collard greens)
+117,Raw cauliflower
+118,Cooked cauliflower
+119,Raw New Zealand spinach
+120,Sautéed New Zealand spinach
+121,Untoasted cassava flour
+122,Toasted cassava flour
+123,Puba flour (fermented cassava flour)
+124,Cassava starch
+125,Raw bean sprouts
+126,Raw inhame (Brazilian yam or taro)
+127,Raw jiló (scarlet eggplant)
+128,Raw jurubeba
+129,Cooked cassava
+130,Raw cassava
+131,Seasoned farofa (toasted cassava flour)
+132,Fried cassava
+133,Raw basil
+134,Raw maxixe (West Indian gherkin)
+135,Raw mustard greens
+136,Cooked potato gnocchi
+137,Raw turnip
+138,Preserved juçara palm hearts
+139,Preserved peach palm hearts
+140,Baked pão de queijo (Brazilian cheese bread)
+141,Unbaked pão de queijo (Brazilian cheese bread)
+142,Raw cucumber
+143,Raw yellow bell pepper
+144,Raw green bell pepper
+145,Raw red bell pepper
+146,Sweet cassava starch
+147,Raw okra
+148,Raw radish
+149,Raw white cabbage
+150,Raw red cabbage
+151,Sautéed red cabbage
+152,Raw arugula
+153,Raw parsley
+154,Canned mixed vegetables
+155,Raw serralha (sow thistle greens)
+156,Raw taioba
+157,Raw tomato with seeds
+158,Tomato paste
+159,Commercial tomato sauce
+160,Tomato purée
+161,Tomato salad
+162,Raw green beans
+163,Raw avocado
+164,Raw pineapple
+165,Frozen pineapple pulp
+166,Raw abiu
+167,Açaí pulp with guaraná and glucose syrup
+168,Frozen açaí pulp
+169,Raw acerola
+170,Frozen acerola pulp
+171,Canned plums in syrup
+172,Raw plum
+173,"Canned plums in syrup, drained"
+174,Raw atemoya
+175,Raw plantain
+176,Banana fruit paste bar
+177,Raw Figo banana
+178,Raw apple banana
+179,Raw Nanica banana
+180,Raw Ouro banana
+181,Raw Pacova banana
+182,Raw Prata banana
+183,Raw cacao
+184,Raw cajá-manga (ambarella)
+185,Frozen cajá pulp (yellow mombin)
+186,Raw cashew apple
+187,Frozen cashew apple pulp
+188,Bottled concentrated cashew apple juice
+189,Raw chocolate persimmon
+190,Raw star fruit
+191,Raw ciriguela (Spanish plum)
+192,Raw cupuaçu
+193,Frozen cupuaçu pulp
+194,Raw fig
+195,Canned figs in syrup
+196,Raw breadfruit
+197,Raw white guava with skin
+198,Guava paste
+199,Guava paste with peel
+200,Raw red guava with skin
+201,Raw soursop
+202,Frozen soursop pulp
+203,Raw jabuticaba
+204,Raw jackfruit
+205,Raw jambo (tropical Syzygium fruit)
+206,Raw jamelão (Java plum)
+207,Raw kiwifruit
+208,Raw Bahia orange
+209,Bahia orange juice
+210,Raw sour orange
+211,Sour orange juice
+212,Raw Lima orange
+213,Lima orange juice
+214,Raw Pêra orange
+215,Pêra orange juice
+216,Raw Valencia orange
+217,Valencia orange juice
+218,Rangpur lime juice
+219,Key lime juice
+220,Raw Persian lime
+221,"Raw apple from Argentina, with skin"
+222,Raw Fuji apple with skin
+223,Raw macaúba palm fruit
+224,"Papaya preserve in syrup, drained"
+225,Raw Formosa papaya
+226,Raw papaya
+227,"Green papaya preserve in syrup, drained"
+228,Raw Haden mango
+229,Raw Palmer mango
+230,Frozen mango pulp
+231,Raw Tommy Atkins mango
+232,Raw passion fruit
+233,Frozen passion fruit pulp
+234,Packaged concentrated passion fruit juice
+235,Raw watermelon
+236,Raw melon
+237,Raw Murcott tangor
+238,Raw Rio mandarin
+239,Raw strawberry
+240,Raw loquat
+241,Raw pequi
+242,Raw Park pear
+243,Raw Williams pear
+244,Raw Aurora peach
+245,Canned peaches in syrup
+246,Raw sugar apple
+247,Raw pitanga (Surinam cherry)
+248,Frozen pitanga pulp (Surinam cherry)
+249,Raw pomegranate
+250,Raw tamarind
+251,Raw Ponkan tangerine
+252,Ponkan tangerine juice
+253,Raw tucumã fruit
+254,Raw umbu
+255,Frozen umbu pulp
+256,Raw Italia grapes
+257,Raw Rubi grapes
+258,Bottled concentrated grape juice
+259,Dendê palm oil
+260,Extra-virgin olive oil
+261,Salted butter
+262,Unsalted butter
+263,Salted margarine with hydrogenated oil (65% fat)
+264,Unsalted margarine with hydrogenated oil (80% fat)
+265,Salted margarine with interesterified oil (65% fat)
+266,Unsalted margarine with interesterified oil (65% fat)
+267,Babassu oil
+268,Canola oil
+269,Sunflower oil
+270,Corn oil
+271,Pequi oil
+272,Soybean oil
+273,Baked frozen abadejo fillet
+274,Cooked frozen abadejo fillet
+275,Raw frozen abadejo fillet
+276,Grilled frozen abadejo fillet
+277,Tuna packed in oil
+278,Raw fresh tuna
+279,Raw salted cod
+280,Sautéed salted cod
+281,Fried shark steak coated with wheat flour
+282,Cooked shark steak
+283,Raw shark steak
+284,Cooked large Rio Grande shrimp
+285,Raw large Rio Grande shrimp
+286,"Fried headless, shell-on Sete Barbas shrimp"
+287,Cooked crab
+288,Raw corimba
+289,Baked corimbatá
+290,Cooked corimbatá
+291,Raw freshwater corvina
+292,Raw saltwater corvina
+293,Baked large corvina
+294,Cooked large corvina
+295,Fresh dourada (freshwater fish)
+296,Raw frozen lambari
+297,Fried frozen lambari
+298,Raw fresh lambari
+299,Fried manjuba coated with wheat flour
+300,Fried manjuba
+301,Baked hake fillet
+302,Raw hake fillet
+303,Fried hake fillet
+304,Raw pescada-branca
+305,Fried pescada-branca
+306,Fried pescada fillet coated with wheat flour
+307,Raw pescada fillet
+308,Fried pescada fillet
+309,Pescada fillet with escabeche sauce
+310,Raw pescadinha
+311,Baked pintado (South American catfish)
+312,Raw pintado (South American catfish)
+313,Grilled pintado (South American catfish)
+314,Raw porquinho (triggerfish)
+315,Grilled fresh skin-on salmon fillet
+316,Raw fresh skinless salmon
+317,Grilled fresh skinless salmon
+318,Baked sardines
+319,Sardines packed in oil
+320,Fried sardines
+321,Raw whole sardines
+322,Raw frozen tucunaré fillet (peacock bass)
+323,Apresuntado (Brazilian ham-style pork product)
+324,Beef bouillon cube
+325,Chicken bouillon cube
+326,Cooked ground beef chuck
+327,Raw ground beef chuck
+328,Cooked lean beef chuck
+329,Raw lean beef chuck
+330,Raw beef meatballs
+331,Fried beef meatballs
+332,Cooked beef tripe
+333,Raw beef tripe
+334,Raw beef cube roll cap with fat
+335,Grilled beef cube roll cap with fat
+336,Raw lean beef cube roll cap
+337,Grilled lean beef cube roll cap
+338,Cooked charque (Brazilian salted dried beef)
+339,Raw charque (Brazilian salted dried beef)
+340,Breaded fried beef striploin (Milanese-style)
+341,Raw beef cube roll
+342,Grilled beef cube roll
+343,Raw beef striploin with fat
+344,Grilled beef striploin with fat
+345,Raw lean beef striploin
+346,Grilled lean beef striploin
+347,Roasted beef ribs
+348,Raw beef ribs
+349,Cooked lean coxão duro (Brazilian outside-round cut)
+350,Raw lean coxão duro (Brazilian outside-round cut)
+351,Cooked lean coxão mole (Brazilian beef topside cut)
+352,Raw lean coxão mole (Brazilian beef topside cut)
+353,Roasted cupim (Brazilian beef hump cut)
+354,Raw cupim (Brazilian beef hump cut)
+355,Raw beef liver
+356,Grilled beef liver
+357,Raw lean filet mignon
+358,Grilled lean filet mignon
+359,Cooked lean flank steak
+360,Raw lean flank steak
+361,Cooked beef fraldinha with fat (Brazilian thin-skirt cut)
+362,Raw beef fraldinha with fat (Brazilian thin-skirt cut)
+363,Cooked beef lagarto (Brazilian eye-of-round cut)
+364,Raw beef lagarto (Brazilian eye-of-round cut)
+365,Cooked beef tongue
+366,Raw beef tongue
+367,Raw beef maminha (Brazilian rump-tail cut)
+368,Grilled beef maminha (Brazilian rump-tail cut)
+369,Raw lean miolo de alcatra (Brazilian beef rump-heart cut)
+370,Grilled lean miolo de alcatra (Brazilian beef rump-heart cut)
+371,Cooked lean beef shank
+372,Raw lean beef shank
+373,Raw beef shoulder with fat
+374,Cooked lean beef shoulder
+375,Raw lean beef shoulder
+376,Raw lean beef patinho (Brazilian knuckle cut)
+377,Grilled lean beef patinho (Brazilian knuckle cut)
+378,Cooked lean beef brisket
+379,Raw lean beef brisket
+380,Raw beef picanha with fat (Brazilian rump-cap cut)
+381,Grilled beef picanha with fat (Brazilian rump-cap cut)
+382,Raw lean beef picanha (Brazilian rump-cap cut)
+383,Grilled lean beef picanha (Brazilian rump-cap cut)
+384,Cooked carne-seca (Brazilian salted dried beef)
+385,Raw carne-seca (Brazilian salted dried beef)
+386,Fried chicken-filled coxinha (Brazilian savory croquette)
+387,Uncooked meat croquette
+388,Fried meat croquette
+389,Baked precooked chicken empada (Brazilian savory pastry)
+390,Precooked chicken empada (Brazilian savory pastry)
+391,Raw skin-on chicken wing
+392,Cooked whole skin-on caipira chicken
+393,Cooked whole skinless caipira chicken
+394,Raw chicken heart
+395,Grilled chicken heart
+396,Roasted skin-on chicken drumstick
+397,Raw skin-on chicken drumstick
+398,Cooked skinless chicken drumstick
+399,Raw skinless chicken drumstick
+400,Raw chicken liver
+401,Breaded fried chicken fillet (Milanese-style)
+402,Raw whole skin-on chicken
+403,Roasted whole skinless chicken
+404,Cooked whole skinless chicken
+405,Raw whole skinless chicken
+406,Roasted skin-on chicken breast
+407,Raw skin-on chicken breast
+408,Cooked skinless chicken breast
+409,Raw skinless chicken breast
+410,Grilled skinless chicken breast
+411,Roasted skin-on chicken thigh
+412,Raw skin-on chicken thigh
+413,Roasted skinless chicken thigh
+414,Raw skinless chicken thigh
+415,Raw beef hamburger patty
+416,Fried beef hamburger patty
+417,Grilled beef hamburger patty
+418,Raw chicken sausage
+419,Fried chicken sausage
+420,Grilled chicken sausage
+421,Raw pork sausage
+422,Fried pork sausage
+423,Grilled pork sausage
+424,Mortadela (Brazilian bologna-style sausage)
+425,Roasted frozen turkey
+426,Raw frozen turkey
+427,Raw pork chop
+428,Fried pork chop
+429,Grilled pork chop
+430,Roasted pork ribs
+431,Raw pork ribs
+432,Roasted pork loin
+433,Raw pork loin
+434,Raw salted pork ear
+435,Roasted pork leg
+436,Raw pork leg
+437,Raw salted pork tail
+438,Ham with fat cap
+439,Ham without fat cap
+440,Baked kibbeh
+441,Raw kibbeh
+442,Fried kibbeh
+443,Salami
+444,Raw toucinho (skin-on pork fat)
+445,Fried toucinho (skin-on pork fat)
+446,Peach-flavored dairy beverage
+447,Table cream
+448,Plain yogurt
+449,Nonfat plain yogurt
+451,Strawberry-flavored yogurt
+452,Peach-flavored yogurt
+453,Condensed milk
+454,Goat milk
+455,Chocolate-flavored cow's milk
+456,Nonfat cow's milk powder
+457,UHT nonfat cow's milk
+458,Whole cow's milk
+459,Whole cow's milk powder
+460,Fermented milk
+461,Minas frescal cheese (Brazilian fresh cheese)
+462,Minas meia-cura cheese (Brazilian semi-cured cheese)
+463,Mozzarella cheese
+464,Parmesan cheese
+465,Pasteurized processed cheese
+466,Strawberry petit suisse cheese
+467,Prato cheese (Brazilian semi-soft cheese)
+468,Creamy requeijão (Brazilian cheese spread)
+469,Ricotta cheese
+470,"Sports drink, assorted flavors"
+471,10% coffee infusion
+473,Sugarcane juice
+474,Pilsner beer
+475,5% fennel infusion
+476,5% mate infusion
+477,5% black tea infusion
+478,Coconut water
+479,Tonic water
+480,Cola soft drink
+481,Guaraná soft drink
+482,Orange soft drink
+483,Lemon soft drink
+484,Cheese omelet
+485,Raw whole quail egg
+486,"Chicken egg white, cooked for 10 minutes"
+487,"Chicken egg yolk, cooked for 10 minutes"
+488,"Whole chicken egg, cooked for 10 minutes"
+489,Raw whole chicken egg
+490,Fried whole chicken egg
+491,Chocolate drink powder
+492,Crystal sugar
+493,Brown sugar
+494,Refined sugar
+495,Milk chocolate
+496,Milk chocolate with Brazil nuts
+497,Dietetic milk chocolate
+498,Semisweet chocolate
+499,White cocada (Brazilian coconut confection)
+500,Creamy pumpkin preserve
+501,Creamy dulce de leche
+502,Plain mocotó jelly (Brazilian gelatin confection)
+503,Corn glucose syrup
+504,Maria-mole (Brazilian marshmallow-like confection)
+505,Toasted-coconut Maria-mole (Brazilian marshmallow-like confection)
+506,Quince paste
+507,Honey
+508,Melado (Brazilian cane syrup)
+509,Quindim (Brazilian coconut custard)
+510,Rapadura (Brazilian unrefined cane sugar block)
+511,Roasted ground coffee
+512,Cappuccino powder
+513,Baking powder
+514,Compressed baker's yeast cake
+515,Assorted-flavor gelatin powder
+518,Soy sauce
+519,Salt-based seasoning
+520,Preserved black olives
+521,Preserved green olives
+522,Aerosol whipped topping with vegetable fat
+523,Coconut milk
+524,Traditional mayonnaise with eggs
+525,Acarajé (Brazilian black-eyed pea fritter)
+526,Arroz carreteiro (Brazilian rice-and-beef dish)
+527,Baião de dois (Brazilian rice and cowpea dish)
+528,Barreado (Brazilian slow-cooked beef stew)
+529,Bife à cavalo made with striploin (Brazilian steak topped with egg)
+530,Bolinho de arroz (Brazilian rice fritter)
+531,Camarão à baiana (Bahian-style shrimp dish)
+532,Stuffed cabbage roll
+533,Cooked corn couscous with salt
+534,Cuscuz paulista (São Paulo-style savory couscous)
+535,Cuxá sauce (Brazilian roselle-leaf sauce)
+536,Dobradinha (Brazilian tripe stew)
+537,Beef stroganoff
+538,Chicken stroganoff
+539,Minas Gerais-style feijão tropeiro (Brazilian bean dish)
+540,Feijoada (Brazilian black bean stew)
+541,Chicken seasoned with açafrão
+542,Pasta with Bolognese sauce
+543,Maniçoba (Brazilian cassava-leaf stew)
+544,Quibebe (Brazilian squash stew)
+545,Vegetable salad with mayonnaise
+546,Steamed vegetable salad
+547,Chicken salpicão (Brazilian cold salad)
+548,Sarapatel (Brazilian offal stew)
+549,Tabbouleh
+550,Tacacá (Brazilian Amazonian tucupi soup)
+551,Brazilian tapioca crepe with butter
+552,Tucupi with pimenta-de-cheiro (Brazilian aromatic chili)
+553,Vaca atolada (Brazilian beef-and-cassava stew)
+554,Vatapá (Brazilian savory paste)
+555,Virado à paulista (São Paulo-style bean dish)
+556,Yakisoba
+557,Raw peanut kernels
+558,Roasted salted peanuts
+559,Peas in pods
+560,"Canned peas, drained"
+561,Cooked carioca beans
+562,Raw carioca beans
+563,Cooked black-eyed peas
+564,Raw black-eyed peas
+565,Cooked Jalo beans
+566,Raw Jalo beans
+567,Cooked black beans
+568,Raw black beans
+569,Cooked rajado beans
+570,Raw rajado beans
+571,Cooked rosinha beans
+572,Raw rosinha beans
+573,Cooked roxo beans
+574,Raw roxo beans
+575,Raw chickpeas
+576,Raw pigeon peas
+577,Cooked lentils
+578,Raw lentils
+579,Peanut paçoca (Brazilian crumbly peanut confection)
+580,Peanut pé-de-moleque (Brazilian peanut brittle)
+581,Soy flour
+582,Plain liquid soy extract (soy beverage)
+583,Soluble soy extract powder
+584,Tofu
+585,Raw lupin beans
+586,Preserved lupin beans
+587,Roasted salted almonds
+588,Roasted salted cashews
+589,Raw Brazil nuts
+590,Raw coconut
+592,Raw babassu mesocarp flour
+593,Sesame seeds
+594,Flaxseeds
+595,Cooked pinhão (Brazilian araucaria seed)
+596,Cooked peach palm fruit
+597,Raw walnuts

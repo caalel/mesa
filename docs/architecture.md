@@ -26,17 +26,24 @@ focused business and data-import operations.
 
 ### Components
 
-* `Food` represents a persisted food and its nutritional data per 100 g.
+* `Food` represents a persisted food and its nutritional data per 100 g. Its
+  `localized_name` accessor returns the name for the active locale.
 * `NutritionalComparator` is the full-page Livewire component for food selection,
   weight validation, summaries, and comparison results.
 * `CompareFoodsService` calculates the equivalent weight from caloric values.
 * `NutritionalValuesCalculatorService` calculates a nutritional value for a given
   weight.
-* `FoodSearchService` queries and ranks Portuguese food-name search results.
+* `FoodSearchService` queries and ranks food-name search results in the active
+  locale.
 * `FoodImportService` validates compatible CSV rows and imports them with upserts.
+* `FoodTranslationFileGeneratorService` validates the reviewed editorial catalog
+  against the canonical source and writes the operational translation CSV.
+* `GenerateFoodTranslationsCommand` exposes translation-file generation through
+  Artisan.
 * `ImportFoodsCommand` exposes CSV imports through Artisan.
 * `FoodSeeder` imports the official CSV through `FoodImportService`.
 * `DatabaseSeeder` calls `FoodSeeder`.
+* `SetLocale` resolves the active locale for every web request.
 
 ## HTTP Routes
 
@@ -53,26 +60,39 @@ Renders `NutritionalComparator`.
 ```text
 GET  /foods/search
 POST /compare
+POST /locale/{locale}
 ```
 
 The Livewire interface uses services directly and does not call these endpoints
-internally.
+internally. `POST /locale/{locale}` accepts `pt_BR` and `en`, stores the selection
+in the session, and redirects back.
 
-### Artisan command
+### Artisan Commands
 
-`foods:import` is an Artisan command, not an HTTP route.
+`foods:import` and `foods:generate-translations` are Artisan commands, not HTTP
+routes.
 
-## Food Search
+## Localization and Food Search
 
-Food searches use `name_pt`. Every searched term is required, but terms do not
-need to be contiguous in the food name. The query returns at most eight results.
+`SetLocale` uses a valid session locale first. Without one, it evaluates the
+`Accept-Language` header: English maps to `en`, any Portuguese variant such as
+`pt-BR` or `pt-PT` maps to `pt_BR`, and unsupported languages default to `pt_BR`.
+The header selector submits to `POST /locale/{locale}` for manual switching.
+
+`Food::localized_name` returns `name_pt` for `pt_BR` and `name_en` for `en`.
+Food searches use only that same locale-specific column; there is no fallback
+between food-name languages. The Livewire component, its Blade components, and
+the food-search HTTP endpoint all present `localized_name`.
+
+Every searched term is required, but terms do not need to be contiguous in the
+food name. The query returns at most eight results.
 
 Results are ranked in the database as follows:
 
 1. names that start with the full search string;
 2. names that start with the first searched term;
 3. other names that contain every searched term;
-4. alphabetical order by `name_pt` within the same level.
+4. alphabetical order by the active locale's name column within the same level.
 
 ## Caloric Comparison
 
@@ -85,7 +105,7 @@ input state. The weight must be greater than zero and no more than 10,000 g.
 
 The same food may be selected on both sides. Foods with zero or negative calories
 cannot produce a caloric equivalence. Food summaries and comparison results use
-pt-BR number formatting.
+number formatting for the active locale.
 
 ## Persistence and Source Identity
 
@@ -106,25 +126,31 @@ created_at
 updated_at
 ```
 
-`data_source`, `source_code`, and `source_version` form a unique external source
+`data_source` + `source_version` + `source_code` form a unique external source
 identity. This constraint lets imports be idempotent for a source and version.
 
 ## Data Pipeline
 
 ```text
-TACO 4
-→ brolesi/taco
-→ explicit overrides
-→ preparation script
+taco-v4-en-translation-catalog.csv
+→ foods:generate-translations
+→ taco-v4-en-translations.csv
+→ scripts/prepare_taco_csv.php
 → taco-v4.csv
-→ FoodImportService
-→ database
+→ FoodSeeder or foods:import
+→ foods table
 ```
 
-TACO 4 is the primary dataset. The preparation script generates the official
-`database/data/foods/taco-v4.csv` file. USDA FoodData Central values are used only
-in documented overrides of that prepared dataset, never as a runtime API or
-fallback.
+TACO 4, normalized through `brolesi/taco`, is the primary dataset. The preparation
+script combines it with explicit overrides and the operational translation CSV to
+generate `database/data/foods/taco-v4.csv`. The translation generator validates
+the editorial catalog against its configured canonical source before writing its
+output. USDA FoodData Central values are used only in documented overrides of the
+prepared dataset, never as a runtime API or fallback.
+
+The canonical CSV and its required generated inputs are versioned. A normal clean
+clone can run migrations and seed directly; generation and preparation are dataset
+maintenance operations, not installation prerequisites.
 
 Scientific provenance, transformations, overrides, and attribution belong in
 [`docs/data-sources.md`](data-sources.md).
@@ -137,11 +163,16 @@ php artisan foods:import --dry-run
 php artisan foods:import --path=/path/to/custom-foods.csv
 php artisan db:seed
 php artisan migrate:fresh --seed
+php artisan foods:generate-translations
+php artisan foods:generate-translations --catalog=/path/to/catalog.csv --source=/path/to/canonical-foods.csv --output=/path/to/translations.csv
 ```
 
 `--dry-run` validates a CSV without persisting rows. The `--path` option allows a
 custom path to be provided for another compatible CSV file. The command and seeder
 reuse `FoodImportService`, whose `upsert()` operation keeps imports idempotent.
+`foods:generate-translations` accepts optional `--catalog`, `--source`, and
+`--output` paths. Details of source provenance and the regeneration workflow belong
+in [`docs/data-sources.md`](data-sources.md).
 
 ## Databases
 

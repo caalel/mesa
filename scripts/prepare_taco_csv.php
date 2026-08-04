@@ -9,7 +9,7 @@ declare(strict_types=1);
  *
  * @return array{records: int, overridden: int, removed: int, empty_calories: int}
  */
-function prepareTacoCsv(string $inputPath, string $outputPath, string $overridesPath): array
+function prepareTacoCsv(string $inputPath, string $outputPath, string $overridesPath, string $translationsPath): array
 {
     $input = fopen($inputPath, 'r');
 
@@ -58,6 +58,31 @@ function prepareTacoCsv(string $inputPath, string $outputPath, string $overrides
     foreach (array_keys($overrides) as $sourceCode) {
         if (! array_key_exists($sourceCode, $sourceCodes)) {
             throw new InvalidArgumentException("Override source_code not found in input CSV: {$sourceCode}");
+        }
+    }
+
+    $finalSourceCodes = [];
+
+    foreach ($inputRows as $row) {
+        $sourceCode = $row[$columnIndexes['numero_alimento']] ?? '';
+        $decision = $overrides[$sourceCode] ?? null;
+
+        if ($decision === null || $decision['action'] !== 'remove') {
+            $finalSourceCodes[$sourceCode] = true;
+        }
+    }
+
+    $translations = loadTacoTranslations($translationsPath);
+
+    foreach (array_keys($translations) as $sourceCode) {
+        if (! array_key_exists($sourceCode, $finalSourceCodes)) {
+            throw new InvalidArgumentException("Translation source_code not found in final CSV: {$sourceCode}");
+        }
+    }
+
+    foreach (array_keys($finalSourceCodes) as $sourceCode) {
+        if (! array_key_exists($sourceCode, $translations)) {
+            throw new InvalidArgumentException("Missing translation for source_code: {$sourceCode}");
         }
     }
 
@@ -111,9 +136,8 @@ function prepareTacoCsv(string $inputPath, string $outputPath, string $overrides
         // Preserve source precision, empty fields, and scientific notation without rounding.
         fputcsv($output, [
             $sourceCode,
-            $row[$columnIndexes['descricao']] ?? '',
-            // English names will come from a separate reviewed translation dataset.
-            '',
+            trim($row[$columnIndexes['descricao']] ?? ''),
+            $translations[$sourceCode],
             $calories,
             $protein,
             $carbohydrates,
@@ -227,14 +251,66 @@ function loadTacoOverrides(string $overridesPath): array
     return $overrides;
 }
 
+/**
+ * @return array<string, string>
+ */
+function loadTacoTranslations(string $translationsPath): array
+{
+    $translationsFile = @fopen($translationsPath, 'r');
+
+    if ($translationsFile === false) {
+        throw new RuntimeException("Could not open translations CSV: {$translationsPath}");
+    }
+
+    $header = fgetcsv($translationsFile, null, ',', '"', '');
+
+    if ($header !== ['source_code', 'name_en']) {
+        fclose($translationsFile);
+
+        throw new InvalidArgumentException('Translations CSV header must be source_code,name_en');
+    }
+
+    $translations = [];
+
+    while (($row = fgetcsv($translationsFile, null, ',', '"', '')) !== false) {
+        $sourceCode = trim($row[0] ?? '');
+        $nameEn = trim($row[1] ?? '');
+
+        if ($sourceCode === '') {
+            fclose($translationsFile);
+
+            throw new InvalidArgumentException('Translation source_code cannot be empty');
+        }
+
+        if ($nameEn === '') {
+            fclose($translationsFile);
+
+            throw new InvalidArgumentException("Translation name_en cannot be empty for source_code: {$sourceCode}");
+        }
+
+        if (array_key_exists($sourceCode, $translations)) {
+            fclose($translationsFile);
+
+            throw new InvalidArgumentException("Duplicate translation source_code: {$sourceCode}");
+        }
+
+        $translations[$sourceCode] = $nameEn;
+    }
+
+    fclose($translationsFile);
+
+    return $translations;
+}
+
 if (PHP_SAPI === 'cli' && realpath($_SERVER['SCRIPT_FILENAME'] ?? '') === __FILE__) {
     $projectPath = dirname(__DIR__);
     $inputPath = $argv[1] ?? $projectPath.'/database/data/foods/taco-composicao-brolesi.csv';
     $outputPath = $argv[2] ?? $projectPath.'/database/data/foods/taco-v4.csv';
     $overridesPath = $argv[3] ?? $projectPath.'/database/data/foods/taco-v4-overrides.csv';
+    $translationsPath = $argv[4] ?? $projectPath.'/database/data/foods/taco-v4-en-translations.csv';
 
     try {
-        $result = prepareTacoCsv($inputPath, $outputPath, $overridesPath);
+        $result = prepareTacoCsv($inputPath, $outputPath, $overridesPath, $translationsPath);
 
         fwrite(STDOUT, "Generated {$result['records']} records.\n");
         fwrite(STDOUT, "Overridden records: {$result['overridden']}.\n");

@@ -11,4 +11,12 @@ class Food extends Model
     use HasFactory;
 
     protected $table = 'foods';
+
+    public function getLocalizedNameAttribute(): string
+    {
+        return match (app()->getLocale()) {
+            'pt_BR' => $this->name_pt,
+            'en' => $this->name_en,
+        };
+    }
 }

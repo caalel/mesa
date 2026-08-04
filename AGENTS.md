@@ -49,8 +49,8 @@
 
 - User-facing interface strings must use Laravel localization keys, not hardcoded text.
 - Interface translations and food-name translations are separate concerns.
-- Food names use explicit database columns: `name_pt` is required and `name_en` is
-  nullable.
+- Food names use independent explicit database columns: `name_pt` and `name_en` are
+  both required.
 - Do not introduce a translatable package or JSON translation fields without an
   explicit architectural decision.
 

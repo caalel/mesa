@@ -136,9 +136,9 @@ class NutritionalComparator extends Component
 
         $this->comparisonResult = [
             'food_a_weight' => $this->formatNumber($foodAWeight),
-            'food_a_name' => $foodA->name_pt,
+            'food_a_name' => $foodA->localized_name,
             'food_b_weight' => $foodBWeightIsLessThanMinimum ? $this->formatNumber(self::MIN_DISPLAYABLE_POSITIVE_VALUE) : $this->formatNumber($foodBWeight),
-            'food_b_name' => $foodB->name_pt,
+            'food_b_name' => $foodB->localized_name,
             'food_b_weight_is_less_than_minimum' => $foodBWeightIsLessThanMinimum,
         ];
 

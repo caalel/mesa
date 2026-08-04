@@ -8,11 +8,13 @@ MESA calculates caloric equivalence between foods. The user selects a reference 
 
 ## About the project
 
-MESA is a Laravel and Livewire MVP focused on clear, practical food comparison. The current interface is localized in pt-BR, and all nutritional data is prepared and stored locally, so food search and comparison do not depend on external APIs at runtime.
+MESA is a Laravel and Livewire MVP focused on clear, practical food comparison. Its interface is available in Brazilian Portuguese (`pt_BR`) and English (`en`). All nutritional data is prepared and stored locally, so food search and comparison do not depend on external APIs at runtime.
 
 ## Features
 
-- Multi-term food search with relevance-based result ranking.
+- Multi-term food search with relevance-based result ranking in the active locale.
+- Localized food names and interface copy in `pt_BR` and `en`, without fallback between food-name languages.
+- Initial language detection from `Accept-Language`, with a manual language selector remembered in the session.
 - A maximum of eight search results.
 - Selection and replacement of Food A and Food B.
 - Weight input that accepts a point or comma as the decimal separator.
@@ -20,7 +22,7 @@ MESA is a Laravel and Livewire MVP focused on clear, practical food comparison. 
 - Selection of the same food on both sides.
 - Calorie summary for the reference food.
 - Approximate caloric-equivalence calculation.
-- pt-BR number formatting, with positive values below `0.01` displayed as `< 0,01` instead of zero.
+- Locale-aware number formatting, with positive values below `0.01` displayed as less than `0.01` instead of zero.
 - Automatic smooth scrolling to the result.
 - Responsive interface.
 - Local prepared nutritional dataset.
@@ -110,7 +112,9 @@ php artisan migrate --seed
 npm run build
 ```
 
-`migrate --seed` creates the schema and imports the official food dataset.
+`migrate --seed` creates the schema and imports the official food dataset. A clean clone does not need to regenerate food files before this step: the required generated CSVs are versioned.
+
+`php artisan migrate:fresh --seed` is available for a full local reset, but it is destructive: it drops the existing database tables before recreating and seeding them.
 
 After creating the MySQL database and configuring its connection in `.env`, you
 may run the optional setup shortcut:
@@ -149,6 +153,19 @@ php artisan foods:import
 The dry run validates the CSV without persisting data. The normal command inserts or updates valid foods, and imports are idempotent. By default, the command uses `database/data/foods/taco-v4.csv`.
 
 `php artisan migrate --seed` already imports the official dataset through the seeder. See [Architecture](docs/architecture.md) for advanced import details.
+
+## Dataset maintenance
+
+Normal installation and seeding use the versioned canonical dataset. Regenerate data only when maintaining the editorial translations or documented source decisions:
+
+```bash
+php artisan foods:generate-translations
+php scripts/prepare_taco_csv.php
+php artisan foods:import --dry-run
+php artisan foods:import
+```
+
+The generation command produces the operational English translation file, and the preparation script combines the TACO source, reviewed overrides, and translations into the canonical CSV. Review the generated diffs before importing or committing them. See [Data sources and preparation](docs/data-sources.md) for the complete pipeline and command options.
 
 ## Test environment
 

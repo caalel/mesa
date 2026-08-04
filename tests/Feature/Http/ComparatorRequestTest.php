@@ -5,6 +5,35 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
+/*
+|--------------------------------------------------------------------------
+| Helpers
+|--------------------------------------------------------------------------
+*/
+
+function validComparatorPayload(array $overrides = []): array
+{
+    $foodA = Food::factory()->create([
+        'name_pt' => 'Banana',
+    ]);
+
+    $foodB = Food::factory()->create([
+        'name_pt' => 'Maçã',
+    ]);
+
+    return array_merge([
+        'food_a_id' => $foodA->id,
+        'food_b_id' => $foodB->id,
+        'food_a_weight' => 100,
+    ], $overrides);
+}
+
+/*
+|--------------------------------------------------------------------------
+| Tests
+|--------------------------------------------------------------------------
+*/
+
 it('returns 422 when food_a_id is missing', function () {
     $payload = validComparatorPayload();
 
@@ -84,20 +113,3 @@ it('returns 422 when food_b_id does not exist', function () {
         ->assertUnprocessable()
         ->assertInvalid('food_b_id');
 });
-
-function validComparatorPayload(array $overrides = []): array
-{
-    $foodA = Food::factory()->create([
-        'name_pt' => 'Banana',
-    ]);
-
-    $foodB = Food::factory()->create([
-        'name_pt' => 'Maçã',
-    ]);
-
-    return array_merge([
-        'food_a_id' => $foodA->id,
-        'food_b_id' => $foodB->id,
-        'food_a_weight' => 100,
-    ], $overrides);
-}

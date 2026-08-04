@@ -7,14 +7,26 @@ use Illuminate\Support\Facades\File;
 
 uses(RefreshDatabase::class);
 
+/*
+|--------------------------------------------------------------------------
+| Helpers
+|--------------------------------------------------------------------------
+*/
+
 afterEach(function () {
-    foreach (glob(sys_get_temp_dir().DIRECTORY_SEPARATOR.'food-import-feature-*') ?: [] as $path) {
+    foreach (glob(sys_get_temp_dir().DIRECTORY_SEPARATOR.'fif*.tmp') ?: [] as $path) {
         @unlink($path);
     }
 });
 
+/*
+|--------------------------------------------------------------------------
+| Tests
+|--------------------------------------------------------------------------
+*/
+
 it('inserts valid foods from a CSV import', function () {
-    $csvPath = tempnam(sys_get_temp_dir(), 'food-import-feature-');
+    $csvPath = tempnam(sys_get_temp_dir(), 'fif');
 
     if ($csvPath === false) {
         throw new RuntimeException('Could not create CSV fixture.');
@@ -22,7 +34,7 @@ it('inserts valid foods from a CSV import', function () {
 
     File::put($csvPath, <<<CSV
         source_code,name_pt,name_en,calories_per_100g,protein_per_100g,carbs_per_100g,fat_per_100g
-        001,Leite desnatado,,34,3.37,4.96,0.08
+        001,Leite desnatado,Skim milk,34,3.37,4.96,0.08
         002,Leite integral,Whole milk,61,3.15,4.80,3.25
         CSV);
 
@@ -53,7 +65,7 @@ it('inserts valid foods from a CSV import', function () {
 
     expect($persistedFood)->toBe([
         'name_pt' => 'Leite desnatado',
-        'name_en' => null,
+        'name_en' => 'Skim milk',
         'calories_per_100g' => 34.0,
         'data_source' => 'taco',
         'source_code' => '001',
@@ -67,7 +79,7 @@ it('inserts valid foods from a CSV import', function () {
 });
 
 it('does not duplicate foods when importing the same CSV again', function () {
-    $csvPath = tempnam(sys_get_temp_dir(), 'food-import-feature-');
+    $csvPath = tempnam(sys_get_temp_dir(), 'fif');
 
     if ($csvPath === false) {
         throw new RuntimeException('Could not create CSV fixture.');
@@ -75,8 +87,8 @@ it('does not duplicate foods when importing the same CSV again', function () {
 
     File::put($csvPath, <<<CSV
         source_code,name_pt,name_en,calories_per_100g,protein_per_100g,carbs_per_100g,fat_per_100g
-        001,Leite desnatado,,34,3.37,4.96,0.08
-        002,Leite integral,,61,3.15,4.80,3.25
+        001,Leite desnatado,Skim milk,34,3.37,4.96,0.08
+        002,Leite integral,Whole milk,61,3.15,4.80,3.25
         CSV);
 
     $service = new FoodImportService();
@@ -97,8 +109,8 @@ it('does not duplicate foods when importing the same CSV again', function () {
 });
 
 it('updates an existing food when its source identity is imported again', function () {
-    $initialCsvPath = tempnam(sys_get_temp_dir(), 'food-import-feature-');
-    $updatedCsvPath = tempnam(sys_get_temp_dir(), 'food-import-feature-');
+    $initialCsvPath = tempnam(sys_get_temp_dir(), 'fif');
+    $updatedCsvPath = tempnam(sys_get_temp_dir(), 'fif');
 
     if ($initialCsvPath === false || $updatedCsvPath === false) {
         throw new RuntimeException('Could not create CSV fixture.');
@@ -106,11 +118,11 @@ it('updates an existing food when its source identity is imported again', functi
 
     File::put($initialCsvPath, <<<CSV
         source_code,name_pt,name_en,calories_per_100g,protein_per_100g,carbs_per_100g,fat_per_100g
-        001,Leite desnatado,,34,3.37,4.96,0.08
+        001,Leite desnatado,Skim milk,34,3.37,4.96,0.08
         CSV);
     File::put($updatedCsvPath, <<<CSV
         source_code,name_pt,name_en,calories_per_100g,protein_per_100g,carbs_per_100g,fat_per_100g
-        001,Leite desnatado atualizado,,40,3.50,5,0.10
+        001,Leite desnatado atualizado,Updated skim milk,40,3.50,5,0.10
         CSV);
 
     $service = new FoodImportService();
@@ -149,7 +161,7 @@ it('updates an existing food when its source identity is imported again', functi
 });
 
 it('does not persist invalid food rows', function () {
-    $csvPath = tempnam(sys_get_temp_dir(), 'food-import-feature-');
+    $csvPath = tempnam(sys_get_temp_dir(), 'fif');
 
     if ($csvPath === false) {
         throw new RuntimeException('Could not create CSV fixture.');
@@ -157,8 +169,8 @@ it('does not persist invalid food rows', function () {
 
     File::put($csvPath, <<<CSV
         source_code,name_pt,name_en,calories_per_100g,protein_per_100g,carbs_per_100g,fat_per_100g
-        001,Leite desnatado,,34,3.37,4.96,0.08
-        002,Nutriente invalido,,invalid,1,2,3
+        001,Leite desnatado,Skim milk,34,3.37,4.96,0.08
+        002,Nutriente invalido,Invalid nutrient,invalid,1,2,3
         CSV);
 
     $service = new FoodImportService();

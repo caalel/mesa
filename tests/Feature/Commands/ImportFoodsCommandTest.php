@@ -6,14 +6,26 @@ use Illuminate\Support\Facades\File;
 
 uses(RefreshDatabase::class);
 
+/*
+|--------------------------------------------------------------------------
+| Helpers
+|--------------------------------------------------------------------------
+*/
+
 afterEach(function () {
-    foreach (glob(sys_get_temp_dir().DIRECTORY_SEPARATOR.'foods-import-command-*') ?: [] as $path) {
+    foreach (glob(sys_get_temp_dir().DIRECTORY_SEPARATOR.'ifi*.tmp') ?: [] as $path) {
         @unlink($path);
     }
 });
 
+/*
+|--------------------------------------------------------------------------
+| Tests
+|--------------------------------------------------------------------------
+*/
+
 it('does not persist foods during a dry run', function () {
-    $csvPath = tempnam(sys_get_temp_dir(), 'foods-import-command-');
+    $csvPath = tempnam(sys_get_temp_dir(), 'ifi');
 
     if ($csvPath === false) {
         throw new RuntimeException('Could not create CSV fixture.');
@@ -21,8 +33,8 @@ it('does not persist foods during a dry run', function () {
 
     File::put($csvPath, <<<CSV
         source_code,name_pt,name_en,calories_per_100g,protein_per_100g,carbs_per_100g,fat_per_100g
-        001,Leite desnatado,,34,3.37,4.96,0.08
-        002,Leite integral,,61,3.15,4.80,3.25
+        001,Leite desnatado,Skim milk,34,3.37,4.96,0.08
+        002,Leite integral,Whole milk,61,3.15,4.80,3.25
         CSV);
 
     $this->artisan('foods:import', [
@@ -37,7 +49,7 @@ it('does not persist foods during a dry run', function () {
 });
 
 it('persists foods during a normal import', function () {
-    $csvPath = tempnam(sys_get_temp_dir(), 'foods-import-command-');
+    $csvPath = tempnam(sys_get_temp_dir(), 'ifi');
 
     if ($csvPath === false) {
         throw new RuntimeException('Could not create CSV fixture.');
@@ -45,8 +57,8 @@ it('persists foods during a normal import', function () {
 
     File::put($csvPath, <<<CSV
         source_code,name_pt,name_en,calories_per_100g,protein_per_100g,carbs_per_100g,fat_per_100g
-        001,Leite desnatado,,34,3.37,4.96,0.08
-        002,Leite integral,,61,3.15,4.80,3.25
+        001,Leite desnatado,Skim milk,34,3.37,4.96,0.08
+        002,Leite integral,Whole milk,61,3.15,4.80,3.25
         CSV);
 
     $this->artisan('foods:import', [
@@ -60,7 +72,7 @@ it('persists foods during a normal import', function () {
 });
 
 it('displays invalid rows while persisting valid foods', function () {
-    $csvPath = tempnam(sys_get_temp_dir(), 'foods-import-command-');
+    $csvPath = tempnam(sys_get_temp_dir(), 'ifi');
 
     if ($csvPath === false) {
         throw new RuntimeException('Could not create CSV fixture.');
@@ -68,8 +80,8 @@ it('displays invalid rows while persisting valid foods', function () {
 
     File::put($csvPath, <<<CSV
         source_code,name_pt,name_en,calories_per_100g,protein_per_100g,carbs_per_100g,fat_per_100g
-        001,Leite desnatado,,34,3.37,4.96,0.08
-        002,Nutriente invalido,,invalid,1,2,3
+        001,Leite desnatado,Skim milk,34,3.37,4.96,0.08
+        002,Nutriente invalido,Invalid nutrient,invalid,1,2,3
         CSV);
 
     $this->artisan('foods:import', [
@@ -84,7 +96,7 @@ it('displays invalid rows while persisting valid foods', function () {
 });
 
 it('fails when the CSV header is invalid', function () {
-    $csvPath = tempnam(sys_get_temp_dir(), 'foods-import-command-');
+    $csvPath = tempnam(sys_get_temp_dir(), 'ifi');
 
     if ($csvPath === false) {
         throw new RuntimeException('Could not create CSV fixture.');
