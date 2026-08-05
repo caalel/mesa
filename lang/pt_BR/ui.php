@@ -4,6 +4,15 @@ return [
     'navigation' => [
         'comparator' => 'Comparador',
     ],
+    'homepage' => [
+        'name' => 'MESA',
+        'full_name' => 'Medidor de Equivalência e Síntese Alimentar',
+        'introduction' => 'Compare alimentos, monte refeições e entenda melhor as relações entre calorias e macronutrientes.',
+        'tools_title' => 'Ferramentas',
+        'comparator_title' => 'Comparador nutricional',
+        'comparator_description' => 'Descubra a quantidade equivalente entre dois alimentos com base nas calorias.',
+        'open_comparator' => 'Abrir comparador',
+    ],
     'compare' => [
         'title' => 'Compare alimentos',
         'subtitle' => 'Descubra quanto de um alimento equivale a outro em calorias.',
