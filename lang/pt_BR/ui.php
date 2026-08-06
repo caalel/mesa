@@ -16,6 +16,11 @@ return [
     'meals' => [
         'title' => 'Refeições',
         'subtitle' => 'Monte refeições e acompanhe calorias e macronutrientes em tempo real.',
+        'empty_title' => 'Nenhuma refeição criada ainda.',
+        'empty_description' => 'Crie uma refeição para começar a organizar seus alimentos e acompanhar os totais nutricionais.',
+        'create' => 'Criar refeição',
+        'new_meal' => 'Nova refeição',
+        'name_label' => 'Nome da refeição',
     ],
     'compare' => [
         'title' => 'Compare alimentos',

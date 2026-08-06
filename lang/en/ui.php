@@ -16,6 +16,11 @@ return [
     'meals' => [
         'title' => 'Meals',
         'subtitle' => 'Build meals and track calories and macronutrients in real time.',
+        'empty_title' => 'No meals created yet.',
+        'empty_description' => 'Create a meal to start organizing your foods and tracking nutritional totals.',
+        'create' => 'Create meal',
+        'new_meal' => 'New meal',
+        'name_label' => 'Meal name',
     ],
     'compare' => [
         'title' => 'Compare foods',
