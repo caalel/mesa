@@ -13,6 +13,10 @@ return [
         'comparator_description' => 'Find the equivalent amount between two foods based on calories.',
         'open_comparator' => 'Open comparator',
     ],
+    'meals' => [
+        'title' => 'Meals',
+        'subtitle' => 'Build meals and track calories and macronutrients in real time.',
+    ],
     'compare' => [
         'title' => 'Compare foods',
         'subtitle' => 'Find out how much of one food is equivalent to another in calories.',
