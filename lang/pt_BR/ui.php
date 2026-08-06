@@ -21,6 +21,8 @@ return [
         'create' => 'Criar refeição',
         'new_meal' => 'Nova refeição',
         'name_label' => 'Nome da refeição',
+        'cancel' => 'Cancelar',
+        'name_placeholder' => 'Ex.: Café da manhã',
     ],
     'compare' => [
         'title' => 'Compare alimentos',

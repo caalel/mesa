@@ -21,6 +21,8 @@ return [
         'create' => 'Create meal',
         'new_meal' => 'New meal',
         'name_label' => 'Meal name',
+        'cancel' => 'Cancel',
+        'name_placeholder' => 'e.g. Breakfast',
     ],
     'compare' => [
         'title' => 'Compare foods',

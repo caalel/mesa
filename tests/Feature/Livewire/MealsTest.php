@@ -39,6 +39,21 @@ it('opens the editor for a new meal', function () {
         ->assertSeeHtml('data-testid="submit-meal"');
 });
 
+it('cancels the new meal editor', function () {
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->set('mealName', 'Temporary meal')
+        ->assertSet('isMealEditorOpen', true)
+        ->assertSet('mealName', 'Temporary meal')
+        ->assertSeeHtml('data-testid="meal-editor"')
+        ->call('cancelMealEditor')
+        ->assertSet('isMealEditorOpen', false)
+        ->assertSet('editingMealId', null)
+        ->assertSet('mealName', '')
+        ->assertDontSeeHtml('data-testid="meal-editor"')
+        ->assertSeeHtml('data-testid="create-meal"');
+});
+
 it('renders the empty state and new meal editor in Brazilian Portuguese', function () {
     $component = Livewire::test(Meals::class);
 

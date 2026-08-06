@@ -24,4 +24,11 @@ class Meals extends Component
         $this->editingMealId = null;
         $this->mealName = '';
     }
+
+    public function cancelMealEditor(): void
+    {
+        $this->isMealEditorOpen = false;
+        $this->editingMealId = null;
+        $this->mealName = '';
+    }
 }
