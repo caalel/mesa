@@ -39,8 +39,14 @@
   HTTP, Livewire, commands, seeders, and integration flows.
 - Prefer explicit expectations over indirect assertions.
 - Avoid long chains of `and()`.
-- Use localization keys or translated strings in UI assertions instead of duplicating
-  interface copy.
+- In localization tests, assert literal interface strings for each tested locale.
+- In behavioral UI tests, prefer `data-testid`, component state, and the presence
+  or absence of structural elements; avoid text assertions when the copy is not
+  relevant to the behavior.
+- Do not use localization helpers such as `__()` as a substitute for structural
+  assertions.
+- Keep tests for shared UI elements, such as the global header, in dedicated
+  layout test files instead of coupling them to a specific page.
 - Tests must explicitly import the classes they use.
 - Never add aliases, autoload hacks, or unnecessary infrastructure to satisfy tests.
 - Tests may be refactored when their covered behavior remains unchanged.
