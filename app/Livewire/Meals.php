@@ -35,6 +35,11 @@ class Meals extends Component
         $this->isFoodModalOpen = true;
     }
 
+    public function closeFoodModal(): void
+    {
+        $this->isFoodModalOpen = false;
+    }
+
     public function cancelMealEditor(): void
     {
         $this->isMealEditorOpen = false;

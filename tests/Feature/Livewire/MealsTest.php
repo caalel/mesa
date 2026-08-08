@@ -60,6 +60,15 @@ it('opens the food modal', function () {
         ->assertSet('isFoodModalOpen', true);
 });
 
+it('closes the food modal without closing the meal editor', function () {
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->call('openFoodModal')
+        ->call('closeFoodModal')
+        ->assertSet('isFoodModalOpen', false)
+        ->assertSet('isMealEditorOpen', true);
+});
+
 it('renders the food modal only after opening it', function () {
     Livewire::test(Meals::class)
         ->call('createMeal')
