@@ -9,6 +9,8 @@ class Meals extends Component
 {
     public bool $isMealEditorOpen = false;
 
+    public bool $isFoodModalOpen = false;
+
     public ?string $editingMealId = null;
 
     public string $mealName = '';
@@ -26,6 +28,11 @@ class Meals extends Component
         $this->editingMealId = null;
         $this->mealName = '';
         $this->mealItems = [];
+    }
+
+    public function openFoodModal(): void
+    {
+        $this->isFoodModalOpen = true;
     }
 
     public function cancelMealEditor(): void
