@@ -18,7 +18,7 @@ return [
         'subtitle' => 'Descubra quanto de um alimento equivale a outro em calorias.',
         'food_a_section' => 'Alimento de referência',
         'search_food' => 'Buscar alimento',
-        'search_help' => 'Digite pelo menos 2 caracteres para buscar.',
+        'search_placeholder' => 'Digite o nome do alimento',
         'no_foods_found' => 'Nenhum alimento encontrado.',
         'quantity_label' => 'Quantidade',
         'quantity_placeholder' => 'Informe a quantidade em gramas.',

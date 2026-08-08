@@ -18,7 +18,7 @@ return [
         'subtitle' => 'Find out how much of one food is equivalent to another in calories.',
         'food_a_section' => 'Reference food',
         'search_food' => 'Search for a food',
-        'search_help' => 'Enter at least 2 characters to search.',
+        'search_placeholder' => 'Type the food name',
         'no_foods_found' => 'No foods found.',
         'quantity_label' => 'Amount',
         'quantity_placeholder' => 'Enter the amount in grams.',

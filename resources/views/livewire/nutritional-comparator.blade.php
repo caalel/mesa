@@ -17,10 +17,7 @@
                 @else
                     <div>
                         <label class="mt-6 block text-sm font-medium text-[var(--color-text-secondary)]" for="food-a-search">{{ __('ui.compare.search_food') }}</label>
-                        <input class="mt-2 h-12 w-full rounded-lg border border-[var(--color-border)] bg-transparent px-4 text-[var(--color-text-primary)] focus:border-[var(--color-primary-green)] focus:outline-none focus:ring-2 focus:ring-[var(--color-light-green)]" id="food-a-search" type="text" wire:model.live.debounce.300ms="foodASearch">
-                        @if ($foodAShouldShowSearchHelp)
-                            <p class="mt-2 text-sm text-[var(--color-text-secondary)]">{{ __('ui.compare.search_help') }}</p>
-                        @endif
+                        <input class="mt-2 h-12 w-full rounded-lg border border-[var(--color-border)] bg-transparent px-4 text-[var(--color-text-primary)] focus:border-[var(--color-primary-green)] focus:outline-none focus:ring-2 focus:ring-[var(--color-light-green)]" id="food-a-search" type="text" placeholder="{{ __('ui.compare.search_placeholder') }}" wire:model.live.debounce.300ms="foodASearch">
 
                         @if ($foodAResults->isNotEmpty())
                             <ul class="mt-3 overflow-hidden rounded-xl border border-[var(--color-border)]">
@@ -79,10 +76,7 @@
                 @else
                     <div>
                         <label class="mt-6 block text-sm font-medium text-[var(--color-text-secondary)]" for="food-b-search">{{ __('ui.compare.search_food') }}</label>
-                        <input class="mt-2 h-12 w-full rounded-lg border border-[var(--color-border)] bg-transparent px-4 text-[var(--color-text-primary)] focus:border-[var(--color-primary-green)] focus:outline-none focus:ring-2 focus:ring-[var(--color-light-green)]" id="food-b-search" type="text" wire:model.live.debounce.300ms="foodBSearch">
-                        @if ($foodBShouldShowSearchHelp)
-                            <p class="mt-2 text-sm text-[var(--color-text-secondary)]">{{ __('ui.compare.search_help') }}</p>
-                        @endif
+                        <input class="mt-2 h-12 w-full rounded-lg border border-[var(--color-border)] bg-transparent px-4 text-[var(--color-text-primary)] focus:border-[var(--color-primary-green)] focus:outline-none focus:ring-2 focus:ring-[var(--color-light-green)]" id="food-b-search" type="text" placeholder="{{ __('ui.compare.search_placeholder') }}" wire:model.live.debounce.300ms="foodBSearch">
 
                         @if ($foodBResults->isNotEmpty())
                             <ul class="mt-3 overflow-hidden rounded-xl border border-[var(--color-border)]">
