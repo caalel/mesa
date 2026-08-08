@@ -54,9 +54,9 @@ it('shows localized English names in Food A search results', function () {
         ->assertDontSee('Arroz integral');
 });
 
-it('does not show Food A results when the user types less than two characters', function () {
+it('shows Food A results when the user types one character', function () {
     Food::factory()->create([
-        'name_pt' => 'Banana',
+        'name_pt' => 'Zucchini',
         'calories_per_100g' => 89,
         'protein_per_100g' => 1.1,
         'carbs_per_100g' => 22.8,
@@ -64,25 +64,17 @@ it('does not show Food A results when the user types less than two characters', 
     ]);
 
     Livewire::test(NutritionalComparator::class)
-        ->set('foodASearch', 'B')
-        ->assertDontSee('Banana');
+        ->set('foodASearch', 'Z')
+        ->assertSee('Zucchini');
 });
 
-it('shows helpful text for the Food A search field', function () {
-    Livewire::test(NutritionalComparator::class)
-        ->assertSee(__('ui.compare.search_help'));
-});
+it('shows localized Portuguese placeholders for the food search fields', function () {
+    $component = Livewire::test(NutritionalComparator::class)
+        ->assertSeeHtml('id="food-a-search"')
+        ->assertSeeHtml('id="food-b-search"')
+        ->assertDontSee('Digite pelo menos 2 caracteres para buscar.');
 
-it('hides helpful text for the Food A search field when the search has two characters', function () {
-    $maca = Food::factory()->create([
-        'name_pt' => 'Maçã',
-        'calories_per_100g' => 52,
-    ]);
-
-    Livewire::test(NutritionalComparator::class)
-        ->call('selectFoodB', $maca->id)
-        ->set('foodASearch', 'Ba')
-        ->assertDontSee(__('ui.compare.search_help'));
+    expect(substr_count($component->html(), 'placeholder="Digite o nome do alimento"'))->toBe(2);
 });
 
 it('shows Food A results when the search has leading and trailing spaces', function () {
@@ -478,31 +470,15 @@ it('shows localized English names in Food B search results', function () {
         ->assertDontSee('Feijão preto');
 });
 
-it('does not show Food B results when the user types less than two characters', function () {
-    Food::factory()->create([
-        'name_pt' => 'Maçã',
-    ]);
+it('shows localized English placeholders for the food search fields', function () {
+    App::setLocale('en');
 
-    Livewire::test(NutritionalComparator::class)
-        ->set('foodBSearch', 'M')
-        ->assertDontSee('Maçã');
-});
+    $component = Livewire::test(NutritionalComparator::class)
+        ->assertSeeHtml('id="food-a-search"')
+        ->assertSeeHtml('id="food-b-search"')
+        ->assertDontSee('Enter at least 2 characters to search.');
 
-it('shows helpful text for the Food B search field', function () {
-    Livewire::test(NutritionalComparator::class)
-        ->assertSee(__('ui.compare.search_help'));
-});
-
-it('hides helpful text for the Food B search field when the search has two characters', function () {
-    $banana = Food::factory()->create([
-        'name_pt' => 'Banana',
-        'calories_per_100g' => 89,
-    ]);
-
-    Livewire::test(NutritionalComparator::class)
-        ->call('selectFoodA', $banana->id)
-        ->set('foodBSearch', 'Ma')
-        ->assertDontSee(__('ui.compare.search_help'));
+    expect(substr_count($component->html(), 'placeholder="Type the food name"'))->toBe(2);
 });
 
 it('shows Food B results when the search has leading and trailing spaces', function () {

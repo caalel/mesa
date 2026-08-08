@@ -71,8 +71,6 @@ class NutritionalComparator extends Component
             'comparisonResult' => $this->comparisonResult,
             'foodAHasNoResults' => $this->hasNoSearchResults($this->foodAId, $this->foodASearch, $foodAResults),
             'foodBHasNoResults' => $this->hasNoSearchResults($this->foodBId, $this->foodBSearch, $foodBResults),
-            'foodAShouldShowSearchHelp' => $this->shouldShowSearchHelp($this->foodAId, $this->foodASearch),
-            'foodBShouldShowSearchHelp' => $this->shouldShowSearchHelp($this->foodBId, $this->foodBSearch),
             'foodAWeightValidationMessage' => $this->foodAWeightValidationMessage(),
         ]);
     }
@@ -168,7 +166,7 @@ class NutritionalComparator extends Component
 
         $search = trim($search);
 
-        if (mb_strlen($search) < 2) {
+        if ($search === '') {
             return collect();
         }
 
@@ -180,11 +178,6 @@ class NutritionalComparator extends Component
         return $selectedFoodId === null
             && mb_strlen(trim($search)) >= 2
             && $results->isEmpty();
-    }
-
-    private function shouldShowSearchHelp(?int $selectedFoodId, string $search): bool
-    {
-        return $selectedFoodId === null && mb_strlen(trim($search)) < 2;
     }
 
     private function selectedFoodA(): ?Food
