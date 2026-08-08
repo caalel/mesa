@@ -133,6 +133,23 @@ it('shows the selected Food A and hides the search state when the user selects a
         ->assertSee(__('ui.compare.change_food'));
 });
 
+it('progressively reveals the Food A weight and summary after selecting a food', function () {
+    $banana = Food::factory()->create([
+        'name_pt' => 'Banana',
+        'calories_per_100g' => 128,
+    ]);
+
+    $component = Livewire::test(NutritionalComparator::class)
+        ->assertDontSeeHtml('id="food-a-quantity"')
+        ->assertDontSeeHtml('data-testid="food-a-summary"');
+
+    $component
+        ->call('selectFoodA', $banana->id)
+        ->set('foodAWeight', 50)
+        ->assertSeeHtml('id="food-a-quantity"')
+        ->assertSeeHtml('data-testid="food-a-summary"');
+});
+
 it('shows the localized English name for selected Food A', function () {
     App::setLocale('en');
 
@@ -417,7 +434,13 @@ it('shows a friendly message when Food A weight is greater than 10000 grams', fu
 });
 
 it('shows the translated quantity placeholder', function () {
+    $banana = Food::factory()->create([
+        'name_pt' => 'Banana',
+        'calories_per_100g' => 89,
+    ]);
+
     Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $banana->id)
         ->assertSeeHtml('placeholder="'.__('ui.compare.quantity_placeholder').'"');
 });
 
