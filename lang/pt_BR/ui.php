@@ -21,6 +21,7 @@ return [
         'create' => 'Criar refeição',
         'new_meal' => 'Nova refeição',
         'name_label' => 'Nome da refeição',
+        'add_food' => '+ Adicionar alimento',
         'cancel' => 'Cancelar',
         'name_placeholder' => 'Ex.: Café da manhã',
     ],

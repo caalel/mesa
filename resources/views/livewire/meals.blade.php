@@ -20,6 +20,12 @@
                 >
             </div>
 
+            <div class="flex justify-end">
+                <button class="cursor-pointer rounded-lg border border-[var(--color-border)] px-4 py-2.5 text-sm font-semibold text-[var(--color-primary-green)] transition-colors hover:bg-[var(--color-light-green)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-green)] focus:ring-offset-2" type="button" wire:click="openFoodModal" data-testid="open-food-modal">
+                    {{ __('ui.meals.add_food') }}
+                </button>
+            </div>
+
             <div class="flex flex-wrap items-center gap-3">
                 <button class="cursor-pointer rounded-lg bg-[var(--color-primary-green)] px-5 py-2.5 text-sm font-semibold text-white hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-green)] focus:ring-offset-2" type="button" data-testid="submit-meal">
                     {{ __('ui.meals.create') }}

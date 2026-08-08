@@ -46,6 +46,13 @@ it('starts a new meal without temporary items', function () {
         ->assertSet('mealItems', []);
 });
 
+it('renders the food modal trigger in the meal editor', function () {
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->assertSeeHtml('data-testid="open-food-modal"')
+        ->assertSeeHtml('wire:click="openFoodModal"');
+});
+
 it('opens the food modal', function () {
     Livewire::test(Meals::class)
         ->call('createMeal')

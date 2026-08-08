@@ -21,6 +21,7 @@ return [
         'create' => 'Create meal',
         'new_meal' => 'New meal',
         'name_label' => 'Meal name',
+        'add_food' => '+ Add food',
         'cancel' => 'Cancel',
         'name_placeholder' => 'e.g. Breakfast',
     ],
