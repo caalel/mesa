@@ -13,6 +13,8 @@ class Meals extends Component
 
     public string $mealName = '';
 
+    public array $mealItems = [];
+
     public function render(): View
     {
         return view('livewire.meals');
@@ -23,6 +25,7 @@ class Meals extends Component
         $this->isMealEditorOpen = true;
         $this->editingMealId = null;
         $this->mealName = '';
+        $this->mealItems = [];
     }
 
     public function cancelMealEditor(): void
@@ -30,5 +33,6 @@ class Meals extends Component
         $this->isMealEditorOpen = false;
         $this->editingMealId = null;
         $this->mealName = '';
+        $this->mealItems = [];
     }
 }
