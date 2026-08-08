@@ -51,9 +51,14 @@
     @if ($isFoodModalOpen)
         <div class="fixed inset-0 z-50 flex items-center justify-center bg-[var(--color-text-primary)]/25 p-4 sm:p-6" role="dialog" aria-modal="true" aria-labelledby="food-modal-title" data-testid="food-modal">
             <section class="max-h-[calc(100vh-2rem)] w-full max-w-[38.75rem] overflow-y-auto rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-xl sm:p-7">
-                <h2 class="text-xl font-semibold leading-tight text-[var(--color-text-primary)]" id="food-modal-title">
-                    {{ __('ui.meals.food_modal_title') }}
-                </h2>
+                <div class="flex items-start justify-between gap-4">
+                    <h2 class="text-xl font-semibold leading-tight text-[var(--color-text-primary)]" id="food-modal-title">
+                        {{ __('ui.meals.food_modal_title') }}
+                    </h2>
+                    <button class="-mr-1 -mt-1 flex h-8 w-8 cursor-pointer items-center justify-center rounded-md text-xl leading-none text-[var(--color-text-secondary)] transition hover:bg-[var(--color-background)] hover:text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-green)] focus:ring-offset-2" type="button" wire:click="closeFoodModal" aria-label="{{ __('ui.meals.close_food_modal') }}" data-testid="close-food-modal">
+                        ×
+                    </button>
+                </div>
             </section>
         </div>
     @endif

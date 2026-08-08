@@ -69,6 +69,14 @@ it('closes the food modal without closing the meal editor', function () {
         ->assertSet('isMealEditorOpen', true);
 });
 
+it('renders the food modal close control', function () {
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->call('openFoodModal')
+        ->assertSeeHtml('data-testid="close-food-modal"')
+        ->assertSeeHtml('wire:click="closeFoodModal"');
+});
+
 it('renders the food modal only after opening it', function () {
     Livewire::test(Meals::class)
         ->call('createMeal')

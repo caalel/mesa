@@ -23,6 +23,7 @@ return [
         'name_label' => 'Meal name',
         'add_food' => '+ Add food',
         'food_modal_title' => 'Add food',
+        'close_food_modal' => 'Close modal',
         'cancel' => 'Cancel',
         'name_placeholder' => 'e.g. Breakfast',
     ],

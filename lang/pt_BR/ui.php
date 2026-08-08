@@ -23,6 +23,7 @@ return [
         'name_label' => 'Nome da refeição',
         'add_food' => '+ Adicionar alimento',
         'food_modal_title' => 'Adicionar alimento',
+        'close_food_modal' => 'Fechar modal',
         'cancel' => 'Cancelar',
         'name_placeholder' => 'Ex.: Café da manhã',
     ],
