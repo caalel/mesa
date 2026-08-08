@@ -76,7 +76,7 @@ mathematically the same as the entered Food A weight.
 
 ## Food Search and Selection
 
-Search starts after at least two characters and uses a 300 ms Livewire debounce.
+Search starts from the first non-whitespace character and uses a 300 ms Livewire debounce.
 It searches only the food-name column for the active locale (`name_pt` for `pt_BR`,
 `name_en` for `en`) and returns at most eight results. There is intentionally no
 fallback between the two columns.
