@@ -16,7 +16,7 @@
                 </a>
 
                 <div class="flex shrink-0 items-center gap-2 max-[353px]:w-full max-[353px]:justify-center sm:gap-3">
-                    <a class="rounded-xl px-4 py-2.5 text-base font-medium text-[var(--color-text-primary)] transition hover:bg-[var(--color-light-green)] focus:bg-[var(--color-light-green)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary-green)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-surface)]" href="{{ route('comparator') }}">
+                    <a class="cursor-pointer rounded-xl px-4 py-2.5 text-base font-medium text-[var(--color-text-primary)] transition hover:bg-[var(--color-light-green)] focus:bg-[var(--color-light-green)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary-green)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-surface)]" href="{{ route('comparator') }}">
                         {{ __('ui.navigation.comparator') }}
                     </a>
 
@@ -26,7 +26,7 @@
                             <button
                                 type="submit"
                                 data-testid="locale-option-pt_BR"@if (app()->getLocale() === 'pt_BR') aria-current="true" @endif
-                                class="px-3 py-2 text-sm font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--color-primary-green)] @if (app()->getLocale() === 'pt_BR') bg-[var(--color-light-green)] text-[var(--color-primary-green)] @else text-[var(--color-text-secondary)] hover:bg-[var(--color-background)] @endif"
+                                class="cursor-pointer px-3 py-2 text-sm font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--color-primary-green)] @if (app()->getLocale() === 'pt_BR') bg-[var(--color-light-green)] text-[var(--color-primary-green)] @else text-[var(--color-text-secondary)] hover:bg-[var(--color-background)] @endif"
                             >PT</button>
                         </form>
 
@@ -35,7 +35,7 @@
                             <button
                                 type="submit"
                                 data-testid="locale-option-en"@if (app()->getLocale() === 'en') aria-current="true" @endif
-                                class="px-3 py-2 text-sm font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--color-primary-green)] @if (app()->getLocale() === 'en') bg-[var(--color-light-green)] text-[var(--color-primary-green)] @else text-[var(--color-text-secondary)] hover:bg-[var(--color-background)] @endif"
+                                class="cursor-pointer px-3 py-2 text-sm font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--color-primary-green)] @if (app()->getLocale() === 'en') bg-[var(--color-light-green)] text-[var(--color-primary-green)] @else text-[var(--color-text-secondary)] hover:bg-[var(--color-background)] @endif"
                             >EN</button>
                         </form>
                     </div>

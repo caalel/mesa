@@ -1,7 +1,7 @@
 @props(['food', 'selectAction'])
 
-<li>
-    <button class="w-full break-words rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-left text-sm text-[var(--color-text-primary)] hover:bg-[var(--color-light-green)]" type="button" wire:click="{{ $selectAction }}({{ $food->id }})">
+<li class="border-b border-[var(--color-border)] last:border-b-0">
+    <button class="w-full cursor-pointer break-words bg-transparent px-4 py-3 text-left text-sm font-medium text-[var(--color-text-primary)] transition hover:bg-[var(--color-light-green)] focus:bg-[var(--color-light-green)] focus:outline-none" type="button" wire:click="{{ $selectAction }}({{ $food->id }})">
         {{ $food->localized_name }}
     </button>
 </li>
