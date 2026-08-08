@@ -60,6 +60,14 @@ it('opens the food modal', function () {
         ->assertSet('isFoodModalOpen', true);
 });
 
+it('renders the food modal only after opening it', function () {
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->assertDontSeeHtml('data-testid="food-modal"')
+        ->call('openFoodModal')
+        ->assertSeeHtml('data-testid="food-modal"');
+});
+
 it('cancels the new meal editor', function () {
     Livewire::test(Meals::class)
         ->call('createMeal')

@@ -22,6 +22,7 @@ return [
         'new_meal' => 'New meal',
         'name_label' => 'Meal name',
         'add_food' => '+ Add food',
+        'food_modal_title' => 'Add food',
         'cancel' => 'Cancel',
         'name_placeholder' => 'e.g. Breakfast',
     ],

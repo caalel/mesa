@@ -47,4 +47,14 @@
             </button>
         </section>
     @endif
+
+    @if ($isFoodModalOpen)
+        <div class="fixed inset-0 z-50 flex items-center justify-center bg-[var(--color-text-primary)]/25 p-4 sm:p-6" role="dialog" aria-modal="true" aria-labelledby="food-modal-title" data-testid="food-modal">
+            <section class="max-h-[calc(100vh-2rem)] w-full max-w-[38.75rem] overflow-y-auto rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-xl sm:p-7">
+                <h2 class="text-xl font-semibold leading-tight text-[var(--color-text-primary)]" id="food-modal-title">
+                    {{ __('ui.meals.food_modal_title') }}
+                </h2>
+            </section>
+        </div>
+    @endif
 </div>
