@@ -26,6 +26,7 @@ return [
         'close_food_modal' => 'Close modal',
         'food_search_label' => 'Search for a food',
         'food_search_placeholder' => 'Type the food name',
+        'search_results' => 'Results',
         'cancel' => 'Cancel',
         'name_placeholder' => 'e.g. Breakfast',
     ],

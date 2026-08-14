@@ -1,6 +1,8 @@
 <?php
 
 use App\Livewire\Meals;
+use App\Models\Food;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\App;
 use Livewire\Livewire;
 
@@ -9,6 +11,8 @@ use Livewire\Livewire;
 | Helpers
 |--------------------------------------------------------------------------
 */
+
+uses(RefreshDatabase::class);
 
 beforeEach(function () {
     App::setLocale('pt_BR');
@@ -108,6 +112,78 @@ it('renders the food search placeholder in English', function () {
         ->call('createMeal')
         ->call('openFoodModal')
         ->assertSeeHtml('placeholder="Type the food name"');
+});
+
+it('shows Portuguese food search results after the first character is entered', function () {
+    Food::factory()->create([
+        'name_pt' => 'Arroz integral',
+        'name_en' => 'Brown rice',
+    ]);
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->call('openFoodModal')
+        ->assertDontSee('Arroz integral')
+        ->set('foodSearch', 'A')
+        ->assertSee('Arroz integral');
+});
+
+it('shows English food search results after the first character is entered', function () {
+    App::setLocale('en');
+
+    Food::factory()->create([
+        'name_pt' => 'Arroz integral',
+        'name_en' => 'Brown rice',
+    ]);
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->call('openFoodModal')
+        ->assertDontSee('Brown rice')
+        ->set('foodSearch', 'B')
+        ->assertSee('Brown rice');
+});
+
+it('shows the results heading in Brazilian Portuguese when food search results are visible', function () {
+    Food::factory()->create([
+        'name_pt' => 'Arroz integral',
+        'name_en' => 'Brown rice',
+    ]);
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->call('openFoodModal')
+        ->set('foodSearch', 'A')
+        ->assertSee('Resultados');
+});
+
+it('shows the results heading in English when food search results are visible', function () {
+    App::setLocale('en');
+
+    Food::factory()->create([
+        'name_pt' => 'Arroz integral',
+        'name_en' => 'Brown rice',
+    ]);
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->call('openFoodModal')
+        ->set('foodSearch', 'B')
+        ->assertSee('Results');
+});
+
+it('shows calories per 100 grams for a food search result', function () {
+    Food::factory()->create([
+        'name_pt' => 'Arroz integral',
+        'name_en' => 'Brown rice',
+        'calories_per_100g' => 124,
+    ]);
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->call('openFoodModal')
+        ->set('foodSearch', 'Arroz')
+        ->assertSee('124 kcal / 100 g');
 });
 
 it('cancels the new meal editor', function () {

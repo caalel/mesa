@@ -71,6 +71,21 @@
                         data-testid="food-search"
                     >
                 </div>
+
+                @if ($foodSearchResults->isNotEmpty())
+                    <div class="mt-5">
+                        <h3 class="text-xs font-semibold uppercase tracking-[0.08em] text-[var(--color-text-secondary)]">{{ __('ui.meals.search_results') }}</h3>
+
+                        <ul class="mt-2 overflow-hidden rounded-xl border border-[var(--color-border)]">
+                            @foreach ($foodSearchResults as $food)
+                                <li class="break-words border-b border-[var(--color-border)] px-4 py-3 last:border-b-0 hover:bg-[var(--color-light-green)]">
+                                    <p class="text-sm font-medium text-[var(--color-text-primary)]">{{ $food->localized_name }}</p>
+                                    <p class="mt-1 text-sm text-[var(--color-text-secondary)]">{{ (float) $food->calories_per_100g }} kcal / 100 g</p>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
             </section>
         </div>
     @endif

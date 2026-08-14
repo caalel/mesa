@@ -2,7 +2,9 @@
 
 namespace App\Livewire;
 
+use App\Services\FoodSearchService;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Collection;
 use Livewire\Component;
 
 class Meals extends Component
@@ -19,9 +21,18 @@ class Meals extends Component
 
     public array $mealItems = [];
 
+    protected FoodSearchService $foodSearchService;
+
+    public function boot(FoodSearchService $foodSearchService): void
+    {
+        $this->foodSearchService = $foodSearchService;
+    }
+
     public function render(): View
     {
-        return view('livewire.meals');
+        return view('livewire.meals', [
+            'foodSearchResults' => $this->foodSearchResults(),
+        ]);
     }
 
     public function createMeal(): void
@@ -48,5 +59,16 @@ class Meals extends Component
         $this->editingMealId = null;
         $this->mealName = '';
         $this->mealItems = [];
+    }
+
+    private function foodSearchResults(): Collection
+    {
+        $search = trim($this->foodSearch);
+
+        if ($search === '') {
+            return collect();
+        }
+
+        return $this->foodSearchService->search($search);
     }
 }
