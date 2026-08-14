@@ -186,6 +186,59 @@ it('shows calories per 100 grams for a food search result', function () {
         ->assertSee('124 kcal / 100 g');
 });
 
+it('shows the food search empty state without food results when a non-empty search has no matches', function () {
+    Food::factory()->create([
+        'name_pt' => 'Banana',
+        'name_en' => 'Banana',
+    ]);
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->call('openFoodModal')
+        ->assertDontSeeHtml('data-testid="food-search-empty"')
+        ->set('foodSearch', 'X')
+        ->assertSeeHtml('data-testid="food-search-empty"')
+        ->assertDontSee('Banana');
+});
+
+it('does not show the food search empty state for a whitespace-only search', function () {
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->call('openFoodModal')
+        ->set('foodSearch', '   ')
+        ->assertDontSeeHtml('data-testid="food-search-empty"');
+});
+
+it('renders the food search empty state in Brazilian Portuguese', function () {
+    Food::factory()->create([
+        'name_pt' => 'Banana',
+        'name_en' => 'Banana',
+    ]);
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->call('openFoodModal')
+        ->set('foodSearch', 'X')
+        ->assertSee('Nenhum alimento encontrado')
+        ->assertSee('Tente buscar por outro nome ou termo.');
+});
+
+it('renders the food search empty state in English', function () {
+    App::setLocale('en');
+
+    Food::factory()->create([
+        'name_pt' => 'Banana',
+        'name_en' => 'Banana',
+    ]);
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->call('openFoodModal')
+        ->set('foodSearch', 'X')
+        ->assertSee('No foods found')
+        ->assertSee('Try searching for another name or term.');
+});
+
 it('cancels the new meal editor', function () {
     Livewire::test(Meals::class)
         ->call('createMeal')

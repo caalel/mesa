@@ -27,6 +27,8 @@ return [
         'food_search_label' => 'Search for a food',
         'food_search_placeholder' => 'Type the food name',
         'search_results' => 'Results',
+        'food_search_empty' => 'No foods found',
+        'food_search_empty_description' => 'Try searching for another name or term.',
         'cancel' => 'Cancel',
         'name_placeholder' => 'e.g. Breakfast',
     ],

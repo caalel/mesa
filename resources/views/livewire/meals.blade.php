@@ -85,6 +85,15 @@
                             @endforeach
                         </ul>
                     </div>
+                @elseif (trim($foodSearch) !== '')
+                    <div class="mt-5">
+                        <h3 class="text-xs font-semibold uppercase tracking-[0.08em] text-[var(--color-text-secondary)]">{{ __('ui.meals.search_results') }}</h3>
+
+                        <div class="mt-2 rounded-xl border border-dashed border-[var(--color-border)] px-5 py-9 text-center" data-testid="food-search-empty">
+                            <p class="text-sm font-semibold text-[var(--color-text-primary)]">{{ __('ui.meals.food_search_empty') }}</p>
+                            <p class="mt-2 text-sm leading-6 text-[var(--color-text-secondary)]">{{ __('ui.meals.food_search_empty_description') }}</p>
+                        </div>
+                    </div>
                 @endif
             </section>
         </div>
