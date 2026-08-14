@@ -29,6 +29,7 @@ return [
         'search_results' => 'Results',
         'food_search_empty' => 'No foods found',
         'food_search_empty_description' => 'Try searching for another name or term.',
+        'food_selected' => 'Selected',
         'cancel' => 'Cancel',
         'name_placeholder' => 'e.g. Breakfast',
     ],

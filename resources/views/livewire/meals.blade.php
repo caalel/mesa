@@ -78,9 +78,26 @@
 
                         <ul class="mt-2 overflow-hidden rounded-xl border border-[var(--color-border)]">
                             @foreach ($foodSearchResults as $food)
-                                <li class="break-words border-b border-[var(--color-border)] px-4 py-3 last:border-b-0 hover:bg-[var(--color-light-green)]">
-                                    <p class="text-sm font-medium text-[var(--color-text-primary)]">{{ $food->localized_name }}</p>
-                                    <p class="mt-1 text-sm text-[var(--color-text-secondary)]">{{ (float) $food->calories_per_100g }} kcal / 100 g</p>
+                                <li class="border-b border-[var(--color-border)] last:border-b-0">
+                                    <button
+                                        @class([
+                                            'flex w-full cursor-pointer items-center justify-between gap-4 px-4 py-3 text-left transition-colors hover:bg-[var(--color-light-green)] focus:bg-[var(--color-light-green)] focus:outline-none',
+                                            'bg-[var(--color-light-green)]' => $selectedFoodId === $food->id,
+                                        ])
+                                        type="button"
+                                        wire:click="selectFood({{ $food->id }})"
+                                        aria-pressed="{{ $selectedFoodId === $food->id ? 'true' : 'false' }}"
+                                        data-testid="select-food-{{ $food->id }}"
+                                    >
+                                        <span class="min-w-0">
+                                            <span class="block break-words text-sm font-medium text-[var(--color-text-primary)]">{{ $food->localized_name }}</span>
+                                            <span class="mt-1 block text-sm text-[var(--color-text-secondary)]">{{ (float) $food->calories_per_100g }} kcal / 100 g</span>
+                                        </span>
+
+                                        @if ($selectedFoodId === $food->id)
+                                            <span class="shrink-0 text-xs font-semibold text-[var(--color-primary-green)]">{{ __('ui.meals.food_selected') }}</span>
+                                        @endif
+                                    </button>
                                 </li>
                             @endforeach
                         </ul>

@@ -19,6 +19,8 @@ class Meals extends Component
 
     public string $foodSearch = '';
 
+    public ?int $selectedFoodId = null;
+
     public array $mealItems = [];
 
     protected FoodSearchService $foodSearchService;
@@ -51,6 +53,11 @@ class Meals extends Component
     public function closeFoodModal(): void
     {
         $this->isFoodModalOpen = false;
+    }
+
+    public function selectFood(int $foodId): void
+    {
+        $this->selectedFoodId = $foodId;
     }
 
     public function cancelMealEditor(): void

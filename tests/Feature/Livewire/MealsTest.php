@@ -186,6 +186,56 @@ it('shows calories per 100 grams for a food search result', function () {
         ->assertSee('124 kcal / 100 g');
 });
 
+it('selects a food while keeping its search results visible', function () {
+    $banana = Food::factory()->create([
+        'name_pt' => 'Banana',
+        'name_en' => 'Banana',
+    ]);
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->call('openFoodModal')
+        ->set('foodSearch', 'B')
+        ->assertSee('Banana')
+        ->assertSeeHtml('data-testid="select-food-'.$banana->id.'"')
+        ->assertSeeHtml('wire:click="selectFood('.$banana->id.')"')
+        ->assertSet('selectedFoodId', null)
+        ->call('selectFood', $banana->id)
+        ->assertSet('selectedFoodId', $banana->id)
+        ->assertSet('foodSearch', 'B')
+        ->assertSee('Banana');
+});
+
+it('shows the selected food badge in Brazilian Portuguese', function () {
+    $banana = Food::factory()->create([
+        'name_pt' => 'Banana',
+        'name_en' => 'Banana',
+    ]);
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->call('openFoodModal')
+        ->set('foodSearch', 'B')
+        ->call('selectFood', $banana->id)
+        ->assertSee('Selecionado');
+});
+
+it('shows the selected food badge in English', function () {
+    App::setLocale('en');
+
+    $banana = Food::factory()->create([
+        'name_pt' => 'Banana',
+        'name_en' => 'Banana',
+    ]);
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->call('openFoodModal')
+        ->set('foodSearch', 'B')
+        ->call('selectFood', $banana->id)
+        ->assertSee('Selected');
+});
+
 it('shows the food search empty state without food results when a non-empty search has no matches', function () {
     Food::factory()->create([
         'name_pt' => 'Banana',
