@@ -97,13 +97,14 @@ it('does not show Food A results when the search contains only spaces', function
         ->assertDontSee('Banana');
 });
 
-it('shows an empty state when Food A search has no results', function () {
+it('shows an empty state when a one-character Food A search has no results', function () {
     Food::factory()->create([
         'name_pt' => 'Banana',
     ]);
 
     Livewire::test(NutritionalComparator::class)
-        ->set('foodASearch', 'Abacaxi')
+        ->assertDontSee(__('ui.compare.no_foods_found'))
+        ->set('foodASearch', 'X')
         ->assertSee(__('ui.compare.no_foods_found'));
 });
 
@@ -117,7 +118,7 @@ it('shows the selected Food A and hides the search state when the user selects a
     ]);
 
     Livewire::test(NutritionalComparator::class)
-        ->set('foodASearch', 'Ba')
+        ->set('foodASearch', 'B')
         ->call('selectFoodA', $banana->id)
         ->assertSee('Banana')
         ->assertDontSee('Banana Prata')
