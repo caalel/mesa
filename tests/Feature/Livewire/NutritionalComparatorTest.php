@@ -97,13 +97,14 @@ it('does not show Food A results when the search contains only spaces', function
         ->assertDontSee('Banana');
 });
 
-it('shows an empty state when Food A search has no results', function () {
+it('shows an empty state when a one-character Food A search has no results', function () {
     Food::factory()->create([
         'name_pt' => 'Banana',
     ]);
 
     Livewire::test(NutritionalComparator::class)
-        ->set('foodASearch', 'Abacaxi')
+        ->assertDontSee(__('ui.compare.no_foods_found'))
+        ->set('foodASearch', 'X')
         ->assertSee(__('ui.compare.no_foods_found'));
 });
 
@@ -117,7 +118,7 @@ it('shows the selected Food A and hides the search state when the user selects a
     ]);
 
     Livewire::test(NutritionalComparator::class)
-        ->set('foodASearch', 'Ba')
+        ->set('foodASearch', 'B')
         ->call('selectFoodA', $banana->id)
         ->assertSee('Banana')
         ->assertDontSee('Banana Prata')
@@ -125,20 +126,19 @@ it('shows the selected Food A and hides the search state when the user selects a
         ->assertSee(__('ui.compare.change_food'));
 });
 
-it('progressively reveals the Food A weight and summary after selecting a food', function () {
+it('progressively reveals the debounced Food A weight input and summary after selecting a food', function () {
     $banana = Food::factory()->create([
         'name_pt' => 'Banana',
         'calories_per_100g' => 128,
     ]);
 
-    $component = Livewire::test(NutritionalComparator::class)
+    Livewire::test(NutritionalComparator::class)
         ->assertDontSeeHtml('id="food-a-quantity"')
-        ->assertDontSeeHtml('data-testid="food-a-summary"');
-
-    $component
+        ->assertDontSeeHtml('data-testid="food-a-summary"')
         ->call('selectFoodA', $banana->id)
         ->set('foodAWeight', 50)
         ->assertSeeHtml('id="food-a-quantity"')
+        ->assertSeeHtml('wire:model.live.debounce.300ms="foodAWeight"')
         ->assertSeeHtml('data-testid="food-a-summary"');
 });
 

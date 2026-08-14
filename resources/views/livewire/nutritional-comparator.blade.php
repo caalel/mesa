@@ -42,7 +42,7 @@
                                 id="food-a-quantity"
                                 type="number"
                                 placeholder="{{ __('ui.compare.quantity_placeholder') }}"
-                                wire:model.live="foodAWeight"
+                                wire:model.live.debounce.300ms="foodAWeight"
                                 @disabled($foodAHasUnavailableCalorieData)
                             >
                             <span class="shrink-0 text-sm font-medium text-[var(--color-text-secondary)]">{{ __('ui.compare.grams_unit') }}</span>

@@ -176,7 +176,7 @@ class NutritionalComparator extends Component
     private function hasNoSearchResults(?int $selectedFoodId, string $search, Collection $results): bool
     {
         return $selectedFoodId === null
-            && mb_strlen(trim($search)) >= 2
+            && trim($search) !== ''
             && $results->isEmpty();
     }
 
