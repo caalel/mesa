@@ -24,6 +24,8 @@ return [
         'add_food' => '+ Add food',
         'food_modal_title' => 'Add food',
         'close_food_modal' => 'Close modal',
+        'food_search_label' => 'Search for a food',
+        'food_search_placeholder' => 'Type the food name',
         'cancel' => 'Cancel',
         'name_placeholder' => 'e.g. Breakfast',
     ],

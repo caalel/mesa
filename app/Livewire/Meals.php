@@ -15,6 +15,8 @@ class Meals extends Component
 
     public string $mealName = '';
 
+    public string $foodSearch = '';
+
     public array $mealItems = [];
 
     public function render(): View

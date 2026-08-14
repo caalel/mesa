@@ -85,6 +85,31 @@ it('renders the food modal only after opening it', function () {
         ->assertSeeHtml('data-testid="food-modal"');
 });
 
+it('renders the food search field with the expected Livewire binding in the open food modal', function () {
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->call('openFoodModal')
+        ->assertSet('foodSearch', '')
+        ->assertSeeHtml('data-testid="food-search"')
+        ->assertSeeHtml('wire:model.live.debounce.300ms="foodSearch"');
+});
+
+it('renders the food search placeholder in Brazilian Portuguese', function () {
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->call('openFoodModal')
+        ->assertSeeHtml('placeholder="Digite o nome do alimento"');
+});
+
+it('renders the food search placeholder in English', function () {
+    App::setLocale('en');
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->call('openFoodModal')
+        ->assertSeeHtml('placeholder="Type the food name"');
+});
+
 it('cancels the new meal editor', function () {
     Livewire::test(Meals::class)
         ->call('createMeal')

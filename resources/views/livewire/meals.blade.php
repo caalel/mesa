@@ -59,6 +59,18 @@
                         ×
                     </button>
                 </div>
+
+                <div class="mt-6">
+                    <label class="block text-sm font-medium text-[var(--color-text-secondary)]" for="food-search">{{ __('ui.meals.food_search_label') }}</label>
+                    <input
+                        class="mt-2 h-12 w-full rounded-lg border border-[var(--color-border)] bg-transparent px-4 text-[var(--color-text-primary)] focus:border-[var(--color-primary-green)] focus:outline-none focus:ring-2 focus:ring-[var(--color-light-green)]"
+                        id="food-search"
+                        type="text"
+                        placeholder="{{ __('ui.meals.food_search_placeholder') }}"
+                        wire:model.live.debounce.300ms="foodSearch"
+                        data-testid="food-search"
+                    >
+                </div>
             </section>
         </div>
     @endif
