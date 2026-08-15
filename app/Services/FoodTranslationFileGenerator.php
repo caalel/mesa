@@ -5,7 +5,7 @@ namespace App\Services;
 use InvalidArgumentException;
 use RuntimeException;
 
-class FoodTranslationFileGeneratorService
+class FoodTranslationFileGenerator
 {
     private const CATALOG_HEADER = [
         'source_code',

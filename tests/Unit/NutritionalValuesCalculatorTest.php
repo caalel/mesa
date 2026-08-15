@@ -1,12 +1,12 @@
 <?php
 
-use App\Services\NutritionalValuesCalculatorService;
+use App\Services\NutritionalValuesCalculator;
 
 it('calculates a nutritional value for a given weight', function () {
     // Arrange
     $valuePer100g = 128;
     $weight = 50;
-    $calculator = new NutritionalValuesCalculatorService();
+    $calculator = new NutritionalValuesCalculator();
 
     // Act
     $value = $calculator->calculateValue(
@@ -22,7 +22,7 @@ it('calculates a decimal nutritional value without rounding', function () {
     // Arrange
     $valuePer100g = 0.01;
     $weight = 1;
-    $calculator = new NutritionalValuesCalculatorService();
+    $calculator = new NutritionalValuesCalculator();
 
     // Act
     $value = $calculator->calculateValue(

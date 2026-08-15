@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Services\FoodTranslationFileGeneratorService;
+use App\Services\FoodTranslationFileGenerator;
 use Illuminate\Console\Command;
 use InvalidArgumentException;
 use RuntimeException;
@@ -19,7 +19,7 @@ class GenerateFoodTranslationsCommand extends Command
      */
     protected $description = 'Generate the operational English food translations CSV';
 
-    public function handle(FoodTranslationFileGeneratorService $generator): int
+    public function handle(FoodTranslationFileGenerator $generator): int
     {
         $catalogPath = $this->option('catalog')
             ?: base_path('database/data/foods/taco-v4-en-translation-catalog.csv');
