@@ -1,6 +1,6 @@
 <?php
 
-use App\Services\FoodImportService;
+use App\Services\FoodImporter;
 use Illuminate\Support\Facades\File;
 use Tests\TestCase;
 
@@ -37,7 +37,7 @@ it('prepares valid food rows for import', function () {
         002,Alimento trace,Trace food,10,1,1e-05,0.5
         CSV);
 
-    $service = new FoodImportService();
+    $service = new FoodImporter();
 
     $result = $service->prepare(
         path: $csvPath,
@@ -83,7 +83,7 @@ it('trims English names in valid food rows', function () {
         003,Leite desnatado,  Skim milk  ,34,3.37,4.96,0.08
         CSV);
 
-    $result = (new FoodImportService())->prepare($csvPath, 'taco', '4');
+    $result = (new FoodImporter())->prepare($csvPath, 'taco', '4');
 
     expect($result['valid_rows'][0]['name_en'])->toBe('Skim milk');
 });
@@ -103,7 +103,7 @@ it('separates invalid food rows from valid food rows', function () {
         103,Nutriente negativo,Negative nutrient,10,1,-2,3
         CSV);
 
-    $service = new FoodImportService();
+    $service = new FoodImporter();
 
     $result = $service->prepare(
         path: $csvPath,
@@ -155,7 +155,7 @@ it('rejects a CSV without every required header', function () {
         100,Alimento valido,,10,1,2
         CSV);
 
-    $service = new FoodImportService();
+    $service = new FoodImporter();
 
     expect(fn () => $service->prepare(
         path: $csvPath,
@@ -176,7 +176,7 @@ it('rejects a food row with an empty English name', function () {
         104,Alimento sem ingles,,10,1,2,3
         CSV);
 
-    $result = (new FoodImportService())->prepare($csvPath, 'taco', '4');
+    $result = (new FoodImporter())->prepare($csvPath, 'taco', '4');
 
     expect($result['valid_rows'])->toBeEmpty()
         ->and($result['invalid_rows'])->toBe([
@@ -196,7 +196,7 @@ it('rejects a food row with a whitespace-only English name', function () {
         105,Alimento sem ingles,   ,10,1,2,3
         CSV);
 
-    $result = (new FoodImportService())->prepare($csvPath, 'taco', '4');
+    $result = (new FoodImporter())->prepare($csvPath, 'taco', '4');
 
     expect($result['valid_rows'])->toBeEmpty()
         ->and($result['invalid_rows'])->toBe([

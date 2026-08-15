@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-class NutritionalValuesCalculatorService
+class NutritionalValuesCalculator
 {
     public function calculateValue(int|float $valuePer100g, int|float $weight): float
     {

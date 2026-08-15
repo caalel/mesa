@@ -7,7 +7,7 @@ use App\Services\CompareFoodsService;
 use App\Services\FoodSearchService;
 use App\Services\FoodWeightInputService;
 use App\Services\LocalizedNutritionalValueFormatter;
-use App\Services\NutritionalValuesCalculatorService;
+use App\Services\NutritionalValuesCalculator;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use Livewire\Component;
@@ -35,7 +35,7 @@ class NutritionalComparator extends Component
 
     protected FoodWeightInputService $foodWeightInputService;
 
-    protected NutritionalValuesCalculatorService $nutritionalValuesCalculatorService;
+    protected NutritionalValuesCalculator $nutritionalValuesCalculator;
 
     protected LocalizedNutritionalValueFormatter $localizedNutritionalValueFormatter;
 
@@ -44,13 +44,13 @@ class NutritionalComparator extends Component
         FoodSearchService $foodSearchService,
         FoodWeightInputService $foodWeightInputService,
         LocalizedNutritionalValueFormatter $localizedNutritionalValueFormatter,
-        NutritionalValuesCalculatorService $nutritionalValuesCalculatorService,
+        NutritionalValuesCalculator $nutritionalValuesCalculator,
     ): void {
         $this->compareFoodsService = $compareFoodsService;
         $this->foodSearchService = $foodSearchService;
         $this->foodWeightInputService = $foodWeightInputService;
         $this->localizedNutritionalValueFormatter = $localizedNutritionalValueFormatter;
-        $this->nutritionalValuesCalculatorService = $nutritionalValuesCalculatorService;
+        $this->nutritionalValuesCalculator = $nutritionalValuesCalculator;
     }
 
     public function render(): View
@@ -270,7 +270,7 @@ class NutritionalComparator extends Component
 
         $weight = (float) $weight;
 
-        $calories = $this->nutritionalValuesCalculatorService->calculateValue(
+        $calories = $this->nutritionalValuesCalculator->calculateValue(
             valuePer100g: (float) $selectedFoodA->calories_per_100g,
             weight: $weight,
         );

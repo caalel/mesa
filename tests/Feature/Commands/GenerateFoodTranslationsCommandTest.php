@@ -1,6 +1,6 @@
 <?php
 
-use App\Services\FoodTranslationFileGeneratorService;
+use App\Services\FoodTranslationFileGenerator;
 use Illuminate\Support\Facades\File;
 
 /*
@@ -130,7 +130,7 @@ it('uses the official paths when no options are provided', function () {
     $catalogPath = base_path('database/data/foods/taco-v4-en-translation-catalog.csv');
     $sourcePath = base_path('database/data/foods/taco-v4.csv');
     $outputPath = base_path('database/data/foods/taco-v4-en-translations.csv');
-    $generator = Mockery::mock(FoodTranslationFileGeneratorService::class);
+    $generator = Mockery::mock(FoodTranslationFileGenerator::class);
 
     $generator
         ->shouldReceive('generate')
@@ -138,7 +138,7 @@ it('uses the official paths when no options are provided', function () {
         ->with($catalogPath, $sourcePath, $outputPath)
         ->andReturn(3);
 
-    app()->instance(FoodTranslationFileGeneratorService::class, $generator);
+    app()->instance(FoodTranslationFileGenerator::class, $generator);
 
     $this->artisan('foods:generate-translations')
         ->expectsOutput('Generated 3 food translations.')
