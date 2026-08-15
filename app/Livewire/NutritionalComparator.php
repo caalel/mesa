@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\Food;
 use App\Services\CompareFoodsService;
 use App\Services\FoodSearchService;
+use App\Services\FoodWeightInputService;
 use App\Services\LocalizedNutritionalValueFormatter;
 use App\Services\NutritionalValuesCalculatorService;
 use Illuminate\Contracts\View\View;
@@ -13,9 +14,6 @@ use Livewire\Component;
 
 class NutritionalComparator extends Component
 {
-    // Practical UX and domain limit for one food comparison in the MVP.
-    private const MAX_FOOD_A_WEIGHT_IN_GRAMS = 10000;
-
     public string $foodASearch = '';
 
     public string $foodBSearch = '';
@@ -35,6 +33,8 @@ class NutritionalComparator extends Component
 
     protected FoodSearchService $foodSearchService;
 
+    protected FoodWeightInputService $foodWeightInputService;
+
     protected NutritionalValuesCalculatorService $nutritionalValuesCalculatorService;
 
     protected LocalizedNutritionalValueFormatter $localizedNutritionalValueFormatter;
@@ -42,11 +42,13 @@ class NutritionalComparator extends Component
     public function boot(
         CompareFoodsService $compareFoodsService,
         FoodSearchService $foodSearchService,
+        FoodWeightInputService $foodWeightInputService,
         LocalizedNutritionalValueFormatter $localizedNutritionalValueFormatter,
         NutritionalValuesCalculatorService $nutritionalValuesCalculatorService,
     ): void {
         $this->compareFoodsService = $compareFoodsService;
         $this->foodSearchService = $foodSearchService;
+        $this->foodWeightInputService = $foodWeightInputService;
         $this->localizedNutritionalValueFormatter = $localizedNutritionalValueFormatter;
         $this->nutritionalValuesCalculatorService = $nutritionalValuesCalculatorService;
     }
@@ -126,7 +128,7 @@ class NutritionalComparator extends Component
             return;
         }
 
-        $foodAWeight = (float) $this->normalizedFoodAWeight();
+        $foodAWeight = (float) $this->foodWeightInputService->normalize($this->foodAWeight);
         $foodBWeight = $this->compareFoodsService->calculateEquivalentWeight(
             foodAValuePer100g: (float) $foodA->calories_per_100g,
             foodAWeight: $foodAWeight,
@@ -213,7 +215,7 @@ class NutritionalComparator extends Component
             return false;
         }
 
-        return $this->hasValidFoodAWeight();
+        return $this->foodWeightInputService->isValid($this->foodAWeight);
     }
 
     private function foodHasUnavailableCalorieData(?Food $food): bool
@@ -222,55 +224,29 @@ class NutritionalComparator extends Component
         return $food !== null && (float) $food->calories_per_100g <= 0;
     }
 
-    private function hasValidFoodAWeight(): bool
-    {
-        $weight = $this->normalizedFoodAWeight();
-
-        if (! is_numeric($weight)) {
-            return false;
-        }
-
-        $weight = (float) $weight;
-
-        return $weight > 0 && $weight <= self::MAX_FOOD_A_WEIGHT_IN_GRAMS;
-    }
-
-    private function foodAWeightExceedsMaximum(): bool
-    {
-        $weight = $this->normalizedFoodAWeight();
-
-        return is_numeric($weight)
-            && (float) $weight > self::MAX_FOOD_A_WEIGHT_IN_GRAMS;
-    }
-
     private function foodAWeightValidationMessage(): ?string
     {
-        $weight = $this->normalizedFoodAWeight();
+        $weight = $this->foodWeightInputService->normalize($this->foodAWeight);
 
         if ($weight === '') {
             return null;
         }
 
-        if (! is_numeric($weight)) {
+        if (! $this->foodWeightInputService->isNumeric($weight)) {
             return __('ui.compare.quantity_must_be_numeric');
         }
 
-        if ((float) $weight <= 0) {
+        if (! $this->foodWeightInputService->isPositive($weight)) {
             return __('ui.compare.quantity_must_be_positive');
         }
 
-        if ($this->foodAWeightExceedsMaximum()) {
+        if ($this->foodWeightInputService->exceedsMaximum($weight)) {
             return __('ui.compare.quantity_too_high', [
-                'max' => $this->localizedNutritionalValueFormatter->format(self::MAX_FOOD_A_WEIGHT_IN_GRAMS),
+                'max' => $this->localizedNutritionalValueFormatter->format(FoodWeightInputService::MAXIMUM_IN_GRAMS),
             ]);
         }
 
         return null;
-    }
-
-    private function normalizedFoodAWeight(): string
-    {
-        return str_replace(',', '.', trim((string) $this->foodAWeight));
     }
 
     /**
@@ -286,17 +262,13 @@ class NutritionalComparator extends Component
             return null;
         }
 
-        $weight = $this->normalizedFoodAWeight();
+        $weight = $this->foodWeightInputService->normalize($this->foodAWeight);
 
-        if (! is_numeric($weight)) {
+        if (! $this->foodWeightInputService->isValid($weight)) {
             return null;
         }
 
         $weight = (float) $weight;
-
-        if (! $this->hasValidFoodAWeight()) {
-            return null;
-        }
 
         $calories = $this->nutritionalValuesCalculatorService->calculateValue(
             valuePer100g: (float) $selectedFoodA->calories_per_100g,

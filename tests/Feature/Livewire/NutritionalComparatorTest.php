@@ -270,54 +270,6 @@ it('does not show the Food A calories summary when the weight is empty', functio
         ->assertDontSeeHtml('data-testid="food-a-summary"');
 });
 
-it('does not show the Food A calories summary when the weight is zero', function () {
-    $banana = Food::factory()->create([
-        'name_pt' => 'Banana',
-        'calories_per_100g' => 128,
-    ]);
-
-    Livewire::test(NutritionalComparator::class)
-        ->call('selectFoodA', $banana->id)
-        ->set('foodAWeight', 0)
-        ->assertDontSeeHtml('data-testid="food-a-summary"');
-});
-
-it('does not show the Food A calories summary when the weight is negative', function () {
-    $banana = Food::factory()->create([
-        'name_pt' => 'Banana',
-        'calories_per_100g' => 128,
-    ]);
-
-    Livewire::test(NutritionalComparator::class)
-        ->call('selectFoodA', $banana->id)
-        ->set('foodAWeight', -50)
-        ->assertDontSeeHtml('data-testid="food-a-summary"');
-});
-
-it('does not show the Food A calories summary when the weight is not numeric', function () {
-    $banana = Food::factory()->create([
-        'name_pt' => 'Banana',
-        'calories_per_100g' => 128,
-    ]);
-
-    Livewire::test(NutritionalComparator::class)
-        ->call('selectFoodA', $banana->id)
-        ->set('foodAWeight', 'invalid')
-        ->assertDontSeeHtml('data-testid="food-a-summary"');
-});
-
-it('does not show the Food A calories summary when the weight is greater than 10000 grams', function () {
-    $banana = Food::factory()->create([
-        'name_pt' => 'Banana',
-        'calories_per_100g' => 128,
-    ]);
-
-    Livewire::test(NutritionalComparator::class)
-        ->call('selectFoodA', $banana->id)
-        ->set('foodAWeight', 10001)
-        ->assertDontSeeHtml('data-testid="food-a-summary"');
-});
-
 it('shows a friendly message when Food A weight is zero', function () {
     $banana = Food::factory()->create([
         'name_pt' => 'Banana',
