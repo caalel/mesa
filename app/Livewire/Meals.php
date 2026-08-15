@@ -21,6 +21,8 @@ class Meals extends Component
 
     public ?int $selectedFoodId = null;
 
+    public string $foodWeight = '';
+
     public array $mealItems = [];
 
     protected FoodSearchService $foodSearchService;
@@ -58,6 +60,7 @@ class Meals extends Component
     public function selectFood(int $foodId): void
     {
         $this->selectedFoodId = $foodId;
+        $this->foodWeight = '100';
     }
 
     public function cancelMealEditor(): void

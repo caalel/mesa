@@ -200,10 +200,33 @@ it('selects a food while keeping its search results visible', function () {
         ->assertSeeHtml('data-testid="select-food-'.$banana->id.'"')
         ->assertSeeHtml('wire:click="selectFood('.$banana->id.')"')
         ->assertSet('selectedFoodId', null)
+        ->assertSet('foodWeight', '')
         ->call('selectFood', $banana->id)
         ->assertSet('selectedFoodId', $banana->id)
+        ->assertSet('foodWeight', '100')
         ->assertSet('foodSearch', 'B')
         ->assertSee('Banana');
+});
+
+it('resets the food weight when selecting another food', function () {
+    $apple = Food::factory()->create([
+        'name_pt' => 'Maçã',
+        'name_en' => 'Apple',
+    ]);
+    $banana = Food::factory()->create([
+        'name_pt' => 'Banana',
+        'name_en' => 'Banana',
+    ]);
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->call('openFoodModal')
+        ->set('foodSearch', 'A')
+        ->call('selectFood', $apple->id)
+        ->set('foodWeight', '250')
+        ->call('selectFood', $banana->id)
+        ->assertSet('selectedFoodId', $banana->id)
+        ->assertSet('foodWeight', '100');
 });
 
 it('shows the selected food badge in Brazilian Portuguese', function () {
