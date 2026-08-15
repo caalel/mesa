@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\Food;
-use App\Services\FoodImportService;
+use App\Services\FoodImporter;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\File;
 
@@ -38,7 +38,7 @@ it('inserts valid foods from a CSV import', function () {
         002,Leite integral,Whole milk,61,3.15,4.80,3.25
         CSV);
 
-    $service = new FoodImportService();
+    $service = new FoodImporter();
 
     $result = $service->import(
         path: $csvPath,
@@ -91,7 +91,7 @@ it('does not duplicate foods when importing the same CSV again', function () {
         002,Leite integral,Whole milk,61,3.15,4.80,3.25
         CSV);
 
-    $service = new FoodImportService();
+    $service = new FoodImporter();
 
     $service->import(
         path: $csvPath,
@@ -125,7 +125,7 @@ it('updates an existing food when its source identity is imported again', functi
         001,Leite desnatado atualizado,Updated skim milk,40,3.50,5,0.10
         CSV);
 
-    $service = new FoodImportService();
+    $service = new FoodImporter();
 
     $service->import(
         path: $initialCsvPath,
@@ -173,7 +173,7 @@ it('does not persist invalid food rows', function () {
         002,Nutriente invalido,Invalid nutrient,invalid,1,2,3
         CSV);
 
-    $service = new FoodImportService();
+    $service = new FoodImporter();
 
     $result = $service->import(
         path: $csvPath,

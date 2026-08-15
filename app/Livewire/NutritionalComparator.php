@@ -5,19 +5,15 @@ namespace App\Livewire;
 use App\Models\Food;
 use App\Services\CompareFoodsService;
 use App\Services\FoodSearchService;
-use App\Services\NutritionalValuesCalculatorService;
+use App\Services\FoodWeightInputService;
+use App\Services\LocalizedNutritionalValueFormatter;
+use App\Services\NutritionalValuesCalculator;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use Livewire\Component;
 
 class NutritionalComparator extends Component
 {
-    // Practical UX and domain limit for one food comparison in the MVP.
-    private const MAX_FOOD_A_WEIGHT_IN_GRAMS = 10000;
-
-    // Avoid displaying zero for positive values below 0.01.
-    private const MIN_DISPLAYABLE_POSITIVE_VALUE = 0.01;
-
     public string $foodASearch = '';
 
     public string $foodBSearch = '';
@@ -37,16 +33,24 @@ class NutritionalComparator extends Component
 
     protected FoodSearchService $foodSearchService;
 
-    protected NutritionalValuesCalculatorService $nutritionalValuesCalculatorService;
+    protected FoodWeightInputService $foodWeightInputService;
+
+    protected NutritionalValuesCalculator $nutritionalValuesCalculator;
+
+    protected LocalizedNutritionalValueFormatter $localizedNutritionalValueFormatter;
 
     public function boot(
         CompareFoodsService $compareFoodsService,
         FoodSearchService $foodSearchService,
-        NutritionalValuesCalculatorService $nutritionalValuesCalculatorService,
+        FoodWeightInputService $foodWeightInputService,
+        LocalizedNutritionalValueFormatter $localizedNutritionalValueFormatter,
+        NutritionalValuesCalculator $nutritionalValuesCalculator,
     ): void {
         $this->compareFoodsService = $compareFoodsService;
         $this->foodSearchService = $foodSearchService;
-        $this->nutritionalValuesCalculatorService = $nutritionalValuesCalculatorService;
+        $this->foodWeightInputService = $foodWeightInputService;
+        $this->localizedNutritionalValueFormatter = $localizedNutritionalValueFormatter;
+        $this->nutritionalValuesCalculator = $nutritionalValuesCalculator;
     }
 
     public function render(): View
@@ -124,18 +128,18 @@ class NutritionalComparator extends Component
             return;
         }
 
-        $foodAWeight = (float) $this->normalizedFoodAWeight();
+        $foodAWeight = (float) $this->foodWeightInputService->normalize($this->foodAWeight);
         $foodBWeight = $this->compareFoodsService->calculateEquivalentWeight(
             foodAValuePer100g: (float) $foodA->calories_per_100g,
             foodAWeight: $foodAWeight,
             foodBValuePer100g: (float) $foodB->calories_per_100g,
         );
-        $foodBWeightIsLessThanMinimum = $this->isPositiveValueBelowDisplayMinimum($foodBWeight);
+        $foodBWeightIsLessThanMinimum = $this->localizedNutritionalValueFormatter->isPositiveValueBelowDisplayMinimum($foodBWeight);
 
         $this->comparisonResult = [
-            'food_a_weight' => $this->formatNumber($foodAWeight),
+            'food_a_weight' => $this->localizedNutritionalValueFormatter->format($foodAWeight),
             'food_a_name' => $foodA->localized_name,
-            'food_b_weight' => $foodBWeightIsLessThanMinimum ? $this->formatNumber(self::MIN_DISPLAYABLE_POSITIVE_VALUE) : $this->formatNumber($foodBWeight),
+            'food_b_weight' => $foodBWeightIsLessThanMinimum ? $this->localizedNutritionalValueFormatter->format(LocalizedNutritionalValueFormatter::MINIMUM_DISPLAYABLE_POSITIVE_VALUE) : $this->localizedNutritionalValueFormatter->format($foodBWeight),
             'food_b_name' => $foodB->localized_name,
             'food_b_weight_is_less_than_minimum' => $foodBWeightIsLessThanMinimum,
         ];
@@ -211,7 +215,7 @@ class NutritionalComparator extends Component
             return false;
         }
 
-        return $this->hasValidFoodAWeight();
+        return $this->foodWeightInputService->isValid($this->foodAWeight);
     }
 
     private function foodHasUnavailableCalorieData(?Food $food): bool
@@ -220,80 +224,29 @@ class NutritionalComparator extends Component
         return $food !== null && (float) $food->calories_per_100g <= 0;
     }
 
-    private function hasValidFoodAWeight(): bool
-    {
-        $weight = $this->normalizedFoodAWeight();
-
-        if (! is_numeric($weight)) {
-            return false;
-        }
-
-        $weight = (float) $weight;
-
-        return $weight > 0 && $weight <= self::MAX_FOOD_A_WEIGHT_IN_GRAMS;
-    }
-
-    private function foodAWeightExceedsMaximum(): bool
-    {
-        $weight = $this->normalizedFoodAWeight();
-
-        return is_numeric($weight)
-            && (float) $weight > self::MAX_FOOD_A_WEIGHT_IN_GRAMS;
-    }
-
     private function foodAWeightValidationMessage(): ?string
     {
-        $weight = $this->normalizedFoodAWeight();
+        $weight = $this->foodWeightInputService->normalize($this->foodAWeight);
 
         if ($weight === '') {
             return null;
         }
 
-        if (! is_numeric($weight)) {
+        if (! $this->foodWeightInputService->isNumeric($weight)) {
             return __('ui.compare.quantity_must_be_numeric');
         }
 
-        if ((float) $weight <= 0) {
+        if (! $this->foodWeightInputService->isPositive($weight)) {
             return __('ui.compare.quantity_must_be_positive');
         }
 
-        if ($this->foodAWeightExceedsMaximum()) {
+        if ($this->foodWeightInputService->exceedsMaximum($weight)) {
             return __('ui.compare.quantity_too_high', [
-                'max' => $this->formatNumber(self::MAX_FOOD_A_WEIGHT_IN_GRAMS),
+                'max' => $this->localizedNutritionalValueFormatter->format(FoodWeightInputService::MAXIMUM_IN_GRAMS),
             ]);
         }
 
         return null;
-    }
-
-    private function normalizedFoodAWeight(): string
-    {
-        return str_replace(',', '.', trim((string) $this->foodAWeight));
-    }
-
-    private function formatNumber(int|float $value): string
-    {
-        $isEnglishLocale = app()->getLocale() === 'en';
-        $decimalSeparator = $isEnglishLocale ? '.' : ',';
-        $thousandsSeparator = $isEnglishLocale ? ',' : '.';
-
-        return rtrim(rtrim(number_format((float) $value, 2, $decimalSeparator, $thousandsSeparator), '0'), $decimalSeparator);
-    }
-
-    private function formatDisplayNumber(int|float $value): string
-    {
-        if ($this->isPositiveValueBelowDisplayMinimum($value)) {
-            return '< '.$this->formatNumber(self::MIN_DISPLAYABLE_POSITIVE_VALUE);
-        }
-
-        return $this->formatNumber($value);
-    }
-
-    private function isPositiveValueBelowDisplayMinimum(int|float $value): bool
-    {
-        $value = (float) $value;
-
-        return $value > 0 && $value < self::MIN_DISPLAYABLE_POSITIVE_VALUE;
     }
 
     /**
@@ -309,19 +262,15 @@ class NutritionalComparator extends Component
             return null;
         }
 
-        $weight = $this->normalizedFoodAWeight();
+        $weight = $this->foodWeightInputService->normalize($this->foodAWeight);
 
-        if (! is_numeric($weight)) {
+        if (! $this->foodWeightInputService->isValid($weight)) {
             return null;
         }
 
         $weight = (float) $weight;
 
-        if (! $this->hasValidFoodAWeight()) {
-            return null;
-        }
-
-        $calories = $this->nutritionalValuesCalculatorService->calculateValue(
+        $calories = $this->nutritionalValuesCalculator->calculateValue(
             valuePer100g: (float) $selectedFoodA->calories_per_100g,
             weight: $weight,
         );
@@ -330,8 +279,8 @@ class NutritionalComparator extends Component
             'food' => $selectedFoodA,
             'weight' => $weight,
             'calories' => $calories,
-            'formatted_weight' => $this->formatNumber($weight),
-            'formatted_calories' => $this->formatDisplayNumber($calories),
+            'formatted_weight' => $this->localizedNutritionalValueFormatter->format($weight),
+            'formatted_calories' => $this->localizedNutritionalValueFormatter->formatDisplayValue($calories),
         ];
     }
 }

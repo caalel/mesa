@@ -31,17 +31,17 @@ focused business and data-import operations.
 * `NutritionalComparator` is the full-page Livewire component for food selection,
   weight validation, summaries, and comparison results.
 * `CompareFoodsService` calculates the equivalent weight from caloric values.
-* `NutritionalValuesCalculatorService` calculates a nutritional value for a given
+* `NutritionalValuesCalculator` calculates a nutritional value for a given
   weight.
 * `FoodSearchService` queries and ranks food-name search results in the active
   locale.
-* `FoodImportService` validates compatible CSV rows and imports them with upserts.
-* `FoodTranslationFileGeneratorService` validates the reviewed editorial catalog
+* `FoodImporter` validates compatible CSV rows and imports them with upserts.
+* `FoodTranslationFileGenerator` validates the reviewed editorial catalog
   against the canonical source and writes the operational translation CSV.
 * `GenerateFoodTranslationsCommand` exposes translation-file generation through
   Artisan.
 * `ImportFoodsCommand` exposes CSV imports through Artisan.
-* `FoodSeeder` imports the official CSV through `FoodImportService`.
+* `FoodSeeder` imports the official CSV through `FoodImporter`.
 * `DatabaseSeeder` calls `FoodSeeder`.
 * `SetLocale` resolves the active locale for every web request.
 
@@ -55,17 +55,14 @@ GET /
 
 Renders `NutritionalComparator`.
 
-### Existing HTTP endpoints
+### HTTP endpoint
 
 ```text
-GET  /foods/search
-POST /compare
 POST /locale/{locale}
 ```
 
-The Livewire interface uses services directly and does not call these endpoints
-internally. `POST /locale/{locale}` accepts `pt_BR` and `en`, stores the selection
-in the session, and redirects back.
+`POST /locale/{locale}` accepts `pt_BR` and `en`, stores the selection in the
+session, and redirects back. The Livewire interface uses services directly.
 
 ### Artisan Commands
 
@@ -81,8 +78,8 @@ The header selector submits to `POST /locale/{locale}` for manual switching.
 
 `Food::localized_name` returns `name_pt` for `pt_BR` and `name_en` for `en`.
 Food searches use only that same locale-specific column; there is no fallback
-between food-name languages. The Livewire component, its Blade components, and
-the food-search HTTP endpoint all present `localized_name`.
+between food-name languages. The Livewire component and its Blade components
+present `localized_name`.
 
 Every searched term is required, but terms do not need to be contiguous in the
 food name. The query returns at most eight results.
@@ -169,7 +166,7 @@ php artisan foods:generate-translations --catalog=/path/to/catalog.csv --source=
 
 `--dry-run` validates a CSV without persisting rows. The `--path` option allows a
 custom path to be provided for another compatible CSV file. The command and seeder
-reuse `FoodImportService`, whose `upsert()` operation keeps imports idempotent.
+reuse `FoodImporter`, whose `upsert()` operation keeps imports idempotent.
 `foods:generate-translations` accepts optional `--catalog`, `--source`, and
 `--output` paths. Details of source provenance and the regeneration workflow belong
 in [`docs/data-sources.md`](data-sources.md).

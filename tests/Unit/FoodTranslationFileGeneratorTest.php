@@ -1,6 +1,6 @@
 <?php
 
-use App\Services\FoodTranslationFileGeneratorService;
+use App\Services\FoodTranslationFileGenerator;
 use Illuminate\Support\Facades\File;
 use Tests\TestCase;
 
@@ -70,7 +70,7 @@ function validTranslationCatalogRows(): array
 
 function expectGenerationToLeaveDestinationUnchanged(string $catalogPath, string $canonicalSourcePath, string $outputPath, string $originalContents): void
 {
-    expect(fn () => (new FoodTranslationFileGeneratorService())->generate(
+    expect(fn () => (new FoodTranslationFileGenerator())->generate(
         catalogPath: $catalogPath,
         canonicalSourcePath: $canonicalSourcePath,
         outputPath: $outputPath,
@@ -91,7 +91,7 @@ it('generates the operational translation CSV from a compatible approved catalog
     $catalogPath = foodTranslationGeneratorFixture($directory, 'catalog.csv', translationCatalogCsv(validTranslationCatalogRows()));
     $outputPath = $directory.DIRECTORY_SEPARATOR.'translations.csv';
 
-    $count = (new FoodTranslationFileGeneratorService())->generate(
+    $count = (new FoodTranslationFileGenerator())->generate(
         catalogPath: $catalogPath,
         canonicalSourcePath: $canonicalSourcePath,
         outputPath: $outputPath,
@@ -113,7 +113,7 @@ it('deterministically replaces an existing operational translation CSV', functio
     $canonicalSourcePath = foodTranslationGeneratorFixture($directory, 'canonical.csv', canonicalFoodCsv(validCanonicalFoodRows()));
     $catalogPath = foodTranslationGeneratorFixture($directory, 'catalog.csv', translationCatalogCsv(validTranslationCatalogRows()));
     $outputPath = foodTranslationGeneratorFixture($directory, 'translations.csv', "old,content\n");
-    $service = new FoodTranslationFileGeneratorService();
+    $service = new FoodTranslationFileGenerator();
 
     $service->generate($catalogPath, $canonicalSourcePath, $outputPath);
     $firstGeneration = file_get_contents($outputPath);
@@ -227,7 +227,7 @@ it('does not create an output or leave temporary files when validation fails', f
     ]));
     $outputPath = $directory.DIRECTORY_SEPARATOR.'translations.csv';
 
-    expect(fn () => (new FoodTranslationFileGeneratorService())->generate(
+    expect(fn () => (new FoodTranslationFileGenerator())->generate(
         catalogPath: $catalogPath,
         canonicalSourcePath: $canonicalSourcePath,
         outputPath: $outputPath,
@@ -246,7 +246,7 @@ it('rejects a missing output directory without creating files or changing inputs
     $outputDirectory = $directory.DIRECTORY_SEPARATOR.'missing-output-directory';
     $outputPath = $outputDirectory.DIRECTORY_SEPARATOR.'translations.csv';
 
-    expect(fn () => (new FoodTranslationFileGeneratorService())->generate(
+    expect(fn () => (new FoodTranslationFileGenerator())->generate(
         catalogPath: $catalogPath,
         canonicalSourcePath: $canonicalSourcePath,
         outputPath: $outputPath,

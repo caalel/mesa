@@ -6,7 +6,7 @@ use App\Models\Food;
 use InvalidArgumentException;
 use RuntimeException;
 
-class FoodImportService
+class FoodImporter
 {
     /**
      * @return array{valid_rows: array<int, array<string, float|string>>, invalid_rows: array<int, array{line: int, errors: array<int, string>}>}

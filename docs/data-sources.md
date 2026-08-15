@@ -217,7 +217,7 @@ Generic coconut or coconut-water sources were not treated as equivalent to TACO 
 
 The preparation and import pipeline is covered by automated tests. The preparation
 script audits its source, override, and translation inputs as described above.
-`FoodImportService` validates compatible final CSVs for their expected header,
+`FoodImporter` validates compatible final CSVs for their expected header,
 required `source_code`, `name_pt`, and `name_en`, numeric nutritional values, and
 non-negative nutritional values.
 
@@ -248,7 +248,7 @@ Persisted foods have a unique composite source identity:
 data_source + source_version + source_code
 ```
 
-`FoodImportService` reads and validates compatible CSVs. Valid rows are persisted
+`FoodImporter` reads and validates compatible CSVs. Valid rows are persisted
 with `upsert()` using that identity, so repeated imports do not duplicate foods and
 new imports update records from the same source, code, and version. Technical
 details of the import architecture are in [`docs/architecture.md`](architecture.md).

@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Services\FoodImportService;
+use App\Services\FoodImporter;
 use Illuminate\Console\Command;
 use InvalidArgumentException;
 use RuntimeException;
@@ -23,7 +23,7 @@ class ImportFoodsCommand extends Command
      */
     protected $description = 'Import foods from a CSV file';
 
-    public function handle(FoodImportService $foodImportService): int
+    public function handle(FoodImporter $foodImportService): int
     {
         $path = $this->option('path') ?: database_path('data/foods/taco-v4.csv');
 
