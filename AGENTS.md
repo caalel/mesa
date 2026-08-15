@@ -60,6 +60,59 @@
 - Do not introduce a translatable package or JSON translation fields without an
   explicit architectural decision.
 
+## Figma Consultation Workflow
+
+For UI changes based on Figma Make, use manually supplied Make files as the normal
+workflow. The user will normally provide the relevant source file (for example,
+`App.tsx`) and the main generated CSS file. Analyze them as design references for
+layout hierarchy, component composition, spacing, dimensions, typography, colors,
+borders, visual states, responsiveness, content, element relationships, and
+interactions represented in the code.
+
+The generated React, Vite, Tailwind, and CSS code must be studied to understand the
+design, but must not be copied or transplanted as MESA production code. Adapt its
+decisions to Laravel, Livewire, Blade, the project's Tailwind and design tokens,
+existing components and conventions, localization, and documented MESA architecture
+and behavior. When they conflict, MESA decisions take priority.
+
+Do not require the entire Make project upfront. If a supplied file imports, refers
+to, or depends on another component, stylesheet, asset, or resource that is needed
+to understand the requested layout safely, stop before inferring the missing part
+and ask for the specific required files or imports. Do not invent structure, styles,
+values, or behavior, and do not substitute a generic approximation. If the supplied
+files are sufficient for the relevant layout, proceed without requesting more.
+
+```text
+manually supplied Figma Make source + main CSS
+        ↓
+code and CSS analysis as a design reference
+        ↓
+adaptation to MESA architecture
+```
+
+Use the Figma MCP only when the user explicitly requests it, such as “consult the
+Figma through MCP”, “use the Figma MCP”, or “inspect Figma Make through MCP”. Do
+not invoke it automatically because a task mentions Figma or depends on a design.
+When explicitly requested, use the local Figma MCP integration, obtain context with
+`mcp__figma__get_design_context`, follow returned resource links, and read needed
+resources with `read_mcp_resource(server: "figma")`. Analyze the returned code as a
+design reference and adapt it to MESA; do not copy it directly. If MCP context is
+insufficient, stop and report exactly what is missing rather than guessing.
+
+```text
+explicit MCP request
+        ↓
+Figma MCP
+        ↓
+get_design_context / resource links / read_mcp_resource
+        ↓
+analysis as a design reference
+        ↓
+adaptation to MESA architecture
+```
+
+Do not use browser or web access as an improvised substitute for either workflow.
+
 ## Refactoring and File Editing
 
 - Preserve behavior, remove duplication, and avoid unnecessary patterns.
