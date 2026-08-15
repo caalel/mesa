@@ -59,7 +59,6 @@ Renders `NutritionalComparator`.
 
 ```text
 GET  /foods/search
-POST /compare
 POST /locale/{locale}
 ```
 
