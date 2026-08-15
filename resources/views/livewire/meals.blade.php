@@ -112,6 +112,44 @@
                         </div>
                     </div>
                 @endif
+
+                @if ($selectedFood !== null && $selectedFoodNutritionPreview !== null)
+                    <section class="mt-6 border-t border-[var(--color-border)] pt-6" data-testid="selected-food-details">
+                        <h3 class="text-base font-semibold text-[var(--color-text-primary)]">{{ $selectedFood->localized_name }}</h3>
+
+                        <label class="mt-5 block text-sm font-medium text-[var(--color-text-secondary)]" for="food-weight">{{ __('ui.meals.food_weight_label') }}</label>
+                        <div class="mt-2 flex max-w-[11.25rem] items-center rounded-lg border border-[var(--color-border)] bg-transparent pr-4 focus-within:border-[var(--color-primary-green)] focus-within:ring-2 focus-within:ring-[var(--color-light-green)]">
+                            <input
+                                class="h-12 min-w-0 flex-1 bg-transparent px-4 text-[var(--color-text-primary)] focus:outline-none"
+                                id="food-weight"
+                                type="number"
+                                wire:model.live.debounce.300ms="foodWeight"
+                                data-testid="food-weight"
+                            >
+                            <span class="text-sm font-medium text-[var(--color-text-secondary)]">g</span>
+                        </div>
+
+                        <div class="mt-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-light-green)] p-4 sm:p-5" data-testid="selected-food-nutrition-preview">
+                            <p class="text-sm font-medium text-[var(--color-text-secondary)]">{{ __('ui.meals.nutrition_for_weight', ['weight' => $foodWeight]) }}</p>
+                            <p class="mt-1 text-3xl font-semibold tracking-[-0.05em] text-[var(--color-text-primary)]">{{ $selectedFoodNutritionPreview['calories'] }} kcal</p>
+
+                            <div class="mt-4 grid grid-cols-3 gap-3 border-t border-[var(--color-border)] pt-4 text-sm">
+                                <p>
+                                    <span class="block font-semibold text-[var(--color-text-primary)]">{{ $selectedFoodNutritionPreview['protein'] }} g</span>
+                                    <span class="text-xs text-[var(--color-text-secondary)]">{{ __('ui.meals.protein') }}</span>
+                                </p>
+                                <p>
+                                    <span class="block font-semibold text-[var(--color-text-primary)]">{{ $selectedFoodNutritionPreview['carbs'] }} g</span>
+                                    <span class="text-xs text-[var(--color-text-secondary)]">{{ __('ui.meals.carbohydrates') }}</span>
+                                </p>
+                                <p>
+                                    <span class="block font-semibold text-[var(--color-text-primary)]">{{ $selectedFoodNutritionPreview['fat'] }} g</span>
+                                    <span class="text-xs text-[var(--color-text-secondary)]">{{ __('ui.meals.fat') }}</span>
+                                </p>
+                            </div>
+                        </div>
+                    </section>
+                @endif
             </section>
         </div>
     @endif

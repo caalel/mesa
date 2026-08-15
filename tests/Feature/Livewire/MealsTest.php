@@ -186,7 +186,7 @@ it('shows calories per 100 grams for a food search result', function () {
         ->assertSee('124 kcal / 100 g');
 });
 
-it('selects a food while keeping its search results visible', function () {
+it('keeps the food search results visible after selecting a food', function () {
     $banana = Food::factory()->create([
         'name_pt' => 'Banana',
         'name_en' => 'Banana',
@@ -199,12 +199,28 @@ it('selects a food while keeping its search results visible', function () {
         ->assertSee('Banana')
         ->assertSeeHtml('data-testid="select-food-'.$banana->id.'"')
         ->assertSeeHtml('wire:click="selectFood('.$banana->id.')"')
+        ->call('selectFood', $banana->id)
+        ->assertSet('foodSearch', 'B')
+        ->assertSeeHtml('data-testid="select-food-'.$banana->id.'"')
+        ->assertSeeHtml('wire:click="selectFood('.$banana->id.')"');
+});
+
+it('shows the selected food details after selecting a food', function () {
+    $banana = Food::factory()->create([
+        'name_pt' => 'Banana',
+        'name_en' => 'Banana',
+    ]);
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->call('openFoodModal')
         ->assertSet('selectedFoodId', null)
         ->assertSet('foodWeight', '')
+        ->assertDontSeeHtml('data-testid="selected-food-details"')
         ->call('selectFood', $banana->id)
         ->assertSet('selectedFoodId', $banana->id)
         ->assertSet('foodWeight', '100')
-        ->assertSet('foodSearch', 'B')
+        ->assertSeeHtml('data-testid="selected-food-details"')
         ->assertSee('Banana');
 });
 
@@ -227,6 +243,102 @@ it('resets the food weight when selecting another food', function () {
         ->call('selectFood', $banana->id)
         ->assertSet('selectedFoodId', $banana->id)
         ->assertSet('foodWeight', '100');
+});
+
+it('renders the selected food weight input with an explicit debounce', function () {
+    $food = Food::factory()->create();
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->call('openFoodModal')
+        ->call('selectFood', $food->id)
+        ->assertSeeHtml('data-testid="food-weight"')
+        ->assertSeeHtml('wire:model.live.debounce.300ms="foodWeight"');
+});
+
+it('shows the nutrition preview for the selected food weight', function () {
+    $food = Food::factory()->create([
+        'name_pt' => 'Alimento nutricional',
+        'name_en' => 'Nutritional food',
+        'calories_per_100g' => 121,
+        'protein_per_100g' => 13,
+        'carbs_per_100g' => 17,
+        'fat_per_100g' => 19,
+    ]);
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->call('openFoodModal')
+        ->call('selectFood', $food->id)
+        ->assertSeeHtml('data-testid="selected-food-nutrition-preview"')
+        ->assertSee('121 kcal')
+        ->assertSee('13 g')
+        ->assertSee('17 g')
+        ->assertSee('19 g');
+});
+
+it('updates the nutrition preview when the food weight changes', function () {
+    $food = Food::factory()->create([
+        'calories_per_100g' => 121,
+        'protein_per_100g' => 13,
+        'carbs_per_100g' => 17,
+        'fat_per_100g' => 19,
+    ]);
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->call('openFoodModal')
+        ->call('selectFood', $food->id)
+        ->assertSee('121 kcal')
+        ->assertSee('13 g')
+        ->assertSee('17 g')
+        ->assertSee('19 g')
+        ->set('foodWeight', '200')
+        ->assertDontSee('121 kcal')
+        ->assertSee('242 kcal')
+        ->assertSee('26 g')
+        ->assertSee('34 g')
+        ->assertSee('38 g');
+});
+
+it('shows the selected food details copy in Brazilian Portuguese', function () {
+    App::setLocale('pt_BR');
+
+    $food = Food::factory()->create([
+        'name_pt' => 'Alimento nutricional',
+        'name_en' => 'Nutritional food',
+    ]);
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->call('openFoodModal')
+        ->call('selectFood', $food->id)
+        ->assertSee('Alimento nutricional')
+        ->assertSee('Quantidade')
+        ->assertSee('Para 100 g')
+        ->assertSee('Proteínas')
+        ->assertSee('Carboidratos')
+        ->assertSee('Gorduras');
+});
+
+it('shows the selected food details copy in English', function () {
+    App::setLocale('en');
+
+    $food = Food::factory()->create([
+        'name_pt' => 'Alimento nutricional',
+        'name_en' => 'Nutritional food',
+    ]);
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->call('openFoodModal')
+        ->call('selectFood', $food->id)
+        ->assertSee('Nutritional food')
+        ->assertSee('Amount')
+        ->assertSee('For 100 g')
+        ->assertSee('Protein')
+        ->assertSee('Carbohydrates')
+        ->assertSee('Fat');
 });
 
 it('shows the selected food badge in Brazilian Portuguese', function () {

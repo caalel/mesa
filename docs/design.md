@@ -76,8 +76,8 @@ mathematically the same as the entered Food A weight.
 
 ## Food Search and Selection
 
-Search starts from the first non-whitespace character and uses a 300 ms Livewire debounce.
-It searches only the food-name column for the active locale (`name_pt` for `pt_BR`,
+Search starts from the first non-whitespace character. It searches only the food-name
+column for the active locale (`name_pt` for `pt_BR`,
 `name_en` for `en`) and returns at most eight results. There is intentionally no
 fallback between the two columns.
 
@@ -89,6 +89,18 @@ Before the minimum length, the interface provides guidance about the search
 requirement. When no match is found, it provides friendly empty-state feedback. A
 selected food replaces its search field and can be changed to reopen that search
 state.
+
+### Reactive Fields and Debounce
+
+Use a 300 ms Livewire debounce for fields that must react while the user types,
+such as food search and weight changes. Without this interval, rapid typing can
+send multiple overlapping Livewire updates; in this environment, that caused
+intermittent internal 404 responses even though the application and its normal
+routes were available. Debouncing waits briefly after the last keystroke, reducing
+those requests while keeping the interface responsive.
+
+Do not apply it indiscriminately: use it when each change triggers reactive
+processing or an update during typing, not for inputs that do not need it.
 
 ## Food A Weight and Validation
 
