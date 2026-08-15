@@ -55,16 +55,14 @@ GET /
 
 Renders `NutritionalComparator`.
 
-### Existing HTTP endpoints
+### HTTP endpoint
 
 ```text
-GET  /foods/search
 POST /locale/{locale}
 ```
 
-The Livewire interface uses services directly and does not call these endpoints
-internally. `POST /locale/{locale}` accepts `pt_BR` and `en`, stores the selection
-in the session, and redirects back.
+`POST /locale/{locale}` accepts `pt_BR` and `en`, stores the selection in the
+session, and redirects back. The Livewire interface uses services directly.
 
 ### Artisan Commands
 
@@ -80,8 +78,8 @@ The header selector submits to `POST /locale/{locale}` for manual switching.
 
 `Food::localized_name` returns `name_pt` for `pt_BR` and `name_en` for `en`.
 Food searches use only that same locale-specific column; there is no fallback
-between food-name languages. The Livewire component, its Blade components, and
-the food-search HTTP endpoint all present `localized_name`.
+between food-name languages. The Livewire component and its Blade components
+present `localized_name`.
 
 Every searched term is required, but terms do not need to be contiguous in the
 food name. The query returns at most eight results.
