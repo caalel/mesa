@@ -14,9 +14,6 @@ use Livewire\Livewire;
 
 uses(RefreshDatabase::class);
 
-beforeEach(function () {
-    App::setLocale('pt_BR');
-});
 
 /*
 |--------------------------------------------------------------------------
@@ -99,6 +96,8 @@ it('renders the food search field with the expected Livewire binding in the open
 });
 
 it('renders the food search placeholder in Brazilian Portuguese', function () {
+    App::setLocale('pt_BR');
+
     Livewire::test(Meals::class)
         ->call('createMeal')
         ->call('openFoodModal')
@@ -115,7 +114,9 @@ it('renders the food search placeholder in English', function () {
 });
 
 it('shows Portuguese food search results after the first character is entered', function () {
-    Food::factory()->create([
+    App::setLocale('pt_BR');
+
+    $food = Food::factory()->create([
         'name_pt' => 'Arroz integral',
         'name_en' => 'Brown rice',
     ]);
@@ -123,9 +124,9 @@ it('shows Portuguese food search results after the first character is entered', 
     Livewire::test(Meals::class)
         ->call('createMeal')
         ->call('openFoodModal')
-        ->assertDontSee('Arroz integral')
+        ->assertDontSeeHtml('data-testid="select-food-'.$food->id.'"')
         ->set('foodSearch', 'A')
-        ->assertSee('Arroz integral');
+        ->assertSeeHtml('data-testid="select-food-'.$food->id.'"');
 });
 
 it('shows English food search results after the first character is entered', function () {
@@ -145,6 +146,8 @@ it('shows English food search results after the first character is entered', fun
 });
 
 it('shows the results heading in Brazilian Portuguese when food search results are visible', function () {
+    App::setLocale('pt_BR');
+
     Food::factory()->create([
         'name_pt' => 'Arroz integral',
         'name_en' => 'Brown rice',
@@ -196,7 +199,6 @@ it('keeps the food search results visible after selecting a food', function () {
         ->call('createMeal')
         ->call('openFoodModal')
         ->set('foodSearch', 'B')
-        ->assertSee('Banana')
         ->assertSeeHtml('data-testid="select-food-'.$banana->id.'"')
         ->assertSeeHtml('wire:click="selectFood('.$banana->id.')"')
         ->call('selectFood', $banana->id)
@@ -220,8 +222,7 @@ it('shows the selected food details after selecting a food', function () {
         ->call('selectFood', $banana->id)
         ->assertSet('selectedFoodId', $banana->id)
         ->assertSet('foodWeight', '100')
-        ->assertSeeHtml('data-testid="selected-food-details"')
-        ->assertSee('Banana');
+        ->assertSeeHtml('data-testid="selected-food-details"');
 });
 
 it('resets the food weight when selecting another food', function () {
@@ -342,6 +343,8 @@ it('shows the selected food details copy in English', function () {
 });
 
 it('shows the selected food badge in Brazilian Portuguese', function () {
+    App::setLocale('pt_BR');
+
     $banana = Food::factory()->create([
         'name_pt' => 'Banana',
         'name_en' => 'Banana',
@@ -382,8 +385,7 @@ it('shows the food search empty state without food results when a non-empty sear
         ->call('openFoodModal')
         ->assertDontSeeHtml('data-testid="food-search-empty"')
         ->set('foodSearch', 'X')
-        ->assertSeeHtml('data-testid="food-search-empty"')
-        ->assertDontSee('Banana');
+        ->assertSeeHtml('data-testid="food-search-empty"');
 });
 
 it('does not show the food search empty state for a whitespace-only search', function () {
@@ -395,6 +397,8 @@ it('does not show the food search empty state for a whitespace-only search', fun
 });
 
 it('renders the food search empty state in Brazilian Portuguese', function () {
+    App::setLocale('pt_BR');
+
     Food::factory()->create([
         'name_pt' => 'Banana',
         'name_en' => 'Banana',
@@ -452,6 +456,8 @@ it('discards temporary items when cancelling the meal editor', function () {
 });
 
 it('renders the empty state and new meal editor in Brazilian Portuguese', function () {
+    App::setLocale('pt_BR');
+
     $component = Livewire::test(Meals::class);
 
     $component

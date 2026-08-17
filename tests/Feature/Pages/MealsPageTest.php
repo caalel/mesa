@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,6 +24,8 @@ it('has a named meals route', function () {
 });
 
 it('renders the meals initial screen in Brazilian Portuguese', function () {
+    App::setLocale('pt_BR');
+
     $response = $this->withSession(['locale' => 'pt_BR'])->get('/meals');
 
     $response

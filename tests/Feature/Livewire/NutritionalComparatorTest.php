@@ -69,6 +69,8 @@ it('shows Food A results when the user types one character', function () {
 });
 
 it('shows localized Portuguese placeholders for the food search fields', function () {
+    App::setLocale('pt_BR');
+
     $component = Livewire::test(NutritionalComparator::class)
         ->assertSeeHtml('id="food-a-search"')
         ->assertSeeHtml('id="food-b-search"')
@@ -332,6 +334,8 @@ it('shows a friendly message when Food A weight is greater than 10000 grams', fu
 });
 
 it('shows the translated quantity placeholder', function () {
+    App::setLocale('pt_BR');
+
     $banana = Food::factory()->create([
         'name_pt' => 'Banana',
         'calories_per_100g' => 89,
@@ -339,7 +343,7 @@ it('shows the translated quantity placeholder', function () {
 
     Livewire::test(NutritionalComparator::class)
         ->call('selectFoodA', $banana->id)
-        ->assertSeeHtml('placeholder="'.__('ui.compare.quantity_placeholder').'"');
+        ->assertSeeHtml('placeholder="Informe a quantidade em gramas."');
 });
 
 it('shows foods matching the Food B portuguese name search when the user types at least two characters', function () {

@@ -66,6 +66,8 @@ it('orders English search results by relevance and English name when the locale 
 });
 
 it('returns only foods matching the searched Portuguese name', function () {
+    App::setLocale('pt_BR');
+
     // Arrange
     Food::factory()->create([
         'name_pt' => 'Banana',
@@ -86,6 +88,8 @@ it('returns only foods matching the searched Portuguese name', function () {
 });
 
 it('returns only foods partially matching the searched Portuguese name', function () {
+    App::setLocale('pt_BR');
+
     // Arrange
     Food::factory()->create([
         'name_pt' => 'Banana',
@@ -106,6 +110,8 @@ it('returns only foods partially matching the searched Portuguese name', functio
 });
 
 it('returns foods matching the searched Portuguese name regardless of case', function () {
+    App::setLocale('pt_BR');
+
     // Arrange
     Food::factory()->create([
         'name_pt' => 'Banana',
@@ -125,6 +131,8 @@ it('returns foods matching the searched Portuguese name regardless of case', fun
 });
 
 it('returns an empty collection when no food matches the searched Portuguese name', function () {
+    App::setLocale('pt_BR');
+
     // Arrange
     Food::factory()->create([
         'name_pt' => 'Banana',
@@ -144,6 +152,8 @@ it('returns an empty collection when no food matches the searched Portuguese nam
 });
 
 it('returns multiple foods when more than one food matches the searched Portuguese name', function () {
+    App::setLocale('pt_BR');
+
     // Arrange
     Food::factory()->create([
         'name_pt' => 'Banana',
@@ -169,6 +179,8 @@ it('returns multiple foods when more than one food matches the searched Portugue
 });
 
 it('returns matching foods ordered by Portuguese name', function () {
+    App::setLocale('pt_BR');
+
     // Arrange
     Food::factory()->create([
         'name_pt' => 'Banana Prata',

@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -41,6 +42,8 @@ it('links to the comparator', function () {
 });
 
 it('renders the planned homepage content in Brazilian Portuguese', function () {
+    App::setLocale('pt_BR');
+
     $response = $this->withSession(['locale' => 'pt_BR'])->get('/');
 
     $response
