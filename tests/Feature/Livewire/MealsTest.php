@@ -226,6 +226,19 @@ it('shows the selected food details after selecting a food', function () {
         ->assertSeeHtml('data-testid="selected-food-details"');
 });
 
+it('dispatches an event when the selected food details are shown', function () {
+    $banana = Food::factory()->create([
+        'name_pt' => 'Banana',
+        'name_en' => 'Banana',
+    ]);
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->call('openFoodModal')
+        ->call('selectFood', $banana->id)
+        ->assertDispatched('selected-food-details-shown');
+});
+
 it('resets the food weight when selecting another food', function () {
     $apple = Food::factory()->create([
         'name_pt' => 'Maçã',

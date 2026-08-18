@@ -114,7 +114,12 @@
                 @endif
 
                 @if ($selectedFood !== null)
-                    <section class="mt-6 border-t border-[var(--color-border)] pt-6" data-testid="selected-food-details">
+                    <section
+                        class="mt-6 border-t border-[var(--color-border)] pt-6"
+                        x-data
+                        x-on:selected-food-details-shown.window="$el.scrollIntoView({ behavior: 'smooth', block: 'start' })"
+                        data-testid="selected-food-details"
+                    >
                         <h3 class="text-base font-semibold text-[var(--color-text-primary)]">{{ $selectedFood->localized_name }}</h3>
 
                         <label class="mt-5 block text-sm font-medium text-[var(--color-text-secondary)]" for="food-weight">{{ __('ui.meals.food_weight_label') }}</label>

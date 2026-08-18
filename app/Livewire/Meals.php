@@ -84,6 +84,8 @@ class Meals extends Component
     {
         $this->selectedFoodId = $foodId;
         $this->foodWeight = '100';
+
+        $this->dispatch('selected-food-details-shown');
     }
 
     public function cancelMealEditor(): void
