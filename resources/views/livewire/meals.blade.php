@@ -55,7 +55,7 @@
                     <h2 class="text-xl font-semibold leading-tight text-[var(--color-text-primary)]" id="food-modal-title">
                         {{ __('ui.meals.food_modal_title') }}
                     </h2>
-                    <button class="-mr-1 -mt-1 flex h-8 w-8 cursor-pointer items-center justify-center rounded-md text-xl leading-none text-[var(--color-text-secondary)] transition hover:bg-[var(--color-background)] hover:text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-green)] focus:ring-offset-2" type="button" wire:click="closeFoodModal" aria-label="{{ __('ui.meals.close_food_modal') }}" data-testid="close-food-modal">
+                    <button class="-mr-1 -mt-1 flex h-8 w-8 cursor-pointer items-center justify-center rounded-md text-xl leading-none text-[var(--color-text-secondary)] transition hover:bg-[var(--color-background)] hover:text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-green)] focus:ring-offset-2" type="button" wire:click="cancelFoodModal" aria-label="{{ __('ui.meals.close_food_modal') }}" data-testid="close-food-modal">
                         ×
                     </button>
                 </div>
@@ -161,6 +161,12 @@
                         @endif
                     </section>
                 @endif
+
+                <div class="mt-7 flex justify-end">
+                    <button class="cursor-pointer rounded-lg px-5 py-3 text-sm font-semibold text-[var(--color-text-secondary)] transition hover:bg-[var(--color-light-green)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-green)] focus:ring-offset-2" type="button" wire:click="cancelFoodModal" data-testid="cancel-food-modal">
+                        {{ __('ui.meals.cancel') }}
+                    </button>
+                </div>
             </section>
         </div>
     @endif

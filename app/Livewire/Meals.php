@@ -75,9 +75,12 @@ class Meals extends Component
         $this->isFoodModalOpen = true;
     }
 
-    public function closeFoodModal(): void
+    public function cancelFoodModal(): void
     {
         $this->isFoodModalOpen = false;
+        $this->foodSearch = '';
+        $this->selectedFoodId = null;
+        $this->foodWeight = '';
     }
 
     public function selectFood(int $foodId): void

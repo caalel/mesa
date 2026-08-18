@@ -62,13 +62,25 @@ it('opens the food modal', function () {
         ->assertSet('isFoodModalOpen', true);
 });
 
-it('closes the food modal without closing the meal editor', function () {
+it('cancels the food modal and discards its temporary state without closing the meal editor', function () {
+    $banana = Food::factory()->create();
+
     Livewire::test(Meals::class)
         ->call('createMeal')
+        ->set('mealName', 'Lunch')
+        ->set('mealItems', [['temporary' => true]])
         ->call('openFoodModal')
-        ->call('closeFoodModal')
+        ->set('foodSearch', 'Banana')
+        ->call('selectFood', $banana->id)
+        ->set('foodWeight', '250')
+        ->call('cancelFoodModal')
         ->assertSet('isFoodModalOpen', false)
-        ->assertSet('isMealEditorOpen', true);
+        ->assertSet('isMealEditorOpen', true)
+        ->assertSet('foodSearch', '')
+        ->assertSet('selectedFoodId', null)
+        ->assertSet('foodWeight', '')
+        ->assertSet('mealName', 'Lunch')
+        ->assertSet('mealItems', [['temporary' => true]]);
 });
 
 it('renders the food modal close control', function () {
@@ -76,7 +88,15 @@ it('renders the food modal close control', function () {
         ->call('createMeal')
         ->call('openFoodModal')
         ->assertSeeHtml('data-testid="close-food-modal"')
-        ->assertSeeHtml('wire:click="closeFoodModal"');
+        ->assertSeeHtml('wire:click="cancelFoodModal"');
+});
+
+it('renders the food modal footer cancel control', function () {
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->call('openFoodModal')
+        ->assertSeeHtml('data-testid="cancel-food-modal"')
+        ->assertSeeHtml('wire:click="cancelFoodModal"');
 });
 
 it('renders the food modal only after opening it', function () {
