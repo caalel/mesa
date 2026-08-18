@@ -334,6 +334,106 @@ it('renders the selected food weight input with an explicit debounce', function 
         ->assertSeeHtml('wire:model.live.debounce.300ms="foodWeight"');
 });
 
+it('keeps the add food to draft button disabled until a food is selected', function () {
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->call('openFoodModal')
+        ->assertSeeHtml('data-testid="add-food-to-draft-disabled"')
+        ->assertSeeHtml('disabled')
+        ->assertDontSeeHtml('wire:click="addFoodToDraft"');
+});
+
+it('keeps the add food to draft button disabled for invalid food weights', function (string $weight) {
+    $food = Food::factory()->create();
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->call('openFoodModal')
+        ->call('selectFood', $food->id)
+        ->set('foodWeight', $weight)
+        ->assertSeeHtml('data-testid="add-food-to-draft-disabled"')
+        ->assertSeeHtml('disabled')
+        ->assertDontSeeHtml('wire:click="addFoodToDraft"');
+})->with([
+    'empty weight' => '',
+    'non-numeric weight' => 'invalid',
+    'zero weight' => '0',
+    'negative weight' => '-1',
+    'weight above the maximum' => (string) (FoodWeightInputService::MAXIMUM_IN_GRAMS + 1),
+]);
+
+it('enables the add food to draft button for a selected food with a valid weight', function () {
+    $food = Food::factory()->create();
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->call('openFoodModal')
+        ->call('selectFood', $food->id)
+        ->set('foodWeight', '250')
+        ->assertSeeHtml('data-testid="add-food-to-draft-enabled"')
+        ->assertSeeHtml('wire:click="addFoodToDraft"')
+        ->assertDontSeeHtml('data-testid="add-food-to-draft-disabled"');
+});
+
+it('adds a valid food to the meal draft and resets the food modal', function () {
+    $food = Food::factory()->create();
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->call('openFoodModal')
+        ->set('foodSearch', 'Pending search')
+        ->call('selectFood', $food->id)
+        ->set('foodWeight', '250')
+        ->assertSeeHtml('data-testid="meal-items-empty-state"')
+        ->assertDontSeeHtml('data-testid="meal-items-list"')
+        ->assertSee('0 de 10 alimentos')
+        ->call('addFoodToDraft')
+        ->assertSet('mealItems', [
+            [
+                'food_id' => $food->id,
+                'weight' => 250.0,
+            ],
+        ])
+        ->assertSet('isFoodModalOpen', false)
+        ->assertSet('foodSearch', '')
+        ->assertSet('selectedFoodId', null)
+        ->assertSet('foodWeight', '')
+        ->assertSet('isMealEditorOpen', true)
+        ->assertDontSeeHtml('data-testid="meal-items-empty-state"')
+        ->assertSeeHtml('data-testid="meal-items-list"')
+        ->assertSee('1 de 10 alimentos');
+});
+
+it('stores a comma decimal food weight normalized in the meal draft', function () {
+    $food = Food::factory()->create();
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->call('openFoodModal')
+        ->call('selectFood', $food->id)
+        ->set('foodWeight', '12,5')
+        ->call('addFoodToDraft')
+        ->assertSet('mealItems', [
+            [
+                'food_id' => $food->id,
+                'weight' => 12.5,
+            ],
+        ]);
+});
+
+it('does not add a food to the meal draft when the weight is invalid', function () {
+    $food = Food::factory()->create();
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->call('openFoodModal')
+        ->call('selectFood', $food->id)
+        ->set('foodWeight', '0')
+        ->call('addFoodToDraft')
+        ->assertSet('mealItems', [])
+        ->assertSet('isFoodModalOpen', true);
+});
+
 it('shows the nutrition preview for the selected food weight', function () {
     $food = Food::factory()->create([
         'name_pt' => 'Alimento nutricional',

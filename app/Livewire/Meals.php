@@ -61,6 +61,7 @@ class Meals extends Component
             'selectedFood' => $selectedFood,
             'selectedFoodNutritionPreview' => $this->selectedFoodNutritionPreview($selectedFood),
             'foodWeightValidationMessage' => $this->foodWeightValidationMessage(),
+            'canAddFoodToDraft' => $this->canAddFoodToDraft(),
             'hasMealItems' => $this->hasMealItems(),
             'mealItemsCount' => $this->mealItemsCount(),
             'mealItemsLimit' => self::MEAL_ITEMS_LIMIT,
@@ -81,6 +82,27 @@ class Meals extends Component
     }
 
     public function cancelFoodModal(): void
+    {
+        $this->resetFoodModalState();
+    }
+
+    public function addFoodToDraft(): void
+    {
+        $normalizedWeight = $this->foodWeightInputService->normalize($this->foodWeight);
+
+        if ($this->selectedFoodId === null || ! $this->foodWeightInputService->isValid($normalizedWeight)) {
+            return;
+        }
+
+        $this->mealItems[] = [
+            'food_id' => $this->selectedFoodId,
+            'weight' => (float) $normalizedWeight,
+        ];
+
+        $this->resetFoodModalState();
+    }
+
+    private function resetFoodModalState(): void
     {
         $this->isFoodModalOpen = false;
         $this->foodSearch = '';
@@ -123,6 +145,13 @@ class Meals extends Component
     private function mealItemsCount(): int
     {
         return count($this->mealItems);
+    }
+
+    private function canAddFoodToDraft(): bool
+    {
+        $weight = $this->foodWeightInputService->normalize($this->foodWeight);
+
+        return $this->selectedFoodId !== null && $this->foodWeightInputService->isValid($weight);
     }
 
     private function selectedFood(): ?Food

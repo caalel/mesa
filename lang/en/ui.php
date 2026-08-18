@@ -23,6 +23,7 @@ return [
         'draft_status' => 'Not saved yet',
         'name_label' => 'Meal name',
         'add_food' => '+ Add food',
+        'add_food_to_draft' => 'Add',
         'items_title' => 'Foods',
         'items_counter' => ':count of :limit foods',
         'items_empty_description' => 'Add the foods that make up this meal.',

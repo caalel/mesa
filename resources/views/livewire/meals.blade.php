@@ -177,10 +177,19 @@
                     </section>
                 @endif
 
-                <div class="mt-7 flex justify-end">
+                <div class="mt-7 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
                     <button class="cursor-pointer rounded-lg px-5 py-3 text-sm font-semibold text-[var(--color-text-secondary)] transition hover:bg-[var(--color-light-green)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-green)] focus:ring-offset-2" type="button" wire:click="cancelFoodModal" data-testid="cancel-food-modal">
                         {{ __('ui.meals.cancel') }}
                     </button>
+                    @if ($canAddFoodToDraft)
+                        <button class="cursor-pointer rounded-lg bg-[var(--color-primary-green)] px-5 py-3 text-sm font-semibold text-white transition hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-green)] focus:ring-offset-2" type="button" wire:click="addFoodToDraft" data-testid="add-food-to-draft-enabled">
+                            {{ __('ui.meals.add_food_to_draft') }}
+                        </button>
+                    @else
+                        <button class="cursor-not-allowed rounded-lg border border-[var(--color-border)] bg-[var(--color-background)] px-5 py-3 text-sm font-semibold text-[var(--color-text-secondary)] opacity-70" type="button" data-testid="add-food-to-draft-disabled" disabled>
+                            {{ __('ui.meals.add_food_to_draft') }}
+                        </button>
+                    @endif
                 </div>
             </section>
         </div>

@@ -23,6 +23,7 @@ return [
         'draft_status' => 'Ainda não salva',
         'name_label' => 'Nome da refeição',
         'add_food' => '+ Adicionar alimento',
+        'add_food_to_draft' => 'Adicionar',
         'items_title' => 'Alimentos',
         'items_counter' => ':count de :limit alimentos',
         'items_empty_description' => 'Adicione os alimentos que compõem esta refeição.',
