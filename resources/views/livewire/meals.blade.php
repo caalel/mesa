@@ -113,7 +113,7 @@
                     </div>
                 @endif
 
-                @if ($selectedFood !== null && $selectedFoodNutritionPreview !== null)
+                @if ($selectedFood !== null)
                     <section class="mt-6 border-t border-[var(--color-border)] pt-6" data-testid="selected-food-details">
                         <h3 class="text-base font-semibold text-[var(--color-text-primary)]">{{ $selectedFood->localized_name }}</h3>
 
@@ -129,25 +129,31 @@
                             <span class="text-sm font-medium text-[var(--color-text-secondary)]">g</span>
                         </div>
 
-                        <div class="mt-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-light-green)] p-4 sm:p-5" data-testid="selected-food-nutrition-preview">
-                            <p class="text-sm font-medium text-[var(--color-text-secondary)]">{{ __('ui.meals.nutrition_for_weight', ['weight' => $foodWeight]) }}</p>
-                            <p class="mt-1 text-3xl font-semibold tracking-[-0.05em] text-[var(--color-text-primary)]">{{ $selectedFoodNutritionPreview['calories'] }} kcal</p>
+                        @if ($foodWeightValidationMessage !== null)
+                            <p class="mt-2 text-sm text-[var(--color-error)]">{{ $foodWeightValidationMessage }}</p>
+                        @endif
 
-                            <div class="mt-4 grid grid-cols-3 gap-3 border-t border-[var(--color-border)] pt-4 text-sm">
-                                <p>
-                                    <span class="block font-semibold text-[var(--color-text-primary)]">{{ $selectedFoodNutritionPreview['protein'] }} g</span>
-                                    <span class="text-xs text-[var(--color-text-secondary)]">{{ __('ui.meals.protein') }}</span>
-                                </p>
-                                <p>
-                                    <span class="block font-semibold text-[var(--color-text-primary)]">{{ $selectedFoodNutritionPreview['carbs'] }} g</span>
-                                    <span class="text-xs text-[var(--color-text-secondary)]">{{ __('ui.meals.carbohydrates') }}</span>
-                                </p>
-                                <p>
-                                    <span class="block font-semibold text-[var(--color-text-primary)]">{{ $selectedFoodNutritionPreview['fat'] }} g</span>
-                                    <span class="text-xs text-[var(--color-text-secondary)]">{{ __('ui.meals.fat') }}</span>
-                                </p>
+                        @if ($selectedFoodNutritionPreview !== null)
+                            <div class="mt-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-light-green)] p-4 sm:p-5" data-testid="selected-food-nutrition-preview">
+                                <p class="text-sm font-medium text-[var(--color-text-secondary)]">{{ __('ui.meals.nutrition_for_weight', ['weight' => $selectedFoodNutritionPreview['formatted_weight']]) }}</p>
+                                <p class="mt-1 text-3xl font-semibold tracking-[-0.05em] text-[var(--color-text-primary)]">{{ $selectedFoodNutritionPreview['calories'] }} kcal</p>
+
+                                <div class="mt-4 grid grid-cols-3 gap-3 border-t border-[var(--color-border)] pt-4 text-sm">
+                                    <p>
+                                        <span class="block font-semibold text-[var(--color-text-primary)]">{{ $selectedFoodNutritionPreview['protein'] }} g</span>
+                                        <span class="text-xs text-[var(--color-text-secondary)]">{{ __('ui.meals.protein') }}</span>
+                                    </p>
+                                    <p>
+                                        <span class="block font-semibold text-[var(--color-text-primary)]">{{ $selectedFoodNutritionPreview['carbs'] }} g</span>
+                                        <span class="text-xs text-[var(--color-text-secondary)]">{{ __('ui.meals.carbohydrates') }}</span>
+                                    </p>
+                                    <p>
+                                        <span class="block font-semibold text-[var(--color-text-primary)]">{{ $selectedFoodNutritionPreview['fat'] }} g</span>
+                                        <span class="text-xs text-[var(--color-text-secondary)]">{{ __('ui.meals.fat') }}</span>
+                                    </p>
+                                </div>
                             </div>
-                        </div>
+                        @endif
                     </section>
                 @endif
             </section>

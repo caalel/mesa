@@ -4,6 +4,8 @@ namespace App\Livewire;
 
 use App\Models\Food;
 use App\Services\FoodSearchService;
+use App\Services\FoodWeightInputService;
+use App\Services\LocalizedNutritionalValueFormatter;
 use App\Services\NutritionalValuesCalculator;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
@@ -31,12 +33,20 @@ class Meals extends Component
 
     protected NutritionalValuesCalculator $nutritionalValuesCalculator;
 
+    protected FoodWeightInputService $foodWeightInputService;
+
+    protected LocalizedNutritionalValueFormatter $localizedNutritionalValueFormatter;
+
     public function boot(
         FoodSearchService $foodSearchService,
+        FoodWeightInputService $foodWeightInputService,
+        LocalizedNutritionalValueFormatter $localizedNutritionalValueFormatter,
         NutritionalValuesCalculator $nutritionalValuesCalculator,
     ): void
     {
         $this->foodSearchService = $foodSearchService;
+        $this->foodWeightInputService = $foodWeightInputService;
+        $this->localizedNutritionalValueFormatter = $localizedNutritionalValueFormatter;
         $this->nutritionalValuesCalculator = $nutritionalValuesCalculator;
     }
 
@@ -48,6 +58,7 @@ class Meals extends Component
             'foodSearchResults' => $this->foodSearchResults(),
             'selectedFood' => $selectedFood,
             'selectedFoodNutritionPreview' => $this->selectedFoodNutritionPreview($selectedFood),
+            'foodWeightValidationMessage' => $this->foodWeightValidationMessage(),
         ]);
     }
 
@@ -104,21 +115,56 @@ class Meals extends Component
     }
 
     /**
-     * @return array{calories: float, protein: float, carbs: float, fat: float}|null
+     * @return array{formatted_weight: string, calories: string, protein: string, carbs: string, fat: string}|null
      */
     private function selectedFoodNutritionPreview(?Food $selectedFood): ?array
     {
-        if ($selectedFood === null) {
+        $weight = $this->foodWeightInputService->normalize($this->foodWeight);
+
+        if ($selectedFood === null || ! $this->foodWeightInputService->isValid($weight)) {
             return null;
         }
 
-        $weight = (float) $this->foodWeight;
+        $weight = (float) $weight;
 
         return [
-            'calories' => $this->nutritionalValuesCalculator->calculateValue((float) $selectedFood->calories_per_100g, $weight),
-            'protein' => $this->nutritionalValuesCalculator->calculateValue((float) $selectedFood->protein_per_100g, $weight),
-            'carbs' => $this->nutritionalValuesCalculator->calculateValue((float) $selectedFood->carbs_per_100g, $weight),
-            'fat' => $this->nutritionalValuesCalculator->calculateValue((float) $selectedFood->fat_per_100g, $weight),
+            'formatted_weight' => $this->localizedNutritionalValueFormatter->format($weight),
+            'calories' => $this->formatPreviewValue((float) $selectedFood->calories_per_100g, $weight),
+            'protein' => $this->formatPreviewValue((float) $selectedFood->protein_per_100g, $weight),
+            'carbs' => $this->formatPreviewValue((float) $selectedFood->carbs_per_100g, $weight),
+            'fat' => $this->formatPreviewValue((float) $selectedFood->fat_per_100g, $weight),
         ];
+    }
+
+    private function foodWeightValidationMessage(): ?string
+    {
+        $weight = $this->foodWeightInputService->normalize($this->foodWeight);
+
+        if ($weight === '') {
+            return null;
+        }
+
+        if (! $this->foodWeightInputService->isNumeric($weight)) {
+            return __('ui.meals.quantity_must_be_numeric');
+        }
+
+        if (! $this->foodWeightInputService->isPositive($weight)) {
+            return __('ui.meals.quantity_must_be_positive');
+        }
+
+        if ($this->foodWeightInputService->exceedsMaximum($weight)) {
+            return __('ui.meals.quantity_too_high', [
+                'max' => $this->localizedNutritionalValueFormatter->format(FoodWeightInputService::MAXIMUM_IN_GRAMS),
+            ]);
+        }
+
+        return null;
+    }
+
+    private function formatPreviewValue(float $valuePer100g, float $weight): string
+    {
+        return $this->localizedNutritionalValueFormatter->formatDisplayValue(
+            $this->nutritionalValuesCalculator->calculateValue($valuePer100g, $weight),
+        );
     }
 }
