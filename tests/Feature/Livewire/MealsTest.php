@@ -48,6 +48,49 @@ it('starts a new meal without temporary items', function () {
         ->assertSet('mealItems', []);
 });
 
+it('shows the meal items empty state for a new meal draft', function () {
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->assertSeeHtml('data-testid="meal-items-empty-state"')
+        ->assertDontSeeHtml('data-testid="meal-items-list"');
+});
+
+it('keeps the meal items empty state when the meal has a name but no items', function () {
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->set('mealName', 'Lunch')
+        ->assertSeeHtml('data-testid="meal-items-empty-state"')
+        ->assertDontSeeHtml('data-testid="meal-items-list"');
+});
+
+it('shows the meal items list when the meal draft has items', function () {
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->set('mealItems', [['food_id' => 1]])
+        ->assertDontSeeHtml('data-testid="meal-items-empty-state"')
+        ->assertSeeHtml('data-testid="meal-items-list"');
+});
+
+it('shows the localized Portuguese meal items counter for empty and populated drafts', function () {
+    App::setLocale('pt_BR');
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->assertSee('0 de 10 alimentos')
+        ->set('mealItems', [['food_id' => 1], ['food_id' => 2]])
+        ->assertSee('2 de 10 alimentos');
+});
+
+it('shows the localized English meal items counter for empty and populated drafts', function () {
+    App::setLocale('en');
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->assertSee('0 of 10 foods')
+        ->set('mealItems', [['food_id' => 1], ['food_id' => 2]])
+        ->assertSee('2 of 10 foods');
+});
+
 it('renders the food modal trigger in the meal editor', function () {
     Livewire::test(Meals::class)
         ->call('createMeal')

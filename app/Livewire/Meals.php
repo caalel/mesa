@@ -13,6 +13,8 @@ use Livewire\Component;
 
 class Meals extends Component
 {
+    private const MEAL_ITEMS_LIMIT = 10;
+
     public bool $isMealEditorOpen = false;
 
     public bool $isFoodModalOpen = false;
@@ -59,6 +61,9 @@ class Meals extends Component
             'selectedFood' => $selectedFood,
             'selectedFoodNutritionPreview' => $this->selectedFoodNutritionPreview($selectedFood),
             'foodWeightValidationMessage' => $this->foodWeightValidationMessage(),
+            'hasMealItems' => $this->hasMealItems(),
+            'mealItemsCount' => $this->mealItemsCount(),
+            'mealItemsLimit' => self::MEAL_ITEMS_LIMIT,
         ]);
     }
 
@@ -108,6 +113,16 @@ class Meals extends Component
         }
 
         return $this->foodSearchService->search($search);
+    }
+
+    private function hasMealItems(): bool
+    {
+        return $this->mealItems !== [];
+    }
+
+    private function mealItemsCount(): int
+    {
+        return count($this->mealItems);
     }
 
     private function selectedFood(): ?Food

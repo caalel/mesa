@@ -5,10 +5,13 @@
     </header>
 
     @if ($isMealEditorOpen)
-        <section class="w-full space-y-6 rounded-2xl border border-[var(--color-border)] p-5 sm:p-6" data-testid="meal-editor">
-            <h2 class="text-xl font-semibold leading-tight text-[var(--color-text-primary)]">{{ __('ui.meals.new_meal') }}</h2>
+        <section class="w-full rounded-2xl border border-[var(--color-border)] p-5 sm:p-8" data-testid="meal-editor">
+            <div class="flex items-center justify-between gap-5">
+                <h2 class="text-xl font-semibold leading-tight text-[var(--color-text-primary)]">{{ __('ui.meals.new_meal') }}</h2>
+                <span class="text-xs font-medium text-[var(--color-text-secondary)]">{{ __('ui.meals.draft_status') }}</span>
+            </div>
 
-            <div class="space-y-2">
+            <div class="mt-7 space-y-2">
                 <label class="block text-sm font-medium text-[var(--color-text-secondary)]" for="meal-name">{{ __('ui.meals.name_label') }}</label>
                 <input
                     class="w-full rounded-lg border border-[var(--color-border)] px-3 py-2.5 text-[var(--color-text-primary)] focus:border-[var(--color-primary-green)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary-green)]"
@@ -20,18 +23,30 @@
                 >
             </div>
 
-            <div class="flex justify-end">
+            <div class="mt-8 flex items-center justify-between gap-4">
+                <div>
+                    <h3 class="font-semibold text-[var(--color-text-primary)]">{{ __('ui.meals.items_title') }}</h3>
+                    <p class="mt-1 text-sm text-[var(--color-text-secondary)]">{{ __('ui.meals.items_counter', ['count' => $mealItemsCount, 'limit' => $mealItemsLimit]) }}</p>
+                </div>
                 <button class="cursor-pointer rounded-lg border border-[var(--color-border)] px-4 py-2.5 text-sm font-semibold text-[var(--color-primary-green)] transition-colors hover:bg-[var(--color-light-green)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-green)] focus:ring-offset-2" type="button" wire:click="openFoodModal" data-testid="open-food-modal">
                     {{ __('ui.meals.add_food') }}
                 </button>
             </div>
 
-            <div class="flex flex-wrap items-center gap-3">
+            @if ($hasMealItems)
+                <div class="mt-4 divide-y border-y border-[var(--color-border)]" data-testid="meal-items-list"></div>
+            @else
+                <div class="mt-4 border-y border-[var(--color-border)]" data-testid="meal-items-empty-state">
+                    <p class="py-8 text-center text-sm text-[var(--color-text-secondary)]">{{ __('ui.meals.items_empty_description') }}</p>
+                </div>
+            @endif
+
+            <div class="mt-8 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+                <button class="cursor-pointer rounded-lg px-5 py-2.5 text-sm font-semibold text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-light-green)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-green)] focus:ring-offset-2" type="button" wire:click="cancelMealEditor" data-testid="cancel-meal-editor">
+                    {{ __('ui.meals.cancel') }}
+                </button>
                 <button class="cursor-pointer rounded-lg bg-[var(--color-primary-green)] px-5 py-2.5 text-sm font-semibold text-white hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-green)] focus:ring-offset-2" type="button" data-testid="submit-meal">
                     {{ __('ui.meals.create') }}
-                </button>
-                <button class="cursor-pointer rounded-lg px-4 py-2.5 text-sm font-medium text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-light-green)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-green)] focus:ring-offset-2" type="button" wire:click="cancelMealEditor" data-testid="cancel-meal-editor">
-                    {{ __('ui.meals.cancel') }}
                 </button>
             </div>
         </section>
