@@ -43,6 +43,8 @@ return [
         'protein' => 'Protein',
         'carbohydrates' => 'Carbs',
         'fat' => 'Fat',
+        'edit' => 'Edit',
+        'remove' => 'Remove',
         'cancel' => 'Cancel',
         'name_placeholder' => 'e.g. Breakfast',
     ],

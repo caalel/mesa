@@ -60,6 +60,7 @@ class Meals extends Component
             'foodSearchResults' => $this->foodSearchResults(),
             'selectedFood' => $selectedFood,
             'selectedFoodNutritionPreview' => $this->selectedFoodNutritionPreview($selectedFood),
+            'mealDraftItems' => $this->mealDraftItems(),
             'foodWeightValidationMessage' => $this->foodWeightValidationMessage(),
             'canAddFoodToDraft' => $this->canAddFoodToDraft(),
             'hasMealItems' => $this->hasMealItems(),
@@ -145,6 +146,66 @@ class Meals extends Component
     private function mealItemsCount(): int
     {
         return count($this->mealItems);
+    }
+
+    /**
+     * @return array<int, array{food_id: int, name: string, weight: float, formatted_weight: string, calories: float, formatted_calories: string, protein: float, formatted_protein: string, carbs: float, formatted_carbs: string, fat: float, formatted_fat: string}>
+     */
+    private function mealDraftItems(): array
+    {
+        $foodIds = collect($this->mealItems)
+            ->pluck('food_id')
+            ->filter()
+            ->unique()
+            ->values()
+            ->all();
+
+        if ($foodIds === []) {
+            return [];
+        }
+
+        $foodsById = Food::query()
+            ->whereKey($foodIds)
+            ->get()
+            ->keyBy('id');
+
+        return collect($this->mealItems)
+            ->map(function (array $mealItem) use ($foodsById): ?array {
+                if (! isset($mealItem['food_id'], $mealItem['weight'])) {
+                    return null;
+                }
+
+                /** @var Food|null $food */
+                $food = $foodsById->get($mealItem['food_id']);
+
+                if ($food === null) {
+                    return null;
+                }
+
+                $weight = (float) $mealItem['weight'];
+                $calories = $this->nutritionalValuesCalculator->calculateValue((float) $food->calories_per_100g, $weight);
+                $protein = $this->nutritionalValuesCalculator->calculateValue((float) $food->protein_per_100g, $weight);
+                $carbs = $this->nutritionalValuesCalculator->calculateValue((float) $food->carbs_per_100g, $weight);
+                $fat = $this->nutritionalValuesCalculator->calculateValue((float) $food->fat_per_100g, $weight);
+
+                return [
+                    'food_id' => $food->id,
+                    'name' => $food->localized_name,
+                    'weight' => $weight,
+                    'formatted_weight' => $this->localizedNutritionalValueFormatter->format($weight),
+                    'calories' => $calories,
+                    'formatted_calories' => $this->localizedNutritionalValueFormatter->formatDisplayValue($calories),
+                    'protein' => $protein,
+                    'formatted_protein' => $this->localizedNutritionalValueFormatter->formatDisplayValue($protein),
+                    'carbs' => $carbs,
+                    'formatted_carbs' => $this->localizedNutritionalValueFormatter->formatDisplayValue($carbs),
+                    'fat' => $fat,
+                    'formatted_fat' => $this->localizedNutritionalValueFormatter->formatDisplayValue($fat),
+                ];
+            })
+            ->filter()
+            ->values()
+            ->all();
     }
 
     private function canAddFoodToDraft(): bool

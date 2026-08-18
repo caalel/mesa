@@ -71,6 +71,56 @@ it('shows the meal items list when the meal draft has items', function () {
         ->assertSeeHtml('data-testid="meal-items-list"');
 });
 
+it('renders a localized food item from the meal draft', function () {
+    App::setLocale('pt_BR');
+
+    $food = Food::factory()->create([
+        'name_pt' => 'Brócolis cozido',
+        'name_en' => 'Cooked broccoli',
+    ]);
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->set('mealItems', [
+            [
+                'food_id' => $food->id,
+                'weight' => 50.5,
+            ],
+        ])
+        ->assertSeeHtml('data-testid="meal-items-list"')
+        ->assertSeeHtml('data-testid="meal-item"')
+        ->assertSeeHtml('data-food-id="'.$food->id.'"')
+        ->assertSee('Brócolis cozido');
+});
+
+it('renders localized nutritional values and macro labels calculated for a meal draft item weight', function () {
+    App::setLocale('pt_BR');
+
+    $food = Food::factory()->create([
+        'calories_per_100g' => 123,
+        'protein_per_100g' => 12.34,
+        'carbs_per_100g' => 45.67,
+        'fat_per_100g' => 8.9,
+    ]);
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->set('mealItems', [
+            [
+                'food_id' => $food->id,
+                'weight' => 50.5,
+            ],
+        ])
+        ->assertSee('50,5 g')
+        ->assertSee('62,12 kcal')
+        ->assertSee('6,23 g')
+        ->assertSee(__('ui.meals.protein'))
+        ->assertSee('23,06 g')
+        ->assertSee(__('ui.meals.carbohydrates'))
+        ->assertSee('4,49 g')
+        ->assertSee(__('ui.meals.fat'));
+});
+
 it('shows the localized Portuguese meal items counter for empty and populated drafts', function () {
     App::setLocale('pt_BR');
 

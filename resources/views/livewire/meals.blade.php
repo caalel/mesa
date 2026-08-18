@@ -34,7 +34,33 @@
             </div>
 
             @if ($hasMealItems)
-                <div class="mt-4 divide-y border-y border-[var(--color-border)]" data-testid="meal-items-list"></div>
+                <div class="mt-4 divide-y divide-[var(--color-border)] border-y border-[var(--color-border)]" data-testid="meal-items-list">
+                    @foreach ($mealDraftItems as $item)
+                        <article class="flex items-start justify-between gap-4 py-4" data-testid="meal-item" data-food-id="{{ $item['food_id'] }}">
+                            <div class="min-w-0">
+                                <h4 class="break-words font-semibold text-[var(--color-text-primary)]">{{ $item['name'] }}</h4>
+                                <p class="mt-1 text-sm text-[var(--color-text-secondary)]">
+                                    <span class="font-semibold">{{ $item['formatted_weight'] }} g</span>
+                                    <span class="mx-2 text-[var(--color-warm-accent)]">•</span>
+                                    <span class="font-semibold">{{ $item['formatted_calories'] }} kcal</span>
+                                    <span class="hidden md:inline">
+                                        <span class="mx-2 text-[var(--color-warm-accent)]">•</span>
+                                        <span><span class="font-semibold">{{ $item['formatted_protein'] }} g</span> <span class="lowercase">{{ __('ui.meals.protein') }}</span></span>
+                                        <span class="mx-2 text-[var(--color-warm-accent)]">•</span>
+                                        <span><span class="font-semibold">{{ $item['formatted_carbs'] }} g</span> <span class="lowercase">{{ __('ui.meals.carbohydrates') }}</span></span>
+                                        <span class="mx-2 text-[var(--color-warm-accent)]">•</span>
+                                        <span><span class="font-semibold">{{ $item['formatted_fat'] }} g</span> <span class="lowercase">{{ __('ui.meals.fat') }}</span></span>
+                                    </span>
+                                </p>
+                            </div>
+
+                            <div class="flex shrink-0 gap-3 text-xs font-semibold">
+                                <span class="text-[var(--color-primary-green)]">{{ __('ui.meals.edit') }}</span>
+                                <span class="text-[var(--color-text-secondary)]">{{ __('ui.meals.remove') }}</span>
+                            </div>
+                        </article>
+                    @endforeach
+                </div>
             @else
                 <div class="mt-4 border-y border-[var(--color-border)]" data-testid="meal-items-empty-state">
                     <p class="py-8 text-center text-sm text-[var(--color-text-secondary)]">{{ __('ui.meals.items_empty_description') }}</p>
