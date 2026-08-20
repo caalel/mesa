@@ -576,6 +576,275 @@ it('renders each meal item remove control bound to its food id', function () {
         ->assertSeeHtml('wire:click="removeMealItem('.$food->id.')"');
 });
 
+it('renders each meal item edit control bound to its food id', function () {
+    $food = Food::factory()->create();
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->set('mealItems', [
+            ['food_id' => $food->id, 'weight' => 100.0],
+        ])
+        ->assertSeeHtml('data-testid="edit-meal-item"')
+        ->assertSeeHtml('wire:click="editMealItem('.$food->id.')"');
+});
+
+it('opens the food modal to edit a draft item with its current food and numeric weight', function (float $weight, string $expectedWeight) {
+    $food = Food::factory()->create();
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->set('mealName', 'Lunch')
+        ->set('mealItems', [
+            ['food_id' => $food->id, 'weight' => $weight],
+        ])
+        ->set('foodSearch', 'Pending search')
+        ->call('editMealItem', $food->id)
+        ->assertSet('editingMealItemFoodId', $food->id)
+        ->assertSet('selectedFoodId', $food->id)
+        ->assertSet('foodWeight', $expectedWeight)
+        ->assertSet('foodSearch', '')
+        ->assertSet('isFoodModalOpen', true)
+        ->assertSet('mealName', 'Lunch')
+        ->assertSet('mealItems', [
+            ['food_id' => $food->id, 'weight' => $weight],
+        ])
+        ->assertSeeHtml('data-testid="update-food-in-draft-enabled"')
+        ->assertSeeHtml('wire:click="updateFoodInDraft"')
+        ->assertSee(__('ui.meals.save'));
+})->with([
+    'whole number weight' => [100.0, '100'],
+    'decimal weight' => [12.5, '12.5'],
+]);
+
+it('does not open or alter the editor state when editing a food absent from the draft', function () {
+    $draftFood = Food::factory()->create();
+    $missingFood = Food::factory()->create();
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->set('mealName', 'Lunch')
+        ->set('mealItems', [
+            ['food_id' => $draftFood->id, 'weight' => 100.0],
+        ])
+        ->call('editMealItem', $missingFood->id)
+        ->assertSet('editingMealItemFoodId', null)
+        ->assertSet('isFoodModalOpen', false)
+        ->assertSet('selectedFoodId', null)
+        ->assertSet('foodWeight', '')
+        ->assertSet('foodSearch', '')
+        ->assertSet('mealName', 'Lunch')
+        ->assertSet('mealItems', [
+            ['food_id' => $draftFood->id, 'weight' => 100.0],
+        ]);
+});
+
+it('updates a draft food weight in place and clears the food modal edit state after success', function () {
+    $foodA = Food::factory()->create();
+    $foodB = Food::factory()->create();
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->set('mealItems', [
+            ['food_id' => $foodA->id, 'weight' => 100.0],
+            ['food_id' => $foodB->id, 'weight' => 150.0],
+        ])
+        ->call('editMealItem', $foodA->id)
+        ->set('foodWeight', '250')
+        ->call('updateFoodInDraft')
+        ->assertSet('mealItems', [
+            ['food_id' => $foodA->id, 'weight' => 250.0],
+            ['food_id' => $foodB->id, 'weight' => 150.0],
+        ])
+        ->assertSet('editingMealItemFoodId', null)
+        ->assertSet('isFoodModalOpen', false)
+        ->assertSet('selectedFoodId', null)
+        ->assertSet('foodWeight', '')
+        ->assertSet('foodSearch', '');
+});
+
+it('allows replacing an edited food weight exactly at the maximum without adding its previous weight', function () {
+    $food = Food::factory()->create();
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->set('mealItems', [
+            ['food_id' => $food->id, 'weight' => 100.0],
+        ])
+        ->call('editMealItem', $food->id)
+        ->set('foodWeight', '10000')
+        ->assertSeeHtml('data-testid="update-food-in-draft-enabled"')
+        ->assertSeeHtml('wire:click="updateFoodInDraft"')
+        ->call('updateFoodInDraft')
+        ->assertSet('mealItems', [
+            ['food_id' => $food->id, 'weight' => 10000.0],
+        ]);
+});
+
+it('replaces an edited draft food with a new food while preserving its position', function () {
+    $foodA = Food::factory()->create();
+    $foodB = Food::factory()->create();
+    $foodC = Food::factory()->create();
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->set('mealItems', [
+            ['food_id' => $foodA->id, 'weight' => 100.0],
+            ['food_id' => $foodB->id, 'weight' => 150.0],
+        ])
+        ->call('editMealItem', $foodA->id)
+        ->call('selectFood', $foodC->id)
+        ->set('foodWeight', '200')
+        ->call('updateFoodInDraft')
+        ->assertSet('mealItems', [
+            ['food_id' => $foodC->id, 'weight' => 200.0],
+            ['food_id' => $foodB->id, 'weight' => 150.0],
+        ]);
+});
+
+it('merges an edited draft food into an existing destination food while preserving destination order', function () {
+    $foodA = Food::factory()->create();
+    $foodB = Food::factory()->create();
+    $foodC = Food::factory()->create();
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->set('mealItems', [
+            ['food_id' => $foodA->id, 'weight' => 100.0],
+            ['food_id' => $foodB->id, 'weight' => 300.0],
+            ['food_id' => $foodC->id, 'weight' => 150.0],
+        ])
+        ->call('editMealItem', $foodA->id)
+        ->call('selectFood', $foodB->id)
+        ->set('foodWeight', '200')
+        ->call('updateFoodInDraft')
+        ->assertSet('mealItems', [
+            ['food_id' => $foodB->id, 'weight' => 500.0],
+            ['food_id' => $foodC->id, 'weight' => 150.0],
+        ]);
+});
+
+it('allows an edit merge that reaches the combined food weight maximum exactly', function () {
+    $foodA = Food::factory()->create();
+    $foodB = Food::factory()->create();
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->set('mealItems', [
+            ['food_id' => $foodA->id, 'weight' => 100.0],
+            ['food_id' => $foodB->id, 'weight' => 9000.0],
+        ])
+        ->call('editMealItem', $foodA->id)
+        ->call('selectFood', $foodB->id)
+        ->set('foodWeight', '1000')
+        ->assertSeeHtml('data-testid="update-food-in-draft-enabled"')
+        ->assertSeeHtml('wire:click="updateFoodInDraft"')
+        ->call('updateFoodInDraft')
+        ->assertSet('mealItems', [
+            ['food_id' => $foodB->id, 'weight' => 10000.0],
+        ]);
+});
+
+it('keeps the edit state intact when an edit merge exceeds the combined food weight maximum', function () {
+    App::setLocale('pt_BR');
+
+    $foodA = Food::factory()->create();
+    $foodB = Food::factory()->create([
+        'name_pt' => 'Feijão',
+        'name_en' => 'Beans',
+    ]);
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->set('mealItems', [
+            ['food_id' => $foodA->id, 'weight' => 100.0],
+            ['food_id' => $foodB->id, 'weight' => 9000.0],
+        ])
+        ->call('editMealItem', $foodA->id)
+        ->call('selectFood', $foodB->id)
+        ->set('foodWeight', '1001')
+        ->assertSeeHtml('data-testid="update-food-in-draft-disabled"')
+        ->assertSeeHtml('disabled')
+        ->assertDontSeeHtml('wire:click="updateFoodInDraft"')
+        ->assertSee(__('ui.meals.total_quantity_too_high', [
+            'food' => 'Feijão',
+            'max' => '10.000',
+        ]))
+        ->call('updateFoodInDraft')
+        ->assertSet('mealItems', [
+            ['food_id' => $foodA->id, 'weight' => 100.0],
+            ['food_id' => $foodB->id, 'weight' => 9000.0],
+        ])
+        ->assertSet('editingMealItemFoodId', $foodA->id)
+        ->assertSet('isFoodModalOpen', true)
+        ->assertSet('selectedFoodId', $foodB->id)
+        ->assertSet('foodWeight', '1001');
+});
+
+it('cancels an item edit without changing the draft', function () {
+    $food = Food::factory()->create();
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->set('mealItems', [
+            ['food_id' => $food->id, 'weight' => 100.0],
+        ])
+        ->call('editMealItem', $food->id)
+        ->call('cancelFoodModal')
+        ->assertSet('mealItems', [
+            ['food_id' => $food->id, 'weight' => 100.0],
+        ])
+        ->assertSet('editingMealItemFoodId', null)
+        ->assertSet('isFoodModalOpen', false)
+        ->assertSet('selectedFoodId', null)
+        ->assertSet('foodWeight', '')
+        ->assertSet('foodSearch', '');
+});
+
+it('keeps the temporary edit state intact when its original draft food no longer exists', function () {
+    $originalFood = Food::factory()->create();
+    $selectedFood = Food::factory()->create();
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->set('mealItems', [
+            ['food_id' => $selectedFood->id, 'weight' => 150.0],
+        ])
+        ->set('editingMealItemFoodId', $originalFood->id)
+        ->set('isFoodModalOpen', true)
+        ->set('foodSearch', 'Pending search')
+        ->set('selectedFoodId', $selectedFood->id)
+        ->set('foodWeight', '200')
+        ->call('updateFoodInDraft')
+        ->assertSet('mealItems', [
+            ['food_id' => $selectedFood->id, 'weight' => 150.0],
+        ])
+        ->assertSet('editingMealItemFoodId', $originalFood->id)
+        ->assertSet('isFoodModalOpen', true)
+        ->assertSet('foodSearch', 'Pending search')
+        ->assertSet('selectedFoodId', $selectedFood->id)
+        ->assertSet('foodWeight', '200');
+});
+
+it('does not update the draft when the edited food weight is invalid', function () {
+    $food = Food::factory()->create();
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->set('mealItems', [
+            ['food_id' => $food->id, 'weight' => 100.0],
+        ])
+        ->call('editMealItem', $food->id)
+        ->set('foodWeight', '0')
+        ->call('updateFoodInDraft')
+        ->assertSet('mealItems', [
+            ['food_id' => $food->id, 'weight' => 100.0],
+        ])
+        ->assertSet('editingMealItemFoodId', $food->id)
+        ->assertSet('isFoodModalOpen', true)
+        ->assertSet('selectedFoodId', $food->id)
+        ->assertSet('foodWeight', '0');
+});
+
 it('allows a duplicate food total exactly at the maximum weight', function () {
     $food = Food::factory()->create();
 

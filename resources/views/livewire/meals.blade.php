@@ -55,7 +55,9 @@
                             </div>
 
                             <div class="flex shrink-0 gap-3 text-xs font-semibold">
-                                <span class="text-[var(--color-primary-green)]">{{ __('ui.meals.edit') }}</span>
+                                <button class="cursor-pointer text-[var(--color-primary-green)] transition-colors hover:text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-green)] focus:ring-offset-2" type="button" wire:click="editMealItem({{ $item['food_id'] }})" data-testid="edit-meal-item">
+                                    {{ __('ui.meals.edit') }}
+                                </button>
                                 <button class="cursor-pointer text-[var(--color-text-secondary)] transition-colors hover:text-[var(--color-error)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-green)] focus:ring-offset-2" type="button" wire:click="removeMealItem({{ $item['food_id'] }})" data-testid="remove-meal-item">
                                     {{ __('ui.meals.remove') }}
                                 </button>
@@ -209,7 +211,17 @@
                     <button class="cursor-pointer rounded-lg px-5 py-3 text-sm font-semibold text-[var(--color-text-secondary)] transition hover:bg-[var(--color-light-green)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-green)] focus:ring-offset-2" type="button" wire:click="cancelFoodModal" data-testid="cancel-food-modal">
                         {{ __('ui.meals.cancel') }}
                     </button>
-                    @if ($canAddFoodToDraft)
+                    @if ($editingMealItemFoodId !== null)
+                        @if ($canUpdateFoodInDraft)
+                            <button class="cursor-pointer rounded-lg bg-[var(--color-primary-green)] px-5 py-3 text-sm font-semibold text-white transition hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-green)] focus:ring-offset-2" type="button" wire:click="updateFoodInDraft" data-testid="update-food-in-draft-enabled">
+                                {{ __('ui.meals.save') }}
+                            </button>
+                        @else
+                            <button class="cursor-not-allowed rounded-lg border border-[var(--color-border)] bg-[var(--color-background)] px-5 py-3 text-sm font-semibold text-[var(--color-text-secondary)] opacity-70" type="button" data-testid="update-food-in-draft-disabled" disabled>
+                                {{ __('ui.meals.save') }}
+                            </button>
+                        @endif
+                    @elseif ($canAddFoodToDraft)
                         <button class="cursor-pointer rounded-lg bg-[var(--color-primary-green)] px-5 py-3 text-sm font-semibold text-white transition hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-green)] focus:ring-offset-2" type="button" wire:click="addFoodToDraft" data-testid="add-food-to-draft-enabled">
                             {{ __('ui.meals.add_food_to_draft') }}
                         </button>
