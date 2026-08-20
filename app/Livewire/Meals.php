@@ -117,6 +117,19 @@ class Meals extends Component
         $this->resetFoodModalState();
     }
 
+    public function removeMealItem(int $foodId): void
+    {
+        $mealItemIndex = $this->mealItemIndexForFood($foodId);
+
+        if ($mealItemIndex === null) {
+            return;
+        }
+
+        unset($this->mealItems[$mealItemIndex]);
+
+        $this->mealItems = array_values($this->mealItems);
+    }
+
     private function resetFoodModalState(): void
     {
         $this->isFoodModalOpen = false;

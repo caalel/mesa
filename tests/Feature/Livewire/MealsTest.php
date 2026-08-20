@@ -494,6 +494,88 @@ it('adds a duplicate food weight to its original draft item while preserving dis
         ->assertSee('2 de 10 alimentos');
 });
 
+it('removes a specific food from the draft while preserving the other food order and editor state', function () {
+    App::setLocale('pt_BR');
+
+    $foodA = Food::factory()->create();
+    $foodB = Food::factory()->create();
+    $foodC = Food::factory()->create();
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->set('mealName', 'Lunch')
+        ->set('mealItems', [
+            ['food_id' => $foodA->id, 'weight' => 100.0],
+            ['food_id' => $foodB->id, 'weight' => 150.0],
+            ['food_id' => $foodC->id, 'weight' => 200.0],
+        ])
+        ->call('removeMealItem', $foodB->id)
+        ->assertSet('mealItems', [
+            ['food_id' => $foodA->id, 'weight' => 100.0],
+            ['food_id' => $foodC->id, 'weight' => 200.0],
+        ])
+        ->assertSet('mealName', 'Lunch')
+        ->assertSet('isMealEditorOpen', true)
+        ->assertSet('isFoodModalOpen', false)
+        ->assertSee('2 de 10 alimentos');
+});
+
+it('returns the meal editor to its items empty state after removing its last food', function () {
+    App::setLocale('pt_BR');
+
+    $food = Food::factory()->create();
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->set('mealItems', [
+            ['food_id' => $food->id, 'weight' => 100.0],
+        ])
+        ->call('removeMealItem', $food->id)
+        ->assertSet('mealItems', [])
+        ->assertDontSeeHtml('data-testid="meal-items-list"')
+        ->assertSeeHtml('data-testid="meal-items-empty-state"')
+        ->assertSee('0 de 10 alimentos');
+});
+
+it('leaves the draft and editor state unchanged when removing a food that is not in the draft', function () {
+    $draftFood = Food::factory()->create();
+    $selectedFood = Food::factory()->create();
+    $missingFood = Food::factory()->create();
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->set('mealName', 'Lunch')
+        ->set('mealItems', [
+            ['food_id' => $draftFood->id, 'weight' => 125.0],
+        ])
+        ->call('openFoodModal')
+        ->set('foodSearch', 'Pending search')
+        ->call('selectFood', $selectedFood->id)
+        ->set('foodWeight', '250')
+        ->call('removeMealItem', $missingFood->id)
+        ->assertSet('mealItems', [
+            ['food_id' => $draftFood->id, 'weight' => 125.0],
+        ])
+        ->assertSet('mealName', 'Lunch')
+        ->assertSet('isMealEditorOpen', true)
+        ->assertSet('isFoodModalOpen', true)
+        ->assertSet('foodSearch', 'Pending search')
+        ->assertSet('selectedFoodId', $selectedFood->id)
+        ->assertSet('foodWeight', '250');
+});
+
+it('renders each meal item remove control bound to its food id', function () {
+    $food = Food::factory()->create();
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->set('mealItems', [
+            ['food_id' => $food->id, 'weight' => 100.0],
+        ])
+        ->assertSeeHtml('data-testid="remove-meal-item"')
+        ->assertSeeHtml('wire:click="removeMealItem('.$food->id.')"');
+});
+
 it('allows a duplicate food total exactly at the maximum weight', function () {
     $food = Food::factory()->create();
 

@@ -56,7 +56,9 @@
 
                             <div class="flex shrink-0 gap-3 text-xs font-semibold">
                                 <span class="text-[var(--color-primary-green)]">{{ __('ui.meals.edit') }}</span>
-                                <span class="text-[var(--color-text-secondary)]">{{ __('ui.meals.remove') }}</span>
+                                <button class="cursor-pointer text-[var(--color-text-secondary)] transition-colors hover:text-[var(--color-error)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-green)] focus:ring-offset-2" type="button" wire:click="removeMealItem({{ $item['food_id'] }})" data-testid="remove-meal-item">
+                                    {{ __('ui.meals.remove') }}
+                                </button>
                             </div>
                         </article>
                     @endforeach
