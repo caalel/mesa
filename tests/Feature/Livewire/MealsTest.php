@@ -471,6 +471,103 @@ it('stores a comma decimal food weight normalized in the meal draft', function (
         ]);
 });
 
+it('adds a duplicate food weight to its original draft item while preserving distinct food order and count', function () {
+    App::setLocale('pt_BR');
+
+    $foodA = Food::factory()->create();
+    $foodB = Food::factory()->create();
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->set('mealItems', [
+            ['food_id' => $foodA->id, 'weight' => 100.0],
+            ['food_id' => $foodB->id, 'weight' => 50.0],
+        ])
+        ->call('openFoodModal')
+        ->call('selectFood', $foodA->id)
+        ->set('foodWeight', '25.5')
+        ->call('addFoodToDraft')
+        ->assertSet('mealItems', [
+            ['food_id' => $foodA->id, 'weight' => 125.5],
+            ['food_id' => $foodB->id, 'weight' => 50.0],
+        ])
+        ->assertSee('2 de 10 alimentos');
+});
+
+it('allows a duplicate food total exactly at the maximum weight', function () {
+    $food = Food::factory()->create();
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->set('mealItems', [
+            ['food_id' => $food->id, 'weight' => 8000.0],
+        ])
+        ->call('openFoodModal')
+        ->call('selectFood', $food->id)
+        ->set('foodWeight', '2000')
+        ->assertSeeHtml('data-testid="add-food-to-draft-enabled"')
+        ->assertSeeHtml('wire:click="addFoodToDraft"')
+        ->call('addFoodToDraft')
+        ->assertSet('mealItems', [
+            ['food_id' => $food->id, 'weight' => 10000.0],
+        ]);
+});
+
+it('disables addition above the combined food weight limit and shows the localized total limit message', function (string $locale, string $message) {
+    App::setLocale($locale);
+
+    $food = Food::factory()->create([
+        'name_pt' => 'Arroz integral',
+        'name_en' => 'Brown rice',
+    ]);
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->set('mealItems', [
+            ['food_id' => $food->id, 'weight' => 8000.0],
+        ])
+        ->call('openFoodModal')
+        ->call('selectFood', $food->id)
+        ->set('foodWeight', '2001')
+        ->assertSeeHtml('data-testid="add-food-to-draft-disabled"')
+        ->assertSeeHtml('disabled')
+        ->assertDontSeeHtml('wire:click="addFoodToDraft"')
+        ->assertSee($message);
+})->with([
+    'Brazilian Portuguese' => [
+        'pt_BR',
+        'A quantidade total de Arroz integral na refeição não pode ultrapassar 10.000 g.',
+    ],
+    'English' => [
+        'en',
+        'The total amount of Brown rice in the meal cannot exceed 10,000 g.',
+    ],
+]);
+
+it('keeps the draft and food modal state intact when add food is called directly above the combined weight limit', function () {
+    $food = Food::factory()->create();
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->set('mealName', 'Lunch')
+        ->set('mealItems', [
+            ['food_id' => $food->id, 'weight' => 8000.0],
+        ])
+        ->call('openFoodModal')
+        ->set('foodSearch', 'Pending search')
+        ->call('selectFood', $food->id)
+        ->set('foodWeight', '2001')
+        ->call('addFoodToDraft')
+        ->assertSet('mealItems', [
+            ['food_id' => $food->id, 'weight' => 8000.0],
+        ])
+        ->assertSet('isFoodModalOpen', true)
+        ->assertSet('mealName', 'Lunch')
+        ->assertSet('foodSearch', 'Pending search')
+        ->assertSet('selectedFoodId', $food->id)
+        ->assertSet('foodWeight', '2001');
+});
+
 it('does not add a food to the meal draft when the weight is invalid', function () {
     $food = Food::factory()->create();
 

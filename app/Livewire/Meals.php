@@ -61,7 +61,7 @@ class Meals extends Component
             'selectedFood' => $selectedFood,
             'selectedFoodNutritionPreview' => $this->selectedFoodNutritionPreview($selectedFood),
             'mealDraftItems' => $this->mealDraftItems(),
-            'foodWeightValidationMessage' => $this->foodWeightValidationMessage(),
+            'foodWeightValidationMessage' => $this->foodWeightValidationMessage($selectedFood),
             'canAddFoodToDraft' => $this->canAddFoodToDraft(),
             'hasMealItems' => $this->hasMealItems(),
             'mealItemsCount' => $this->mealItemsCount(),
@@ -95,10 +95,24 @@ class Meals extends Component
             return;
         }
 
-        $this->mealItems[] = [
-            'food_id' => $this->selectedFoodId,
-            'weight' => (float) $normalizedWeight,
-        ];
+        $foodId = $this->selectedFoodId;
+        $weight = (float) $normalizedWeight;
+        $combinedWeight = $this->combinedFoodWeight($foodId, $weight);
+
+        if ($combinedWeight > FoodWeightInputService::MAXIMUM_IN_GRAMS) {
+            return;
+        }
+
+        $mealItemIndex = $this->mealItemIndexForFood($foodId);
+
+        if ($mealItemIndex === null) {
+            $this->mealItems[] = [
+                'food_id' => $foodId,
+                'weight' => $weight,
+            ];
+        } else {
+            $this->mealItems[$mealItemIndex]['weight'] = $combinedWeight;
+        }
 
         $this->resetFoodModalState();
     }
@@ -212,7 +226,9 @@ class Meals extends Component
     {
         $weight = $this->foodWeightInputService->normalize($this->foodWeight);
 
-        return $this->selectedFoodId !== null && $this->foodWeightInputService->isValid($weight);
+        return $this->selectedFoodId !== null
+            && $this->foodWeightInputService->isValid($weight)
+            && $this->combinedFoodWeight($this->selectedFoodId, (float) $weight) <= FoodWeightInputService::MAXIMUM_IN_GRAMS;
     }
 
     private function selectedFood(): ?Food
@@ -246,7 +262,7 @@ class Meals extends Component
         ];
     }
 
-    private function foodWeightValidationMessage(): ?string
+    private function foodWeightValidationMessage(?Food $selectedFood): ?string
     {
         $weight = $this->foodWeightInputService->normalize($this->foodWeight);
 
@@ -268,7 +284,37 @@ class Meals extends Component
             ]);
         }
 
+        if ($selectedFood !== null
+            && $this->combinedFoodWeight($selectedFood->id, (float) $weight) > FoodWeightInputService::MAXIMUM_IN_GRAMS) {
+            return __('ui.meals.total_quantity_too_high', [
+                'food' => $selectedFood->localized_name,
+                'max' => $this->localizedNutritionalValueFormatter->format(FoodWeightInputService::MAXIMUM_IN_GRAMS),
+            ]);
+        }
+
         return null;
+    }
+
+    private function mealItemIndexForFood(int $foodId): ?int
+    {
+        foreach ($this->mealItems as $index => $mealItem) {
+            if (($mealItem['food_id'] ?? null) === $foodId) {
+                return $index;
+            }
+        }
+
+        return null;
+    }
+
+    private function combinedFoodWeight(int $foodId, float $weight): float
+    {
+        $mealItemIndex = $this->mealItemIndexForFood($foodId);
+
+        if ($mealItemIndex === null) {
+            return $weight;
+        }
+
+        return (float) $this->mealItems[$mealItemIndex]['weight'] + $weight;
     }
 
     private function formatPreviewValue(float $valuePer100g, float $weight): string

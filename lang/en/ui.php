@@ -39,6 +39,7 @@ return [
         'quantity_must_be_numeric' => 'Enter a valid amount in grams.',
         'quantity_must_be_positive' => 'Enter an amount greater than zero.',
         'quantity_too_high' => 'Enter an amount of up to :max g.',
+        'total_quantity_too_high' => 'The total amount of :food in the meal cannot exceed :max g.',
         'nutrition_for_weight' => 'For :weight g',
         'protein' => 'Protein',
         'carbohydrates' => 'Carbs',

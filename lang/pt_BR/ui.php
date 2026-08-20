@@ -39,6 +39,7 @@ return [
         'quantity_must_be_numeric' => 'Informe uma quantidade válida em gramas.',
         'quantity_must_be_positive' => 'Informe uma quantidade maior que zero.',
         'quantity_too_high' => 'Informe uma quantidade de até :max g.',
+        'total_quantity_too_high' => 'A quantidade total de :food na refeição não pode ultrapassar :max g.',
         'nutrition_for_weight' => 'Para :weight g',
         'protein' => 'Proteínas',
         'carbohydrates' => 'Carboidratos',
