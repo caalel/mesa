@@ -105,14 +105,25 @@ class Meals extends Component
         }
 
         $foodId = $this->selectedFoodId;
+
+        if (Food::find($foodId) === null) {
+            return;
+        }
+
         $weight = (float) $normalizedWeight;
-        $combinedWeight = $this->combinedFoodWeight($foodId, $weight);
+        $mealItemIndex = $this->mealItemIndexForFood($foodId);
+
+        if ($mealItemIndex === null && $this->mealItemsCount() >= self::MEAL_ITEMS_LIMIT) {
+            return;
+        }
+
+        $combinedWeight = $mealItemIndex === null
+            ? $weight
+            : (float) $this->mealItems[$mealItemIndex]['weight'] + $weight;
 
         if ($combinedWeight > FoodWeightInputService::MAXIMUM_IN_GRAMS) {
             return;
         }
-
-        $mealItemIndex = $this->mealItemIndexForFood($foodId);
 
         if ($mealItemIndex === null) {
             $this->mealItems[] = [
@@ -212,6 +223,10 @@ class Meals extends Component
 
     public function selectFood(int $foodId): void
     {
+        if (Food::find($foodId) === null) {
+            return;
+        }
+
         $this->selectedFoodId = $foodId;
         $this->foodWeight = '100';
 

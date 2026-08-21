@@ -176,6 +176,44 @@ it('does not open the food modal directly at the meal item limit', function () {
         ->assertSet('editingMealItemFoodId', null);
 });
 
+it('does not add an eleventh distinct food when add food is called directly at the meal item limit', function () {
+    $foods = Food::factory()->count(11)->create();
+    $mealItems = $foods->take(10)
+        ->map(fn (Food $food) => ['food_id' => $food->id, 'weight' => 100.0])
+        ->all();
+    $eleventhFood = $foods->last();
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->set('mealItems', $mealItems)
+        ->set('foodSearch', 'Pending search')
+        ->call('selectFood', $eleventhFood->id)
+        ->set('foodWeight', '250')
+        ->call('addFoodToDraft')
+        ->assertSet('mealItems', $mealItems)
+        ->assertSet('foodSearch', 'Pending search')
+        ->assertSet('selectedFoodId', $eleventhFood->id)
+        ->assertSet('foodWeight', '250');
+});
+
+it('merges a duplicate food when add food is called directly at the meal item limit', function () {
+    $foods = Food::factory()->count(10)->create();
+    $mealItems = $foods
+        ->map(fn (Food $food) => ['food_id' => $food->id, 'weight' => 100.0])
+        ->all();
+    $duplicateFood = $foods->first();
+    $expectedMealItems = $mealItems;
+    $expectedMealItems[0]['weight'] = 125.0;
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->set('mealItems', $mealItems)
+        ->call('selectFood', $duplicateFood->id)
+        ->set('foodWeight', '25')
+        ->call('addFoodToDraft')
+        ->assertSet('mealItems', $expectedMealItems);
+});
+
 it('reenables the food modal trigger after removing an item at the meal item limit', function () {
     $mealItems = Food::factory()->count(10)->create()
         ->map(fn (Food $food) => ['food_id' => $food->id, 'weight' => 100.0])
@@ -393,6 +431,27 @@ it('dispatches an event when the selected food details are shown', function () {
         ->call('openFoodModal')
         ->call('selectFood', $banana->id)
         ->assertDispatched('selected-food-details-shown');
+});
+
+it('does not select an unavailable food', function () {
+    $draftFood = Food::factory()->create();
+    $unavailableFood = Food::factory()->create();
+    $unavailableFoodId = $unavailableFood->id;
+    $unavailableFood->delete();
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->set('mealItems', [
+            ['food_id' => $draftFood->id, 'weight' => 100.0],
+        ])
+        ->set('foodWeight', '250')
+        ->call('selectFood', $unavailableFoodId)
+        ->assertSet('mealItems', [
+            ['food_id' => $draftFood->id, 'weight' => 100.0],
+        ])
+        ->assertSet('selectedFoodId', null)
+        ->assertSet('foodWeight', '250')
+        ->assertNotDispatched('selected-food-details-shown');
 });
 
 it('resets the food weight when selecting another food', function () {
@@ -1006,6 +1065,31 @@ it('does not add a food to the meal draft when the weight is invalid', function 
         ->call('addFoodToDraft')
         ->assertSet('mealItems', [])
         ->assertSet('isFoodModalOpen', true);
+});
+
+it('does not add an unavailable selected food when add food is called directly', function () {
+    $draftFood = Food::factory()->create();
+    $unavailableFood = Food::factory()->create();
+    $unavailableFoodId = $unavailableFood->id;
+    $unavailableFood->delete();
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->set('mealItems', [
+            ['food_id' => $draftFood->id, 'weight' => 100.0],
+        ])
+        ->call('openFoodModal')
+        ->set('foodSearch', 'Pending search')
+        ->set('selectedFoodId', $unavailableFoodId)
+        ->set('foodWeight', '250')
+        ->call('addFoodToDraft')
+        ->assertSet('mealItems', [
+            ['food_id' => $draftFood->id, 'weight' => 100.0],
+        ])
+        ->assertSet('isFoodModalOpen', true)
+        ->assertSet('foodSearch', 'Pending search')
+        ->assertSet('selectedFoodId', $unavailableFoodId)
+        ->assertSet('foodWeight', '250');
 });
 
 it('shows the nutrition preview for the selected food weight', function () {
