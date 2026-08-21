@@ -66,6 +66,7 @@ class Meals extends Component
             'foodWeightValidationMessage' => $this->foodWeightValidationMessage($selectedFood),
             'canAddFoodToDraft' => $this->canAddFoodToDraft(),
             'canUpdateFoodInDraft' => $this->canUpdateFoodInDraft(),
+            'canOpenFoodModal' => $this->canOpenFoodModal(),
             'hasMealItems' => $this->hasMealItems(),
             'mealItemsCount' => $this->mealItemsCount(),
             'mealItemsLimit' => self::MEAL_ITEMS_LIMIT,
@@ -82,6 +83,10 @@ class Meals extends Component
 
     public function openFoodModal(): void
     {
+        if (! $this->canOpenFoodModal()) {
+            return;
+        }
+
         $this->editingMealItemFoodId = null;
         $this->isFoodModalOpen = true;
     }
@@ -240,6 +245,11 @@ class Meals extends Component
     private function mealItemsCount(): int
     {
         return count($this->mealItems);
+    }
+
+    private function canOpenFoodModal(): bool
+    {
+        return $this->mealItemsCount() < self::MEAL_ITEMS_LIMIT;
     }
 
     /**

@@ -28,9 +28,15 @@
                     <h3 class="font-semibold text-[var(--color-text-primary)]">{{ __('ui.meals.items_title') }}</h3>
                     <p class="mt-1 text-sm text-[var(--color-text-secondary)]">{{ __('ui.meals.items_counter', ['count' => $mealItemsCount, 'limit' => $mealItemsLimit]) }}</p>
                 </div>
-                <button class="cursor-pointer rounded-lg border border-[var(--color-border)] px-4 py-2.5 text-sm font-semibold text-[var(--color-primary-green)] transition-colors hover:bg-[var(--color-light-green)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-green)] focus:ring-offset-2" type="button" wire:click="openFoodModal" data-testid="open-food-modal">
-                    {{ __('ui.meals.add_food') }}
-                </button>
+                @if ($canOpenFoodModal)
+                    <button class="cursor-pointer rounded-lg border border-[var(--color-border)] px-4 py-2.5 text-sm font-semibold text-[var(--color-primary-green)] transition-colors hover:bg-[var(--color-light-green)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-green)] focus:ring-offset-2" type="button" wire:click="openFoodModal" data-testid="open-food-modal-enabled">
+                        {{ __('ui.meals.add_food') }}
+                    </button>
+                @else
+                    <button class="cursor-not-allowed rounded-lg border border-[var(--color-border)] bg-[var(--color-background)] px-4 py-2.5 text-sm font-semibold text-[var(--color-text-secondary)] opacity-70" type="button" data-testid="open-food-modal-disabled" disabled>
+                        {{ __('ui.meals.add_food') }}
+                    </button>
+                @endif
             </div>
 
             @if ($hasMealItems)

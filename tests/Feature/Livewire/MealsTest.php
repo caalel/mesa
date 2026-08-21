@@ -141,11 +141,54 @@ it('shows the localized English meal items counter for empty and populated draft
         ->assertSee('2 of 10 foods');
 });
 
-it('renders the food modal trigger in the meal editor', function () {
+it('keeps the food modal trigger enabled below the meal item limit', function () {
     Livewire::test(Meals::class)
         ->call('createMeal')
-        ->assertSeeHtml('data-testid="open-food-modal"')
-        ->assertSeeHtml('wire:click="openFoodModal"');
+        ->assertSeeHtml('data-testid="open-food-modal-enabled"')
+        ->assertSeeHtml('wire:click="openFoodModal"')
+        ->assertDontSeeHtml('data-testid="open-food-modal-disabled"');
+});
+
+it('disables the food modal trigger at the meal item limit', function () {
+    $mealItems = Food::factory()->count(10)->create()
+        ->map(fn (Food $food) => ['food_id' => $food->id, 'weight' => 100.0])
+        ->all();
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->set('mealItems', $mealItems)
+        ->assertSeeHtml('data-testid="open-food-modal-disabled"')
+        ->assertSeeHtml('disabled')
+        ->assertDontSeeHtml('wire:click="openFoodModal"')
+        ->assertDontSeeHtml('data-testid="open-food-modal-enabled"');
+});
+
+it('does not open the food modal directly at the meal item limit', function () {
+    $mealItems = Food::factory()->count(10)->create()
+        ->map(fn (Food $food) => ['food_id' => $food->id, 'weight' => 100.0])
+        ->all();
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->set('mealItems', $mealItems)
+        ->call('openFoodModal')
+        ->assertSet('isFoodModalOpen', false)
+        ->assertSet('editingMealItemFoodId', null);
+});
+
+it('reenables the food modal trigger after removing an item at the meal item limit', function () {
+    $mealItems = Food::factory()->count(10)->create()
+        ->map(fn (Food $food) => ['food_id' => $food->id, 'weight' => 100.0])
+        ->all();
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->set('mealItems', $mealItems)
+        ->call('removeMealItem', $mealItems[0]['food_id'])
+        ->assertSet('mealItems', array_slice($mealItems, 1))
+        ->assertSeeHtml('data-testid="open-food-modal-enabled"')
+        ->assertSeeHtml('wire:click="openFoodModal"')
+        ->assertDontSeeHtml('data-testid="open-food-modal-disabled"');
 });
 
 it('opens the food modal', function () {
@@ -616,6 +659,20 @@ it('opens the food modal to edit a draft item with its current food and numeric 
     'decimal weight' => [12.5, '12.5'],
 ]);
 
+it('opens the food modal to edit an item at the meal item limit', function () {
+    $mealItems = Food::factory()->count(10)->create()
+        ->map(fn (Food $food) => ['food_id' => $food->id, 'weight' => 100.0])
+        ->all();
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->set('mealItems', $mealItems)
+        ->assertSeeHtml('wire:click="editMealItem('.$mealItems[0]['food_id'].')"')
+        ->call('editMealItem', $mealItems[0]['food_id'])
+        ->assertSet('editingMealItemFoodId', $mealItems[0]['food_id'])
+        ->assertSet('isFoodModalOpen', true);
+});
+
 it('does not open or alter the editor state when editing a food absent from the draft', function () {
     $draftFood = Food::factory()->create();
     $missingFood = Food::factory()->create();
@@ -699,6 +756,25 @@ it('replaces an edited draft food with a new food while preserving its position'
             ['food_id' => $foodC->id, 'weight' => 200.0],
             ['food_id' => $foodB->id, 'weight' => 150.0],
         ]);
+});
+
+it('replaces an edited food with a new food at the meal item limit', function () {
+    $foods = Food::factory()->count(11)->create();
+    $mealItems = $foods->take(10)
+        ->map(fn (Food $food) => ['food_id' => $food->id, 'weight' => 100.0])
+        ->all();
+    $replacementFood = $foods->last();
+    $expectedMealItems = $mealItems;
+    $expectedMealItems[0] = ['food_id' => $replacementFood->id, 'weight' => 200.0];
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->set('mealItems', $mealItems)
+        ->call('editMealItem', $mealItems[0]['food_id'])
+        ->call('selectFood', $replacementFood->id)
+        ->set('foodWeight', '200')
+        ->call('updateFoodInDraft')
+        ->assertSet('mealItems', $expectedMealItems);
 });
 
 it('merges an edited draft food into an existing destination food while preserving destination order', function () {
