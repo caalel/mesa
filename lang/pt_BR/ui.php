@@ -42,6 +42,8 @@ return [
         'quantity_too_high' => 'Informe uma quantidade de até :max g.',
         'total_quantity_too_high' => 'A quantidade total de :food na refeição não pode ultrapassar :max g.',
         'nutrition_for_weight' => 'Para :weight g',
+        'nutrition_summary' => 'Resumo nutricional',
+        'total_calories' => 'Calorias totais',
         'protein' => 'Proteínas',
         'carbohydrates' => 'Carboidratos',
         'fat' => 'Gorduras',

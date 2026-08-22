@@ -20,8 +20,6 @@ class Meals extends Component
 
     public bool $isFoodModalOpen = false;
 
-    public ?string $editingMealId = null;
-
     public string $mealName = '';
 
     public string $foodSearch = '';
@@ -61,12 +59,14 @@ class Meals extends Component
     public function render(): View
     {
         $selectedFood = $this->selectedFood();
+        $mealDraftItems = $this->mealDraftItems();
 
         return view('livewire.meals', [
             'foodSearchResults' => $this->foodSearchResults(),
             'selectedFood' => $selectedFood,
             'selectedFoodNutritionPreview' => $this->selectedFoodNutritionPreview($selectedFood),
-            'mealDraftItems' => $this->mealDraftItems(),
+            'mealDraftItems' => $mealDraftItems,
+            'mealNutritionSummary' => $this->mealNutritionSummary($mealDraftItems),
             'foodWeightValidationMessage' => $this->foodWeightValidationMessage($selectedFood),
             'canAddFoodToDraft' => $this->canAddFoodToDraft(),
             'canUpdateFoodInDraft' => $this->canUpdateFoodInDraft(),
@@ -80,7 +80,6 @@ class Meals extends Component
     public function createMeal(): void
     {
         $this->isMealEditorOpen = true;
-        $this->editingMealId = null;
         $this->mealName = '';
         $this->mealItems = [];
     }
@@ -240,7 +239,6 @@ class Meals extends Component
     public function cancelMealEditor(): void
     {
         $this->isMealEditorOpen = false;
-        $this->editingMealId = null;
         $this->mealName = '';
         $this->mealItems = [];
     }
@@ -329,6 +327,34 @@ class Meals extends Component
             ->filter()
             ->values()
             ->all();
+    }
+
+    /**
+     * @param  array<int, array{calories: float, protein: float, carbs: float, fat: float}>  $mealDraftItems
+     * @return array{calories: string, protein: string, carbs: string, fat: string}
+     */
+    private function mealNutritionSummary(array $mealDraftItems): array
+    {
+        $totals = [
+            'calories' => 0.0,
+            'protein' => 0.0,
+            'carbs' => 0.0,
+            'fat' => 0.0,
+        ];
+
+        foreach ($mealDraftItems as $mealDraftItem) {
+            $totals['calories'] += $mealDraftItem['calories'];
+            $totals['protein'] += $mealDraftItem['protein'];
+            $totals['carbs'] += $mealDraftItem['carbs'];
+            $totals['fat'] += $mealDraftItem['fat'];
+        }
+
+        return [
+            'calories' => $this->localizedNutritionalValueFormatter->formatDisplayValue($totals['calories']),
+            'protein' => $this->localizedNutritionalValueFormatter->formatDisplayValue($totals['protein']),
+            'carbs' => $this->localizedNutritionalValueFormatter->formatDisplayValue($totals['carbs']),
+            'fat' => $this->localizedNutritionalValueFormatter->formatDisplayValue($totals['fat']),
+        ];
     }
 
     private function canAddFoodToDraft(): bool

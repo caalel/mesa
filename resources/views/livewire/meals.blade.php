@@ -77,6 +77,28 @@
                 </div>
             @endif
 
+            <section class="mt-7" data-testid="meal-nutrition-summary">
+                <h3 class="text-sm font-semibold text-[var(--color-text-primary)]">{{ __('ui.meals.nutrition_summary') }}</h3>
+                <div class="mt-3 grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-[var(--color-border)] bg-[var(--color-border)] sm:grid-cols-4">
+                    <div class="bg-[var(--color-light-green)] px-4 py-4">
+                        <p class="text-2xl font-semibold tracking-[-0.05em] text-[var(--color-text-primary)]">{{ $mealNutritionSummary['calories'] }} kcal</p>
+                        <p class="mt-1 text-xs font-medium text-[var(--color-text-secondary)]">{{ __('ui.meals.total_calories') }}</p>
+                    </div>
+                    <div class="bg-[var(--color-surface)] px-4 py-4">
+                        <p class="text-lg font-semibold tracking-[-0.04em] text-[var(--color-text-primary)]">{{ $mealNutritionSummary['protein'] }} g</p>
+                        <p class="mt-1 text-xs font-medium text-[var(--color-text-secondary)]">{{ __('ui.meals.protein') }}</p>
+                    </div>
+                    <div class="bg-[var(--color-surface)] px-4 py-4">
+                        <p class="text-lg font-semibold tracking-[-0.04em] text-[var(--color-text-primary)]">{{ $mealNutritionSummary['carbs'] }} g</p>
+                        <p class="mt-1 text-xs font-medium text-[var(--color-text-secondary)]">{{ __('ui.meals.carbohydrates') }}</p>
+                    </div>
+                    <div class="bg-[var(--color-surface)] px-4 py-4">
+                        <p class="text-lg font-semibold tracking-[-0.04em] text-[var(--color-text-primary)]">{{ $mealNutritionSummary['fat'] }} g</p>
+                        <p class="mt-1 text-xs font-medium text-[var(--color-text-secondary)]">{{ __('ui.meals.fat') }}</p>
+                    </div>
+                </div>
+            </section>
+
             <div class="mt-8 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
                 <button class="cursor-pointer rounded-lg px-5 py-2.5 text-sm font-semibold text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-light-green)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-green)] focus:ring-offset-2" type="button" wire:click="cancelMealEditor" data-testid="cancel-meal-editor">
                     {{ __('ui.meals.cancel') }}

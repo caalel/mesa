@@ -42,6 +42,8 @@ return [
         'quantity_too_high' => 'Enter an amount of up to :max g.',
         'total_quantity_too_high' => 'The total amount of :food in the meal cannot exceed :max g.',
         'nutrition_for_weight' => 'For :weight g',
+        'nutrition_summary' => 'Nutritional summary',
+        'total_calories' => 'Total calories',
         'protein' => 'Protein',
         'carbohydrates' => 'Carbs',
         'fat' => 'Fat',

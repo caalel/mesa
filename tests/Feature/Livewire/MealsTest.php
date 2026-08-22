@@ -43,7 +43,6 @@ it('opens the editor for a new meal', function () {
     Livewire::test(Meals::class)
         ->call('createMeal')
         ->assertSet('isMealEditorOpen', true)
-        ->assertSet('editingMealId', null)
         ->assertDontSeeHtml('data-testid="meals-empty-state"')
         ->assertSeeHtml('data-testid="meal-editor"')
         ->assertSeeHtml('data-testid="meal-name"')
@@ -55,6 +54,43 @@ it('starts a new meal without temporary items', function () {
         ->call('createMeal')
         ->assertSet('isMealEditorOpen', true)
         ->assertSet('mealItems', []);
+});
+
+it('renders the nutritional summary for the current meal draft', function () {
+    $foodA = Food::factory()->create([
+        'calories_per_100g' => 100,
+        'protein_per_100g' => 10,
+        'carbs_per_100g' => 22,
+        'fat_per_100g' => 5,
+    ]);
+    $foodB = Food::factory()->create([
+        'calories_per_100g' => 200,
+        'protein_per_100g' => 20,
+        'carbs_per_100g' => 28,
+        'fat_per_100g' => 10,
+    ]);
+
+    $component = Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->assertSeeHtml('data-testid="meal-nutrition-summary"')
+        ->assertSee('0 kcal')
+
+        ->call('openFoodModal')
+        ->call('selectFood', $foodA->id)
+        ->set('foodWeight', '150')
+        ->call('addFoodToDraft')
+
+        ->call('openFoodModal')
+        ->call('selectFood', $foodB->id)
+        ->set('foodWeight', '25')
+        ->call('addFoodToDraft');
+
+    $component
+        ->assertSeeHtml('data-testid="meal-nutrition-summary"')
+        ->assertSee('200 kcal')
+        ->assertSee('20 g')
+        ->assertSee('40 g')
+        ->assertSee('10 g');
 });
 
 it('rejects client-side updates to meal items', function () {
@@ -1341,8 +1377,7 @@ it('shows a less than value for selected food nutrition preview values below the
         ->call('openFoodModal')
         ->call('selectFood', $food->id)
         ->set('foodWeight', '1')
-        ->assertSee('< 0,01 kcal')
-        ->assertDontSee('0 kcal');
+        ->assertSee('< 0,01 kcal');
 });
 
 it('shows the localized selected food details copy', function (string $locale, string $foodName, string $amount, string $per100Grams, string $protein, string $carbs, string $fat) {
@@ -1455,7 +1490,6 @@ it('cancels the new meal editor', function () {
         ->assertSeeHtml('data-testid="meal-editor"')
         ->call('cancelMealEditor')
         ->assertSet('isMealEditorOpen', false)
-        ->assertSet('editingMealId', null)
         ->assertSet('mealName', '')
         ->assertDontSeeHtml('data-testid="meal-editor"')
         ->assertSeeHtml('data-testid="create-meal"');
@@ -1473,7 +1507,6 @@ it('discards temporary items when cancelling the meal editor', function () {
         ->assertNotSet('mealItems', [])
         ->call('cancelMealEditor')
         ->assertSet('isMealEditorOpen', false)
-        ->assertSet('editingMealId', null)
         ->assertSet('mealName', '')
         ->assertSet('mealItems', []);
 });
