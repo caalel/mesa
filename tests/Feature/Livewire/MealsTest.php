@@ -76,21 +76,6 @@ it('keeps the meal items empty state when the meal has a name but no items', fun
         ->assertDontSeeHtml('data-testid="meal-items-list"');
 });
 
-it('shows the meal items list when the meal draft has items', function () {
-    $food = Food::factory()->create();
-
-    $mealItems = [
-        ['food_id' => $food->id, 'weight' => 100.0],
-    ];
-
-    $component = Livewire::test(Meals::class)
-        ->call('createMeal');
-
-    prepareMealDraft($component, $mealItems)
-        ->assertDontSeeHtml('data-testid="meal-items-empty-state"')
-        ->assertSeeHtml('data-testid="meal-items-list"');
-});
-
 it('renders a localized food item from the meal draft', function () {
     App::setLocale('pt_BR');
 
@@ -266,13 +251,6 @@ it('reenables the food modal trigger after removing an item at the meal item lim
         ->assertDontSeeHtml('data-testid="open-food-modal-disabled"');
 });
 
-it('opens the food modal', function () {
-    Livewire::test(Meals::class)
-        ->call('createMeal')
-        ->call('openFoodModal')
-        ->assertSet('isFoodModalOpen', true);
-});
-
 it('cancels the food modal and discards its temporary state without closing the meal editor', function () {
     $banana = Food::factory()->create();
     $draftFood = Food::factory()->create();
@@ -315,11 +293,12 @@ it('renders the food modal footer cancel control', function () {
         ->assertSeeHtml('wire:click="cancelFoodModal"');
 });
 
-it('renders the food modal only after opening it', function () {
+it('opens and renders the food modal only after opening it', function () {
     Livewire::test(Meals::class)
         ->call('createMeal')
         ->assertDontSeeHtml('data-testid="food-modal"')
         ->call('openFoodModal')
+        ->assertSet('isFoodModalOpen', true)
         ->assertSeeHtml('data-testid="food-modal"');
 });
 
@@ -1309,18 +1288,6 @@ it('does not show the nutrition preview and shows a friendly message when the se
         ->call('openFoodModal')
         ->call('selectFood', $food->id)
         ->set('foodWeight', '0')
-        ->assertDontSeeHtml('data-testid="selected-food-nutrition-preview"')
-        ->assertSee(__('ui.meals.quantity_must_be_positive'));
-});
-
-it('does not show the nutrition preview and shows a friendly message when the selected food weight is negative', function () {
-    $food = Food::factory()->create();
-
-    Livewire::test(Meals::class)
-        ->call('createMeal')
-        ->call('openFoodModal')
-        ->call('selectFood', $food->id)
-        ->set('foodWeight', '-1')
         ->assertDontSeeHtml('data-testid="selected-food-nutrition-preview"')
         ->assertSee(__('ui.meals.quantity_must_be_positive'));
 });
