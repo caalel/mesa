@@ -31,6 +31,7 @@ class Meals extends Component
 
     public string $foodWeight = '';
 
+    #[Locked]
     public ?int $editingMealItemFoodId = null;
 
     #[Locked]

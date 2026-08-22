@@ -71,6 +71,14 @@ it('rejects client-side updates to the selected food ID', function () {
         ->toThrow(CannotUpdateLockedPropertyException::class, 'Cannot update locked property: [selectedFoodId]');
 });
 
+it('rejects client-side updates to the editing meal item food ID', function () {
+    $food = Food::factory()->create();
+
+    expect(fn () => Livewire::test(Meals::class)
+        ->set('editingMealItemFoodId', $food->id))
+        ->toThrow(CannotUpdateLockedPropertyException::class, 'Cannot update locked property: [editingMealItemFoodId]');
+});
+
 it('keeps the meal items empty state for a draft without items regardless of its name', function () {
     $component = Livewire::test(Meals::class)
         ->call('createMeal')
