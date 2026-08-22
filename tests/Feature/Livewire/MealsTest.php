@@ -15,6 +15,19 @@ use Livewire\Livewire;
 
 uses(RefreshDatabase::class);
 
+function prepareMealDraft(mixed $component, array $mealItems)
+{
+    foreach ($mealItems as $mealItem) {
+        $component
+            ->call('openFoodModal')
+            ->call('selectFood', $mealItem['food_id'])
+            ->set('foodWeight', (string) $mealItem['weight'])
+            ->call('addFoodToDraft');
+    }
+
+    return $component;
+}
+
 
 /*
 |--------------------------------------------------------------------------
@@ -64,9 +77,16 @@ it('keeps the meal items empty state when the meal has a name but no items', fun
 });
 
 it('shows the meal items list when the meal draft has items', function () {
-    Livewire::test(Meals::class)
-        ->call('createMeal')
-        ->set('mealItems', [['food_id' => 1]])
+    $food = Food::factory()->create();
+
+    $mealItems = [
+        ['food_id' => $food->id, 'weight' => 100.0],
+    ];
+
+    $component = Livewire::test(Meals::class)
+        ->call('createMeal');
+
+    prepareMealDraft($component, $mealItems)
         ->assertDontSeeHtml('data-testid="meal-items-empty-state"')
         ->assertSeeHtml('data-testid="meal-items-list"');
 });
@@ -79,14 +99,14 @@ it('renders a localized food item from the meal draft', function () {
         'name_en' => 'Cooked broccoli',
     ]);
 
-    Livewire::test(Meals::class)
-        ->call('createMeal')
-        ->set('mealItems', [
-            [
-                'food_id' => $food->id,
-                'weight' => 50.5,
-            ],
-        ])
+    $mealItems = [
+        ['food_id' => $food->id, 'weight' => 50.5],
+    ];
+
+    $component = Livewire::test(Meals::class)
+        ->call('createMeal');
+
+    prepareMealDraft($component, $mealItems)
         ->assertSeeHtml('data-testid="meal-items-list"')
         ->assertSeeHtml('data-testid="meal-item"')
         ->assertSeeHtml('data-food-id="'.$food->id.'"')
@@ -103,14 +123,14 @@ it('renders localized nutritional values and macro labels calculated for a meal 
         'fat_per_100g' => 8.9,
     ]);
 
-    Livewire::test(Meals::class)
-        ->call('createMeal')
-        ->set('mealItems', [
-            [
-                'food_id' => $food->id,
-                'weight' => 50.5,
-            ],
-        ])
+    $mealItems = [
+        ['food_id' => $food->id, 'weight' => 50.5],
+    ];
+
+    $component = Livewire::test(Meals::class)
+        ->call('createMeal');
+
+    prepareMealDraft($component, $mealItems)
         ->assertSee('50,5 g')
         ->assertSee('62,12 kcal')
         ->assertSee('6,23 g')
@@ -124,20 +144,32 @@ it('renders localized nutritional values and macro labels calculated for a meal 
 it('shows the localized Portuguese meal items counter for empty and populated drafts', function () {
     App::setLocale('pt_BR');
 
-    Livewire::test(Meals::class)
+    $foods = Food::factory()->count(2)->create();
+    $mealItems = $foods
+        ->map(fn (Food $food) => ['food_id' => $food->id, 'weight' => 100.0])
+        ->all();
+
+    $component = Livewire::test(Meals::class)
         ->call('createMeal')
-        ->assertSee('0 de 10 alimentos')
-        ->set('mealItems', [['food_id' => 1], ['food_id' => 2]])
+        ->assertSee('0 de 10 alimentos');
+
+    prepareMealDraft($component, $mealItems)
         ->assertSee('2 de 10 alimentos');
 });
 
 it('shows the localized English meal items counter for empty and populated drafts', function () {
     App::setLocale('en');
 
-    Livewire::test(Meals::class)
+    $foods = Food::factory()->count(2)->create();
+    $mealItems = $foods
+        ->map(fn (Food $food) => ['food_id' => $food->id, 'weight' => 100.0])
+        ->all();
+
+    $component = Livewire::test(Meals::class)
         ->call('createMeal')
-        ->assertSee('0 of 10 foods')
-        ->set('mealItems', [['food_id' => 1], ['food_id' => 2]])
+        ->assertSee('0 of 10 foods');
+
+    prepareMealDraft($component, $mealItems)
         ->assertSee('2 of 10 foods');
 });
 
@@ -154,9 +186,10 @@ it('disables the food modal trigger at the meal item limit', function () {
         ->map(fn (Food $food) => ['food_id' => $food->id, 'weight' => 100.0])
         ->all();
 
-    Livewire::test(Meals::class)
-        ->call('createMeal')
-        ->set('mealItems', $mealItems)
+    $component = Livewire::test(Meals::class)
+        ->call('createMeal');
+
+    prepareMealDraft($component, $mealItems)
         ->assertSeeHtml('data-testid="open-food-modal-disabled"')
         ->assertSeeHtml('disabled')
         ->assertDontSeeHtml('wire:click="openFoodModal"')
@@ -168,9 +201,10 @@ it('does not open the food modal directly at the meal item limit', function () {
         ->map(fn (Food $food) => ['food_id' => $food->id, 'weight' => 100.0])
         ->all();
 
-    Livewire::test(Meals::class)
-        ->call('createMeal')
-        ->set('mealItems', $mealItems)
+    $component = Livewire::test(Meals::class)
+        ->call('createMeal');
+
+    prepareMealDraft($component, $mealItems)
         ->call('openFoodModal')
         ->assertSet('isFoodModalOpen', false)
         ->assertSet('editingMealItemFoodId', null);
@@ -183,9 +217,10 @@ it('does not add an eleventh distinct food when add food is called directly at t
         ->all();
     $eleventhFood = $foods->last();
 
-    Livewire::test(Meals::class)
-        ->call('createMeal')
-        ->set('mealItems', $mealItems)
+    $component = Livewire::test(Meals::class)
+        ->call('createMeal');
+
+    prepareMealDraft($component, $mealItems)
         ->set('foodSearch', 'Pending search')
         ->call('selectFood', $eleventhFood->id)
         ->set('foodWeight', '250')
@@ -205,9 +240,10 @@ it('merges a duplicate food when add food is called directly at the meal item li
     $expectedMealItems = $mealItems;
     $expectedMealItems[0]['weight'] = 125.0;
 
-    Livewire::test(Meals::class)
-        ->call('createMeal')
-        ->set('mealItems', $mealItems)
+    $component = Livewire::test(Meals::class)
+        ->call('createMeal');
+
+    prepareMealDraft($component, $mealItems)
         ->call('selectFood', $duplicateFood->id)
         ->set('foodWeight', '25')
         ->call('addFoodToDraft')
@@ -219,9 +255,10 @@ it('reenables the food modal trigger after removing an item at the meal item lim
         ->map(fn (Food $food) => ['food_id' => $food->id, 'weight' => 100.0])
         ->all();
 
-    Livewire::test(Meals::class)
-        ->call('createMeal')
-        ->set('mealItems', $mealItems)
+    $component = Livewire::test(Meals::class)
+        ->call('createMeal');
+
+    prepareMealDraft($component, $mealItems)
         ->call('removeMealItem', $mealItems[0]['food_id'])
         ->assertSet('mealItems', array_slice($mealItems, 1))
         ->assertSeeHtml('data-testid="open-food-modal-enabled"')
@@ -238,11 +275,16 @@ it('opens the food modal', function () {
 
 it('cancels the food modal and discards its temporary state without closing the meal editor', function () {
     $banana = Food::factory()->create();
+    $draftFood = Food::factory()->create();
+    $mealItems = [
+        ['food_id' => $draftFood->id, 'weight' => 100.0],
+    ];
 
-    Livewire::test(Meals::class)
-        ->call('createMeal')
+    $component = Livewire::test(Meals::class)
+        ->call('createMeal');
+
+    prepareMealDraft($component, $mealItems)
         ->set('mealName', 'Lunch')
-        ->set('mealItems', [['temporary' => true]])
         ->call('openFoodModal')
         ->set('foodSearch', 'Banana')
         ->call('selectFood', $banana->id)
@@ -254,7 +296,7 @@ it('cancels the food modal and discards its temporary state without closing the 
         ->assertSet('selectedFoodId', null)
         ->assertSet('foodWeight', '')
         ->assertSet('mealName', 'Lunch')
-        ->assertSet('mealItems', [['temporary' => true]]);
+        ->assertSet('mealItems', $mealItems);
 });
 
 it('renders the food modal close control', function () {
@@ -439,11 +481,14 @@ it('does not select an unavailable food', function () {
     $unavailableFoodId = $unavailableFood->id;
     $unavailableFood->delete();
 
-    Livewire::test(Meals::class)
-        ->call('createMeal')
-        ->set('mealItems', [
-            ['food_id' => $draftFood->id, 'weight' => 100.0],
-        ])
+    $mealItems = [
+        ['food_id' => $draftFood->id, 'weight' => 100.0],
+    ];
+
+    $component = Livewire::test(Meals::class)
+        ->call('createMeal');
+
+    prepareMealDraft($component, $mealItems)
         ->set('foodWeight', '250')
         ->call('selectFood', $unavailableFoodId)
         ->assertSet('mealItems', [
@@ -579,12 +624,15 @@ it('adds a duplicate food weight to its original draft item while preserving dis
     $foodA = Food::factory()->create();
     $foodB = Food::factory()->create();
 
-    Livewire::test(Meals::class)
-        ->call('createMeal')
-        ->set('mealItems', [
-            ['food_id' => $foodA->id, 'weight' => 100.0],
-            ['food_id' => $foodB->id, 'weight' => 50.0],
-        ])
+    $mealItems = [
+        ['food_id' => $foodA->id, 'weight' => 100.0],
+        ['food_id' => $foodB->id, 'weight' => 50.0],
+    ];
+
+    $component = Livewire::test(Meals::class)
+        ->call('createMeal');
+
+    prepareMealDraft($component, $mealItems)
         ->call('openFoodModal')
         ->call('selectFood', $foodA->id)
         ->set('foodWeight', '25.5')
@@ -603,14 +651,19 @@ it('removes a specific food from the draft while preserving the other food order
     $foodB = Food::factory()->create();
     $foodC = Food::factory()->create();
 
-    Livewire::test(Meals::class)
-        ->call('createMeal')
+    $mealItems = [
+        ['food_id' => $foodA->id, 'weight' => 100.0],
+        ['food_id' => $foodB->id, 'weight' => 150.0],
+        ['food_id' => $foodC->id, 'weight' => 200.0],
+    ];
+
+    $component = Livewire::test(Meals::class)
+        ->call('createMeal');
+
+    prepareMealDraft($component, $mealItems);
+
+    $component
         ->set('mealName', 'Lunch')
-        ->set('mealItems', [
-            ['food_id' => $foodA->id, 'weight' => 100.0],
-            ['food_id' => $foodB->id, 'weight' => 150.0],
-            ['food_id' => $foodC->id, 'weight' => 200.0],
-        ])
         ->call('removeMealItem', $foodB->id)
         ->assertSet('mealItems', [
             ['food_id' => $foodA->id, 'weight' => 100.0],
@@ -627,11 +680,14 @@ it('returns the meal editor to its items empty state after removing its last foo
 
     $food = Food::factory()->create();
 
-    Livewire::test(Meals::class)
-        ->call('createMeal')
-        ->set('mealItems', [
-            ['food_id' => $food->id, 'weight' => 100.0],
-        ])
+    $mealItems = [
+        ['food_id' => $food->id, 'weight' => 100.0],
+    ];
+
+    $component = Livewire::test(Meals::class)
+        ->call('createMeal');
+
+    prepareMealDraft($component, $mealItems)
         ->call('removeMealItem', $food->id)
         ->assertSet('mealItems', [])
         ->assertDontSeeHtml('data-testid="meal-items-list"')
@@ -644,12 +700,17 @@ it('leaves the draft and editor state unchanged when removing a food that is not
     $selectedFood = Food::factory()->create();
     $missingFood = Food::factory()->create();
 
-    Livewire::test(Meals::class)
-        ->call('createMeal')
+    $mealItems = [
+        ['food_id' => $draftFood->id, 'weight' => 125.0],
+    ];
+
+    $component = Livewire::test(Meals::class)
+        ->call('createMeal');
+
+    prepareMealDraft($component, $mealItems);
+
+    $component
         ->set('mealName', 'Lunch')
-        ->set('mealItems', [
-            ['food_id' => $draftFood->id, 'weight' => 125.0],
-        ])
         ->call('openFoodModal')
         ->set('foodSearch', 'Pending search')
         ->call('selectFood', $selectedFood->id)
@@ -669,11 +730,14 @@ it('leaves the draft and editor state unchanged when removing a food that is not
 it('renders each meal item remove control bound to its food id', function () {
     $food = Food::factory()->create();
 
-    Livewire::test(Meals::class)
-        ->call('createMeal')
-        ->set('mealItems', [
-            ['food_id' => $food->id, 'weight' => 100.0],
-        ])
+    $mealItems = [
+        ['food_id' => $food->id, 'weight' => 100.0],
+    ];
+
+    $component = Livewire::test(Meals::class)
+        ->call('createMeal');
+
+    prepareMealDraft($component, $mealItems)
         ->assertSeeHtml('data-testid="remove-meal-item"')
         ->assertSeeHtml('wire:click="removeMealItem('.$food->id.')"');
 });
@@ -681,11 +745,14 @@ it('renders each meal item remove control bound to its food id', function () {
 it('renders each meal item edit control bound to its food id', function () {
     $food = Food::factory()->create();
 
-    Livewire::test(Meals::class)
-        ->call('createMeal')
-        ->set('mealItems', [
-            ['food_id' => $food->id, 'weight' => 100.0],
-        ])
+    $mealItems = [
+        ['food_id' => $food->id, 'weight' => 100.0],
+    ];
+
+    $component = Livewire::test(Meals::class)
+        ->call('createMeal');
+
+    prepareMealDraft($component, $mealItems)
         ->assertSeeHtml('data-testid="edit-meal-item"')
         ->assertSeeHtml('wire:click="editMealItem('.$food->id.')"');
 });
@@ -693,12 +760,17 @@ it('renders each meal item edit control bound to its food id', function () {
 it('opens the food modal to edit a draft item with its current food and numeric weight', function (float $weight, string $expectedWeight) {
     $food = Food::factory()->create();
 
-    Livewire::test(Meals::class)
-        ->call('createMeal')
+    $mealItems = [
+        ['food_id' => $food->id, 'weight' => $weight],
+    ];
+
+    $component = Livewire::test(Meals::class)
+        ->call('createMeal');
+
+    prepareMealDraft($component, $mealItems);
+
+    $component
         ->set('mealName', 'Lunch')
-        ->set('mealItems', [
-            ['food_id' => $food->id, 'weight' => $weight],
-        ])
         ->set('foodSearch', 'Pending search')
         ->call('editMealItem', $food->id)
         ->assertSet('editingMealItemFoodId', $food->id)
@@ -723,9 +795,10 @@ it('opens the food modal to edit an item at the meal item limit', function () {
         ->map(fn (Food $food) => ['food_id' => $food->id, 'weight' => 100.0])
         ->all();
 
-    Livewire::test(Meals::class)
-        ->call('createMeal')
-        ->set('mealItems', $mealItems)
+    $component = Livewire::test(Meals::class)
+        ->call('createMeal');
+
+    prepareMealDraft($component, $mealItems)
         ->assertSeeHtml('wire:click="editMealItem('.$mealItems[0]['food_id'].')"')
         ->call('editMealItem', $mealItems[0]['food_id'])
         ->assertSet('editingMealItemFoodId', $mealItems[0]['food_id'])
@@ -736,12 +809,17 @@ it('does not open or alter the editor state when editing a food absent from the 
     $draftFood = Food::factory()->create();
     $missingFood = Food::factory()->create();
 
-    Livewire::test(Meals::class)
-        ->call('createMeal')
+    $mealItems = [
+        ['food_id' => $draftFood->id, 'weight' => 100.0],
+    ];
+
+    $component = Livewire::test(Meals::class)
+        ->call('createMeal');
+
+    prepareMealDraft($component, $mealItems);
+
+    $component
         ->set('mealName', 'Lunch')
-        ->set('mealItems', [
-            ['food_id' => $draftFood->id, 'weight' => 100.0],
-        ])
         ->call('editMealItem', $missingFood->id)
         ->assertSet('editingMealItemFoodId', null)
         ->assertSet('isFoodModalOpen', false)
@@ -758,12 +836,15 @@ it('updates a draft food weight in place and clears the food modal edit state af
     $foodA = Food::factory()->create();
     $foodB = Food::factory()->create();
 
-    Livewire::test(Meals::class)
-        ->call('createMeal')
-        ->set('mealItems', [
-            ['food_id' => $foodA->id, 'weight' => 100.0],
-            ['food_id' => $foodB->id, 'weight' => 150.0],
-        ])
+    $mealItems = [
+        ['food_id' => $foodA->id, 'weight' => 100.0],
+        ['food_id' => $foodB->id, 'weight' => 150.0],
+    ];
+
+    $component = Livewire::test(Meals::class)
+        ->call('createMeal');
+
+    prepareMealDraft($component, $mealItems)
         ->call('editMealItem', $foodA->id)
         ->set('foodWeight', '250')
         ->call('updateFoodInDraft')
@@ -781,11 +862,14 @@ it('updates a draft food weight in place and clears the food modal edit state af
 it('allows replacing an edited food weight exactly at the maximum without adding its previous weight', function () {
     $food = Food::factory()->create();
 
-    Livewire::test(Meals::class)
-        ->call('createMeal')
-        ->set('mealItems', [
-            ['food_id' => $food->id, 'weight' => 100.0],
-        ])
+    $mealItems = [
+        ['food_id' => $food->id, 'weight' => 100.0],
+    ];
+
+    $component = Livewire::test(Meals::class)
+        ->call('createMeal');
+
+    prepareMealDraft($component, $mealItems)
         ->call('editMealItem', $food->id)
         ->set('foodWeight', '10000')
         ->assertSeeHtml('data-testid="update-food-in-draft-enabled"')
@@ -801,12 +885,15 @@ it('replaces an edited draft food with a new food while preserving its position'
     $foodB = Food::factory()->create();
     $foodC = Food::factory()->create();
 
-    Livewire::test(Meals::class)
-        ->call('createMeal')
-        ->set('mealItems', [
-            ['food_id' => $foodA->id, 'weight' => 100.0],
-            ['food_id' => $foodB->id, 'weight' => 150.0],
-        ])
+    $mealItems = [
+        ['food_id' => $foodA->id, 'weight' => 100.0],
+        ['food_id' => $foodB->id, 'weight' => 150.0],
+    ];
+
+    $component = Livewire::test(Meals::class)
+        ->call('createMeal');
+
+    prepareMealDraft($component, $mealItems)
         ->call('editMealItem', $foodA->id)
         ->call('selectFood', $foodC->id)
         ->set('foodWeight', '200')
@@ -826,9 +913,10 @@ it('replaces an edited food with a new food at the meal item limit', function ()
     $expectedMealItems = $mealItems;
     $expectedMealItems[0] = ['food_id' => $replacementFood->id, 'weight' => 200.0];
 
-    Livewire::test(Meals::class)
-        ->call('createMeal')
-        ->set('mealItems', $mealItems)
+    $component = Livewire::test(Meals::class)
+        ->call('createMeal');
+
+    prepareMealDraft($component, $mealItems)
         ->call('editMealItem', $mealItems[0]['food_id'])
         ->call('selectFood', $replacementFood->id)
         ->set('foodWeight', '200')
@@ -841,13 +929,16 @@ it('merges an edited draft food into an existing destination food while preservi
     $foodB = Food::factory()->create();
     $foodC = Food::factory()->create();
 
-    Livewire::test(Meals::class)
-        ->call('createMeal')
-        ->set('mealItems', [
-            ['food_id' => $foodA->id, 'weight' => 100.0],
-            ['food_id' => $foodB->id, 'weight' => 300.0],
-            ['food_id' => $foodC->id, 'weight' => 150.0],
-        ])
+    $mealItems = [
+        ['food_id' => $foodA->id, 'weight' => 100.0],
+        ['food_id' => $foodB->id, 'weight' => 300.0],
+        ['food_id' => $foodC->id, 'weight' => 150.0],
+    ];
+
+    $component = Livewire::test(Meals::class)
+        ->call('createMeal');
+
+    prepareMealDraft($component, $mealItems)
         ->call('editMealItem', $foodA->id)
         ->call('selectFood', $foodB->id)
         ->set('foodWeight', '200')
@@ -862,12 +953,15 @@ it('allows an edit merge that reaches the combined food weight maximum exactly',
     $foodA = Food::factory()->create();
     $foodB = Food::factory()->create();
 
-    Livewire::test(Meals::class)
-        ->call('createMeal')
-        ->set('mealItems', [
-            ['food_id' => $foodA->id, 'weight' => 100.0],
-            ['food_id' => $foodB->id, 'weight' => 9000.0],
-        ])
+    $mealItems = [
+        ['food_id' => $foodA->id, 'weight' => 100.0],
+        ['food_id' => $foodB->id, 'weight' => 9000.0],
+    ];
+
+    $component = Livewire::test(Meals::class)
+        ->call('createMeal');
+
+    prepareMealDraft($component, $mealItems)
         ->call('editMealItem', $foodA->id)
         ->call('selectFood', $foodB->id)
         ->set('foodWeight', '1000')
@@ -888,12 +982,15 @@ it('keeps the edit state intact when an edit merge exceeds the combined food wei
         'name_en' => 'Beans',
     ]);
 
-    Livewire::test(Meals::class)
-        ->call('createMeal')
-        ->set('mealItems', [
-            ['food_id' => $foodA->id, 'weight' => 100.0],
-            ['food_id' => $foodB->id, 'weight' => 9000.0],
-        ])
+    $mealItems = [
+        ['food_id' => $foodA->id, 'weight' => 100.0],
+        ['food_id' => $foodB->id, 'weight' => 9000.0],
+    ];
+
+    $component = Livewire::test(Meals::class)
+        ->call('createMeal');
+
+    prepareMealDraft($component, $mealItems)
         ->call('editMealItem', $foodA->id)
         ->call('selectFood', $foodB->id)
         ->set('foodWeight', '1001')
@@ -918,11 +1015,14 @@ it('keeps the edit state intact when an edit merge exceeds the combined food wei
 it('cancels an item edit without changing the draft', function () {
     $food = Food::factory()->create();
 
-    Livewire::test(Meals::class)
-        ->call('createMeal')
-        ->set('mealItems', [
-            ['food_id' => $food->id, 'weight' => 100.0],
-        ])
+    $mealItems = [
+        ['food_id' => $food->id, 'weight' => 100.0],
+    ];
+
+    $component = Livewire::test(Meals::class)
+        ->call('createMeal');
+
+    prepareMealDraft($component, $mealItems)
         ->call('editMealItem', $food->id)
         ->call('cancelFoodModal')
         ->assertSet('mealItems', [
@@ -939,11 +1039,14 @@ it('keeps the temporary edit state intact when its original draft food no longer
     $originalFood = Food::factory()->create();
     $selectedFood = Food::factory()->create();
 
-    Livewire::test(Meals::class)
-        ->call('createMeal')
-        ->set('mealItems', [
-            ['food_id' => $selectedFood->id, 'weight' => 150.0],
-        ])
+    $mealItems = [
+        ['food_id' => $selectedFood->id, 'weight' => 150.0],
+    ];
+
+    $component = Livewire::test(Meals::class)
+        ->call('createMeal');
+
+    prepareMealDraft($component, $mealItems)
         ->set('editingMealItemFoodId', $originalFood->id)
         ->set('isFoodModalOpen', true)
         ->set('foodSearch', 'Pending search')
@@ -963,11 +1066,14 @@ it('keeps the temporary edit state intact when its original draft food no longer
 it('does not update the draft when the edited food weight is invalid', function () {
     $food = Food::factory()->create();
 
-    Livewire::test(Meals::class)
-        ->call('createMeal')
-        ->set('mealItems', [
-            ['food_id' => $food->id, 'weight' => 100.0],
-        ])
+    $mealItems = [
+        ['food_id' => $food->id, 'weight' => 100.0],
+    ];
+
+    $component = Livewire::test(Meals::class)
+        ->call('createMeal');
+
+    prepareMealDraft($component, $mealItems)
         ->call('editMealItem', $food->id)
         ->set('foodWeight', '0')
         ->call('updateFoodInDraft')
@@ -983,11 +1089,14 @@ it('does not update the draft when the edited food weight is invalid', function 
 it('allows a duplicate food total exactly at the maximum weight', function () {
     $food = Food::factory()->create();
 
-    Livewire::test(Meals::class)
-        ->call('createMeal')
-        ->set('mealItems', [
-            ['food_id' => $food->id, 'weight' => 8000.0],
-        ])
+    $mealItems = [
+        ['food_id' => $food->id, 'weight' => 8000.0],
+    ];
+
+    $component = Livewire::test(Meals::class)
+        ->call('createMeal');
+
+    prepareMealDraft($component, $mealItems)
         ->call('openFoodModal')
         ->call('selectFood', $food->id)
         ->set('foodWeight', '2000')
@@ -1007,11 +1116,14 @@ it('disables addition above the combined food weight limit and shows the localiz
         'name_en' => 'Brown rice',
     ]);
 
-    Livewire::test(Meals::class)
-        ->call('createMeal')
-        ->set('mealItems', [
-            ['food_id' => $food->id, 'weight' => 8000.0],
-        ])
+    $mealItems = [
+        ['food_id' => $food->id, 'weight' => 8000.0],
+    ];
+
+    $component = Livewire::test(Meals::class)
+        ->call('createMeal');
+
+    prepareMealDraft($component, $mealItems)
         ->call('openFoodModal')
         ->call('selectFood', $food->id)
         ->set('foodWeight', '2001')
@@ -1033,12 +1145,17 @@ it('disables addition above the combined food weight limit and shows the localiz
 it('keeps the draft and food modal state intact when add food is called directly above the combined weight limit', function () {
     $food = Food::factory()->create();
 
-    Livewire::test(Meals::class)
-        ->call('createMeal')
+    $mealItems = [
+        ['food_id' => $food->id, 'weight' => 8000.0],
+    ];
+
+    $component = Livewire::test(Meals::class)
+        ->call('createMeal');
+
+    prepareMealDraft($component, $mealItems);
+
+    $component
         ->set('mealName', 'Lunch')
-        ->set('mealItems', [
-            ['food_id' => $food->id, 'weight' => 8000.0],
-        ])
         ->call('openFoodModal')
         ->set('foodSearch', 'Pending search')
         ->call('selectFood', $food->id)
@@ -1073,11 +1190,14 @@ it('does not add an unavailable selected food when add food is called directly',
     $unavailableFoodId = $unavailableFood->id;
     $unavailableFood->delete();
 
-    Livewire::test(Meals::class)
-        ->call('createMeal')
-        ->set('mealItems', [
-            ['food_id' => $draftFood->id, 'weight' => 100.0],
-        ])
+    $mealItems = [
+        ['food_id' => $draftFood->id, 'weight' => 100.0],
+    ];
+
+    $component = Livewire::test(Meals::class)
+        ->call('createMeal');
+
+    prepareMealDraft($component, $mealItems)
         ->call('openFoodModal')
         ->set('foodSearch', 'Pending search')
         ->set('selectedFoodId', $unavailableFoodId)
@@ -1473,9 +1593,17 @@ it('cancels the new meal editor', function () {
 });
 
 it('discards temporary items when cancelling the meal editor', function () {
-    Livewire::test(Meals::class)
-        ->call('createMeal')
-        ->set('mealItems', [['temporary' => true]])
+    $food = Food::factory()->create();
+    $mealItems = [
+        ['food_id' => $food->id, 'weight' => 100.0],
+    ];
+
+    $component = Livewire::test(Meals::class)
+        ->call('createMeal');
+
+    prepareMealDraft($component, $mealItems);
+
+    $component
         ->assertNotSet('mealItems', [])
         ->call('cancelMealEditor')
         ->assertSet('isMealEditorOpen', false)
