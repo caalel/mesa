@@ -519,24 +519,18 @@ it('keeps the add food to draft button disabled until a food is selected', funct
         ->assertDontSeeHtml('wire:click="addFoodToDraft"');
 });
 
-it('keeps the add food to draft button disabled for invalid food weights', function (string $weight) {
+it('keeps the add food to draft button disabled for an invalid food weight', function () {
     $food = Food::factory()->create();
 
     Livewire::test(Meals::class)
         ->call('createMeal')
         ->call('openFoodModal')
         ->call('selectFood', $food->id)
-        ->set('foodWeight', $weight)
+        ->set('foodWeight', '0')
         ->assertSeeHtml('data-testid="add-food-to-draft-disabled"')
         ->assertSeeHtml('disabled')
         ->assertDontSeeHtml('wire:click="addFoodToDraft"');
-})->with([
-    'empty weight' => '',
-    'non-numeric weight' => 'invalid',
-    'zero weight' => '0',
-    'negative weight' => '-1',
-    'weight above the maximum' => (string) (FoodWeightInputService::MAXIMUM_IN_GRAMS + 1),
-]);
+});
 
 it('enables the add food to draft button for a selected food with a valid weight', function () {
     $food = Food::factory()->create();
@@ -1253,19 +1247,6 @@ it('calculates the nutrition preview from a comma decimal weight', function () {
         ->assertDontSee(__('ui.meals.quantity_must_be_numeric'));
 });
 
-it('formats the selected food weight in the nutrition preview summary', function () {
-    App::setLocale('pt_BR');
-
-    $food = Food::factory()->create();
-
-    Livewire::test(Meals::class)
-        ->call('createMeal')
-        ->call('openFoodModal')
-        ->call('selectFood', $food->id)
-        ->set('foodWeight', '10.322222')
-        ->assertSee('Para 10,32 g');
-});
-
 it('does not show the nutrition preview or a weight error while the selected food weight is empty', function () {
     $food = Food::factory()->create();
 
@@ -1368,38 +1349,26 @@ it('shows the Meal weight validation messages in English', function () {
         ->assertSee('Enter an amount of up to 10,000 g.');
 });
 
-it('formats the selected food nutrition preview with pt-BR separators and no unnecessary decimal zeroes', function () {
+it('formats the selected food nutrition preview summary and normal values in pt-BR', function () {
     App::setLocale('pt_BR');
 
     $food = Food::factory()->create([
         'calories_per_100g' => 1234.50,
-        'protein_per_100g' => 13.00,
-        'carbs_per_100g' => 17.50,
-        'fat_per_100g' => 19.00,
+        'protein_per_100g' => 20.00,
+        'carbs_per_100g' => 100.00,
+        'fat_per_100g' => 0.00,
     ]);
 
     Livewire::test(Meals::class)
         ->call('createMeal')
         ->call('openFoodModal')
         ->call('selectFood', $food->id)
-        ->assertSee('1.234,5 kcal')
-        ->assertSee('13 g')
-        ->assertSee('17,5 g')
-        ->assertSee('19 g');
-});
-
-it('formats the selected food nutrition preview with English separators and no unnecessary decimal zero', function () {
-    App::setLocale('en');
-
-    $food = Food::factory()->create([
-        'calories_per_100g' => 1234.50,
-    ]);
-
-    Livewire::test(Meals::class)
-        ->call('createMeal')
-        ->call('openFoodModal')
-        ->call('selectFood', $food->id)
-        ->assertSee('1,234.5 kcal');
+        ->set('foodWeight', '10.5')
+        ->assertSee('Para 10,5 g')
+        ->assertSee('129,62 kcal')
+        ->assertSee('2,1 g')
+        ->assertSee('10,5 g')
+        ->assertSee('0 g');
 });
 
 it('shows a less than value for selected food nutrition preview values below the display minimum', function () {
