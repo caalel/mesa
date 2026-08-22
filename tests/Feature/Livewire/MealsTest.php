@@ -56,16 +56,13 @@ it('starts a new meal without temporary items', function () {
         ->assertSet('mealItems', []);
 });
 
-it('shows the meal items empty state for a new meal draft', function () {
-    Livewire::test(Meals::class)
+it('keeps the meal items empty state for a draft without items regardless of its name', function () {
+    $component = Livewire::test(Meals::class)
         ->call('createMeal')
         ->assertSeeHtml('data-testid="meal-items-empty-state"')
         ->assertDontSeeHtml('data-testid="meal-items-list"');
-});
 
-it('keeps the meal items empty state when the meal has a name but no items', function () {
-    Livewire::test(Meals::class)
-        ->call('createMeal')
+    $component
         ->set('mealName', 'Lunch')
         ->assertSeeHtml('data-testid="meal-items-empty-state"')
         ->assertDontSeeHtml('data-testid="meal-items-list"');
@@ -300,23 +297,17 @@ it('renders the food search field with the expected Livewire binding in the open
         ->assertSeeHtml('wire:model.live.debounce.300ms="foodSearch"');
 });
 
-it('renders the food search placeholder in Brazilian Portuguese', function () {
-    App::setLocale('pt_BR');
+it('renders the localized food search placeholder', function (string $locale, string $placeholder) {
+    App::setLocale($locale);
 
     Livewire::test(Meals::class)
         ->call('createMeal')
         ->call('openFoodModal')
-        ->assertSeeHtml('placeholder="Digite o nome do alimento"');
-});
-
-it('renders the food search placeholder in English', function () {
-    App::setLocale('en');
-
-    Livewire::test(Meals::class)
-        ->call('createMeal')
-        ->call('openFoodModal')
-        ->assertSeeHtml('placeholder="Type the food name"');
-});
+        ->assertSeeHtml('placeholder="'.$placeholder.'"');
+})->with([
+    'Brazilian Portuguese' => ['pt_BR', 'Digite o nome do alimento'],
+    'English' => ['en', 'Type the food name'],
+]);
 
 it('shows Portuguese food search results after the first character is entered', function () {
     App::setLocale('pt_BR');
@@ -350,8 +341,8 @@ it('shows English food search results after the first character is entered', fun
         ->assertSee('Brown rice');
 });
 
-it('shows the results heading in Brazilian Portuguese when food search results are visible', function () {
-    App::setLocale('pt_BR');
+it('shows the localized results heading when food search results are visible', function (string $locale, string $search, string $heading) {
+    App::setLocale($locale);
 
     Food::factory()->create([
         'name_pt' => 'Arroz integral',
@@ -361,24 +352,12 @@ it('shows the results heading in Brazilian Portuguese when food search results a
     Livewire::test(Meals::class)
         ->call('createMeal')
         ->call('openFoodModal')
-        ->set('foodSearch', 'A')
-        ->assertSee('Resultados');
-});
-
-it('shows the results heading in English when food search results are visible', function () {
-    App::setLocale('en');
-
-    Food::factory()->create([
-        'name_pt' => 'Arroz integral',
-        'name_en' => 'Brown rice',
-    ]);
-
-    Livewire::test(Meals::class)
-        ->call('createMeal')
-        ->call('openFoodModal')
-        ->set('foodSearch', 'B')
-        ->assertSee('Results');
-});
+        ->set('foodSearch', $search)
+        ->assertSee($heading);
+})->with([
+    'Brazilian Portuguese' => ['pt_BR', 'A', 'Resultados'],
+    'English' => ['en', 'B', 'Results'],
+]);
 
 it('shows calories per 100 grams for a food search result', function () {
     Food::factory()->create([
@@ -1266,8 +1245,8 @@ it('does not show the nutrition preview when the selected food weight exceeds th
         ->assertSee(__('ui.meals.quantity_too_high', ['max' => '10.000']));
 });
 
-it('shows the Meal weight validation messages in Brazilian Portuguese', function () {
-    App::setLocale('pt_BR');
+it('shows the localized meal weight validation messages', function (string $locale, string $invalidMessage, string $zeroMessage, string $maximumMessage) {
+    App::setLocale($locale);
 
     $food = Food::factory()->create();
 
@@ -1276,33 +1255,27 @@ it('shows the Meal weight validation messages in Brazilian Portuguese', function
         ->call('openFoodModal')
         ->call('selectFood', $food->id)
         ->set('foodWeight', 'invalid')
-        ->assertSee('Informe uma quantidade válida em gramas.')
+        ->assertSee($invalidMessage)
 
         ->set('foodWeight', '0')
-        ->assertSee('Informe uma quantidade maior que zero.')
+        ->assertSee($zeroMessage)
 
         ->set('foodWeight', (string) (FoodWeightInputService::MAXIMUM_IN_GRAMS + 1))
-        ->assertSee('Informe uma quantidade de até 10.000 g.');
-});
-
-it('shows the Meal weight validation messages in English', function () {
-    App::setLocale('en');
-
-    $food = Food::factory()->create();
-
-    Livewire::test(Meals::class)
-        ->call('createMeal')
-        ->call('openFoodModal')
-        ->call('selectFood', $food->id)
-        ->set('foodWeight', 'invalid')
-        ->assertSee('Enter a valid amount in grams.')
-
-        ->set('foodWeight', '0')
-        ->assertSee('Enter an amount greater than zero.')
-
-        ->set('foodWeight', (string) (FoodWeightInputService::MAXIMUM_IN_GRAMS + 1))
-        ->assertSee('Enter an amount of up to 10,000 g.');
-});
+        ->assertSee($maximumMessage);
+})->with([
+    'Brazilian Portuguese' => [
+        'pt_BR',
+        'Informe uma quantidade válida em gramas.',
+        'Informe uma quantidade maior que zero.',
+        'Informe uma quantidade de até 10.000 g.',
+    ],
+    'English' => [
+        'en',
+        'Enter a valid amount in grams.',
+        'Enter an amount greater than zero.',
+        'Enter an amount of up to 10,000 g.',
+    ],
+]);
 
 it('formats the selected food nutrition preview summary and normal values in pt-BR', function () {
     App::setLocale('pt_BR');
@@ -1342,48 +1315,49 @@ it('shows a less than value for selected food nutrition preview values below the
         ->assertDontSee('0 kcal');
 });
 
-it('shows the selected food details copy in Brazilian Portuguese', function () {
-    App::setLocale('pt_BR');
+it('shows the localized selected food details copy', function (string $locale, string $foodName, string $amount, string $per100Grams, string $protein, string $carbs, string $fat) {
+    App::setLocale($locale);
 
     $food = Food::factory()->create([
         'name_pt' => 'Alimento nutricional',
         'name_en' => 'Nutritional food',
     ]);
 
-    Livewire::test(Meals::class)
+    $component = Livewire::test(Meals::class)
         ->call('createMeal')
         ->call('openFoodModal')
-        ->call('selectFood', $food->id)
-        ->assertSee('Alimento nutricional')
-        ->assertSee('Quantidade')
-        ->assertSee('Para 100 g')
-        ->assertSee('Proteínas')
-        ->assertSee('Carboidratos')
-        ->assertSee('Gorduras');
-});
+        ->call('selectFood', $food->id);
 
-it('shows the selected food details copy in English', function () {
-    App::setLocale('en');
+    $component
+        ->assertSee($foodName)
+        ->assertSee($amount)
+        ->assertSee($per100Grams)
+        ->assertSee($protein)
+        ->assertSee($carbs)
+        ->assertSee($fat);
+})->with([
+    'Brazilian Portuguese' => [
+        'pt_BR',
+        'Alimento nutricional',
+        'Quantidade',
+        'Para 100 g',
+        'Proteínas',
+        'Carboidratos',
+        'Gorduras',
+    ],
+    'English' => [
+        'en',
+        'Nutritional food',
+        'Amount',
+        'For 100 g',
+        'Protein',
+        'Carbs',
+        'Fat',
+    ],
+]);
 
-    $food = Food::factory()->create([
-        'name_pt' => 'Alimento nutricional',
-        'name_en' => 'Nutritional food',
-    ]);
-
-    Livewire::test(Meals::class)
-        ->call('createMeal')
-        ->call('openFoodModal')
-        ->call('selectFood', $food->id)
-        ->assertSee('Nutritional food')
-        ->assertSee('Amount')
-        ->assertSee('For 100 g')
-        ->assertSee('Protein')
-        ->assertSee('Carbs')
-        ->assertSee('Fat');
-});
-
-it('shows the selected food badge in Brazilian Portuguese', function () {
-    App::setLocale('pt_BR');
+it('shows the localized selected food badge', function (string $locale, string $badge) {
+    App::setLocale($locale);
 
     $banana = Food::factory()->create([
         'name_pt' => 'Banana',
@@ -1395,24 +1369,11 @@ it('shows the selected food badge in Brazilian Portuguese', function () {
         ->call('openFoodModal')
         ->set('foodSearch', 'B')
         ->call('selectFood', $banana->id)
-        ->assertSee('Selecionado');
-});
-
-it('shows the selected food badge in English', function () {
-    App::setLocale('en');
-
-    $banana = Food::factory()->create([
-        'name_pt' => 'Banana',
-        'name_en' => 'Banana',
-    ]);
-
-    Livewire::test(Meals::class)
-        ->call('createMeal')
-        ->call('openFoodModal')
-        ->set('foodSearch', 'B')
-        ->call('selectFood', $banana->id)
-        ->assertSee('Selected');
-});
+        ->assertSee($badge);
+})->with([
+    'Brazilian Portuguese' => ['pt_BR', 'Selecionado'],
+    'English' => ['en', 'Selected'],
+]);
 
 it('shows the food search empty state without food results when a non-empty search has no matches', function () {
     Food::factory()->create([
@@ -1436,8 +1397,8 @@ it('does not show the food search empty state for a whitespace-only search', fun
         ->assertDontSeeHtml('data-testid="food-search-empty"');
 });
 
-it('renders the food search empty state in Brazilian Portuguese', function () {
-    App::setLocale('pt_BR');
+it('renders the localized food search empty state', function (string $locale, string $heading, string $description) {
+    App::setLocale($locale);
 
     Food::factory()->create([
         'name_pt' => 'Banana',
@@ -1448,25 +1409,12 @@ it('renders the food search empty state in Brazilian Portuguese', function () {
         ->call('createMeal')
         ->call('openFoodModal')
         ->set('foodSearch', 'X')
-        ->assertSee('Nenhum alimento encontrado')
-        ->assertSee('Tente buscar por outro nome ou termo.');
-});
-
-it('renders the food search empty state in English', function () {
-    App::setLocale('en');
-
-    Food::factory()->create([
-        'name_pt' => 'Banana',
-        'name_en' => 'Banana',
-    ]);
-
-    Livewire::test(Meals::class)
-        ->call('createMeal')
-        ->call('openFoodModal')
-        ->set('foodSearch', 'X')
-        ->assertSee('No foods found')
-        ->assertSee('Try searching for another name or term.');
-});
+        ->assertSee($heading)
+        ->assertSee($description);
+})->with([
+    'Brazilian Portuguese' => ['pt_BR', 'Nenhum alimento encontrado', 'Tente buscar por outro nome ou termo.'],
+    'English' => ['en', 'No foods found', 'Try searching for another name or term.'],
+]);
 
 it('cancels the new meal editor', function () {
     Livewire::test(Meals::class)
@@ -1500,40 +1448,36 @@ it('discards temporary items when cancelling the meal editor', function () {
         ->assertSet('mealItems', []);
 });
 
-it('renders the empty state and new meal editor in Brazilian Portuguese', function () {
-    App::setLocale('pt_BR');
+it('renders the localized empty state and new meal editor', function (string $locale, string $emptyStateHeading, string $emptyStateDescription, string $createMeal, string $newMeal) {
+    App::setLocale($locale);
 
     $component = Livewire::test(Meals::class);
 
     $component
-        ->assertSee('Nenhuma refeição criada ainda.')
-        ->assertSee('Crie uma refeição para começar a organizar seus alimentos e acompanhar os totais nutricionais.')
-        ->assertSee('Criar refeição');
+        ->assertSee($emptyStateHeading)
+        ->assertSee($emptyStateDescription)
+        ->assertSee($createMeal);
 
     $component
         ->call('createMeal')
-        ->assertSee('Nova refeição')
-        ->assertSee('Criar refeição')
+        ->assertSee($newMeal)
+        ->assertSee($createMeal)
         ->assertSeeHtml('data-testid="meal-editor"')
         ->assertSeeHtml('data-testid="meal-name"')
         ->assertSeeHtml('data-testid="submit-meal"');
-});
-
-it('renders the empty state and new meal editor in English', function () {
-    App::setLocale('en');
-
-    $component = Livewire::test(Meals::class);
-
-    $component
-        ->assertSee('No meals created yet.')
-        ->assertSee('Create a meal to start organizing your foods and tracking nutritional totals.')
-        ->assertSee('Create meal');
-
-    $component
-        ->call('createMeal')
-        ->assertSee('New meal')
-        ->assertSee('Create meal')
-        ->assertSeeHtml('data-testid="meal-editor"')
-        ->assertSeeHtml('data-testid="meal-name"')
-        ->assertSeeHtml('data-testid="submit-meal"');
-});
+})->with([
+    'Brazilian Portuguese' => [
+        'pt_BR',
+        'Nenhuma refeição criada ainda.',
+        'Crie uma refeição para começar a organizar seus alimentos e acompanhar os totais nutricionais.',
+        'Criar refeição',
+        'Nova refeição',
+    ],
+    'English' => [
+        'en',
+        'No meals created yet.',
+        'Create a meal to start organizing your foods and tracking nutritional totals.',
+        'Create meal',
+        'New meal',
+    ],
+]);
