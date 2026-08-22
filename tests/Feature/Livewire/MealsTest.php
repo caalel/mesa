@@ -63,6 +63,14 @@ it('rejects client-side updates to meal items', function () {
         ->toThrow(CannotUpdateLockedPropertyException::class, 'Cannot update locked property: [mealItems]');
 });
 
+it('rejects client-side updates to the selected food ID', function () {
+    $food = Food::factory()->create();
+
+    expect(fn () => Livewire::test(Meals::class)
+        ->set('selectedFoodId', $food->id))
+        ->toThrow(CannotUpdateLockedPropertyException::class, 'Cannot update locked property: [selectedFoodId]');
+});
+
 it('keeps the meal items empty state for a draft without items regardless of its name', function () {
     $component = Livewire::test(Meals::class)
         ->call('createMeal')
@@ -962,17 +970,21 @@ it('keeps the temporary edit state intact when its original draft food no longer
     $selectedFood = Food::factory()->create();
 
     $mealItems = [
+        ['food_id' => $originalFood->id, 'weight' => 100.0],
         ['food_id' => $selectedFood->id, 'weight' => 150.0],
     ];
 
     $component = mountMealEditorWithDraft($mealItems);
 
     $component
-        ->set('editingMealItemFoodId', $originalFood->id)
-        ->set('isFoodModalOpen', true)
+        ->call('editMealItem', $originalFood->id)
+        ->call('selectFood', $selectedFood->id)
         ->set('foodSearch', 'Pending search')
-        ->set('selectedFoodId', $selectedFood->id)
         ->set('foodWeight', '200')
+        ->call('removeMealItem', $originalFood->id)
+        ->assertSet('mealItems', [
+            ['food_id' => $selectedFood->id, 'weight' => 150.0],
+        ])
         ->call('updateFoodInDraft')
         ->assertSet('mealItems', [
             ['food_id' => $selectedFood->id, 'weight' => 150.0],
@@ -1103,7 +1115,6 @@ it('does not add an unavailable selected food when add food is called directly',
     $draftFood = Food::factory()->create();
     $unavailableFood = Food::factory()->create();
     $unavailableFoodId = $unavailableFood->id;
-    $unavailableFood->delete();
 
     $mealItems = [
         ['food_id' => $draftFood->id, 'weight' => 100.0],
@@ -1113,9 +1124,13 @@ it('does not add an unavailable selected food when add food is called directly',
 
     $component
         ->call('openFoodModal')
+        ->call('selectFood', $unavailableFoodId)
         ->set('foodSearch', 'Pending search')
-        ->set('selectedFoodId', $unavailableFoodId)
-        ->set('foodWeight', '250')
+        ->set('foodWeight', '250');
+
+    $unavailableFood->delete();
+
+    $component
         ->call('addFoodToDraft')
         ->assertSet('mealItems', [
             ['food_id' => $draftFood->id, 'weight' => 100.0],

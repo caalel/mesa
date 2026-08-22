@@ -26,6 +26,7 @@ class Meals extends Component
 
     public string $foodSearch = '';
 
+    #[Locked]
     public ?int $selectedFoodId = null;
 
     public string $foodWeight = '';
