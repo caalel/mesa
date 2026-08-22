@@ -5,6 +5,7 @@ use App\Models\Food;
 use App\Services\FoodWeightInputService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\App;
+use Livewire\Features\SupportLockedProperties\CannotUpdateLockedPropertyException;
 use Livewire\Livewire;
 
 /*
@@ -54,6 +55,12 @@ it('starts a new meal without temporary items', function () {
         ->call('createMeal')
         ->assertSet('isMealEditorOpen', true)
         ->assertSet('mealItems', []);
+});
+
+it('rejects client-side updates to meal items', function () {
+    expect(fn () => Livewire::test(Meals::class)
+        ->set('mealItems', [['food_id' => 1, 'weight' => 100.0]]))
+        ->toThrow(CannotUpdateLockedPropertyException::class, 'Cannot update locked property: [mealItems]');
 });
 
 it('keeps the meal items empty state for a draft without items regardless of its name', function () {

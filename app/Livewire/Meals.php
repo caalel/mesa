@@ -9,6 +9,7 @@ use App\Services\LocalizedNutritionalValueFormatter;
 use App\Services\NutritionalValuesCalculator;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
+use Livewire\Attributes\Locked;
 use Livewire\Component;
 
 class Meals extends Component
@@ -31,6 +32,7 @@ class Meals extends Component
 
     public ?int $editingMealItemFoodId = null;
 
+    #[Locked]
     public array $mealItems = [];
 
     protected FoodSearchService $foodSearchService;
