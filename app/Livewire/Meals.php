@@ -240,6 +240,31 @@ class Meals extends Component
 
     public function cancelMealEditor(): void
     {
+        $this->resetMealEditorState();
+    }
+
+    public function submitMeal(): void
+    {
+        if (! $this->canSubmitMeal()) {
+            return;
+        }
+
+        $meals = session()->get('meals', []);
+        $lastMealId = collect($meals)->max('id');
+
+        $meals[] = [
+            'id' => $lastMealId === null ? 1 : (int) $lastMealId + 1,
+            'name' => trim($this->mealName),
+            'items' => $this->mealItems,
+        ];
+
+        session()->put('meals', $meals);
+
+        $this->resetMealEditorState();
+    }
+
+    private function resetMealEditorState(): void
+    {
         $this->isMealEditorOpen = false;
         $this->mealName = '';
         $this->mealItems = [];

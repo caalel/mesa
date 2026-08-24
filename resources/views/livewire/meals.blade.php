@@ -104,7 +104,7 @@
                     {{ __('ui.meals.cancel') }}
                 </button>
                 @if ($canSubmitMeal)
-                    <button class="cursor-pointer rounded-lg bg-[var(--color-primary-green)] px-5 py-2.5 text-sm font-semibold text-white hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-green)] focus:ring-offset-2" type="button" data-testid="submit-meal-enabled">
+                    <button class="cursor-pointer rounded-lg bg-[var(--color-primary-green)] px-5 py-2.5 text-sm font-semibold text-white hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-green)] focus:ring-offset-2" type="button" wire:click="submitMeal" data-testid="submit-meal-enabled">
                         {{ __('ui.meals.create') }}
                     </button>
                 @else

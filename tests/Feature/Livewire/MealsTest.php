@@ -71,6 +71,12 @@ it('enables meal submission only for a valid meal draft', function (string $meal
         ->set('mealName', $mealName)
         ->assertSeeHtml('data-testid="'.$expectedTestId.'"')
         ->assertDontSeeHtml('data-testid="'.$unexpectedTestId.'"');
+
+    if ($expectedTestId === 'submit-meal-enabled') {
+        $component->assertSeeHtml('wire:click="submitMeal"');
+    } else {
+        $component->assertDontSeeHtml('wire:click="submitMeal"');
+    }
 })->with([
     'whitespace-only name with a food' => ['   ', true, 'submit-meal-disabled', 'submit-meal-enabled'],
     'trimmed valid name with a food' => ['  Almoço  ', true, 'submit-meal-enabled', 'submit-meal-disabled'],
@@ -78,6 +84,67 @@ it('enables meal submission only for a valid meal draft', function (string $meal
     '81-character name with a food' => [str_repeat('a', 81), true, 'submit-meal-disabled', 'submit-meal-enabled'],
     'valid name without a food' => ['Almoço', false, 'submit-meal-disabled', 'submit-meal-enabled'],
 ]);
+
+it('submits a valid meal to the session', function () {
+    $food = Food::factory()->create();
+
+    $component = Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->set('mealName', '  Almoço  ')
+        ->call('openFoodModal')
+        ->call('selectFood', $food->id)
+        ->set('foodWeight', '100')
+        ->call('addFoodToDraft')
+        ->call('editMealItem', $food->id)
+        ->set('foodSearch', 'Pending search')
+        ->set('foodWeight', '200');
+
+    $component
+        ->call('submitMeal')
+        ->assertSet('isMealEditorOpen', false)
+        ->assertSet('mealName', '')
+        ->assertSet('mealItems', [])
+        ->assertSet('isFoodModalOpen', false)
+        ->assertSet('foodSearch', '')
+        ->assertSet('selectedFoodId', null)
+        ->assertSet('editingMealItemFoodId', null)
+        ->assertSet('foodWeight', '');
+
+    expect(session()->get('meals'))->toEqual([
+        [
+            'id' => 1,
+            'name' => 'Almoço',
+            'items' => [
+                [
+                    'food_id' => $food->id,
+                    'weight' => 100.0,
+                ],
+            ],
+        ],
+    ]);
+});
+
+it('does not submit an invalid meal when called directly', function () {
+    $food = Food::factory()->create();
+
+    $component = Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->call('openFoodModal')
+        ->call('selectFood', $food->id)
+        ->set('foodWeight', '100')
+        ->call('addFoodToDraft')
+        ->set('mealName', '   ');
+
+    $component
+        ->call('submitMeal')
+        ->assertSet('isMealEditorOpen', true)
+        ->assertSet('mealName', '   ')
+        ->assertSet('mealItems', [
+            ['food_id' => $food->id, 'weight' => 100.0],
+        ]);
+
+    expect(session()->get('meals'))->toBeNull();
+});
 
 it('renders the nutritional summary for the current meal draft', function () {
     $foodA = Food::factory()->create([
