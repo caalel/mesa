@@ -1520,18 +1520,28 @@ it('cancels the new meal editor', function () {
 
 it('discards temporary items when cancelling the meal editor', function () {
     $food = Food::factory()->create();
-    $mealItems = [
-        ['food_id' => $food->id, 'weight' => 100.0],
-    ];
 
-    $component = mountMealEditorWithDraft($mealItems);
+    $component = Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->set('mealName', 'Temporary meal')
+        ->call('openFoodModal')
+        ->call('selectFood', $food->id)
+        ->set('foodWeight', '100')
+        ->call('addFoodToDraft')
+        ->call('editMealItem', $food->id)
+        ->set('foodSearch', 'Pending search')
+        ->set('foodWeight', '200');
 
     $component
-        ->assertNotSet('mealItems', [])
         ->call('cancelMealEditor')
         ->assertSet('isMealEditorOpen', false)
         ->assertSet('mealName', '')
-        ->assertSet('mealItems', []);
+        ->assertSet('mealItems', [])
+        ->assertSet('isFoodModalOpen', false)
+        ->assertSet('foodSearch', '')
+        ->assertSet('selectedFoodId', null)
+        ->assertSet('foodWeight', '')
+        ->assertSet('editingMealItemFoodId', null);
 });
 
 it('renders the localized empty state and new meal editor', function (string $locale, string $emptyStateHeading, string $emptyStateDescription, string $createMeal, string $newMeal) {

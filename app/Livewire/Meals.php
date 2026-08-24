@@ -243,6 +243,7 @@ class Meals extends Component
         $this->isMealEditorOpen = false;
         $this->mealName = '';
         $this->mealItems = [];
+        $this->resetFoodModalState();
     }
 
     private function foodSearchResults(): Collection
