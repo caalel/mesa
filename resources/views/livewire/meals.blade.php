@@ -18,7 +18,7 @@
                     id="meal-name"
                     type="text"
                     placeholder="{{ __('ui.meals.name_placeholder') }}"
-                    wire:model="mealName"
+                    wire:model.live="mealName"
                     data-testid="meal-name"
                 >
             </div>
@@ -103,9 +103,15 @@
                 <button class="cursor-pointer rounded-lg px-5 py-2.5 text-sm font-semibold text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-light-green)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-green)] focus:ring-offset-2" type="button" wire:click="cancelMealEditor" data-testid="cancel-meal-editor">
                     {{ __('ui.meals.cancel') }}
                 </button>
-                <button class="cursor-pointer rounded-lg bg-[var(--color-primary-green)] px-5 py-2.5 text-sm font-semibold text-white hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-green)] focus:ring-offset-2" type="button" data-testid="submit-meal">
-                    {{ __('ui.meals.create') }}
-                </button>
+                @if ($canSubmitMeal)
+                    <button class="cursor-pointer rounded-lg bg-[var(--color-primary-green)] px-5 py-2.5 text-sm font-semibold text-white hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-green)] focus:ring-offset-2" type="button" data-testid="submit-meal-enabled">
+                        {{ __('ui.meals.create') }}
+                    </button>
+                @else
+                    <button class="cursor-not-allowed rounded-lg border border-[var(--color-border)] bg-[var(--color-background)] px-5 py-2.5 text-sm font-semibold text-[var(--color-text-secondary)] opacity-70" type="button" data-testid="submit-meal-disabled" disabled>
+                        {{ __('ui.meals.create') }}
+                    </button>
+                @endif
             </div>
         </section>
     @else

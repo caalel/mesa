@@ -9,6 +9,7 @@ use App\Services\LocalizedNutritionalValueFormatter;
 use App\Services\NutritionalValuesCalculator;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
 
@@ -71,6 +72,7 @@ class Meals extends Component
             'canAddFoodToDraft' => $this->canAddFoodToDraft(),
             'canUpdateFoodInDraft' => $this->canUpdateFoodInDraft(),
             'canOpenFoodModal' => $this->canOpenFoodModal(),
+            'canSubmitMeal' => $this->canSubmitMeal(),
             'hasMealItems' => $this->hasMealItems(),
             'mealItemsCount' => $this->mealItemsCount(),
             'mealItemsLimit' => self::MEAL_ITEMS_LIMIT,
@@ -257,6 +259,15 @@ class Meals extends Component
     private function hasMealItems(): bool
     {
         return $this->mealItems !== [];
+    }
+
+    private function canSubmitMeal(): bool
+    {
+        $mealNameLength = Str::length(trim($this->mealName));
+
+        return $mealNameLength >= 1
+            && $mealNameLength <= 80
+            && $this->hasMealItems();
     }
 
     private function mealItemsCount(): int

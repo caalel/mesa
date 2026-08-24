@@ -45,8 +45,7 @@ it('opens the editor for a new meal', function () {
         ->assertSet('isMealEditorOpen', true)
         ->assertDontSeeHtml('data-testid="meals-empty-state"')
         ->assertSeeHtml('data-testid="meal-editor"')
-        ->assertSeeHtml('data-testid="meal-name"')
-        ->assertSeeHtml('data-testid="submit-meal"');
+        ->assertSeeHtml('data-testid="meal-name"');
 });
 
 it('starts a new meal without temporary items', function () {
@@ -55,6 +54,30 @@ it('starts a new meal without temporary items', function () {
         ->assertSet('isMealEditorOpen', true)
         ->assertSet('mealItems', []);
 });
+
+it('enables meal submission only for a valid meal draft', function (string $mealName, bool $hasMealItem, string $expectedTestId, string $unexpectedTestId) {
+    if ($hasMealItem) {
+        $food = Food::factory()->create();
+
+        $component = mountMealEditorWithDraft([
+            ['food_id' => $food->id, 'weight' => 100.0],
+        ]);
+    } else {
+        $component = Livewire::test(Meals::class)
+            ->call('createMeal');
+    }
+
+    $component
+        ->set('mealName', $mealName)
+        ->assertSeeHtml('data-testid="'.$expectedTestId.'"')
+        ->assertDontSeeHtml('data-testid="'.$unexpectedTestId.'"');
+})->with([
+    'whitespace-only name with a food' => ['   ', true, 'submit-meal-disabled', 'submit-meal-enabled'],
+    'trimmed valid name with a food' => ['  Almoço  ', true, 'submit-meal-enabled', 'submit-meal-disabled'],
+    '80-character name with a food' => [str_repeat('a', 80), true, 'submit-meal-enabled', 'submit-meal-disabled'],
+    '81-character name with a food' => [str_repeat('a', 81), true, 'submit-meal-disabled', 'submit-meal-enabled'],
+    'valid name without a food' => ['Almoço', false, 'submit-meal-disabled', 'submit-meal-enabled'],
+]);
 
 it('renders the nutritional summary for the current meal draft', function () {
     $foodA = Food::factory()->create([
@@ -1526,8 +1549,7 @@ it('renders the localized empty state and new meal editor', function (string $lo
         ->assertSee($newMeal)
         ->assertSee($createMeal)
         ->assertSeeHtml('data-testid="meal-editor"')
-        ->assertSeeHtml('data-testid="meal-name"')
-        ->assertSeeHtml('data-testid="submit-meal"');
+        ->assertSeeHtml('data-testid="meal-name"');
 })->with([
     'Brazilian Portuguese' => [
         'pt_BR',
