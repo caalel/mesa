@@ -23,6 +23,8 @@ return [
         'foods_count' => '{1} :count alimento|[2,*] :count alimentos',
         'new_meal' => 'Nova refeição',
         'draft_status' => 'Ainda não salva',
+        'editing_meal' => 'Editando refeição',
+        'editing_status' => 'Editando',
         'name_label' => 'Nome da refeição',
         'add_food' => '+ Adicionar alimento',
         'add_food_to_draft' => 'Adicionar',

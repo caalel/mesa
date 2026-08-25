@@ -23,6 +23,8 @@ return [
         'foods_count' => '{1} :count food|[2,*] :count foods',
         'new_meal' => 'New meal',
         'draft_status' => 'Not saved yet',
+        'editing_meal' => 'Editing meal',
+        'editing_status' => 'Editing',
         'name_label' => 'Meal name',
         'add_food' => '+ Add food',
         'add_food_to_draft' => 'Add',

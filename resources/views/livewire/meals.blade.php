@@ -7,8 +7,8 @@
     @if ($isMealEditorOpen)
         <section class="w-full rounded-2xl border border-[var(--color-border)] p-5 sm:p-8" data-testid="meal-editor">
             <div class="flex items-center justify-between gap-5">
-                <h2 class="text-xl font-semibold leading-tight text-[var(--color-text-primary)]">{{ __('ui.meals.new_meal') }}</h2>
-                <span class="text-xs font-medium text-[var(--color-text-secondary)]">{{ __('ui.meals.draft_status') }}</span>
+                <h2 class="text-xl font-semibold leading-tight text-[var(--color-text-primary)]">{{ __($editingMealId === null ? 'ui.meals.new_meal' : 'ui.meals.editing_meal') }}</h2>
+                <span class="text-xs font-medium text-[var(--color-text-secondary)]">{{ __($editingMealId === null ? 'ui.meals.draft_status' : 'ui.meals.editing_status') }}</span>
             </div>
 
             <div class="mt-7 space-y-2">
@@ -105,11 +105,11 @@
                 </button>
                 @if ($canSubmitMeal)
                     <button class="cursor-pointer rounded-lg bg-[var(--color-primary-green)] px-5 py-2.5 text-sm font-semibold text-white hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-green)] focus:ring-offset-2" type="button" wire:click="submitMeal" data-testid="submit-meal-enabled">
-                        {{ __('ui.meals.create') }}
+                        {{ __($editingMealId === null ? 'ui.meals.create' : 'ui.meals.save') }}
                     </button>
                 @else
                     <button class="cursor-not-allowed rounded-lg border border-[var(--color-border)] bg-[var(--color-background)] px-5 py-2.5 text-sm font-semibold text-[var(--color-text-secondary)] opacity-70" type="button" data-testid="submit-meal-disabled" disabled>
-                        {{ __('ui.meals.create') }}
+                        {{ __($editingMealId === null ? 'ui.meals.create' : 'ui.meals.save') }}
                     </button>
                 @endif
             </div>
@@ -135,8 +135,11 @@
                             </p>
                         </div>
 
-                        <div class="mt-6">
+                        <div class="mt-6 flex items-end justify-between gap-3">
                             <span class="text-3xl font-semibold tracking-[-0.05em] text-[var(--color-text-primary)]">{{ $meal['nutrition']['calories'] }} kcal</span>
+                            <button class="cursor-pointer shrink-0 text-sm font-semibold text-[var(--color-primary-green)] transition-colors hover:text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-green)] focus:ring-offset-2" type="button" wire:click="editMeal({{ $meal['id'] }})" data-testid="edit-meal">
+                                {{ __('ui.meals.edit') }}
+                            </button>
                         </div>
 
                         <p class="mt-4 border-t border-[var(--color-border)] pt-4 text-sm leading-relaxed text-[var(--color-text-secondary)]">

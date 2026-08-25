@@ -34,6 +34,9 @@ class Meals extends Component
     public ?int $editingMealItemFoodId = null;
 
     #[Locked]
+    public ?int $editingMealId = null;
+
+    #[Locked]
     public array $mealItems = [];
 
     protected FoodSearchService $foodSearchService;
@@ -85,9 +88,26 @@ class Meals extends Component
 
     public function createMeal(): void
     {
+        $this->editingMealId = null;
         $this->isMealEditorOpen = true;
         $this->mealName = '';
         $this->mealItems = [];
+    }
+
+    public function editMeal(int $mealId): void
+    {
+        foreach ($this->persistedMeals() as $meal) {
+            if (($meal['id'] ?? null) !== $mealId) {
+                continue;
+            }
+
+            $this->editingMealId = $mealId;
+            $this->mealName = $meal['name'];
+            $this->mealItems = $meal['items'];
+            $this->isMealEditorOpen = true;
+
+            return;
+        }
     }
 
     public function openFoodModal(): void
@@ -254,13 +274,37 @@ class Meals extends Component
         }
 
         $meals = session()->get('meals', []);
-        $lastMealId = collect($meals)->max('id');
 
-        $meals[] = [
-            'id' => $lastMealId === null ? 1 : (int) $lastMealId + 1,
-            'name' => trim($this->mealName),
-            'items' => $this->mealItems,
-        ];
+        if ($this->editingMealId === null) {
+            $lastMealId = collect($meals)->max('id');
+
+            $meals[] = [
+                'id' => $lastMealId === null ? 1 : (int) $lastMealId + 1,
+                'name' => trim($this->mealName),
+                'items' => $this->mealItems,
+            ];
+        } else {
+            $mealWasUpdated = false;
+
+            foreach ($meals as $index => $meal) {
+                if (($meal['id'] ?? null) !== $this->editingMealId) {
+                    continue;
+                }
+
+                $meals[$index] = [
+                    'id' => $this->editingMealId,
+                    'name' => trim($this->mealName),
+                    'items' => $this->mealItems,
+                ];
+                $mealWasUpdated = true;
+
+                break;
+            }
+
+            if (! $mealWasUpdated) {
+                return;
+            }
+        }
 
         session()->put('meals', $meals);
 
@@ -269,6 +313,7 @@ class Meals extends Component
 
     private function resetMealEditorState(): void
     {
+        $this->editingMealId = null;
         $this->isMealEditorOpen = false;
         $this->mealName = '';
         $this->mealItems = [];

@@ -144,6 +144,110 @@ it('starts a new meal without temporary items', function () {
         ->assertSet('mealItems', []);
 });
 
+it('loads a persisted meal into the editor', function () {
+    app()->setLocale('pt_BR');
+
+    $foodA = Food::factory()->create();
+    $foodB = Food::factory()->create();
+    $mealItems = [
+        ['food_id' => $foodA->id, 'weight' => 125.0],
+        ['food_id' => $foodB->id, 'weight' => 80.0],
+    ];
+
+    session()->put('meals', [
+        [
+            'id' => 1,
+            'name' => 'Almoço',
+            'items' => $mealItems,
+        ],
+    ]);
+
+    Livewire::test(Meals::class)
+        ->call('editMeal', 1)
+        ->assertSet('editingMealId', 1)
+        ->assertSet('isMealEditorOpen', true)
+        ->assertSet('mealName', 'Almoço')
+        ->assertSet('mealItems', $mealItems)
+        ->assertSeeHtml('data-testid="meal-editor"')
+        ->assertSee('Editando refeição')
+        ->assertSee('Salvar');
+});
+
+it('does not edit a missing persisted meal', function () {
+    $food = Food::factory()->create();
+
+    session()->put('meals', [
+        [
+            'id' => 1,
+            'name' => 'Almoço',
+            'items' => [
+                ['food_id' => $food->id, 'weight' => 100.0],
+            ],
+        ],
+    ]);
+
+    Livewire::test(Meals::class)
+        ->call('editMeal', 999)
+        ->assertSet('editingMealId', null)
+        ->assertSet('isMealEditorOpen', false)
+        ->assertSet('mealName', '')
+        ->assertSet('mealItems', []);
+});
+
+it('updates the persisted meal when submitting an edit', function () {
+    $foodA = Food::factory()->create();
+    $foodB = Food::factory()->create();
+    $updatedMealItems = [
+        ['food_id' => $foodB->id, 'weight' => 200.0],
+    ];
+
+    session()->put('meals', [
+        [
+            'id' => 1,
+            'name' => 'Almoço',
+            'items' => [
+                ['food_id' => $foodA->id, 'weight' => 100.0],
+            ],
+        ],
+        [
+            'id' => 2,
+            'name' => 'Jantar',
+            'items' => [
+                ['food_id' => $foodB->id, 'weight' => 150.0],
+            ],
+        ],
+    ]);
+
+    Livewire::test(Meals::class)
+        ->call('editMeal', 1)
+        ->set('mealName', 'Almoço atualizado')
+        ->call('removeMealItem', $foodA->id)
+        ->call('openFoodModal')
+        ->call('selectFood', $foodB->id)
+        ->set('foodWeight', '200')
+        ->call('addFoodToDraft')
+        ->call('submitMeal')
+        ->assertSet('editingMealId', null)
+        ->assertSet('isMealEditorOpen', false)
+        ->assertSet('mealName', '')
+        ->assertSet('mealItems', []);
+
+    expect(session()->get('meals'))->toEqual([
+        [
+            'id' => 1,
+            'name' => 'Almoço atualizado',
+            'items' => $updatedMealItems,
+        ],
+        [
+            'id' => 2,
+            'name' => 'Jantar',
+            'items' => [
+                ['food_id' => $foodB->id, 'weight' => 150.0],
+            ],
+        ],
+    ]);
+});
+
 it('enables meal submission only for a valid meal draft', function (string $mealName, bool $hasMealItem, string $expectedTestId, string $unexpectedTestId) {
     if ($hasMealItem) {
         $food = Food::factory()->create();
