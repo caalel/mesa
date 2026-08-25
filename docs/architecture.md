@@ -2,10 +2,9 @@
 
 ## Purpose
 
-MESA is an MVP that compares foods through caloric equivalence. The user selects a
-reference food, enters its weight, and chooses a second food. The application then
-calculates and displays the amount of the second food that provides approximately
-the same number of calories.
+MESA is an MVP with two nutritional tools. The Nutritional Comparator calculates
+caloric equivalence between two Foods. Meals lets the user assemble a meal and see
+calculated calories and macronutrients for its Foods and total.
 
 ## Current Stack
 
@@ -20,9 +19,10 @@ the same number of calories.
 
 ## Application Architecture
 
-The application uses Laravel's MVC foundation with Blade and Livewire. Controllers
-and Livewire components coordinate HTTP and interface state; services contain the
-focused business and data-import operations.
+The application uses Laravel's MVC foundation with Blade and Livewire. The Home is
+a Blade page that links to the two tools. Full-page Livewire components coordinate
+interactive interface state; services contain focused calculations, search, and
+data-import operations.
 
 ### Components
 
@@ -30,9 +30,14 @@ focused business and data-import operations.
   `localized_name` accessor returns the name for the active locale.
 * `NutritionalComparator` is the full-page Livewire component for food selection,
   weight validation, summaries, and comparison results.
+* `Meals` is the full-page Livewire component for meal drafts, localized Food
+  search and selection, nutritional previews and totals, and session-backed meal
+  creation, editing, and deletion.
 * `CompareFoodsService` calculates the equivalent weight from caloric values.
-* `NutritionalValuesCalculator` calculates a nutritional value for a given
-  weight.
+* `FoodWeightInputService` normalizes and validates Food weights.
+* `NutritionalValuesCalculator` calculates a nutritional value for a given weight.
+* `LocalizedNutritionalValueFormatter` formats nutritional values for the active
+  locale.
 * `FoodSearchService` queries and ranks food-name search results in the active
   locale.
 * `FoodImporter` validates compatible CSV rows and imports them with upserts.
@@ -51,9 +56,12 @@ focused business and data-import operations.
 
 ```text
 GET /
+GET /comparator
+GET /meals
 ```
 
-Renders `NutritionalComparator`.
+`/` renders the Home hub. `/comparator` renders `NutritionalComparator`, and
+`/meals` renders `Meals`.
 
 ### HTTP endpoint
 
@@ -63,6 +71,28 @@ POST /locale/{locale}
 
 `POST /locale/{locale}` accepts `pt_BR` and `en`, stores the selection in the
 session, and redirects back. The Livewire interface uses services directly.
+
+## Meal State and Session Persistence
+
+Foods are persisted in MySQL and remain the source of nutritional values. A Meals
+editor keeps its UI and draft state in Livewire. State that identifies selected
+Foods, draft items, or an edited Meal is protected with `#[Locked]`; user-entered
+searches, name, and weight remain reactive input.
+
+Saved Meals are temporary session data, not database records or user-level
+persistence. Each Meal has this shape:
+
+```text
+id
+name
+items:
+  - food_id
+  - weight
+```
+
+Food names, localized display values, calories, macros, and totals are not copied
+to the session. `Meals` reloads persisted Foods and derives those values at runtime
+from each `food_id` and weight.
 
 ### Artisan Commands
 
@@ -189,7 +219,7 @@ database isolation is required.
 
 The suite includes unit coverage for services and the data pipeline, plus feature
 coverage for imports, the Artisan command, seeders, HTTP endpoints, Livewire, and
-search and comparison rules.
+Comparator and Meals flows.
 
 ```bash
 php artisan test

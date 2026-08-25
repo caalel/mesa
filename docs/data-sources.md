@@ -3,7 +3,7 @@
 This document records the origin, preparation, explicit decisions, traceability,
 and attribution of the nutritional dataset used by MESA. The application uses a
 reviewed local CSV at runtime; it does not query third-party composition tables
-during food search or caloric comparison.
+during food search, caloric comparison, or meal calculations.
 
 ## Source Chain
 
@@ -104,6 +104,37 @@ optional empty nutritional fields unless explicitly resolved, and positive scien
 notation such as `1e-05`. A positive trace value must not be converted to zero.
 English names are required and must cover every final food. Missing nutritional
 values are not converted to zero without an explicit reviewed decision.
+
+## Runtime Use of Food Data
+
+### Persisted Foods
+
+Foods are persisted locally and serve both the Nutritional Comparator and Meals.
+Each Food has localized names in `name_pt` and `name_en`, plus calories, protein,
+carbohydrates, and fat per 100 g. The active locale selects the name used for
+search and presentation.
+
+### Derived Nutritional Values
+
+Nutritional previews by weight, meal-draft summaries, saved-meal totals, and
+localized names shown in the interface are derived at runtime from persisted Foods
+and the informed weight. They are not independent source data.
+
+### Temporary Meal Session Data
+
+Meals are stored only in the current session in this form:
+
+```text
+id
+name
+items:
+  - food_id
+  - weight
+```
+
+The session does not duplicate Food names, calories, macros, or totals. It is not a
+new nutritional source and does not represent domain persistence or permanent user
+data.
 
 ## Reproducible Transformations
 
