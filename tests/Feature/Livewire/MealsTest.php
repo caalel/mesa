@@ -39,6 +39,95 @@ it('shows the initial empty state without an open meal editor', function () {
         ->assertDontSeeHtml('data-testid="meal-editor"');
 });
 
+it('renders persisted meals instead of the empty state', function () {
+    $food = Food::factory()->create();
+
+    session()->put('meals', [
+        [
+            'id' => 1,
+            'name' => 'Café da manhã',
+            'items' => [
+                [
+                    'food_id' => $food->id,
+                    'weight' => 100.0,
+                ],
+            ],
+        ],
+    ]);
+
+    Livewire::test(Meals::class)
+        ->assertSeeHtml('data-testid="meal-list"')
+        ->assertDontSeeHtml('data-testid="meals-empty-state"')
+        ->assertSeeHtml('data-testid="meal-list-item"')
+        ->assertSeeHtml('data-meal-id="1"')
+        ->assertSeeHtml('data-testid="create-meal"')
+        ->assertSeeHtml('wire:click="createMeal"')
+        ->assertSee('Café da manhã');
+});
+
+it('renders persisted meal and food counts', function () {
+    app()->setLocale('pt_BR');
+
+    $foods = Food::factory()->count(2)->create();
+
+    session()->put('meals', [
+        [
+            'id' => 1,
+            'name' => 'Café da manhã',
+            'items' => [
+                ['food_id' => $foods[0]->id, 'weight' => 100.0],
+                ['food_id' => $foods[1]->id, 'weight' => 100.0],
+            ],
+        ],
+        [
+            'id' => 2,
+            'name' => 'Almoço',
+            'items' => [
+                ['food_id' => $foods[0]->id, 'weight' => 100.0],
+            ],
+        ],
+    ]);
+
+    Livewire::test(Meals::class)
+        ->assertSee('2 refeições salvas')
+        ->assertSee('2 alimentos')
+        ->assertSee('1 alimento');
+});
+
+it('renders nutrition totals for a persisted meal', function () {
+    app()->setLocale('pt_BR');
+
+    $foodA = Food::factory()->create([
+        'calories_per_100g' => 100,
+        'protein_per_100g' => 10,
+        'carbs_per_100g' => 20,
+        'fat_per_100g' => 5,
+    ]);
+    $foodB = Food::factory()->create([
+        'calories_per_100g' => 200,
+        'protein_per_100g' => 20,
+        'carbs_per_100g' => 30,
+        'fat_per_100g' => 10,
+    ]);
+
+    session()->put('meals', [
+        [
+            'id' => 1,
+            'name' => 'Café da manhã',
+            'items' => [
+                ['food_id' => $foodA->id, 'weight' => 150.0],
+                ['food_id' => $foodB->id, 'weight' => 50.0],
+            ],
+        ],
+    ]);
+
+    Livewire::test(Meals::class)
+        ->assertSee('250 kcal')
+        ->assertSee('25 g')
+        ->assertSee('45 g')
+        ->assertSee('12,5 g');
+});
+
 it('opens the editor for a new meal', function () {
     Livewire::test(Meals::class)
         ->call('createMeal')

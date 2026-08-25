@@ -19,6 +19,8 @@ return [
         'empty_title' => 'No meals created yet.',
         'empty_description' => 'Create a meal to start organizing your foods and tracking nutritional totals.',
         'create' => 'Create meal',
+        'saved_meals_count' => '{1} :count saved meal|[2,*] :count saved meals',
+        'foods_count' => '{1} :count food|[2,*] :count foods',
         'new_meal' => 'New meal',
         'draft_status' => 'Not saved yet',
         'name_label' => 'Meal name',

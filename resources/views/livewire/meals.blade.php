@@ -114,6 +114,42 @@
                 @endif
             </div>
         </section>
+    @elseif ($hasPersistedMeals)
+        <section data-testid="meal-list">
+            <div class="flex items-center justify-between gap-4">
+                <p class="text-sm text-[var(--color-text-secondary)]">
+                    {{ trans_choice('ui.meals.saved_meals_count', $persistedMealsCount, ['count' => $persistedMealsCount]) }}
+                </p>
+                <button class="cursor-pointer rounded-lg bg-[var(--color-primary-green)] px-5 py-2.5 text-sm font-semibold text-white hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-green)] focus:ring-offset-2" type="button" wire:click="createMeal" data-testid="create-meal">
+                    {{ __('ui.meals.create') }}
+                </button>
+            </div>
+
+            <div class="mt-5 grid gap-4 lg:grid-cols-2">
+                @foreach ($mealList as $meal)
+                    <article class="rounded-2xl border border-[var(--color-border)] p-5 sm:p-6" data-testid="meal-list-item" data-meal-id="{{ $meal['id'] }}">
+                        <div class="min-w-0">
+                            <h2 class="break-words text-xl font-semibold leading-tight text-[var(--color-text-primary)]">{{ $meal['name'] }}</h2>
+                            <p class="mt-1 text-sm text-[var(--color-text-secondary)]">
+                                {{ trans_choice('ui.meals.foods_count', $meal['items_count'], ['count' => $meal['items_count']]) }}
+                            </p>
+                        </div>
+
+                        <div class="mt-6">
+                            <span class="text-3xl font-semibold tracking-[-0.05em] text-[var(--color-text-primary)]">{{ $meal['nutrition']['calories'] }} kcal</span>
+                        </div>
+
+                        <p class="mt-4 border-t border-[var(--color-border)] pt-4 text-sm leading-relaxed text-[var(--color-text-secondary)]">
+                            <span class="font-semibold text-[var(--color-text-primary)]">{{ $meal['nutrition']['protein'] }} g</span> <span class="lowercase">{{ __('ui.meals.protein') }}</span>
+                            <span class="mx-2 text-[var(--color-warm-accent)]">•</span>
+                            <span class="font-semibold text-[var(--color-text-primary)]">{{ $meal['nutrition']['carbs'] }} g</span> <span class="lowercase">{{ __('ui.meals.carbohydrates') }}</span>
+                            <span class="mx-2 text-[var(--color-warm-accent)]">•</span>
+                            <span class="font-semibold text-[var(--color-text-primary)]">{{ $meal['nutrition']['fat'] }} g</span> <span class="lowercase">{{ __('ui.meals.fat') }}</span>
+                        </p>
+                    </article>
+                @endforeach
+            </div>
+        </section>
     @else
         <section class="flex min-h-64 w-full flex-col items-center justify-center space-y-4 rounded-2xl border border-[var(--color-border)] p-5 text-center sm:min-h-72 sm:p-6 lg:min-h-[20.625rem]" data-testid="meals-empty-state">
             <div class="max-w-2xl space-y-2">

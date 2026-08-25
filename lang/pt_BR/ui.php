@@ -19,6 +19,8 @@ return [
         'empty_title' => 'Nenhuma refeição criada ainda.',
         'empty_description' => 'Crie uma refeição para começar a organizar seus alimentos e acompanhar os totais nutricionais.',
         'create' => 'Criar refeição',
+        'saved_meals_count' => '{1} :count refeição salva|[2,*] :count refeições salvas',
+        'foods_count' => '{1} :count alimento|[2,*] :count alimentos',
         'new_meal' => 'Nova refeição',
         'draft_status' => 'Ainda não salva',
         'name_label' => 'Nome da refeição',

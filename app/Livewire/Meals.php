@@ -61,6 +61,7 @@ class Meals extends Component
     {
         $selectedFood = $this->selectedFood();
         $mealDraftItems = $this->mealDraftItems();
+        $persistedMeals = $this->persistedMeals();
 
         return view('livewire.meals', [
             'foodSearchResults' => $this->foodSearchResults(),
@@ -76,6 +77,9 @@ class Meals extends Component
             'hasMealItems' => $this->hasMealItems(),
             'mealItemsCount' => $this->mealItemsCount(),
             'mealItemsLimit' => self::MEAL_ITEMS_LIMIT,
+            'hasPersistedMeals' => $persistedMeals !== [],
+            'persistedMealsCount' => count($persistedMeals),
+            'mealList' => $this->isMealEditorOpen ? [] : $this->mealList($persistedMeals),
         ]);
     }
 
@@ -327,7 +331,50 @@ class Meals extends Component
             ->get()
             ->keyBy('id');
 
-        return collect($this->mealItems)
+        return $this->mealItemsWithNutrition($this->mealItems, $foodsById);
+    }
+
+    /**
+     * @param  array<int, array{id: int, name: string, items: array<int, array{food_id: int, weight: float}>}>  $meals
+     * @return array<int, array{id: int, name: string, items_count: int, nutrition: array{calories: string, protein: string, carbs: string, fat: string}}>
+     */
+    private function mealList(array $meals): array
+    {
+        $foodIds = collect($meals)
+            ->pluck('items')
+            ->flatten(1)
+            ->pluck('food_id')
+            ->filter()
+            ->unique()
+            ->values()
+            ->all();
+
+        $foodsById = $foodIds === []
+            ? collect()
+            : Food::query()->whereKey($foodIds)->get()->keyBy('id');
+
+        return collect($meals)
+            ->map(function (array $meal) use ($foodsById): array {
+                $items = $this->mealItemsWithNutrition($meal['items'], $foodsById);
+
+                return [
+                    'id' => $meal['id'],
+                    'name' => $meal['name'],
+                    'items_count' => count($meal['items']),
+                    'nutrition' => $this->mealNutritionSummary($items),
+                ];
+            })
+            ->all();
+    }
+
+    /**
+     * @param  array<int, array{food_id: int, weight: float}>  $mealItems
+     * @param  Collection<int, Food>  $foodsById
+     * @return array<int, array{food_id: int, name: string, weight: float, formatted_weight: string, calories: float, formatted_calories: string, protein: float, formatted_protein: string, carbs: float, formatted_carbs: string, fat: float, formatted_fat: string}>
+     */
+    private function mealItemsWithNutrition(array $mealItems, Collection $foodsById): array
+    {
+        return collect($mealItems)
             ->map(function (array $mealItem) use ($foodsById): ?array {
                 if (! isset($mealItem['food_id'], $mealItem['weight'])) {
                     return null;
@@ -364,6 +411,14 @@ class Meals extends Component
             ->filter()
             ->values()
             ->all();
+    }
+
+    /**
+     * @return array<int, array{id: int, name: string, items: array<int, array{food_id: int, weight: float}>}>
+     */
+    private function persistedMeals(): array
+    {
+        return session()->get('meals', []);
     }
 
     /**
