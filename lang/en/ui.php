@@ -2,6 +2,7 @@
 
 return [
     'navigation' => [
+        'meals' => 'Meals',
         'comparator' => 'Comparator',
     ],
     'homepage' => [
@@ -12,6 +13,8 @@ return [
         'comparator_title' => 'Nutritional comparator',
         'comparator_description' => 'Find the equivalent amount between two foods based on calories.',
         'open_comparator' => 'Open comparator',
+        'meals_description' => 'Create, save, and revisit meals while tracking calories and macronutrients.',
+        'open_meals' => 'View meals',
     ],
     'meals' => [
         'title' => 'Meals',

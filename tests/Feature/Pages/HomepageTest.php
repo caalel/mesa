@@ -34,11 +34,13 @@ it('renders a dedicated homepage', function () {
         ->assertSeeHtml('data-testid="homepage"');
 });
 
-it('links to the comparator', function () {
+it('links to the available tools', function () {
     $this->get('/')
         ->assertOk()
         ->assertSeeHtml('data-testid="open-comparator"')
-        ->assertSeeHtml('href="'.route('comparator').'"');
+        ->assertSeeHtml('href="'.route('comparator').'"')
+        ->assertSeeHtml('data-testid="open-meals"')
+        ->assertSeeHtml('href="'.route('meals').'"');
 });
 
 it('renders the planned homepage content in Brazilian Portuguese', function () {

@@ -2,6 +2,7 @@
 
 return [
     'navigation' => [
+        'meals' => 'Refeições',
         'comparator' => 'Comparador',
     ],
     'homepage' => [
@@ -12,6 +13,8 @@ return [
         'comparator_title' => 'Comparador nutricional',
         'comparator_description' => 'Descubra a quantidade equivalente entre dois alimentos com base nas calorias.',
         'open_comparator' => 'Abrir comparador',
+        'meals_description' => 'Crie, salve e consulte refeições acompanhando calorias e macronutrientes.',
+        'open_meals' => 'Ver refeições',
     ],
     'meals' => [
         'title' => 'Refeições',
