@@ -53,6 +53,7 @@ return [
         'fat' => 'Gorduras',
         'edit' => 'Editar',
         'remove' => 'Remover',
+        'delete' => 'Excluir',
         'cancel' => 'Cancelar',
         'name_placeholder' => 'Ex.: Café da manhã',
     ],

@@ -110,6 +110,23 @@ class Meals extends Component
         }
     }
 
+    public function deleteMeal(int $mealId): void
+    {
+        $meals = $this->persistedMeals();
+
+        foreach ($meals as $index => $meal) {
+            if (($meal['id'] ?? null) !== $mealId) {
+                continue;
+            }
+
+            unset($meals[$index]);
+
+            session()->put('meals', array_values($meals));
+
+            return;
+        }
+    }
+
     public function openFoodModal(): void
     {
         if (! $this->canOpenFoodModal()) {

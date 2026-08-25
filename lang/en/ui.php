@@ -53,6 +53,7 @@ return [
         'fat' => 'Fat',
         'edit' => 'Edit',
         'remove' => 'Remove',
+        'delete' => 'Delete',
         'cancel' => 'Cancel',
         'name_placeholder' => 'e.g. Breakfast',
     ],

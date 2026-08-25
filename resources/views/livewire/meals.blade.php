@@ -137,9 +137,14 @@
 
                         <div class="mt-6 flex items-end justify-between gap-3">
                             <span class="text-3xl font-semibold tracking-[-0.05em] text-[var(--color-text-primary)]">{{ $meal['nutrition']['calories'] }} kcal</span>
-                            <button class="cursor-pointer shrink-0 text-sm font-semibold text-[var(--color-primary-green)] transition-colors hover:text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-green)] focus:ring-offset-2" type="button" wire:click="editMeal({{ $meal['id'] }})" data-testid="edit-meal">
-                                {{ __('ui.meals.edit') }}
-                            </button>
+                            <div class="flex shrink-0 gap-3 text-sm font-semibold">
+                                <button class="cursor-pointer text-[var(--color-primary-green)] transition-colors hover:text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-green)] focus:ring-offset-2" type="button" wire:click="editMeal({{ $meal['id'] }})" data-testid="edit-meal">
+                                    {{ __('ui.meals.edit') }}
+                                </button>
+                                <button class="cursor-pointer text-[var(--color-text-secondary)] transition-colors hover:text-[var(--color-error)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-green)] focus:ring-offset-2" type="button" wire:click="deleteMeal({{ $meal['id'] }})" data-testid="delete-meal">
+                                    {{ __('ui.meals.delete') }}
+                                </button>
+                            </div>
                         </div>
 
                         <p class="mt-4 border-t border-[var(--color-border)] pt-4 text-sm leading-relaxed text-[var(--color-text-secondary)]">

@@ -248,6 +248,61 @@ it('updates the persisted meal when submitting an edit', function () {
     ]);
 });
 
+it('deletes a persisted meal', function () {
+    $foodA = Food::factory()->create();
+    $foodB = Food::factory()->create();
+
+    session()->put('meals', [
+        [
+            'id' => 1,
+            'name' => 'Almoço',
+            'items' => [
+                ['food_id' => $foodA->id, 'weight' => 100.0],
+            ],
+        ],
+        [
+            'id' => 2,
+            'name' => 'Jantar',
+            'items' => [
+                ['food_id' => $foodB->id, 'weight' => 150.0],
+            ],
+        ],
+    ]);
+
+    Livewire::test(Meals::class)
+        ->call('deleteMeal', 1);
+
+    expect(session()->get('meals'))->toEqual([
+        [
+            'id' => 2,
+            'name' => 'Jantar',
+            'items' => [
+                ['food_id' => $foodB->id, 'weight' => 150.0],
+            ],
+        ],
+    ]);
+});
+
+it('does not delete a missing persisted meal', function () {
+    $food = Food::factory()->create();
+    $meals = [
+        [
+            'id' => 1,
+            'name' => 'Almoço',
+            'items' => [
+                ['food_id' => $food->id, 'weight' => 100.0],
+            ],
+        ],
+    ];
+
+    session()->put('meals', $meals);
+
+    Livewire::test(Meals::class)
+        ->call('deleteMeal', 999);
+
+    expect(session()->get('meals'))->toEqual($meals);
+});
+
 it('enables meal submission only for a valid meal draft', function (string $mealName, bool $hasMealItem, string $expectedTestId, string $unexpectedTestId) {
     if ($hasMealItem) {
         $food = Food::factory()->create();
