@@ -2,26 +2,25 @@
 
 **Medidor de Equivalência e Síntese Alimentar**
 
-MESA calculates caloric equivalence between foods. The user selects a reference food, enters its weight, and chooses a second food. The application then displays the amount of the second food that provides approximately the same number of calories.
-
-![MESA desktop food comparison](docs/screenshots/mesa-comparison-desktop.png)
+MESA brings together two practical nutritional tools: a calorie-based food comparator and a meal calculator. Users can compare equivalent food amounts or assemble meals while following calories and macronutrients.
 
 ## About the project
 
-MESA is a Laravel and Livewire MVP focused on clear, practical food comparison. Its interface is available in Brazilian Portuguese (`pt_BR`) and English (`en`). All nutritional data is prepared and stored locally, so food search and comparison do not depend on external APIs at runtime.
+MESA is a Laravel and Livewire MVP for clear, practical food comparison and meal assembly. The Home page is the hub for the Nutritional Comparator and Meals. Its interface is available in Brazilian Portuguese (`pt_BR`) and English (`en`). All nutritional data is prepared and stored locally, so neither tool depends on external APIs at runtime.
 
 ## Features
 
 - Multi-term food search with relevance-based result ranking in the active locale.
 - Localized food names and interface copy in `pt_BR` and `en`, without fallback between food-name languages.
 - Initial language detection from `Accept-Language`, with a manual language selector remembered in the session.
+- Home page with direct access to both tools.
+- Nutritional Comparator: Food A and Food B selection, weight validation, calorie summary, and approximate caloric equivalence.
+- Meals: create, edit, and delete meals in the current session.
+- Meal drafts with localized Food search, nutritional preview by weight, duplicate-weight merging, editing and removal of Foods, and a maximum of 10 distinct Foods.
+- Nutritional summaries for meal drafts and saved meals, including calories, protein, carbohydrates, and fat.
 - A maximum of eight search results.
-- Selection and replacement of Food A and Food B.
 - Weight input that accepts a point or comma as the decimal separator.
 - Friendly validation feedback and a maximum weight of 10,000 g.
-- Selection of the same food on both sides.
-- Calorie summary for the reference food.
-- Approximate caloric-equivalence calculation.
 - Locale-aware number formatting, with positive values below `0.01` displayed as less than `0.01` instead of zero.
 - Automatic smooth scrolling to the result.
 - Responsive interface.
@@ -30,22 +29,6 @@ MESA is a Laravel and Livewire MVP focused on clear, practical food comparison. 
 - Artisan import command with dry-run support.
 - Database seeder integrated with Laravel's standard seeding flow.
 - Automated tests.
-
-## Screenshots
-
-### Multi-term food search
-
-![MESA multi-term food search](docs/screenshots/mesa-food-search.png)
-
-### Responsive mobile comparison
-
-<p align="center">
-    <img
-        src="docs/screenshots/mesa-comparison-mobile.png"
-        alt="MESA mobile food comparison"
-        width="390"
-    >
-</p>
 
 ## Technologies
 
@@ -192,7 +175,7 @@ php artisan test
 npm run build
 ```
 
-The test command validates domain, Livewire, HTTP, import, command, seeder, and integration behavior. The build command validates production frontend asset compilation.
+The test command validates domain, Livewire, HTTP, import, command, seeder, Comparator, Meals, and integration behavior. The build command validates production frontend asset compilation.
 
 ## Technical decisions
 
@@ -213,6 +196,7 @@ The test command validates domain, Livewire, HTTP, import, command, seeder, and 
 - Real composition may vary by brand, origin, preparation, and processing.
 - The project does not replace professional nutritional guidance.
 - The MVP has no authentication.
+- Meals are available only in the current session; there are no accounts, synchronization, or user-level persistence.
 - The MVP has no user-created custom foods.
 - Search does not include typo-tolerant fuzzy matching.
 

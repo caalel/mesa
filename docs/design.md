@@ -3,7 +3,8 @@
 ## Purpose and Direction
 
 This document describes the current interface of the MESA MVP: its visual
-direction, comparator flow, interface states, and interaction behavior.
+direction, Home, comparator and meal-calculator flows, interface states, and
+interaction behavior.
 
 The design is sober, editorial, technical, and clear. It prioritizes contrast,
 readability, and information hierarchy. Surfaces are simple and functional, with
@@ -36,13 +37,22 @@ The current CSS tokens are:
 
 ## Global Header
 
-The global header contains the `MESA` brand on the left, a link to the comparator,
-and a `PT`/`EN` language selector on the right. It is transparent in its normal
-state. On hover or `focus-within`, the navigation gains a rounded white surface and
-a subtle shadow.
+The global header contains the `MESA` brand on the left, navigation for Meals
+and Comparator centered geometrically in the header, and a `PT`/`EN` language
+selector on the right. It is transparent in its normal state. On hover or
+`focus-within`, the navigation gains a rounded white surface and a subtle shadow.
 
-The header has no active-route indicator or additional tools beyond the comparator
-link and language selector.
+The header has no active-route indicator. At widths below the content breakpoint of
+353 px, its controls no longer fit correctly on one line, so the layout stacks and
+centers them. Above that threshold, the navigation remains visually centered while
+the brand and locale selector anchor the sides.
+
+## Home
+
+The Home page is the hub for the two MESA tools. A centered hero introduces the
+project, followed by two responsive cards: Nutritional Comparator and Meals. Each
+card summarizes its tool and provides its primary navigation action. The cards sit
+side by side when space allows and stack on smaller screens.
 
 ## Page Structure
 
@@ -61,6 +71,31 @@ state displays the food name and an action that returns the card to its search s
 
 The comparator uses the Blade components `compare-search-result-item` and
 `compare-selected-food` to structure search results and selected-food controls.
+
+## Meals
+
+The Meals page has three primary states:
+
+1. **Empty**, which invites the user to create the first meal;
+2. **Editor**, for creating or editing a meal; and
+3. **List**, which presents saved meals and their nutritional totals.
+
+The editor has a meal name, an item list, a nutritional summary, and cancel and
+save actions. A meal requires a name and at least one Food. It can contain at most
+10 distinct Foods. Removing the last item returns the item area to its empty state;
+cancelling discards the current editor draft.
+
+Saved meals show their Food count, calories, protein, carbohydrates, and fat. They
+can be reopened for editing or deleted immediately from the list.
+
+### Food Details Modal
+
+Foods are added and edited in a modal. It provides localized search, a no-results
+state, Food selection, a weight field, and a nutritional preview for that weight.
+The preview and actions react to valid input. Validation communicates non-numeric,
+non-positive, excessive, and combined-weight-limit values. Adding a Food updates
+the draft; editing an item can change its weight or Food. Duplicate Foods merge by
+weight rather than producing another distinct item.
 
 ## Comparator Flow
 
