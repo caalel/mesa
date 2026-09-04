@@ -333,6 +333,21 @@ it('enables meal submission only for a valid meal draft', function (string $meal
     'valid name without a food' => ['Almoço', false, 'submit-meal-disabled', 'submit-meal-enabled'],
 ]);
 
+it('shows the localized maximum meal name length message', function (string $locale, string $message) {
+    App::setLocale($locale);
+
+    $food = Food::factory()->create();
+
+    mountMealEditorWithDraft([
+        ['food_id' => $food->id, 'weight' => 100.0],
+    ])
+        ->set('mealName', str_repeat('a', 81))
+        ->assertSee($message);
+})->with([
+    'Brazilian Portuguese' => ['pt_BR', 'O nome da refeição pode ter no máximo 80 caracteres.'],
+    'English' => ['en', 'A meal name can have at most 80 characters.'],
+]);
+
 it('submits a valid meal to the session', function () {
     $food = Food::factory()->create();
 

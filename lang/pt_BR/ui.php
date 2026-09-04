@@ -43,6 +43,7 @@ return [
         'editing_meal' => 'Editando refeição',
         'editing_status' => 'Editando',
         'name_label' => 'Nome da refeição',
+        'name_too_long' => 'O nome da refeição pode ter no máximo 80 caracteres.',
         'add_food' => '+ Adicionar alimento',
         'add_food_to_draft' => 'Adicionar',
         'save' => 'Salvar',

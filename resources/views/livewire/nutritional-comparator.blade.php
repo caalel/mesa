@@ -6,7 +6,7 @@
 
     <div class="space-y-7">
         <div class="grid items-start gap-5 lg:grid-cols-2">
-            <section class="min-w-0 rounded-2xl border border-[var(--color-border)] p-5 sm:p-6">
+            <section class="min-w-0 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 sm:p-6">
                 <h2 class="text-lg font-semibold leading-6 text-[var(--color-text-primary)]">{{ __('ui.compare.food_a_section') }}</h2>
 
                 @if ($selectedFoodA)
@@ -65,7 +65,7 @@
                 @endif
             </section>
 
-            <section class="min-w-0 rounded-2xl border border-[var(--color-border)] p-5 sm:p-6">
+            <section class="min-w-0 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 sm:p-6">
                 <h2 class="text-lg font-semibold leading-6 text-[var(--color-text-primary)]">{{ __('ui.compare.food_b_section') }}</h2>
 
                 @if ($selectedFoodB)
@@ -108,7 +108,7 @@
 
         @if ($comparisonResult)
             <section
-                class="w-full rounded-2xl border border-[var(--color-border)] border-l-[3px] border-l-[var(--color-warm-accent)] p-5 sm:p-6"
+                class="w-full rounded-2xl border border-[var(--color-border)] border-l-[3px] border-l-[var(--color-warm-accent)] bg-[var(--color-surface)] p-5 sm:p-6"
                 x-data
                 x-on:comparison-result-shown.window="$el.scrollIntoView({ behavior: 'smooth', block: 'start' })"
                 data-testid="comparison-result"

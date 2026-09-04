@@ -43,6 +43,7 @@ return [
         'editing_meal' => 'Editing meal',
         'editing_status' => 'Editing',
         'name_label' => 'Meal name',
+        'name_too_long' => 'A meal name can have at most 80 characters.',
         'add_food' => '+ Add food',
         'add_food_to_draft' => 'Add',
         'save' => 'Save',

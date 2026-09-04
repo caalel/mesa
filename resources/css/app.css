@@ -21,6 +21,10 @@
     --color-error: #B42318;
 }
 
+html {
+    font-size: 110%;
+}
+
 body {
     background: var(--color-background);
     color: var(--color-text-primary);

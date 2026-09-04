@@ -72,6 +72,7 @@ class Meals extends Component
             'selectedFoodNutritionPreview' => $this->selectedFoodNutritionPreview($selectedFood),
             'mealDraftItems' => $mealDraftItems,
             'mealNutritionSummary' => $this->mealNutritionSummary($mealDraftItems),
+            'mealNameValidationMessage' => $this->mealNameValidationMessage(),
             'foodWeightValidationMessage' => $this->foodWeightValidationMessage($selectedFood),
             'canAddFoodToDraft' => $this->canAddFoodToDraft(),
             'canUpdateFoodInDraft' => $this->canUpdateFoodInDraft(),
@@ -363,6 +364,15 @@ class Meals extends Component
         return $mealNameLength >= 1
             && $mealNameLength <= 80
             && $this->hasMealItems();
+    }
+
+    private function mealNameValidationMessage(): ?string
+    {
+        if (Str::length(trim($this->mealName)) <= 80) {
+            return null;
+        }
+
+        return __('ui.meals.name_too_long');
     }
 
     private function mealItemsCount(): int
