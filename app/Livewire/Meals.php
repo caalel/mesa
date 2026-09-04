@@ -83,6 +83,9 @@ class Meals extends Component
             'hasPersistedMeals' => $persistedMeals !== [],
             'persistedMealsCount' => count($persistedMeals),
             'mealList' => $this->isMealEditorOpen ? [] : $this->mealList($persistedMeals),
+        ])->layout('layouts.app', [
+            'title' => __('ui.metadata.meals.title'),
+            'description' => __('ui.metadata.meals.description'),
         ]);
     }
 

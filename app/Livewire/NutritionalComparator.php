@@ -76,6 +76,9 @@ class NutritionalComparator extends Component
             'foodAHasNoResults' => $this->hasNoSearchResults($this->foodAId, $this->foodASearch, $foodAResults),
             'foodBHasNoResults' => $this->hasNoSearchResults($this->foodBId, $this->foodBSearch, $foodBResults),
             'foodAWeightValidationMessage' => $this->foodAWeightValidationMessage(),
+        ])->layout('layouts.app', [
+            'title' => __('ui.metadata.comparator.title'),
+            'description' => __('ui.metadata.comparator.description'),
         ]);
     }
 

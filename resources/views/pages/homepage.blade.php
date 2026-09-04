@@ -1,4 +1,7 @@
-@component('layouts.app')
+@component('layouts.app', [
+    'title' => __('ui.metadata.home.title'),
+    'description' => __('ui.metadata.home.description'),
+])
     <main class="mx-auto w-full max-w-6xl px-4 pb-14 pt-16 sm:px-6 sm:pb-20 sm:pt-20 lg:px-8 lg:pb-24 lg:pt-24" data-testid="homepage">
         <section class="mx-auto max-w-3xl text-center">
             <h1 class="text-5xl font-semibold tracking-[-0.075em] text-[var(--color-text-primary)] sm:text-6xl lg:text-7xl">

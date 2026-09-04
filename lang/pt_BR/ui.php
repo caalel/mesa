@@ -1,6 +1,20 @@
 <?php
 
 return [
+    'metadata' => [
+        'home' => [
+            'title' => 'MESA',
+            'description' => 'Compare alimentos e monte refeições com informações nutricionais de forma simples.',
+        ],
+        'comparator' => [
+            'title' => 'Comparador nutricional | MESA',
+            'description' => 'Compare alimentos com base em seus valores nutricionais.',
+        ],
+        'meals' => [
+            'title' => 'Refeições | MESA',
+            'description' => 'Monte refeições e acompanhe suas calorias e macronutrientes.',
+        ],
+    ],
     'navigation' => [
         'meals' => 'Refeições',
         'comparator' => 'Comparador',

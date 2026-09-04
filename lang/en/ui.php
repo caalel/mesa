@@ -1,6 +1,20 @@
 <?php
 
 return [
+    'metadata' => [
+        'home' => [
+            'title' => 'MESA',
+            'description' => 'Compare foods and build meals with nutritional information in a simple way.',
+        ],
+        'comparator' => [
+            'title' => 'Nutritional Comparator | MESA',
+            'description' => 'Compare foods based on their nutritional values.',
+        ],
+        'meals' => [
+            'title' => 'Meals | MESA',
+            'description' => 'Build meals and track their calories and macronutrients.',
+        ],
+    ],
     'navigation' => [
         'meals' => 'Meals',
         'comparator' => 'Comparator',
