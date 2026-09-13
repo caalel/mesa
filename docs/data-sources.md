@@ -7,15 +7,31 @@ during food search, caloric comparison, or meal calculations.
 
 ## Source Chain
 
-```text
-taco-v4-en-translation-catalog.csv
-    → php artisan foods:generate-translations
-taco-v4-en-translations.csv
-    → php scripts/prepare_taco_csv.php
-taco-v4.csv
-    → FoodSeeder or php artisan foods:import
-foods table
-```
+1. Generate the operational English translations:
+
+   ```text
+   taco-v4-en-translation-catalog.csv
+       → php artisan foods:generate-translations
+       → taco-v4-en-translations.csv
+   ```
+
+2. Prepare the final food dataset. This command reads all three inputs:
+
+   ```text
+   taco-composicao-brolesi.csv     (base TACO data)
+   taco-v4-overrides.csv           (reviewed nutritional decisions)
+   taco-v4-en-translations.csv     (generated English names)
+       → php scripts/prepare_taco_csv.php
+       → taco-v4.csv
+   ```
+
+3. Import the prepared dataset:
+
+   ```text
+   taco-v4.csv
+       → php artisan foods:import
+       → foods table
+   ```
 
 The catalog is Brazilian: its identity, selection, and source nomenclature are
 based on TACO 4. `brolesi/taco` is the technical source used to extract and
@@ -56,26 +72,38 @@ records.
 
 ## English Food-Name Editorial Policy
 
-`name_en` is an editorial translation for localized search and presentation. It is
-not a mapping of the Brazilian catalog to equivalent foods in USDA or another
-international database: the food source remains Brazilian and TACO-based.
+`name_en` is an editorial localization layer for natural, searchable English in the
+interface. It is not a word-for-word translation and does not map the Brazilian
+catalog to nutritionally, culturally, botanically, commercially, or culinarily
+identical foods in USDA or another international database. The food source remains
+Brazilian and TACO-based.
 
-Some English names deliberately preserve Portuguese words, preparations, or
-ingredients when no precise English equivalent exists, or when a literal translation
-would distort cultural or culinary identity. The translations aim for clarity, but
-do not claim perfect linguistic equivalence. A value in `name_en` does not imply
-that an equivalent foreign food exists nutritionally or culturally. English search
-uses the text stored in `name_en`.
+Editorial conventions are:
+
+* Prefer established common English names when the equivalence is sufficiently safe.
+* Put the food identity before its state or preparation, normally as a comma-separated
+  suffix: `Brown rice, cooked`, `Carrot, raw`, and `Chicken breast, grilled`.
+* Use `raw`, rather than `uncooked`, for foods described as "cru".
+* Do not preserve Portuguese gratuitously when a natural English equivalent exists.
+  Preserve a Brazilian term when it carries relevant culinary or cultural identity,
+  or when no sufficiently precise English equivalent exists. When useful, add a
+  short English explanation, such as `Pão de queijo (Brazilian cheese bread), baked`
+  or `Feijoada (black bean and pork stew)`.
+* Do not infer an exact taxonomic identity, cultivar, commercial cut, or culinary
+  equivalent when TACO does not provide enough information to support it.
+
+Approved editorial decisions live directly in `name_en`; the catalog has no
+per-row justification column. English search uses the text stored in `name_en`.
 
 ## Pipeline Files
 
 | File | Role |
 | --- | --- |
 | `database/data/foods/taco-composicao-brolesi.csv` | Immutable preserved technical input derived from `brolesi/taco`. |
-| `database/data/foods/taco-v4-en-translation-catalog.csv` | Editorial catalog of English food names, approval status, and review notes. |
+| `database/data/foods/taco-v4-en-translation-catalog.csv` | Canonical editable editorial source of English food names. Its exact schema is `source_code,name_pt,name_en,review_status`. |
 | `database/data/foods/taco-v4-en-translations.csv` | Generated, versioned operational translation artifact. |
 | `database/data/foods/taco-v4-overrides.csv` | Auditable declarative decisions for overrides, removals, sources, references, and notes. |
-| `scripts/prepare_taco_csv.php` | Reproducibly prepares the official MESA CSV from the input, decisions, and translations. |
+| `scripts/prepare_taco_csv.php` | Reproducibly prepares the official MESA CSV from the immutable input, overrides, and generated translations. |
 | `database/data/foods/taco-v4.csv` | Generated official dataset and the CSV imported by the application. |
 
 The immutable input is not edited for project-specific corrections. The generated
@@ -138,10 +166,13 @@ data.
 
 ## Reproducible Transformations
 
-`foods:generate-translations` validates the editorial catalog header, required
-English names, approved review status, duplicate source codes, and its exact order
-and Portuguese names against the configured canonical source. It then writes the
-operational `source_code,name_en` file.
+`foods:generate-translations` validates the exact editorial catalog header
+`source_code,name_pt,name_en,review_status`, required English names, approved review
+status, duplicate source codes, and its exact order and Portuguese names against the
+existing `database/data/foods/taco-v4.csv`. This is structural and editorial
+validation only: it checks the record count, `source_code`, order, and `name_pt`
+before writing the operational `source_code,name_en` file. Its nutritional values
+are not reused; `prepare_taco_csv.php` rebuilds them from its own pipeline inputs.
 
 The preparation script validates the expected source, overrides, and translation
 headers; required decision fields; supported actions; duplicate override codes;
@@ -298,9 +329,10 @@ php artisan migrate --seed
 
 ### Dataset Maintenance
 
-When maintaining editorial translations or source decisions, update the appropriate
-catalog or overrides file, generate the operational translation CSV, prepare the
-canonical CSV, and review the generated diffs before validating imports and tests.
+When maintaining editorial translations, edit the canonical translation catalog;
+when maintaining source decisions, edit the overrides file. Then generate the
+operational translation CSV, prepare the canonical CSV, and review the generated
+diffs before validating imports and tests.
 
 ### Regenerate the Official CSV
 
