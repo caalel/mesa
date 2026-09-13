@@ -46,7 +46,7 @@ function foodTranslationGenerationCanonicalCsv(array $rows): string
 
 function foodTranslationGenerationCatalogCsv(array $rows): string
 {
-    return "source_code,name_pt,name_en,review_status,review_notes\n".implode("\n", $rows)."\n";
+    return "source_code,name_pt,name_en,review_status\n".implode("\n", $rows)."\n";
 }
 
 function validFoodTranslationGenerationCanonicalRows(): array
@@ -61,9 +61,9 @@ function validFoodTranslationGenerationCanonicalRows(): array
 function validFoodTranslationGenerationCatalogRows(): array
 {
     return [
-        '001,Leite,Skim milk,approved,',
-        '002,Pão,French bread,approved,',
-        '003,Água,Water,approved,',
+        '001,Leite,Skim milk,approved',
+        '002,Pão,French bread,approved',
+        '003,Água,Water,approved',
     ];
 }
 
@@ -108,9 +108,9 @@ it('replaces an existing output using the paths provided by options', function (
 it('reports service failures without replacing an existing output', function () {
     $directory = foodTranslationGenerationCommandDirectory();
     $catalogPath = foodTranslationGenerationCommandFixture($directory, 'catalog.csv', foodTranslationGenerationCatalogCsv([
-        '001,Leite,Skim milk,pending,',
-        '002,Pão,French bread,approved,',
-        '003,Água,Water,approved,',
+        '001,Leite,Skim milk,pending',
+        '002,Pão,French bread,approved',
+        '003,Água,Water,approved',
     ]));
     $sourcePath = foodTranslationGenerationCommandFixture($directory, 'source.csv', foodTranslationGenerationCanonicalCsv(validFoodTranslationGenerationCanonicalRows()));
     $outputPath = foodTranslationGenerationCommandFixture($directory, 'translations.csv', "preserve,this\n");

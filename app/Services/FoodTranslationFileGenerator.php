@@ -12,7 +12,6 @@ class FoodTranslationFileGenerator
         'name_pt',
         'name_en',
         'review_status',
-        'review_notes',
     ];
 
     private const CANONICAL_SOURCE_HEADER = [
