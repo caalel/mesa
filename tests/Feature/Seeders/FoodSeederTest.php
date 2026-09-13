@@ -85,6 +85,6 @@ it('imports canonical Portuguese and English names for selected foods', function
         'source_version' => '4',
         'source_code' => '1',
         'name_pt' => 'Arroz, integral, cozido',
-        'name_en' => 'Cooked brown rice',
+        'name_en' => 'Brown rice, cooked',
     ]);
 });

@@ -1,593 +1,593 @@
-source_code,name_pt,name_en,review_status,review_notes
-1,"Arroz, integral, cozido",Cooked brown rice,approved,
-2,"Arroz, integral, cru",Raw brown rice,approved,
-3,"Arroz, tipo 1, cozido","Long-grain white rice (Type 1), cooked",approved,Type 1 is a Brazilian commercial rice grade; confirm whether the English label should retain this classification.
-4,"Arroz, tipo 1, cru","Long-grain white rice (Type 1), raw",approved,Type 1 is a Brazilian commercial rice grade; confirm whether the English label should retain this classification.
-5,"Arroz, tipo 2, cozido","Long-grain white rice (Type 2), cooked",approved,Type 2 is a Brazilian commercial rice grade; confirm whether the English label should retain this classification.
-6,"Arroz, tipo 2, cru","Long-grain white rice (Type 2), raw",approved,Type 2 is a Brazilian commercial rice grade; confirm whether the English label should retain this classification.
-7,"Aveia, flocos, crua","Rolled oats, raw",approved,Confirm whether the source product is specifically rolled oats or a broader oat-flake product.
-8,"Biscoito, doce, maisena",Sweet cornstarch cookies,approved,Maisena is interpreted as the Brazilian cornstarch-cookie style rather than a brand name.
-9,"Biscoito, doce, recheado com chocolate",Chocolate-filled sweet cookies,approved,
-10,"Biscoito, doce, recheado com morango",Strawberry-filled sweet cookies,approved,
-11,"Biscoito, doce, wafer, recheado de chocolate",Chocolate-filled wafer cookies,approved,
-12,"Biscoito, doce, wafer, recheado de morango",Strawberry-filled wafer cookies,approved,
-13,"Biscoito, salgado, cream cracker",Savory cream crackers,approved,
-14,"Bolo, mistura para",Cake mix,approved,
-15,"Bolo, pronto, aipim",Ready-to-eat cassava cake,approved,Aipim is rendered as cassava; the cake is a Brazilian preparation whose texture may differ from other cassava cakes.
-16,"Bolo, pronto, chocolate",Ready-to-eat chocolate cake,approved,
-17,"Bolo, pronto, coco",Ready-to-eat coconut cake,approved,
-18,"Bolo, pronto, milho",Ready-to-eat corn cake,approved,Corn cake may refer to several preparations; confirm the intended Brazilian bolo de milho style.
-19,"Canjica, branca, crua","Canjica branca (white hominy corn), dry",approved,Canjica is retained because Brazilian white canjica kernels are not always identical to products labeled hominy in English.
-20,"Canjica, com leite integral","Canjica (sweet hominy porridge), with whole milk",approved,Canjica is retained as the Brazilian dish name; the source does not state whether it is sweetened.
-21,"Cereais, milho, flocos, com sal","Corn flakes, salted",approved,Confirm whether these flakes are ready-to-eat breakfast cereal or a minimally processed corn-flake ingredient.
-22,"Cereais, milho, flocos, sem sal","Corn flakes, unsalted",approved,Confirm whether these flakes are ready-to-eat breakfast cereal or a minimally processed corn-flake ingredient.
-23,"Cereais, mingau, milho, infantil",Corn-based infant cereal,approved,
-24,"Cereais, mistura para vitamina, trigo, cevada e aveia","Cereal mix for smoothie (wheat, barley, oat), dry",approved,"Vitamina is interpreted as a Brazilian blended milk-and-fruit drink or smoothie, not as a vitamin supplement."
-25,"Cereal matinal, milho",Corn breakfast cereal,approved,
-26,"Cereal matinal, milho, açúcar",Sweetened corn breakfast cereal,approved,
-27,"Creme de arroz, pó",Cream of rice cereal powder,approved,Creme de arroz is treated as a prepared cereal product rather than plain rice flour.
-28,"Creme de milho, pó","Cream of corn cereal, dry",approved,Confirm whether this is a cereal porridge powder or a savory cream-of-corn mix.
-29,"Curau, milho verde","Curau (sweet corn pudding)",approved,Curau is retained because no single English food name captures the Brazilian preparation.
-30,"Curau, milho verde, mistura para","Curau mix (sweet corn pudding), powder",approved,Curau is retained because no single English food name captures the Brazilian preparation.
-31,"Farinha, de arroz, enriquecida",Enriched rice flour,approved,
-32,"Farinha, de centeio, integral",Whole-grain rye flour,approved,
-33,"Farinha, de milho, amarela","Yellow flaked corn flour, dry",approved,Brazilian corn flour can differ in granulation from products sold as corn flour in the United States.
-34,"Farinha, de rosca",Breadcrumbs,approved,
-35,"Farinha, de trigo",Wheat flour,approved,
-36,"Farinha, láctea, de cereais","Wheat and milk cereal, powder",approved,Farinha láctea is a Brazilian milk-and-cereal product; confirm the preferred market-facing English name.
-37,"Lasanha, massa fresca, cozida",Cooked fresh lasagna sheets,approved,
-38,"Lasanha, massa fresca, crua",Uncooked fresh lasagna sheets,approved,
-39,"Macarrão, instantâneo",Instant noodles,approved,
-40,"Macarrão, trigo, cru",Uncooked wheat pasta,approved,
-41,"Macarrão, trigo, cru, com ovos",Uncooked wheat pasta with eggs,approved,
-42,"Milho, amido, cru",Raw cornstarch,approved,
-43,"Milho, fubá, cru",Raw cornmeal,approved,Fubá usually denotes finely milled cornmeal; confirm whether granulation needs to be stated.
-44,"Milho, verde, cru",Raw fresh corn,approved,Green corn denotes fresh immature corn in Brazil and does not refer to kernel color.
-45,"Milho, verde, enlatado, drenado","Canned sweet corn, drained",approved,Green corn denotes fresh immature corn in Brazil; confirm whether sweet corn is the better US-market label.
-46,"Mingau tradicional, pó","Instant porridge mix, original, powder",approved,The source does not identify the grain or commercial formulation behind traditional porridge powder.
-47,"Pamonha, barra para cozimento, pré-cozida","Pamonha (sweet corn paste), pre-cooked bar",approved,Pamonha is retained; barra para cozimento is interpreted as a packaged log intended to be boiled.
-48,"Pão, aveia, forma",Oat sandwich bread,approved,
-49,"Pão, de soja",Soy bread,approved,
-50,"Pão, glúten, forma",Sandwich bread with added gluten,approved,The bread contains added wheat gluten and is not gluten-free.
-51,"Pão, milho, forma",Corn sandwich bread,approved,
-52,"Pão, trigo, forma, integral",Whole-wheat sandwich bread,approved,
-53,"Pão, trigo, francês",Brazilian French roll,approved,"Pão francês is the common Brazilian crusty bread roll, not a French baguette."
-54,"Pão, trigo, sovado","Pão sovado (dense kneaded bread)",approved,Pão sovado is retained because its dense Brazilian bread style has no single standard English name.
-55,"Pastel, de carne, cru","Beef pastel (Brazilian pastry), raw",approved,"Pastel is retained as the Brazilian pastry; the source does not specify the type of meat, and raw means the assembled pastry has not been fried."
-56,"Pastel, de carne, frito","Beef pastel (Brazilian pastry), fried",approved,"Pastel is retained as the Brazilian pastry, and the source does not specify the type of meat."
-57,"Pastel, de queijo, cru","Cheese pastel (Brazilian pastry), raw",approved,Pastel is retained as the Brazilian pastry; raw indicates the assembled pastry has not been fried.
-58,"Pastel, de queijo, frito","Cheese pastel (Brazilian pastry), fried",approved,Pastel is retained as the Brazilian pastry rather than equated with a foreign turnover.
-59,"Pastel, massa, crua","Pastel dough, raw",approved,Pastel is retained because this dough is specific to the Brazilian fried pastry.
-60,"Pastel, massa, frita","Pastel dough, fried",approved,Pastel is retained because this dough is specific to the Brazilian fried pastry.
-61,"Pipoca, com óleo de soja, sem sal",Unsalted popcorn with soybean oil,approved,
-62,"Polenta, pré-cozida",Precooked polenta,approved,
-63,"Torrada, pão francês",Toast made from Brazilian French rolls,approved,"Pão francês refers to the Brazilian crusty roll, not a baguette-style loaf."
-64,"Abóbora, cabotian, cozida",Cooked kabocha squash,approved,"Cabotian is interpreted as cabotiá, the Brazilian name commonly used for kabocha-type squash."
-65,"Abóbora, cabotian, crua",Raw kabocha squash,approved,"Cabotian is interpreted as cabotiá, the Brazilian name commonly used for kabocha-type squash."
-66,"Abóbora, menina brasileira, crua","Menina Brasileira squash, raw",approved,Menina Brasileira is preserved as the cultivar name; confirm capitalization and the preferred English market label.
-67,"Abóbora, moranga, crua","Moranga squash, raw",approved,Moranga is retained as the Brazilian squash variety because no precise common English cultivar name is established.
-68,"Abóbora, moranga, refogada","Moranga squash, sautéed",approved,Moranga is retained as the Brazilian squash variety because no precise common English cultivar name is established.
-69,"Abóbora, pescoço, crua","Butternut squash, raw",approved,Abóbora de pescoço is rendered descriptively; confirm the exact cultivar or species represented.
-70,"Abobrinha, italiana, cozida",Cooked Italian zucchini,approved,
-71,"Abobrinha, italiana, crua",Raw Italian zucchini,approved,
-72,"Abobrinha, italiana, refogada",Sautéed Italian zucchini,approved,
-73,"Abobrinha, paulista, crua","Paulista summer squash, raw",approved,Paulista is retained as the Brazilian variety name; confirm whether a recognized English cultivar name exists.
-74,"Acelga, crua",Raw Swiss chard,approved,
-75,"Agrião, cru",Raw watercress,approved,
-76,"Aipo, cru",Raw celery,approved,
-77,"Alface, americana, crua",Raw iceberg lettuce,approved,"Alface americana is interpreted as iceberg lettuce, its usual Brazilian market equivalent."
-78,"Alface, crespa, crua",Raw curly-leaf lettuce,approved,
-79,"Alface, lisa, crua",Raw butterhead lettuce,approved,Alface lisa may overlap with butterhead lettuce; the broader descriptive name avoids asserting a cultivar.
-80,"Alface, roxa, crua",Raw red leaf lettuce,approved,
-81,"Alfavaca, crua","Clove basil, raw",approved,Alfavaca can refer to more than one Ocimum species; the Brazilian name is retained pending species confirmation.
-82,"Alho, cru",Raw garlic,approved,
-83,"Alho-poró, cru",Raw leek,approved,
-84,"Almeirão, cru","Chicory greens, raw",approved,"Almeirão can cover closely related chicory cultivars, so the Brazilian name is retained."
-85,"Almeirão, refogado","Chicory greens, sautéed",approved,"Almeirão can cover closely related chicory cultivars, so the Brazilian name is retained."
-86,"Batata, baroa, cozida",Cooked arracacha,approved,Batata-baroa is identified as arracacha; regional names such as mandioquinha are not carried into English.
-87,"Batata, baroa, crua",Raw arracacha,approved,Batata-baroa is identified as arracacha; regional names such as mandioquinha are not carried into English.
-88,"Batata, doce, cozida",Cooked sweet potato,approved,
-89,"Batata, doce, crua",Raw sweet potato,approved,
-90,"Batata, frita, tipo chips, industrializada",Commercial potato chips,approved,
-91,"Batata, inglesa, cozida",Cooked white potato,approved,"Batata inglesa is rendered as white potato, the usual Brazilian distinction from sweet potato and arracacha."
-92,"Batata, inglesa, crua",Raw white potato,approved,"Batata inglesa is rendered as white potato, the usual Brazilian distinction from sweet potato and arracacha."
-93,"Batata, inglesa, frita",Fried white potato,approved,"The source does not specify whether the fried potato is cut as fries, slices, or another shape."
-94,"Batata, inglesa, sauté",Sautéed white potatoes,approved,
-95,"Berinjela, cozida",Cooked eggplant,approved,
-96,"Berinjela, crua",Raw eggplant,approved,
-97,"Beterraba, cozida",Cooked beet,approved,
-98,"Beterraba, crua",Raw beet,approved,
-99,"Biscoito, polvilho doce",Sweet cassava starch biscuits,approved,"Sweet describes the non-fermented cassava starch type, not necessarily the flavor of the biscuits."
-100,"Brócolis, cozido",Cooked broccoli,approved,
-101,"Brócolis, cru",Raw broccoli,approved,
-102,"Cará, cozido","Yam, cooked",approved,Cará is retained because the common name can refer to different Dioscorea species in Brazil.
-103,"Cará, cru","Yam, raw",approved,Cará is retained because the common name can refer to different Dioscorea species in Brazil.
-104,"Caruru, cru","Amaranth greens, raw",approved,Caruru is retained because the name can refer to regional Amaranthus species or preparations.
-105,"Catalonha, crua","Catalogna chicory, raw",approved,Catalonha is retained as the Brazilian market name for this chicory green.
-106,"Catalonha, refogada","Catalogna chicory, sautéed",approved,Catalonha is retained as the Brazilian market name for this chicory green.
-107,"Cebola, crua",Raw onion,approved,
-108,"Cebolinha, crua",Raw scallions,approved,
-109,"Cenoura, cozida",Cooked carrot,approved,
-110,"Cenoura, crua",Raw carrot,approved,
-111,"Chicória, crua",Raw endive,approved,"Brazilian chicória commonly refers to endive, but regional usage can overlap with other chicories."
-112,"Chuchu, cozido",Cooked chayote,approved,
-113,"Chuchu, cru",Raw chayote,approved,
-114,"Coentro, folhas desidratadas",Dried cilantro leaves,approved,
-115,"Couve, manteiga, crua","Collard greens, raw",approved,Couve-manteiga is retained as the Brazilian cultivar name and identified broadly as collard greens.
-116,"Couve, manteiga, refogada","Collard greens, sautéed",approved,Couve-manteiga is retained as the Brazilian cultivar name and identified broadly as collard greens.
-117,"Couve-flor, crua",Raw cauliflower,approved,
-118,"Couve-flor, cozida",Cooked cauliflower,approved,
-119,"Espinafre, Nova Zelândia, cru",Raw New Zealand spinach,approved,
-120,"Espinafre, Nova Zelândia, refogado",Sautéed New Zealand spinach,approved,
-121,"Farinha, de mandioca, crua",Untoasted cassava flour,approved,"Raw is interpreted as untoasted in the Brazilian cassava-flour classification, not as unsafe uncooked cassava."
-122,"Farinha, de mandioca, torrada",Toasted cassava flour,approved,
-123,"Farinha, de puba","Fermented cassava flour, dry",approved,Puba is retained because it denotes a specifically fermented Brazilian cassava product.
-124,"Fécula, de mandioca",Cassava starch,approved,
-125,"Feijão, broto, cru",Raw bean sprouts,approved,The source does not identify the bean species; mung bean should not be assumed without confirmation.
-126,"Inhame, cru","Taro, raw",approved,Inhame has regionally variable usage in Brazil and may denote taro or a true yam; the original name is retained.
-127,"Jiló, cru","Gilo (scarlet eggplant), raw",approved,Jiló is retained as the Brazilian food name and identified with its common English species name.
-128,"Jurubeba, crua","Jurubeba berries, raw",approved,Jurubeba can refer to multiple Solanum species; fruit is the likely edible part but should be confirmed.
-129,"Mandioca, cozida",Cooked cassava,approved,
-130,"Mandioca, crua",Raw cassava,approved,
-131,"Mandioca, farofa, temperada","Farofa (toasted cassava flour), seasoned",approved,Farofa is retained as the Brazilian toasted cassava-flour preparation.
-132,"Mandioca, frita",Fried cassava,approved,
-133,"Manjericão, cru",Raw basil,approved,
-134,"Maxixe, cru","West Indian gherkin, raw",approved,Maxixe is retained as the Brazilian food name and identified with its common English species name.
-135,"Mostarda, folha, crua",Raw mustard greens,approved,
-136,"Nhoque, batata, cozido",Cooked potato gnocchi,approved,
-137,"Nabo, cru",Raw turnip,approved,
-138,"Palmito, juçara, em conserva","Juçara hearts of palm, canned",approved,Juçara is retained to distinguish the Euterpe edulis palm species; the exact preserving liquid and packaging are not specified.
-139,"Palmito, pupunha, em conserva",Preserved peach palm hearts,approved,Pupunha is translated as peach palm; the exact preserving liquid and packaging are not specified.
-140,"Pão, de queijo, assado","Pão de queijo (Brazilian cheese bread), baked",approved,Pão de queijo is retained because it identifies the Brazilian cassava-starch cheese bread.
-141,"Pão, de queijo, cru","Pão de queijo (Brazilian cheese bread), raw",approved,Pão de queijo is retained; raw indicates the shaped dough has not been baked.
-142,"Pepino, cru",Raw cucumber,approved,
-143,"Pimentão, amarelo, cru",Raw yellow bell pepper,approved,
-144,"Pimentão, verde, cru",Raw green bell pepper,approved,
-145,"Pimentão, vermelho, cru",Raw red bell pepper,approved,
-146,"Polvilho, doce",Sweet cassava starch,approved,Sweet denotes the non-fermented cassava starch type and does not indicate added sugar.
-147,"Quiabo, cru",Raw okra,approved,
-148,"Rabanete, cru",Raw radish,approved,
-149,"Repolho, branco, cru",Raw white cabbage,approved,
-150,"Repolho, roxo, cru",Raw red cabbage,approved,
-151,"Repolho, roxo, refogado",Sautéed red cabbage,approved,
-152,"Rúcula, crua",Raw arugula,approved,
-153,"Salsa, crua",Raw parsley,approved,
-154,"Seleta de legumes, enlatada",Canned mixed vegetables,approved,
-155,"Serralha, crua","Sow thistle greens, raw",approved,Serralha is retained because the common name can cover edible Sonchus species; sow thistle is a broad identification.
-156,"Taioba, crua","Taioba greens, raw",approved,"The source does not identify whether taioba refers to the leaves or rhizome, so the Brazilian food name is retained without adding a plant part."
-157,"Tomate, com semente, cru",Raw tomato with seeds,approved,
-158,"Tomate, extrato",Tomato paste,approved,
-159,"Tomate, molho industrializado",Commercial tomato sauce,approved,
-160,"Tomate, purê",Tomato purée,approved,
-161,"Tomate, salada","Slicing tomato, raw",approved,
-162,"Vagem, crua",Raw green beans,approved,
-163,"Abacate, cru",Raw avocado,approved,
-164,"Abacaxi, cru",Raw pineapple,approved,
-165,"Abacaxi, polpa, congelada",Frozen pineapple pulp,approved,
-166,"Abiu, cru",Raw abiu,approved,
-167,"Açaí, polpa, com xarope de guaraná e glucose",Açaí pulp with guaraná and glucose syrup,approved,
-168,"Açaí, polpa, congelada",Frozen açaí pulp,approved,
-169,"Acerola, crua",Raw acerola,approved,
-170,"Acerola, polpa, congelada",Frozen acerola pulp,approved,
-171,"Ameixa, calda, enlatada",Canned plums in syrup,approved,
-172,"Ameixa, crua",Raw plum,approved,
-173,"Ameixa, em calda, enlatada, drenada","Canned plums in syrup, drained",approved,
-174,"Atemóia, crua",Raw atemoya,approved,
-175,"Banana, da terra, crua",Raw plantain,approved,
-176,"Banana, doce em barra","Sweet banana paste, bar",approved,"Doce em barra is interpreted as a firm molded banana confection, such as bananada, rather than a cereal-style snack bar."
-177,"Banana, figo, crua","Fig banana, raw",approved,"Figo is retained as the banana subgroup name; the source does not identify a specific Figo cultivar such as Figo Cinza, Figo Vermelho, or Figo Anão."
-178,"Banana, maçã, crua",Raw apple banana,approved,
-179,"Banana, nanica, crua","Cavendish banana, raw",approved,Nanica is retained as the Brazilian cultivar name because the source does not support narrowing it to a specific English-labeled Cavendish clone.
-180,"Banana, ouro, crua","Baby banana, raw",approved,Ouro is retained as the Brazilian cultivar name because a consistent English market name is not established.
-181,"Banana, pacova, crua","Pacova plantain, raw",approved,Pacova is retained exactly as the source cultivar name and is not normalized to the distinct name Pacovan.
-182,"Banana, prata, crua","Silver banana, raw",approved,Prata is retained as the Brazilian banana type name; translating it literally as silver banana would be misleading.
-183,"Cacau, cru",Raw cacao,approved,"The source does not state whether cacao refers to pulp, beans, or another edible portion."
-184,"Cajá-Manga, cru","Ambarella (golden apple), raw",approved,"Cajá-manga is retained and identified as ambarella; other English common names, including June plum, are also used for Spondias dulcis."
-185,"Cajá, polpa, congelada","Yellow mombin pulp, frozen",approved,Cajá is retained to distinguish the Brazilian Spondias fruit; yellow mombin and hog plum are competing English common names.
-186,"Caju, cru",Raw cashew apple,approved,
-187,"Caju, polpa, congelada",Frozen cashew apple pulp,approved,
-188,"Caju, suco concentrado, envasado",Bottled concentrated cashew apple juice,approved,
-189,"Caqui, chocolate, cru","Chocolate persimmon, raw",approved,"Chocolate denotes the Brazilian variable-flesh persimmon type, not chocolate flavor; the source does not identify a specific cultivar such as Giombo."
-190,"Carambola, crua",Raw star fruit,approved,
-191,"Ciriguela, crua","Spanish plum, raw",approved,Ciriguela is retained because English common names for Spondias purpurea vary; Spanish plum is supplied as a short identification.
-192,"Cupuaçu, cru","Cupuaçu, raw",approved,
-193,"Cupuaçu, polpa, congelada","Cupuaçu pulp, frozen",approved,
-194,"Figo, cru",Raw fig,approved,
-195,"Figo, enlatado, em calda",Canned figs in syrup,approved,
-196,"Fruta-pão, crua",Raw breadfruit,approved,
-197,"Goiaba, branca, com casca, crua",Raw white guava with skin,approved,
-198,"Goiaba, doce em pasta",Guava paste,approved,
-199,"Goiaba, doce, cascão",Guava paste with peel,approved,Cascão is rendered as chunky to distinguish the rustic guava paste style that retains fruit pieces or peel; confirm the preferred market-facing label.
-200,"Goiaba, vermelha, com casca, crua",Raw red guava with skin,approved,
-201,"Graviola, crua",Raw soursop,approved,
-202,"Graviola, polpa, congelada",Frozen soursop pulp,approved,
-203,"Jabuticaba, crua","Jabuticaba, raw",approved,Jabuticaba is retained as the Brazilian fruit name; Brazilian grape is avoided because it could imply that the food is a true grape.
-204,"Jaca, crua",Raw jackfruit,approved,
-205,"Jambo, cru","Rose apple, raw",approved,"Jambo can refer to more than one edible Syzygium species in Brazil, and the source does not specify the species or fruit type."
-206,"Jamelão, cru","Java plum, raw",approved,"Jamelão is retained because English common names vary, including Java plum, jambolan, and black plum."
-207,"Kiwi, cru",Raw kiwifruit,approved,
-208,"Laranja, baía, crua","Navel orange, raw",approved,
-209,"Laranja, baía, suco","Navel orange juice",approved,
-210,"Laranja, da terra, crua",Raw sour orange,approved,Laranja-da-terra is rendered as sour orange; bitter orange and Seville orange are alternate English names for this citrus.
-211,"Laranja, da terra, suco",Sour orange juice,approved,Laranja-da-terra is rendered as sour orange; bitter orange and Seville orange are alternate English names for this citrus.
-212,"Laranja, lima, crua","Lima sweet orange, raw",approved,"Lima is retained as a Brazilian low-acid sweet-orange type and is not translated as sweet lime, which can denote a different citrus."
-213,"Laranja, lima, suco","Lima sweet orange juice",approved,"Lima is retained as a Brazilian low-acid sweet-orange type and is not translated as sweet lime, which can denote a different citrus."
-214,"Laranja, pêra, crua","Pera orange, raw",approved,Pêra is retained as the Brazilian sweet-orange cultivar name and does not mean that the fruit is a pear.
-215,"Laranja, pêra, suco","Pera orange juice",approved,Pêra is retained as the Brazilian sweet-orange cultivar name and does not mean that the fruit is a pear.
-216,"Laranja, valência, crua",Raw Valencia orange,approved,
-217,"Laranja, valência, suco",Valencia orange juice,approved,
-218,"Limão, cravo, suco",Rangpur lime juice,approved,Limão cravo is rendered as Rangpur lime; English common names vary because this citrus is a mandarin-citron hybrid rather than a conventional lime.
-219,"Limão, galego, suco",Key lime juice,approved,
-220,"Limão, tahiti, cru",Raw Persian lime,approved,
-221,"Maçã, Argentina, com casca, crua","Red Delicious apple, with skin, raw",approved,Argentina is interpreted as a geographic origin or market label; the source does not identify the apple cultivar.
-222,"Maçã, Fuji, com casca, crua",Raw Fuji apple with skin,approved,
-223,"Macaúba, crua","Macauba palm fruit, raw",approved,Macaúba is retained as the Brazilian fruit name because English common names for Acrocomia palms vary.
-224,"Mamão, doce em calda, drenado","Papaya preserve in syrup, drained",approved,
-225,"Mamão, Formosa, cru","Formosa papaya, raw",approved,Formosa is retained as the Brazilian papaya market type to preserve the distinction from the Papaia entry.
-226,"Mamão, Papaia, cru","Solo papaya, raw",approved,
-227,"Mamão verde, doce em calda, drenado","Green papaya preserve in syrup, drained",approved,
-228,"Manga, Haden, crua",Raw Haden mango,approved,
-229,"Manga, Palmer, crua",Raw Palmer mango,approved,
-230,"Manga, polpa, congelada",Frozen mango pulp,approved,
-231,"Manga, Tommy Atkins, crua",Raw Tommy Atkins mango,approved,
-232,"Maracujá, cru",Raw passion fruit,approved,
-233,"Maracujá, polpa, congelada",Frozen passion fruit pulp,approved,
-234,"Maracujá, suco concentrado, envasado",Packaged concentrated passion fruit juice,approved,
-235,"Melancia, crua",Raw watermelon,approved,
-236,"Melão, cru",Raw melon,approved,
-237,"Mexerica, Murcote, crua",Raw Murcott tangor,approved,The source spelling Murcote is normalized to the standard cultivar spelling Murcott in English; tangor preserves its mandarin-orange hybrid identity.
-238,"Mexerica, Rio, crua","Rio mandarin, raw",approved,Rio is retained as the Brazilian mexerica cultivar name because no broadly used English market label was identified.
-239,"Morango, cru",Raw strawberry,approved,
-240,"Nêspera, crua",Raw loquat,approved,
-241,"Pequi, cru","Pequi fruit, raw",approved,Pequi is retained as the Brazilian fruit name because no single translated English market name is established.
-242,"Pêra, Park, crua",Raw Park pear,approved,
-243,"Pêra, Williams, crua",Raw Williams pear,approved,
-244,"Pêssego, Aurora, cru",Raw Aurora peach,approved,
-245,"Pêssego, enlatado, em calda",Canned peaches in syrup,approved,
-246,"Pinha, crua",Raw sugar apple,approved,
-247,"Pitanga, crua","Surinam cherry, raw",approved,Pitanga is retained as the Brazilian fruit name and identified with its common English name.
-248,"Pitanga, polpa, congelada","Surinam cherry pulp, frozen",approved,Pitanga is retained as the Brazilian fruit name and identified with its common English name.
-249,"Romã, crua",Raw pomegranate,approved,
-250,"Tamarindo, cru",Raw tamarind,approved,
-251,"Tangerina, Poncã, crua",Raw Ponkan tangerine,approved,Poncã is rendered with the standard international cultivar spelling Ponkan; confirm whether the Portuguese cultivar spelling should be retained.
-252,"Tangerina, Poncã, suco",Ponkan tangerine juice,approved,Poncã is rendered with the standard international cultivar spelling Ponkan; confirm whether the Portuguese cultivar spelling should be retained.
-253,"Tucumã, cru","Tucuma fruit, raw",approved,Tucumã is retained because the name can refer to Astrocaryum aculeatum or Astrocaryum vulgare depending on region; the source does not identify the species.
-254,"Umbu, cru","Umbu fruit, raw",approved,
-255,"Umbu, polpa, congelada","Umbu pulp, frozen",approved,
-256,"Uva, Itália, crua",Raw Italia grapes,approved,
-257,"Uva, Rubi, crua",Raw Rubi grapes,approved,
-258,"Uva, suco concentrado, envasado",Bottled concentrated grape juice,approved,
-259,"Azeite, de dendê","Red palm oil",approved,Dendê is retained as the Brazilian food name and identified broadly as palm oil; the source does not state the palm species or refining method.
-260,"Azeite, de oliva, extra virgem",Extra-virgin olive oil,approved,
-261,"Manteiga, com sal",Salted butter,approved,
-262,"Manteiga, sem sal",Unsalted butter,approved,
-263,"Margarina, com óleo hidrogenado, com sal (65% de lipídeos)",Salted margarine with hydrogenated oil (65% fat),approved,
-264,"Margarina, com óleo hidrogenado, sem sal (80% de lipídeos)",Unsalted margarine with hydrogenated oil (80% fat),approved,
-265,"Margarina, com óleo interesterificado, com sal (65%de lipídeos)",Salted margarine with interesterified oil (65% fat),approved,
-266,"Margarina, com óleo interesterificado, sem sal (65% de lipídeos)",Unsalted margarine with interesterified oil (65% fat),approved,
-267,"Óleo, de babaçu",Babassu oil,approved,
-268,"Óleo, de canola",Canola oil,approved,
-269,"Óleo, de girassol",Sunflower oil,approved,
-270,"Óleo, de milho",Corn oil,approved,
-271,"Óleo, de pequi",Pequi oil,approved,
-272,"Óleo, de soja",Soybean oil,approved,
-273,"Abadejo, filé, congelado, assado","Pollock fillet, baked",approved,Abadejo is retained because the Brazilian market name can refer to different fish species; the source provides no scientific species.
-274,"Abadejo, filé, congelado,cozido","Pollock fillet, cooked",approved,Abadejo is retained because the Brazilian market name can refer to different fish species; the source provides no scientific species.
-275,"Abadejo, filé, congelado, cru","Pollock fillet, raw",approved,Abadejo is retained because the Brazilian market name can refer to different fish species; the source provides no scientific species.
-276,"Abadejo, filé, congelado, grelhado","Pollock fillet, grilled",approved,Abadejo is retained because the Brazilian market name can refer to different fish species; the source provides no scientific species.
-277,"Atum, conserva em óleo",Tuna packed in oil,approved,
-278,"Atum, fresco, cru",Raw fresh tuna,approved,
-279,"Bacalhau, salgado, cru",Raw salted cod,approved,"Bacalhau is rendered as cod, but the source does not identify the cod species."
-280,"Bacalhau, salgado, refogado",Sautéed salted cod,approved,"Bacalhau is rendered as cod, but the source does not identify the cod species."
-281,"Cação, posta, com farinha de trigo, frita",Fried shark steak coated with wheat flour,approved,Cação is a generic Brazilian commercial term for shark meat; the source does not identify the shark species.
-282,"Cação, posta, cozida",Cooked shark steak,approved,Cação is a generic Brazilian commercial term for shark meat; the source does not identify the shark species.
-283,"Cação, posta, crua",Raw shark steak,approved,Cação is a generic Brazilian commercial term for shark meat; the source does not identify the shark species.
-284,"Camarão, Rio Grande, grande, cozido",Cooked large Rio Grande shrimp,approved,Rio Grande is retained as the source's regional or trade designation; the shrimp species is not identified.
-285,"Camarão, Rio Grande, grande, cru",Raw large Rio Grande shrimp,approved,Rio Grande is retained as the source's regional or trade designation; the shrimp species is not identified.
-286,"Camarão, Sete Barbas, sem cabeça, com casca, frito","Fried headless, shell-on Sete Barbas shrimp",approved,"Sete Barbas is retained as the Brazilian common name; it commonly denotes the seabob shrimp Xiphopenaeus kroyeri, but the source gives no scientific species."
-287,"Caranguejo, cozido",Cooked crab,approved,
-288,"Corimba, cru","Streaked prochilod (Curimbata), raw",approved,Corimba is retained as a regional fish name because the source does not identify the species; it should not be collapsed into the separate corimbatá entries.
-289,"Corimbatá, assado","Streaked prochilod (Curimbata), baked",approved,Corimbatá is retained as a regional fish name because the source does not identify the species; it should not be collapsed into the separate corimba entry.
-290,"Corimbatá, cozido","Streaked prochilod (Curimbata), cooked",approved,Corimbatá is retained as a regional fish name because the source does not identify the species; it should not be collapsed into the separate corimba entry.
-291,"Corvina de água doce, crua","Freshwater croaker, raw",approved,Corvina is retained because the common name spans multiple sciaenid fishes; the freshwater qualifier is preserved without assigning a species.
-292,"Corvina do mar, crua","Whitemouth croaker, raw",approved,Corvina is retained because the common name spans multiple sciaenid fishes; the marine qualifier is preserved without assigning a species.
-293,"Corvina grande, assada","Croaker, baked",approved,Corvina is retained because the common name spans multiple fishes; the source specifies size but not habitat or species.
-294,"Corvina grande, cozida","Croaker, cooked",approved,Corvina is retained because the common name spans multiple fishes; the source specifies size but not habitat or species.
-295,"Dourada de água doce, fresca","Gilded catfish (Dourada), raw",approved,Dourada is retained as the Brazilian fish name; the source specifies freshwater origin but does not provide a scientific species.
-296,"Lambari, congelado, cru","Lambari (freshwater tetra), raw",approved,Lambari is retained because the common name covers multiple small freshwater fish species; the source does not identify one.
-297,"Lambari, congelado, frito","Lambari (freshwater tetra), fried",approved,Lambari is retained because the common name covers multiple small freshwater fish species; the source does not identify one.
-298,"Lambari, fresco, cru","Lambari (freshwater tetra), raw",approved,Lambari is retained because the common name covers multiple small freshwater fish species; the source does not identify one.
-299,"Manjuba, com farinha de trigo, frita","River anchovy, flour-coated, fried",approved,Manjuba is retained because the Brazilian common name can refer to multiple Anchoviella species; the source does not identify one.
-300,"Manjuba, frita","River anchovy, fried",approved,Manjuba is retained because the Brazilian common name can refer to multiple Anchoviella species; the source does not identify one.
-301,"Merluza, filé, assado",Baked hake fillet,approved,
-302,"Merluza, filé, cru",Raw hake fillet,approved,
-303,"Merluza, filé, frito",Fried hake fillet,approved,
-304,"Pescada, branca, crua","Smooth weakfish, raw",approved,Pescada-branca is retained because the Brazilian market name can cover Plagioscion species and regional variants; the source gives no scientific species.
-305,"Pescada, branca, frita","Smooth weakfish, fried",approved,Pescada-branca is retained because the Brazilian market name can cover Plagioscion species and regional variants; the source gives no scientific species.
-306,"Pescada, filé, com farinha de trigo, frito","Weakfish fillet, flour-coated, fried",approved,Pescada is retained as a generic Brazilian fish name because the source does not identify the species.
-307,"Pescada, filé, cru","Weakfish fillet, raw",approved,Pescada is retained as a generic Brazilian fish name because the source does not identify the species.
-308,"Pescada, filé, frito","Weakfish fillet, fried",approved,Pescada is retained as a generic Brazilian fish name because the source does not identify the species.
-309,"Pescada, filé, molho escabeche","Weakfish fillet, in escabeche sauce",approved,"The source identifies an escabeche sauce but does not specify its composition, so the fish is not labeled as pickled."
-310,"Pescadinha, crua","King weakfish, raw",approved,Pescadinha is retained because this Brazilian trade name can refer to multiple sciaenid species; the source does not identify one.
-311,"Pintado, assado","Spotted sorubim (Pintado), baked",approved,Pintado is retained because it can denote different Pseudoplatystoma species or hybrids; the parenthetical identification is intentionally broad.
-312,"Pintado, cru","Spotted sorubim (Pintado), raw",approved,Pintado is retained because it can denote different Pseudoplatystoma species or hybrids; the parenthetical identification is intentionally broad.
-313,"Pintado, grelhado","Spotted sorubim (Pintado), grilled",approved,Pintado is retained because it can denote different Pseudoplatystoma species or hybrids; the parenthetical identification is intentionally broad.
-314,"Porquinho, cru","Grey triggerfish, raw",approved,Porquinho is retained because the Brazilian common name can denote more than one Balistes species; triggerfish is a broad identification.
-315,"Salmão, filé, com pele, fresco,  grelhado",Grilled fresh skin-on salmon fillet,approved,
-316,"Salmão, sem pele, fresco, cru",Raw fresh skinless salmon,approved,
-317,"Salmão, sem pele, fresco, grelhado",Grilled fresh skinless salmon,approved,
-318,"Sardinha, assada",Baked sardines,approved,
-319,"Sardinha, conserva em óleo",Sardines packed in oil,approved,
-320,"Sardinha, frita",Fried sardines,approved,
-321,"Sardinha, inteira, crua",Raw whole sardines,approved,
-322,"Tucunaré, filé, congelado, cru","Peacock bass fillet, raw",approved,Tucunaré is retained because the name covers multiple Cichla species; peacock bass is a broad English identification.
-323,Apresuntado,"Pork luncheon meat (Apresuntado)",approved,Apresuntado is retained because it is a regulated Brazilian cooked product made from pork cuts or trimmings and is not exactly equivalent to standard ham.
-324,"Caldo de carne, tablete",Beef bouillon cube,approved,
-325,"Caldo de galinha, tablete",Chicken bouillon cube,approved,
-326,"Carne, bovina, acém, moído, cozido",Cooked ground beef chuck,approved,
-327,"Carne, bovina, acém, moído, cru",Raw ground beef chuck,approved,
-328,"Carne, bovina, acém, sem gordura, cozido",Cooked lean beef chuck,approved,
-329,"Carne, bovina, acém, sem gordura, cru",Raw lean beef chuck,approved,
-330,"Carne, bovina, almôndegas, cruas",Raw beef meatballs,approved,
-331,"Carne, bovina, almôndegas, fritas",Fried beef meatballs,approved,
-332,"Carne, bovina, bucho, cozido",Cooked beef tripe,approved,
-333,"Carne, bovina, bucho, cru",Raw beef tripe,approved,
-334,"Carne, bovina, capa de contra-filé, com gordura, crua","Beef ribeye cap, with fat, raw",approved,Capa de contra-filé is rendered with the Brazilian export term cube roll cap; exact trimming and correspondence with US retail cuts can vary.
-335,"Carne, bovina, capa de contra-filé, com gordura, grelhada","Beef ribeye cap, with fat, grilled",approved,Capa de contra-filé is rendered with the Brazilian export term cube roll cap; exact trimming and correspondence with US retail cuts can vary.
-336,"Carne, bovina, capa de contra-filé, sem gordura, crua","Beef ribeye cap, lean, raw",approved,Capa de contra-filé is rendered with the Brazilian export term cube roll cap; exact trimming and correspondence with US retail cuts can vary.
-337,"Carne, bovina, capa de contra-filé, sem gordura, grelhada","Beef ribeye cap, lean, grilled",approved,Capa de contra-filé is rendered with the Brazilian export term cube roll cap; exact trimming and correspondence with US retail cuts can vary.
-338,"Carne, bovina, charque, cozido","Charque (cured dried beef), cooked",approved,Charque is retained as the regulated Brazilian salted and dried beef product.
-339,"Carne, bovina, charque, cru","Charque (cured dried beef), raw",approved,Charque is retained as the regulated Brazilian salted and dried beef product; raw means the finished product has not been cooked.
-340,"Carne, bovina, contra-filé, à milanesa",Breaded fried beef striploin (Milanese-style),approved,À milanesa is interpreted as breaded and fried; the source does not specify the portion shape or fat trimming.
-341,"Carne, bovina, contra-filé de costela, cru","Beef ribeye steak, raw",approved,"Contra-filé de costela is rendered as cube roll, the Brazilian export term for the rib section; exact US retail equivalents and trimming can vary."
-342,"Carne, bovina, contra-filé de costela, grelhado","Beef ribeye steak, grilled",approved,"Contra-filé de costela is rendered as cube roll, the Brazilian export term for the rib section; exact US retail equivalents and trimming can vary."
-343,"Carne, bovina, contra-filé, com gordura, cru",Raw beef striploin with fat,approved,
-344,"Carne, bovina, contra-filé, com gordura, grelhado",Grilled beef striploin with fat,approved,
-345,"Carne, bovina, contra-filé, sem gordura, cru",Raw lean beef striploin,approved,
-346,"Carne, bovina, contra-filé, sem gordura, grelhado",Grilled lean beef striploin,approved,
-347,"Carne, bovina, costela, assada",Roasted beef ribs,approved,
-348,"Carne, bovina, costela, crua",Raw beef ribs,approved,
-349,"Carne, bovina, coxão duro, sem gordura, cozido","Beef bottom round, lean, cooked",approved,Coxão duro is retained because international systems divide the beef round differently; outside-round is a broad anatomical identification rather than an exact US retail equivalent.
-350,"Carne, bovina, coxão duro, sem gordura, cru","Beef bottom round, lean, raw",approved,Coxão duro is retained because international systems divide the beef round differently; outside-round is a broad anatomical identification rather than an exact US retail equivalent.
-351,"Carne, bovina, coxão mole, sem gordura, cozido","Beef top round, lean, cooked",approved,Coxão mole is retained because beef-round cutting systems differ; topside follows Brazilian export nomenclature and is not asserted as an exact US retail equivalent.
-352,"Carne, bovina, coxão mole, sem gordura, cru","Beef top round, lean, raw",approved,Coxão mole is retained because beef-round cutting systems differ; topside follows Brazilian export nomenclature and is not asserted as an exact US retail equivalent.
-353,"Carne, bovina, cupim, assado","Cupim (beef hump), roasted",approved,"Cupim is retained as the Brazilian cut name; hump cut is a broad anatomical and export identification, not a conventional US retail-cut equivalent."
-354,"Carne, bovina, cupim, cru","Cupim (beef hump), raw",approved,"Cupim is retained as the Brazilian cut name; hump cut is a broad anatomical and export identification, not a conventional US retail-cut equivalent."
-355,"Carne, bovina, fígado, cru",Raw beef liver,approved,
-356,"Carne, bovina, fígado, grelhado",Grilled beef liver,approved,
-357,"Carne, bovina, filé mingnon, sem gordura, cru",Raw lean filet mignon,approved,
-358,"Carne, bovina, filé mingnon, sem gordura, grelhado",Grilled lean filet mignon,approved,
-359,"Carne, bovina, flanco, sem gordura, cozido",Cooked lean flank steak,approved,
-360,"Carne, bovina, flanco, sem gordura, cru",Raw lean flank steak,approved,
-361,"Carne, bovina, fraldinha, com gordura, cozida","Fraldinha (beef flap steak), with fat, cooked",approved,Fraldinha is retained because cutting and trimming vary; thin skirt follows Brazilian export nomenclature and is a broad commercial identification.
-362,"Carne, bovina, fraldinha, com gordura, crua","Fraldinha (beef flap steak), with fat, raw",approved,Fraldinha is retained because cutting and trimming vary; thin skirt follows Brazilian export nomenclature and is a broad commercial identification.
-363,"Carne, bovina, lagarto, cozido","Beef eye of round, cooked",approved,Lagarto is retained because round-cut systems and trimming vary; eye of round is the Brazilian export identification rather than an exact US retail specification.
-364,"Carne, bovina, lagarto, cru","Beef eye of round, raw",approved,Lagarto is retained because round-cut systems and trimming vary; eye of round is the Brazilian export identification rather than an exact US retail specification.
-365,"Carne, bovina, língua, cozida",Cooked beef tongue,approved,
-366,"Carne, bovina, língua, crua",Raw beef tongue,approved,
-367,"Carne, bovina, maminha, crua","Maminha (beef tri-tip), raw",approved,Maminha is retained because rump cutting and trimming differ internationally; rump tail is the broad Brazilian export identification.
-368,"Carne, bovina, maminha, grelhada","Maminha (beef tri-tip), grilled",approved,Maminha is retained because rump cutting and trimming differ internationally; rump tail is the broad Brazilian export identification.
-369,"Carne, bovina, miolo de alcatra, sem gordura, cru","Beef top sirloin, lean, raw",approved,"Miolo de alcatra is retained because rump and sirloin systems differ; rump heart is a broad Brazilian export identification, not an exact US retail equivalent."
-370,"Carne, bovina, miolo de alcatra, sem gordura, grelhado","Beef top sirloin, lean, grilled",approved,"Miolo de alcatra is retained because rump and sirloin systems differ; rump heart is a broad Brazilian export identification, not an exact US retail equivalent."
-371,"Carne, bovina, músculo, sem gordura, cozido",Cooked lean beef shank,approved,"Músculo is rendered as beef shank, but the source does not identify whether it is from the forequarter or hindquarter."
-372,"Carne, bovina, músculo, sem gordura, cru",Raw lean beef shank,approved,"Músculo is rendered as beef shank, but the source does not identify whether it is from the forequarter or hindquarter."
-373,"Carne, bovina, paleta, com gordura, crua",Raw beef shoulder with fat,approved,
-374,"Carne, bovina, paleta, sem gordura, cozida",Cooked lean beef shoulder,approved,
-375,"Carne, bovina, paleta, sem gordura, crua",Raw lean beef shoulder,approved,
-376,"Carne, bovina, patinho, sem gordura, cru","Beef sirloin tip, lean, raw",approved,Patinho is retained because beef-round cutting systems differ; knuckle follows Brazilian export nomenclature and is not meant as a literal joint description.
-377,"Carne, bovina, patinho, sem gordura, grelhado","Beef sirloin tip, lean, grilled",approved,Patinho is retained because beef-round cutting systems differ; knuckle follows Brazilian export nomenclature and is not meant as a literal joint description.
-378,"Carne, bovina, peito, sem gordura, cozido",Cooked lean beef brisket,approved,
-379,"Carne, bovina, peito, sem gordura, cru",Raw lean beef brisket,approved,
-380,"Carne, bovina, picanha, com gordura, crua","Picanha (beef rump cap), with fat, raw",approved,"Picanha is retained as the Brazilian cut name; rump cap is a broad export identification, and exact trimming can vary."
-381,"Carne, bovina, picanha, com gordura, grelhada","Picanha (beef rump cap), with fat, grilled",approved,"Picanha is retained as the Brazilian cut name; rump cap is a broad export identification, and exact trimming can vary."
-382,"Carne, bovina, picanha, sem gordura, crua","Picanha (beef rump cap), lean, raw",approved,"Picanha is retained as the Brazilian cut name; rump cap is a broad export identification, and exact trimming can vary."
-383,"Carne, bovina, picanha, sem gordura, grelhada","Picanha (beef rump cap), lean, grilled",approved,"Picanha is retained as the Brazilian cut name; rump cap is a broad export identification, and exact trimming can vary."
-384,"Carne, bovina, seca, cozida","Carne-seca (cured dried beef), cooked",approved,Carne-seca is retained to preserve the source's distinction from its separate charque entries; the source does not state the exact salting and drying specification.
-385,"Carne, bovina, seca, crua","Carne-seca (cured dried beef), raw",approved,Carne-seca is retained to preserve the source's distinction from its separate charque entries; raw means the finished salted and dried product has not been cooked.
-386,"Coxinha de frango, frita","Chicken coxinha (croquette), fried",approved,Coxinha is retained as the Brazilian snack name; chicken is identified as the filling without inferring a more specific composition.
-387,"Croquete, de carne, cru",Uncooked meat croquette,approved,The source does not identify the type or composition of the meat; uncooked describes the prepared croquette before frying.
-388,"Croquete, de carne, frito",Fried meat croquette,approved,The source does not identify the type or composition of the meat.
-389,"Empada de frango, pré-cozida, assada","Chicken empada (savory tartlet), parbaked, baked",approved,"Empada is retained as the Brazilian pastry; precooked denotes the product's initial state before the separate baking step, but the source does not specify which components were precooked."
-390,"Empada, de frango, pré-cozida","Chicken empada (savory tartlet), parbaked",approved,Empada is retained as the Brazilian pastry; the source labels the product precooked but does not specify which components were precooked or its intended final preparation.
-391,"Frango, asa, com pele, crua",Raw skin-on chicken wing,approved,
-392,"Frango, caipira, inteiro, com pele, cozido","Free-range chicken, whole, with skin, cooked",approved,"Caipira is retained because the source does not define a breed or production standard, so no exact free-range or heritage-breed claim is added."
-393,"Frango, caipira, inteiro, sem pele, cozido","Free-range chicken, whole, skinless, cooked",approved,"Caipira is retained because the source does not define a breed or production standard, so no exact free-range or heritage-breed claim is added."
-394,"Frango, coração, cru",Raw chicken heart,approved,
-395,"Frango, coração, grelhado",Grilled chicken heart,approved,
-396,"Frango, coxa, com pele, assada",Roasted skin-on chicken drumstick,approved,
-397,"Frango, coxa, com pele, crua",Raw skin-on chicken drumstick,approved,
-398,"Frango, coxa, sem pele, cozida",Cooked skinless chicken drumstick,approved,
-399,"Frango, coxa, sem pele, crua",Raw skinless chicken drumstick,approved,
-400,"Frango, fígado, cru",Raw chicken liver,approved,
-401,"Frango, filé, à milanesa",Breaded fried chicken fillet (Milanese-style),approved,"À milanesa is interpreted as breaded and fried, consistent with the source's preparation procedure and the terminology approved in the preceding batch."
-402,"Frango, inteiro, com pele, cru",Raw whole skin-on chicken,approved,
-403,"Frango, inteiro, sem pele, assado",Roasted whole skinless chicken,approved,
-404,"Frango, inteiro, sem pele, cozido",Cooked whole skinless chicken,approved,
-405,"Frango, inteiro, sem pele, cru",Raw whole skinless chicken,approved,
-406,"Frango, peito, com pele, assado",Roasted skin-on chicken breast,approved,
-407,"Frango, peito, com pele, cru",Raw skin-on chicken breast,approved,
-408,"Frango, peito, sem pele, cozido",Cooked skinless chicken breast,approved,
-409,"Frango, peito, sem pele, cru",Raw skinless chicken breast,approved,
-410,"Frango, peito, sem pele, grelhado",Grilled skinless chicken breast,approved,
-411,"Frango, sobrecoxa, com pele, assada",Roasted skin-on chicken thigh,approved,
-412,"Frango, sobrecoxa, com pele, crua",Raw skin-on chicken thigh,approved,
-413,"Frango, sobrecoxa, sem pele, assada",Roasted skinless chicken thigh,approved,
-414,"Frango, sobrecoxa, sem pele, crua",Raw skinless chicken thigh,approved,
-415,"Hambúrguer, bovino, cru",Raw beef hamburger patty,approved,
-416,"Hambúrguer, bovino, frito",Fried beef hamburger patty,approved,
-417,"Hambúrguer, bovino, grelhado",Grilled beef hamburger patty,approved,
-418,"Lingüiça, frango, crua",Raw chicken sausage,approved,
-419,"Lingüiça, frango, frita",Fried chicken sausage,approved,
-420,"Lingüiça, frango, grelhada",Grilled chicken sausage,approved,
-421,"Lingüiça, porco, crua",Raw pork sausage,approved,
-422,"Lingüiça, porco, frita",Fried pork sausage,approved,
-423,"Lingüiça, porco, grelhada",Grilled pork sausage,approved,
-424,Mortadela,"Mortadella",approved,"Mortadela is retained because the source does not specify its meat composition or standard, and an exact equivalence to Italian mortadella or US bologna is not supported."
-425,"Peru, congelado, assado",Roasted frozen turkey,approved,
-426,"Peru, congelado, cru",Raw frozen turkey,approved,
-427,"Porco, bisteca, crua",Raw pork chop,approved,
-428,"Porco, bisteca, frita",Fried pork chop,approved,
-429,"Porco, bisteca, grelhada",Grilled pork chop,approved,
-430,"Porco, costela, assada",Roasted pork ribs,approved,
-431,"Porco, costela, crua",Raw pork ribs,approved,
-432,"Porco, lombo, assado",Roasted pork loin,approved,
-433,"Porco, lombo, cru",Raw pork loin,approved,
-434,"Porco, orelha, salgada, crua",Raw salted pork ear,approved,"Raw means the salted pork ear has not been cooked; the source does not state that it is cured, dried, or smoked."
-435,"Porco, pernil, assado",Roasted pork leg,approved,
-436,"Porco, pernil, cru",Raw pork leg,approved,
-437,"Porco, rabo, salgado, cru",Raw salted pork tail,approved,"Raw means the salted pork tail has not been cooked; the source does not state that it is cured, dried, or smoked."
-438,"Presunto, com capa de gordura",Ham with fat cap,approved,
-439,"Presunto, sem capa de gordura",Ham without fat cap,approved,
-440,"Quibe, assado",Baked kibbeh,approved,
-441,"Quibe, cru",Raw kibbeh,approved,
-442,"Quibe, frito",Fried kibbeh,approved,
-443,Salame,Salami,approved,
-444,"Toucinho, cru","Pork fatback (with skin), raw",approved,"Toucinho is retained because it denotes the pig's adipose layer with skin; the source does not state that it is salted, cured, or smoked."
-445,"Toucinho, frito","Pork fatback (with skin), fried",approved,"Toucinho is retained because it denotes the pig's adipose layer with skin; the source does not state that it is salted, cured, or smoked."
-446,"Bebida láctea, pêssego",Peach-flavored dairy beverage,approved,"The source does not state whether peach denotes fruit, pulp, juice, or flavoring, so the wording does not infer a specific formulation."
-447,Creme de Leite,Table cream,approved,"Creme de leite is rendered as table cream, but the source does not specify a standardized fat class, processing method, or presentation."
-448,"Iogurte, natural",Plain yogurt,approved,
-449,"Iogurte, natural, desnatado",Nonfat plain yogurt,approved,
-451,"Iogurte, sabor morango",Strawberry-flavored yogurt,approved,
-452,"Iogurte, sabor pêssego",Peach-flavored yogurt,approved,
-453,"Leite, condensado",Condensed milk,approved,
-454,"Leite, de cabra",Goat milk,approved,
-455,"Leite, de vaca, achocolatado",Chocolate-flavored cow's milk,approved,
-456,"Leite, de vaca, desnatado, pó",Nonfat cow's milk powder,approved,
-457,"Leite, de vaca, desnatado, UHT",UHT nonfat cow's milk,approved,
-458,"Leite, de vaca, integral",Whole cow's milk,approved,
-459,"Leite, de vaca, integral, pó",Whole cow's milk powder,approved,
-460,"Leite, fermentado",Fermented milk,approved,
-461,"Queijo, minas, frescal","Minas frescal cheese (fresh white cheese)",approved,Minas frescal is retained because it is a Brazilian cheese variety; fresh cheese is a broad identification rather than an exact foreign equivalent.
-462,"Queijo, minas, meia cura","Minas meia-cura cheese (semi-cured cheese)",approved,Meia-cura is retained because aging classifications vary; semi-cured conveys the intermediate maturation without asserting a fixed aging period.
-463,"Queijo, mozarela",Mozzarella cheese,approved,
-464,"Queijo, parmesão",Parmesan cheese,approved,
-465,"Queijo, pasteurizado",Pasteurized processed cheese,approved,The Brazilian product designation queijo pasteurizado refers to cheese obtained by melting or processing cheese; it is not rendered as merely cheese made from pasteurized milk.
-466,"Queijo, petit suisse, morango",Strawberry petit suisse cheese,approved,
-467,"Queijo, prato","Prato cheese (mild semi-soft cheese)",approved,Prato is retained as the Brazilian cheese variety; semi-soft is a broad style identification and not an equivalence to a foreign cheese.
-468,"Queijo, requeijão, cremoso","Requeijão (creamy cheese spread)",approved,Requeijão is retained because it is a Brazilian cheese product; cheese spread is a broad functional description rather than a complete formulation.
-469,"Queijo, ricota",Ricotta cheese,approved,
-470,"Bebida isotônica, sabores variados","Sports drink, assorted flavors",approved,
-471,"Café, infusão 10%",10% coffee infusion,approved,
-473,"Cana, caldo de",Sugarcane juice,approved,
-474,"Cerveja, pilsen 2",Pilsner beer,approved,"The trailing 2 in the source is a footnote marker for the stated alcohol content, not a beer variety or product number, so it is not carried into the food name."
-475,"Chá, erva-doce, infusão 5%","Anise tea, brewed (5% infusion)",approved,"Erva-doce is rendered as fennel, its usual Brazilian culinary meaning, but the common name can also be used for anise and the source gives no botanical species."
-476,"Chá, mate, infusão 5%",5% mate infusion,approved,
-477,"Chá, preto, infusão 5%",5% black tea infusion,approved,
-478,"Coco, água de",Coconut water,approved,
-479,"Refrigerante, tipo água tônica",Tonic water,approved,
-480,"Refrigerante, tipo cola",Cola soft drink,approved,
-481,"Refrigerante, tipo guaraná",Guaraná soft drink,approved,
-482,"Refrigerante, tipo laranja",Orange soft drink,approved,
-483,"Refrigerante, tipo limão",Lemon soft drink,approved,Limão is rendered as lemon because the source does not identify a specific citrus or a combined lemon-lime flavor profile.
-484,"Omelete, de queijo",Cheese omelet,approved,
-485,"Ovo, de codorna, inteiro, cru",Raw whole quail egg,approved,
-486,"Ovo, de galinha, clara, cozida/10minutos","Chicken egg white, cooked for 10 minutes",approved,
-487,"Ovo, de galinha, gema, cozida/10minutos","Chicken egg yolk, cooked for 10 minutes",approved,
-488,"Ovo, de galinha, inteiro, cozido/10minutos","Whole chicken egg, cooked for 10 minutes",approved,
-489,"Ovo, de galinha, inteiro, cru",Raw whole chicken egg,approved,
-490,"Ovo, de galinha, inteiro, frito",Fried whole chicken egg,approved,
-491,"Achocolatado, pó",Chocolate drink powder,approved,Achocolatado is rendered as a chocolate drink powder rather than cocoa powder; the source does not specify whether milk solids are included.
-492,"Açúcar, cristal","Granulated sugar",approved,Crystal sugar is retained as the Brazilian commercial grade; its crystal size does not map reliably to a single US granulated-sugar grade.
-493,"Açúcar, mascavo",Brown sugar,approved,
-494,"Açúcar, refinado",Refined sugar,approved,
-495,"Chocolate, ao leite",Milk chocolate,approved,
-496,"Chocolate, ao leite, com castanha do Pará",Milk chocolate with Brazil nuts,approved,
-497,"Chocolate, ao leite, dietético","Milk chocolate, sugar-free",approved,Dietetic preserves the source category without inferring that the product is necessarily sugar-free or identifying the replaced nutrient or sweetener.
-498,"Chocolate, meio amargo",Semisweet chocolate,approved,
-499,Cocada branca,"White cocada (coconut candy)",approved,Cocada is retained as the Brazilian confection; white distinguishes the source variety without inferring a specific sugar or cooking process.
-500,"Doce, de abóbora, cremoso",Creamy pumpkin preserve,approved,
-501,"Doce, de leite, cremoso",Creamy dulce de leche,approved,
-502,"Geléia, mocotó, natural","Geleia de mocotó (sweet cow foot gelatin), plain",approved,Mocotó jelly is retained as the Brazilian product; plain represents the base variant without an additional flavor specified and does not imply that the processed confection is natural or unprocessed.
-503,Glicose de milho,Corn glucose syrup,approved,
-504,Maria mole,"Maria-mole (soft gelatin candy)",approved,Maria-mole is retained because marshmallow-like describes its style and texture but does not assert an exact equivalence or formulation.
-505,"Maria mole, coco queimado","Maria-mole (soft gelatin candy), toasted coconut",approved,Coco queimado is rendered as toasted coconut in the confectionery sense; Maria-mole remains retained because it has no exact English equivalent.
-506,Marmelada,Quince paste,approved,
-507,"Mel, de abelha",Honey,approved,
-508,Melado,"Sugarcane molasses",approved,Melado is retained because production stage and concentration can differ from products labeled molasses; the short identification reflects its usual sugarcane basis.
-509,Quindim,"Quindim (baked coconut egg custard)",approved,Quindim is retained as the Brazilian confection; coconut custard is a broad identification rather than a complete recipe.
-510,Rapadura,"Rapadura (unrefined cane sugar block)",approved,Rapadura is retained because it identifies the molded Brazilian cane-sugar product rather than generic brown sugar.
-511,"Café, pó, torrado",Roasted ground coffee,approved,
-512,"Capuccino, pó","Cappuccino mix, powder",approved,
-513,"Fermento em pó, químico",Baking powder,approved,
-514,"Fermento, biológico, levedura, tablete",Compressed baker's yeast cake,approved,
-515,"Gelatina, sabores variados, pó",Assorted-flavor gelatin powder,approved,
-518,Shoyu,Soy sauce,approved,
-519,Tempero a base de sal,Salt-based seasoning,approved,
-520,"Azeitona, preta, conserva",Preserved black olives,approved,
-521,"Azeitona, verde, conserva",Preserved green olives,approved,
-522,"Chantilly, spray, com gordura vegetal",Aerosol whipped topping with vegetable fat,approved,Chantilly is rendered as whipped topping rather than whipped cream because the source explicitly identifies vegetable fat; the dairy content is not specified.
-523,"Leite, de coco",Coconut milk,approved,
-524,"Maionese, tradicional com ovos",Traditional mayonnaise with eggs,approved,
-525,Acarajé,"Acarajé (fried black-eyed pea fritter)",approved,Acarajé is retained as the Brazilian dish; black-eyed pea fritter is a short identification and does not imply a complete recipe.
-526,Arroz carreteiro,"Arroz carreteiro (rice with cured beef)",approved,Arroz carreteiro is retained because the source does not identify the beef product or preparation variant.
-527,"Baião de dois, arroz e feijão-de-corda","Baião de dois (rice and cowpeas)",approved,Baião de dois is retained as the Brazilian dish; cowpea conveys feijão-de-corda without narrowing it to a cultivar or adding other customary ingredients.
-528,Barreado,"Barreado (slow-cooked beef stew)",approved,Barreado is retained as the Paraná dish; the broad description does not infer a particular beef cut or the full recipe.
-529,"Bife à cavalo, com contra filé","Bife a cavalo (striploin steak topped with egg)",approved,"Bife à cavalo is retained as the preparation name; striploin follows the terminology approved for contra-filé, while the description avoids inferring how the egg was cooked."
-530,Bolinho de arroz,"Bolinho de arroz (fried rice fritter)",approved,Bolinho de arroz is retained as the Brazilian preparation; rice fritter identifies the dish broadly without asserting its exact binding ingredients.
-531,Camarão à baiana,"Camarão à baiana (Bahian shrimp stew)",approved,The Brazilian preparation name is retained because the source does not state which ingredients or regional recipe variant define the Bahian style.
-532,"Charuto, de repolho",Stuffed cabbage roll,approved,
-533,"Cuscuz, de milho, cozido com sal",Cooked corn couscous with salt,approved,
-534,"Cuscuz, paulista","Cuscuz paulista (savory cornmeal cake)",approved,Cuscuz paulista is retained to distinguish the molded Brazilian dish from other couscous preparations; the source does not specify its filling.
-535,"Cuxá, molho","Cuxá sauce (roselle and shrimp sauce)",approved,"Cuxá is retained because recipes and terminology vary; roselle leaf identifies the preparation broadly, while the source does not state the seeds or other ingredients used."
-536,Dobradinha,"Dobradinha (white bean and tripe stew)",approved,Dobradinha is retained as the Brazilian dish; tripe stew is a broad identification and the source does not specify beans or other customary ingredients.
-537,Estrogonofe de carne,Beef stroganoff,approved,
-538,Estrogonofe de frango,Chicken stroganoff,approved,
-539,Feijão tropeiro mineiro,"Feijão tropeiro (beans with cassava flour and bacon)",approved,"Feijão tropeiro is retained as the dish name; mineiro is rendered geographically, and no customary meat, flour, or garnish is added because the source does not list them."
-540,Feijoada,"Feijoada (black bean and pork stew)",approved,Feijoada is retained as the Brazilian dish; black bean stew is a broad identification and does not assert which meats are present.
-541,"Frango, com açafrão","Chicken stew with turmeric (açafrão)",approved,Açafrão is retained because Brazilian usage can mean turmeric or true saffron; the source does not identify the spice botanically.
-542,"Macarrão, molho bolognesa",Pasta with Bolognese sauce,approved,
-543,Maniçoba,"Maniçoba (cassava-leaf and pork stew)",approved,Maniçoba is retained as the regional dish; cassava-leaf stew identifies it broadly without inferring the meats or other ingredients used.
-544,Quibebe,"Quibebe (mashed winter squash stew)",approved,Quibebe is retained because regional recipes vary; squash stew is a broad identification and the source does not identify the squash variety or other ingredients.
-545,"Salada, de legumes, com maionese",Vegetable salad with mayonnaise,approved,
-546,"Salada, de legumes, cozida no vapor",Steamed vegetable salad,approved,
-547,"Salpicão, de frango","Chicken salpicão (creamy chicken salad)",approved,Salpicão is retained because Brazilian formulations vary; cold salad identifies the preparation without adding customary ingredients absent from the source.
-548,Sarapatel,"Sarapatel (pork offal and blood stew)",approved,"Sarapatel is retained because the source does not identify the animal species, organs, blood, or regional recipe variant."
-549,Tabule,Tabbouleh,approved,
-550,Tacacá,"Tacacá (Amazonian tucupi broth with jambu)",approved,"Tacacá is retained as the Amazonian dish; tucupi soup is a broad identification and no shrimp, jambu, or tapioca is asserted from the name alone."
-551,"Tapioca, com manteiga","Tapioca crepe, with butter",approved,Tapioca here denotes the Brazilian griddle preparation rather than tapioca starch or pearls; the source does not specify its shape or thickness.
-552,"Tucupi, com pimenta-de-cheiro","Tucupi broth, with aromatic chili",approved,Tucupi and pimenta-de-cheiro are retained as Brazilian product names; the source does not identify the cassava process or Capsicum species.
-553,Vaca atolada,"Vaca atolada (beef rib and cassava stew)",approved,Vaca atolada is retained as the Brazilian dish; the description does not infer a specific beef cut even though ribs are customary in many versions.
-554,Vatapá,"Vatapá (creamy shrimp and bread paste)",approved,"Vatapá is retained because regional formulations vary substantially; savory paste identifies its general form without asserting seafood, bread, nuts, or palm oil."
-555,Virado à paulista,"Virado à paulista (mashed beans with cassava flour)",approved,Virado à paulista is retained as the regional dish; the source does not identify its customary accompaniments or the flour used with the beans.
-556,Yakisoba,Yakisoba,approved,
-557,"Amendoim, grão, cru",Raw peanut kernels,approved,
-558,"Amendoim, torrado, salgado",Roasted salted peanuts,approved,
-559,"Ervilha, em vagem",Peas in pods,approved,
-560,"Ervilha, enlatada, drenada","Canned peas, drained",approved,
-561,"Feijão, carioca, cozido","Carioca beans (pinto beans), cooked",approved,Carioca is retained as a Brazilian commercial common-bean type and does not indicate geographic origin.
-562,"Feijão, carioca, cru","Carioca beans (pinto beans), raw",approved,Carioca is retained as a Brazilian commercial common-bean type and does not indicate geographic origin.
-563,"Feijão, fradinho, cozido",Cooked black-eyed peas,approved,"Fradinho is rendered as black-eyed peas, the cowpea type usually denoted by this Brazilian name; the source does not identify a cultivar."
-564,"Feijão, fradinho, cru",Raw black-eyed peas,approved,"Fradinho is rendered as black-eyed peas, the cowpea type usually denoted by this Brazilian name; the source does not identify a cultivar."
-565,"Feijão, jalo, cozido","Jalo beans (yellow kidney beans), cooked",approved,Jalo is retained as a Brazilian commercial common-bean type because no stable English market equivalent is established.
-566,"Feijão, jalo, cru","Jalo beans (yellow kidney beans), raw",approved,Jalo is retained as a Brazilian commercial common-bean type because no stable English market equivalent is established.
-567,"Feijão, preto, cozido",Cooked black beans,approved,
-568,"Feijão, preto, cru",Raw black beans,approved,
-569,"Feijão, rajado, cozido","Cranberry beans (Rajado), cooked",approved,Rajado is retained as a Brazilian commercial common-bean type rather than translated literally as striped; cultivars within the group can differ.
-570,"Feijão, rajado, cru","Cranberry beans (Rajado), raw",approved,Rajado is retained as a Brazilian commercial common-bean type rather than translated literally as striped; cultivars within the group can differ.
-571,"Feijão, rosinha, cozido","Pink beans, cooked",approved,Rosinha is retained as a Brazilian commercial common-bean type rather than reduced to a literal color description.
-572,"Feijão, rosinha, cru","Pink beans, raw",approved,Rosinha is retained as a Brazilian commercial common-bean type rather than reduced to a literal color description.
-573,"Feijão, roxo, cozido","Purple beans (dark kidney beans), cooked",approved,Roxo is retained as a Brazilian commercial common-bean type because purple beans could imply a broader or different market category.
-574,"Feijão, roxo, cru","Purple beans (dark kidney beans), raw",approved,Roxo is retained as a Brazilian commercial common-bean type because purple beans could imply a broader or different market category.
-575,"Grão-de-bico, cru",Raw chickpeas,approved,
-576,"Guandu, cru",Raw pigeon peas,approved,
-577,"Lentilha, cozida",Cooked lentils,approved,
-578,"Lentilha, crua",Raw lentils,approved,
-579,"Paçoca, amendoim","Paçoca (crumbly peanut candy)",approved,Peanut paçoca is retained to distinguish this sweet confection from savory regional dishes also called paçoca; the source does not specify its sweetener.
-580,"Pé-de-moleque, amendoim","Pé-de-moleque (peanut brittle)",approved,"Pé-de-moleque is retained because Brazilian versions vary in texture and sweetener; peanut brittle is a broad identification, not an exact equivalence."
-581,"Soja, farinha",Soy flour,approved,
-582,"Soja, extrato solúvel, natural, fluido","Soy milk, plain",approved,"Brazilian extrato solúvel de soja is commonly used for a soy beverage; soy extract is retained because the source does not specify fortification, sweetening beyond natural, or a milk-style standard."
-583,"Soja, extrato solúvel, pó","Soy milk, powder",approved,"Soy extract preserves the source product category; the name does not establish whether it is a complete soy beverage powder, concentrate, or another instant formulation."
-584,"Soja, queijo (tofu)",Tofu,approved,
-585,"Tremoço, cru",Raw lupin beans,approved,
-586,"Tremoço, em conserva",Preserved lupin beans,approved,
-587,"Amêndoa, torrada, salgada",Roasted salted almonds,approved,
-588,"Castanha-de-caju, torrada, salgada",Roasted salted cashews,approved,
-589,"Castanha-do-Brasil, crua",Raw Brazil nuts,approved,
-590,"Coco, cru",Raw coconut,approved,
-592,"Farinha, de mesocarpo de babaçu, crua",Raw babassu mesocarp flour,approved,Raw is retained from the source to distinguish the flour's processing state; it does not imply a safety assessment or identify a drying method.
-593,"Gergelim, semente",Sesame seeds,approved,
-594,"Linhaça, semente",Flaxseeds,approved,
-595,"Pinhão, cozido","Parana pine nuts (Pinhão), cooked",approved,Pinhão is retained to avoid confusion with the smaller seeds sold as pine nuts; the source does not state the Araucaria species.
-596,"Pupunha, cozida",Cooked peach palm fruit,approved,
-597,"Noz, crua",Raw walnuts,approved,
+source_code,name_pt,name_en,review_status
+1,"Arroz, integral, cozido","Brown rice, cooked",approved
+2,"Arroz, integral, cru","Brown rice, raw",approved
+3,"Arroz, tipo 1, cozido","Long-grain white rice (Type 1), cooked",approved
+4,"Arroz, tipo 1, cru","Long-grain white rice (Type 1), raw",approved
+5,"Arroz, tipo 2, cozido","Long-grain white rice (Type 2), cooked",approved
+6,"Arroz, tipo 2, cru","Long-grain white rice (Type 2), raw",approved
+7,"Aveia, flocos, crua","Rolled oats, raw",approved
+8,"Biscoito, doce, maisena",Sweet cornstarch cookies,approved
+9,"Biscoito, doce, recheado com chocolate",Chocolate-filled sweet cookies,approved
+10,"Biscoito, doce, recheado com morango",Strawberry-filled sweet cookies,approved
+11,"Biscoito, doce, wafer, recheado de chocolate",Chocolate-filled wafer cookies,approved
+12,"Biscoito, doce, wafer, recheado de morango",Strawberry-filled wafer cookies,approved
+13,"Biscoito, salgado, cream cracker",Savory cream crackers,approved
+14,"Bolo, mistura para",Cake mix,approved
+15,"Bolo, pronto, aipim","Cassava cake, ready-to-eat",approved
+16,"Bolo, pronto, chocolate","Chocolate cake, ready-to-eat",approved
+17,"Bolo, pronto, coco","Coconut cake, ready-to-eat",approved
+18,"Bolo, pronto, milho","Bolo de milho (Brazilian sweet corn cake), ready-to-eat",approved
+19,"Canjica, branca, crua","Canjica branca (white hominy corn), dry",approved
+20,"Canjica, com leite integral","Canjica (sweet hominy porridge), with whole milk",approved
+21,"Cereais, milho, flocos, com sal","Corn flakes, salted",approved
+22,"Cereais, milho, flocos, sem sal","Corn flakes, unsalted",approved
+23,"Cereais, mingau, milho, infantil",Corn-based infant cereal,approved
+24,"Cereais, mistura para vitamina, trigo, cevada e aveia","Cereal mix for smoothie (wheat, barley, oat), dry",approved
+25,"Cereal matinal, milho",Corn breakfast cereal,approved
+26,"Cereal matinal, milho, açúcar","Corn breakfast cereal, sweetened",approved
+27,"Creme de arroz, pó","Cream of rice cereal, powder",approved
+28,"Creme de milho, pó","Cream of corn cereal, dry",approved
+29,"Curau, milho verde","Curau (sweet corn pudding)",approved
+30,"Curau, milho verde, mistura para","Curau mix (sweet corn pudding), powder",approved
+31,"Farinha, de arroz, enriquecida","Rice flour, enriched",approved
+32,"Farinha, de centeio, integral",Whole-grain rye flour,approved
+33,"Farinha, de milho, amarela","Yellow flaked corn flour, dry",approved
+34,"Farinha, de rosca",Breadcrumbs,approved
+35,"Farinha, de trigo",Wheat flour,approved
+36,"Farinha, láctea, de cereais","Wheat and milk cereal, powder",approved
+37,"Lasanha, massa fresca, cozida","Lasagna sheets, fresh, cooked",approved
+38,"Lasanha, massa fresca, crua","Lasagna sheets, fresh, raw",approved
+39,"Macarrão, instantâneo",Instant noodles,approved
+40,"Macarrão, trigo, cru","Wheat pasta, raw",approved
+41,"Macarrão, trigo, cru, com ovos","Wheat pasta with eggs, raw",approved
+42,"Milho, amido, cru","Cornstarch, raw",approved
+43,"Milho, fubá, cru","Cornmeal, raw",approved
+44,"Milho, verde, cru","Corn, fresh, raw",approved
+45,"Milho, verde, enlatado, drenado","Sweet corn, canned, drained",approved
+46,"Mingau tradicional, pó","Instant porridge mix, original, powder",approved
+47,"Pamonha, barra para cozimento, pré-cozida","Pamonha (sweet corn paste), pre-cooked bar",approved
+48,"Pão, aveia, forma",Oat sandwich bread,approved
+49,"Pão, de soja",Soy bread,approved
+50,"Pão, glúten, forma",Sandwich bread with added gluten,approved
+51,"Pão, milho, forma",Corn sandwich bread,approved
+52,"Pão, trigo, forma, integral",Whole-wheat sandwich bread,approved
+53,"Pão, trigo, francês",Brazilian French roll,approved
+54,"Pão, trigo, sovado","Pão sovado (dense kneaded bread)",approved
+55,"Pastel, de carne, cru","Beef pastel (Brazilian pastry), raw",approved
+56,"Pastel, de carne, frito","Beef pastel (Brazilian pastry), fried",approved
+57,"Pastel, de queijo, cru","Cheese pastel (Brazilian pastry), raw",approved
+58,"Pastel, de queijo, frito","Cheese pastel (Brazilian pastry), fried",approved
+59,"Pastel, massa, crua","Pastel dough, raw",approved
+60,"Pastel, massa, frita","Pastel dough, fried",approved
+61,"Pipoca, com óleo de soja, sem sal","Popcorn with soybean oil, unsalted",approved
+62,"Polenta, pré-cozida","Polenta, precooked",approved
+63,"Torrada, pão francês",Toast made from Brazilian French rolls,approved
+64,"Abóbora, cabotian, cozida","Kabocha squash, cooked",approved
+65,"Abóbora, cabotian, crua","Kabocha squash, raw",approved
+66,"Abóbora, menina brasileira, crua","Menina Brasileira squash, raw",approved
+67,"Abóbora, moranga, crua","Moranga squash, raw",approved
+68,"Abóbora, moranga, refogada","Moranga squash, sautéed",approved
+69,"Abóbora, pescoço, crua","Butternut squash, raw",approved
+70,"Abobrinha, italiana, cozida","Italian zucchini, cooked",approved
+71,"Abobrinha, italiana, crua","Italian zucchini, raw",approved
+72,"Abobrinha, italiana, refogada","Italian zucchini, sautéed",approved
+73,"Abobrinha, paulista, crua","Paulista summer squash, raw",approved
+74,"Acelga, crua",Napa cabbage,approved
+75,"Agrião, cru","Watercress, raw",approved
+76,"Aipo, cru","Celery, raw",approved
+77,"Alface, americana, crua","Iceberg lettuce, raw",approved
+78,"Alface, crespa, crua","Curly-leaf lettuce, raw",approved
+79,"Alface, lisa, crua","Butterhead lettuce, raw",approved
+80,"Alface, roxa, crua","Red leaf lettuce, raw",approved
+81,"Alfavaca, crua","Clove basil, raw",approved
+82,"Alho, cru","Garlic, raw",approved
+83,"Alho-poró, cru","Leek, raw",approved
+84,"Almeirão, cru","Chicory greens, raw",approved
+85,"Almeirão, refogado","Chicory greens, sautéed",approved
+86,"Batata, baroa, cozida","Arracacha, cooked",approved
+87,"Batata, baroa, crua","Arracacha, raw",approved
+88,"Batata, doce, cozida","Sweet potato, cooked",approved
+89,"Batata, doce, crua","Sweet potato, raw",approved
+90,"Batata, frita, tipo chips, industrializada",Commercial potato chips,approved
+91,"Batata, inglesa, cozida","Potato, cooked",approved
+92,"Batata, inglesa, crua","Potato, raw",approved
+93,"Batata, inglesa, frita","Potato, fried",approved
+94,"Batata, inglesa, sauté","Potato, sautéed",approved
+95,"Berinjela, cozida","Eggplant, cooked",approved
+96,"Berinjela, crua","Eggplant, raw",approved
+97,"Beterraba, cozida","Beet, cooked",approved
+98,"Beterraba, crua","Beet, raw",approved
+99,"Biscoito, polvilho doce",Sweet cassava starch biscuits,approved
+100,"Brócolis, cozido","Broccoli, cooked",approved
+101,"Brócolis, cru","Broccoli, raw",approved
+102,"Cará, cozido","Yam, cooked",approved
+103,"Cará, cru","Yam, raw",approved
+104,"Caruru, cru","Amaranth greens, raw",approved
+105,"Catalonha, crua","Catalogna chicory, raw",approved
+106,"Catalonha, refogada","Catalogna chicory, sautéed",approved
+107,"Cebola, crua","Onion, raw",approved
+108,"Cebolinha, crua","Scallions, raw",approved
+109,"Cenoura, cozida","Carrot, cooked",approved
+110,"Cenoura, crua","Carrot, raw",approved
+111,"Chicória, crua","Endive, raw",approved
+112,"Chuchu, cozido","Chayote, cooked",approved
+113,"Chuchu, cru","Chayote, raw",approved
+114,"Coentro, folhas desidratadas","Cilantro leaves, dried",approved
+115,"Couve, manteiga, crua","Collard greens, raw",approved
+116,"Couve, manteiga, refogada","Collard greens, sautéed",approved
+117,"Couve-flor, crua","Cauliflower, raw",approved
+118,"Couve-flor, cozida","Cauliflower, cooked",approved
+119,"Espinafre, Nova Zelândia, cru","New Zealand spinach, raw",approved
+120,"Espinafre, Nova Zelândia, refogado","New Zealand spinach, sautéed",approved
+121,"Farinha, de mandioca, crua","Cassava flour, untoasted",approved
+122,"Farinha, de mandioca, torrada","Cassava flour, toasted",approved
+123,"Farinha, de puba","Fermented cassava flour, dry",approved
+124,"Fécula, de mandioca",Cassava starch,approved
+125,"Feijão, broto, cru","Bean sprouts, raw",approved
+126,"Inhame, cru","Taro, raw",approved
+127,"Jiló, cru","Gilo (scarlet eggplant), raw",approved
+128,"Jurubeba, crua","Jurubeba berries, raw",approved
+129,"Mandioca, cozida","Cassava, cooked",approved
+130,"Mandioca, crua","Cassava, raw",approved
+131,"Mandioca, farofa, temperada","Farofa (toasted cassava flour), seasoned",approved
+132,"Mandioca, frita","Cassava, fried",approved
+133,"Manjericão, cru","Basil, raw",approved
+134,"Maxixe, cru","West Indian gherkin, raw",approved
+135,"Mostarda, folha, crua","Mustard greens, raw",approved
+136,"Nhoque, batata, cozido","Potato gnocchi, cooked",approved
+137,"Nabo, cru","Turnip, raw",approved
+138,"Palmito, juçara, em conserva","Juçara hearts of palm, canned",approved
+139,"Palmito, pupunha, em conserva","Peach palm hearts, preserved",approved
+140,"Pão, de queijo, assado","Pão de queijo (Brazilian cheese bread), baked",approved
+141,"Pão, de queijo, cru","Pão de queijo (Brazilian cheese bread), raw",approved
+142,"Pepino, cru","Cucumber, raw",approved
+143,"Pimentão, amarelo, cru","Yellow bell pepper, raw",approved
+144,"Pimentão, verde, cru","Green bell pepper, raw",approved
+145,"Pimentão, vermelho, cru","Red bell pepper, raw",approved
+146,"Polvilho, doce",Sweet cassava starch,approved
+147,"Quiabo, cru","Okra, raw",approved
+148,"Rabanete, cru","Radish, raw",approved
+149,"Repolho, branco, cru","White cabbage, raw",approved
+150,"Repolho, roxo, cru","Red cabbage, raw",approved
+151,"Repolho, roxo, refogado","Red cabbage, sautéed",approved
+152,"Rúcula, crua","Arugula, raw",approved
+153,"Salsa, crua","Parsley, raw",approved
+154,"Seleta de legumes, enlatada","Mixed vegetables, canned",approved
+155,"Serralha, crua","Sow thistle greens, raw",approved
+156,"Taioba, crua","Taioba greens, raw",approved
+157,"Tomate, com semente, cru","Tomato, with seeds, raw",approved
+158,"Tomate, extrato",Tomato paste,approved
+159,"Tomate, molho industrializado",Commercial tomato sauce,approved
+160,"Tomate, purê",Tomato purée,approved
+161,"Tomate, salada","Slicing tomato, raw",approved
+162,"Vagem, crua","Green beans, raw",approved
+163,"Abacate, cru","Avocado, raw",approved
+164,"Abacaxi, cru","Pineapple, raw",approved
+165,"Abacaxi, polpa, congelada","Pineapple pulp, frozen",approved
+166,"Abiu, cru","Abiu, raw",approved
+167,"Açaí, polpa, com xarope de guaraná e glucose",Açaí pulp with guaraná and glucose syrup,approved
+168,"Açaí, polpa, congelada","Açaí pulp, frozen",approved
+169,"Acerola, crua","Acerola, raw",approved
+170,"Acerola, polpa, congelada","Acerola pulp, frozen",approved
+171,"Ameixa, calda, enlatada","Plums in syrup, canned",approved
+172,"Ameixa, crua","Plum, raw",approved
+173,"Ameixa, em calda, enlatada, drenada","Plums in syrup, canned, drained",approved
+174,"Atemóia, crua","Atemoya, raw",approved
+175,"Banana, da terra, crua","Plantain, raw",approved
+176,"Banana, doce em barra","Sweet banana paste, bar",approved
+177,"Banana, figo, crua","Fig banana, raw",approved
+178,"Banana, maçã, crua","Apple banana, raw",approved
+179,"Banana, nanica, crua","Cavendish banana, raw",approved
+180,"Banana, ouro, crua","Baby banana, raw",approved
+181,"Banana, pacova, crua","Pacova plantain, raw",approved
+182,"Banana, prata, crua","Silver banana, raw",approved
+183,"Cacau, cru","Cacao pulp, raw",approved
+184,"Cajá-Manga, cru","Ambarella (golden apple), raw",approved
+185,"Cajá, polpa, congelada","Yellow mombin pulp, frozen",approved
+186,"Caju, cru","Cashew apple, raw",approved
+187,"Caju, polpa, congelada","Cashew apple pulp, frozen",approved
+188,"Caju, suco concentrado, envasado","Cashew apple juice, concentrated, bottled",approved
+189,"Caqui, chocolate, cru","Chocolate persimmon, raw",approved
+190,"Carambola, crua","Star fruit, raw",approved
+191,"Ciriguela, crua","Spanish plum, raw",approved
+192,"Cupuaçu, cru","Cupuaçu, raw",approved
+193,"Cupuaçu, polpa, congelada","Cupuaçu pulp, frozen",approved
+194,"Figo, cru","Fig, raw",approved
+195,"Figo, enlatado, em calda","Figs in syrup, canned",approved
+196,"Fruta-pão, crua","Breadfruit, raw",approved
+197,"Goiaba, branca, com casca, crua","White guava, with skin, raw",approved
+198,"Goiaba, doce em pasta",Guava paste,approved
+199,"Goiaba, doce, cascão",Goiabada cascão (chunky guava paste),approved
+200,"Goiaba, vermelha, com casca, crua","Red guava, with skin, raw",approved
+201,"Graviola, crua","Soursop, raw",approved
+202,"Graviola, polpa, congelada","Soursop pulp, frozen",approved
+203,"Jabuticaba, crua","Jabuticaba, raw",approved
+204,"Jaca, crua","Jackfruit, raw",approved
+205,"Jambo, cru","Rose apple, raw",approved
+206,"Jamelão, cru","Java plum, raw",approved
+207,"Kiwi, cru","Kiwifruit, raw",approved
+208,"Laranja, baía, crua","Navel orange, raw",approved
+209,"Laranja, baía, suco","Navel orange juice",approved
+210,"Laranja, da terra, crua","Sour orange, raw",approved
+211,"Laranja, da terra, suco",Sour orange juice,approved
+212,"Laranja, lima, crua","Lima sweet orange, raw",approved
+213,"Laranja, lima, suco","Lima sweet orange juice",approved
+214,"Laranja, pêra, crua","Pera orange, raw",approved
+215,"Laranja, pêra, suco","Pera orange juice",approved
+216,"Laranja, valência, crua","Valencia orange, raw",approved
+217,"Laranja, valência, suco",Valencia orange juice,approved
+218,"Limão, cravo, suco",Rangpur lime juice,approved
+219,"Limão, galego, suco",Key lime juice,approved
+220,"Limão, tahiti, cru","Persian lime, raw",approved
+221,"Maçã, Argentina, com casca, crua","Red Delicious apple, with skin, raw",approved
+222,"Maçã, Fuji, com casca, crua","Fuji apple, with skin, raw",approved
+223,"Macaúba, crua","Macauba palm fruit, raw",approved
+224,"Mamão, doce em calda, drenado","Papaya preserve in syrup, drained",approved
+225,"Mamão, Formosa, cru","Formosa papaya, raw",approved
+226,"Mamão, Papaia, cru","Solo papaya, raw",approved
+227,"Mamão verde, doce em calda, drenado","Green papaya preserve in syrup, drained",approved
+228,"Manga, Haden, crua","Haden mango, raw",approved
+229,"Manga, Palmer, crua","Palmer mango, raw",approved
+230,"Manga, polpa, congelada","Mango pulp, frozen",approved
+231,"Manga, Tommy Atkins, crua","Tommy Atkins mango, raw",approved
+232,"Maracujá, cru","Passion fruit, raw",approved
+233,"Maracujá, polpa, congelada","Passion fruit pulp, frozen",approved
+234,"Maracujá, suco concentrado, envasado","Passion fruit juice, concentrated, packaged",approved
+235,"Melancia, crua","Watermelon, raw",approved
+236,"Melão, cru","Melon, raw",approved
+237,"Mexerica, Murcote, crua","Murcott mandarin, raw",approved
+238,"Mexerica, Rio, crua","Rio mandarin, raw",approved
+239,"Morango, cru","Strawberry, raw",approved
+240,"Nêspera, crua","Loquat, raw",approved
+241,"Pequi, cru","Pequi fruit, raw",approved
+242,"Pêra, Park, crua","Packham pear (Park), raw",approved
+243,"Pêra, Williams, crua","Williams pear (Bartlett), raw",approved
+244,"Pêssego, Aurora, cru","Aurora peach, raw",approved
+245,"Pêssego, enlatado, em calda","Peaches in syrup, canned",approved
+246,"Pinha, crua","Sugar apple, raw",approved
+247,"Pitanga, crua","Surinam cherry, raw",approved
+248,"Pitanga, polpa, congelada","Surinam cherry pulp, frozen",approved
+249,"Romã, crua","Pomegranate, raw",approved
+250,"Tamarindo, cru","Tamarind, raw",approved
+251,"Tangerina, Poncã, crua","Ponkan tangerine, raw",approved
+252,"Tangerina, Poncã, suco",Ponkan tangerine juice,approved
+253,"Tucumã, cru","Tucuma fruit, raw",approved
+254,"Umbu, cru","Umbu fruit, raw",approved
+255,"Umbu, polpa, congelada","Umbu pulp, frozen",approved
+256,"Uva, Itália, crua","Italia grapes, raw",approved
+257,"Uva, Rubi, crua","Rubi grapes, raw",approved
+258,"Uva, suco concentrado, envasado","Grape juice, concentrated, bottled",approved
+259,"Azeite, de dendê","Red palm oil",approved
+260,"Azeite, de oliva, extra virgem",Extra-virgin olive oil,approved
+261,"Manteiga, com sal","Butter, salted",approved
+262,"Manteiga, sem sal","Butter, unsalted",approved
+263,"Margarina, com óleo hidrogenado, com sal (65% de lipídeos)","Margarine with hydrogenated oil (65% fat), salted",approved
+264,"Margarina, com óleo hidrogenado, sem sal (80% de lipídeos)","Margarine with hydrogenated oil (80% fat), unsalted",approved
+265,"Margarina, com óleo interesterificado, com sal (65%de lipídeos)","Margarine with interesterified oil (65% fat), salted",approved
+266,"Margarina, com óleo interesterificado, sem sal (65% de lipídeos)","Margarine with interesterified oil (65% fat), unsalted",approved
+267,"Óleo, de babaçu",Babassu oil,approved
+268,"Óleo, de canola",Canola oil,approved
+269,"Óleo, de girassol",Sunflower oil,approved
+270,"Óleo, de milho",Corn oil,approved
+271,"Óleo, de pequi",Pequi oil,approved
+272,"Óleo, de soja",Soybean oil,approved
+273,"Abadejo, filé, congelado, assado","Pollock fillet, baked",approved
+274,"Abadejo, filé, congelado,cozido","Pollock fillet, cooked",approved
+275,"Abadejo, filé, congelado, cru","Pollock fillet, raw",approved
+276,"Abadejo, filé, congelado, grelhado","Pollock fillet, grilled",approved
+277,"Atum, conserva em óleo",Tuna packed in oil,approved
+278,"Atum, fresco, cru","Tuna, fresh, raw",approved
+279,"Bacalhau, salgado, cru","Cod, salted, raw",approved
+280,"Bacalhau, salgado, refogado","Cod, salted, sautéed",approved
+281,"Cação, posta, com farinha de trigo, frita","Shark steak, coated with wheat flour, fried",approved
+282,"Cação, posta, cozida","Shark steak, cooked",approved
+283,"Cação, posta, crua","Shark steak, raw",approved
+284,"Camarão, Rio Grande, grande, cozido","Pink shrimp, large, cooked",approved
+285,"Camarão, Rio Grande, grande, cru","Pink shrimp, large, raw",approved
+286,"Camarão, Sete Barbas, sem cabeça, com casca, frito","Atlantic seabob shrimp, headless, shell-on, fried",approved
+287,"Caranguejo, cozido","Crab, cooked",approved
+288,"Corimba, cru","Streaked prochilod (Curimbata), raw",approved
+289,"Corimbatá, assado","Streaked prochilod (Curimbata), baked",approved
+290,"Corimbatá, cozido","Streaked prochilod (Curimbata), cooked",approved
+291,"Corvina de água doce, crua","Freshwater croaker, raw",approved
+292,"Corvina do mar, crua","Whitemouth croaker, raw",approved
+293,"Corvina grande, assada","Croaker, baked",approved
+294,"Corvina grande, cozida","Croaker, cooked",approved
+295,"Dourada de água doce, fresca","Gilded catfish (Dourada), raw",approved
+296,"Lambari, congelado, cru","Lambari (freshwater tetra), raw",approved
+297,"Lambari, congelado, frito","Lambari (freshwater tetra), fried",approved
+298,"Lambari, fresco, cru","Lambari (freshwater tetra), raw",approved
+299,"Manjuba, com farinha de trigo, frita","River anchovy, flour-coated, fried",approved
+300,"Manjuba, frita","River anchovy, fried",approved
+301,"Merluza, filé, assado","Hake fillet, baked",approved
+302,"Merluza, filé, cru","Hake fillet, raw",approved
+303,"Merluza, filé, frito","Hake fillet, fried",approved
+304,"Pescada, branca, crua","Smooth weakfish, raw",approved
+305,"Pescada, branca, frita","Smooth weakfish, fried",approved
+306,"Pescada, filé, com farinha de trigo, frito","Weakfish fillet, flour-coated, fried",approved
+307,"Pescada, filé, cru","Weakfish fillet, raw",approved
+308,"Pescada, filé, frito","Weakfish fillet, fried",approved
+309,"Pescada, filé, molho escabeche","Weakfish fillet, in escabeche sauce",approved
+310,"Pescadinha, crua","King weakfish, raw",approved
+311,"Pintado, assado","Spotted sorubim (Pintado), baked",approved
+312,"Pintado, cru","Spotted sorubim (Pintado), raw",approved
+313,"Pintado, grelhado","Spotted sorubim (Pintado), grilled",approved
+314,"Porquinho, cru","Grey triggerfish, raw",approved
+315,"Salmão, filé, com pele, fresco,  grelhado","Salmon fillet, skin-on, fresh, grilled",approved
+316,"Salmão, sem pele, fresco, cru","Salmon, skinless, fresh, raw",approved
+317,"Salmão, sem pele, fresco, grelhado","Salmon, skinless, fresh, grilled",approved
+318,"Sardinha, assada","Sardines, baked",approved
+319,"Sardinha, conserva em óleo",Sardines packed in oil,approved
+320,"Sardinha, frita","Sardines, fried",approved
+321,"Sardinha, inteira, crua","Sardines, whole, raw",approved
+322,"Tucunaré, filé, congelado, cru","Peacock bass fillet, raw",approved
+323,Apresuntado,"Pork luncheon meat (Apresuntado)",approved
+324,"Caldo de carne, tablete",Beef bouillon cube,approved
+325,"Caldo de galinha, tablete",Chicken bouillon cube,approved
+326,"Carne, bovina, acém, moído, cozido","Beef chuck, ground, cooked",approved
+327,"Carne, bovina, acém, moído, cru","Beef chuck, ground, raw",approved
+328,"Carne, bovina, acém, sem gordura, cozido","Beef chuck, lean, cooked",approved
+329,"Carne, bovina, acém, sem gordura, cru","Beef chuck, lean, raw",approved
+330,"Carne, bovina, almôndegas, cruas","Beef meatballs, raw",approved
+331,"Carne, bovina, almôndegas, fritas","Beef meatballs, fried",approved
+332,"Carne, bovina, bucho, cozido","Beef tripe, cooked",approved
+333,"Carne, bovina, bucho, cru","Beef tripe, raw",approved
+334,"Carne, bovina, capa de contra-filé, com gordura, crua","Beef ribeye cap, with fat, raw",approved
+335,"Carne, bovina, capa de contra-filé, com gordura, grelhada","Beef ribeye cap, with fat, grilled",approved
+336,"Carne, bovina, capa de contra-filé, sem gordura, crua","Beef ribeye cap, lean, raw",approved
+337,"Carne, bovina, capa de contra-filé, sem gordura, grelhada","Beef ribeye cap, lean, grilled",approved
+338,"Carne, bovina, charque, cozido","Charque (cured dried beef), cooked",approved
+339,"Carne, bovina, charque, cru","Charque (cured dried beef), raw",approved
+340,"Carne, bovina, contra-filé, à milanesa","Beef striploin (Milanese-style), breaded, fried",approved
+341,"Carne, bovina, contra-filé de costela, cru","Beef ribeye steak, raw",approved
+342,"Carne, bovina, contra-filé de costela, grelhado","Beef ribeye steak, grilled",approved
+343,"Carne, bovina, contra-filé, com gordura, cru","Beef striploin, with fat, raw",approved
+344,"Carne, bovina, contra-filé, com gordura, grelhado","Beef striploin, with fat, grilled",approved
+345,"Carne, bovina, contra-filé, sem gordura, cru","Beef striploin, lean, raw",approved
+346,"Carne, bovina, contra-filé, sem gordura, grelhado","Beef striploin, lean, grilled",approved
+347,"Carne, bovina, costela, assada","Beef ribs, roasted",approved
+348,"Carne, bovina, costela, crua","Beef ribs, raw",approved
+349,"Carne, bovina, coxão duro, sem gordura, cozido","Beef bottom round, lean, cooked",approved
+350,"Carne, bovina, coxão duro, sem gordura, cru","Beef bottom round, lean, raw",approved
+351,"Carne, bovina, coxão mole, sem gordura, cozido","Beef top round, lean, cooked",approved
+352,"Carne, bovina, coxão mole, sem gordura, cru","Beef top round, lean, raw",approved
+353,"Carne, bovina, cupim, assado","Cupim (beef hump), roasted",approved
+354,"Carne, bovina, cupim, cru","Cupim (beef hump), raw",approved
+355,"Carne, bovina, fígado, cru","Beef liver, raw",approved
+356,"Carne, bovina, fígado, grelhado","Beef liver, grilled",approved
+357,"Carne, bovina, filé mingnon, sem gordura, cru","Filet mignon, lean, raw",approved
+358,"Carne, bovina, filé mingnon, sem gordura, grelhado","Filet mignon, lean, grilled",approved
+359,"Carne, bovina, flanco, sem gordura, cozido","Flank steak, lean, cooked",approved
+360,"Carne, bovina, flanco, sem gordura, cru","Flank steak, lean, raw",approved
+361,"Carne, bovina, fraldinha, com gordura, cozida","Fraldinha (beef flap steak), with fat, cooked",approved
+362,"Carne, bovina, fraldinha, com gordura, crua","Fraldinha (beef flap steak), with fat, raw",approved
+363,"Carne, bovina, lagarto, cozido","Beef eye of round, cooked",approved
+364,"Carne, bovina, lagarto, cru","Beef eye of round, raw",approved
+365,"Carne, bovina, língua, cozida","Beef tongue, cooked",approved
+366,"Carne, bovina, língua, crua","Beef tongue, raw",approved
+367,"Carne, bovina, maminha, crua","Maminha (beef tri-tip), raw",approved
+368,"Carne, bovina, maminha, grelhada","Maminha (beef tri-tip), grilled",approved
+369,"Carne, bovina, miolo de alcatra, sem gordura, cru","Beef top sirloin, lean, raw",approved
+370,"Carne, bovina, miolo de alcatra, sem gordura, grelhado","Beef top sirloin, lean, grilled",approved
+371,"Carne, bovina, músculo, sem gordura, cozido","Beef shank, lean, cooked",approved
+372,"Carne, bovina, músculo, sem gordura, cru","Beef shank, lean, raw",approved
+373,"Carne, bovina, paleta, com gordura, crua","Beef shoulder, with fat, raw",approved
+374,"Carne, bovina, paleta, sem gordura, cozida","Beef shoulder, lean, cooked",approved
+375,"Carne, bovina, paleta, sem gordura, crua","Beef shoulder, lean, raw",approved
+376,"Carne, bovina, patinho, sem gordura, cru","Beef sirloin tip, lean, raw",approved
+377,"Carne, bovina, patinho, sem gordura, grelhado","Beef sirloin tip, lean, grilled",approved
+378,"Carne, bovina, peito, sem gordura, cozido","Beef brisket, lean, cooked",approved
+379,"Carne, bovina, peito, sem gordura, cru","Beef brisket, lean, raw",approved
+380,"Carne, bovina, picanha, com gordura, crua","Picanha (beef rump cap), with fat, raw",approved
+381,"Carne, bovina, picanha, com gordura, grelhada","Picanha (beef rump cap), with fat, grilled",approved
+382,"Carne, bovina, picanha, sem gordura, crua","Picanha (beef rump cap), lean, raw",approved
+383,"Carne, bovina, picanha, sem gordura, grelhada","Picanha (beef rump cap), lean, grilled",approved
+384,"Carne, bovina, seca, cozida","Carne-seca (cured dried beef), cooked",approved
+385,"Carne, bovina, seca, crua","Carne-seca (cured dried beef), raw",approved
+386,"Coxinha de frango, frita","Chicken coxinha (croquette), fried",approved
+387,"Croquete, de carne, cru","Meat croquette, raw",approved
+388,"Croquete, de carne, frito","Meat croquette, fried",approved
+389,"Empada de frango, pré-cozida, assada","Chicken empada (savory tartlet), parbaked, baked",approved
+390,"Empada, de frango, pré-cozida","Chicken empada (savory tartlet), parbaked",approved
+391,"Frango, asa, com pele, crua","Chicken wing, skin-on, raw",approved
+392,"Frango, caipira, inteiro, com pele, cozido","Free-range chicken, whole, with skin, cooked",approved
+393,"Frango, caipira, inteiro, sem pele, cozido","Free-range chicken, whole, skinless, cooked",approved
+394,"Frango, coração, cru","Chicken heart, raw",approved
+395,"Frango, coração, grelhado","Chicken heart, grilled",approved
+396,"Frango, coxa, com pele, assada","Chicken drumstick, skin-on, roasted",approved
+397,"Frango, coxa, com pele, crua","Chicken drumstick, skin-on, raw",approved
+398,"Frango, coxa, sem pele, cozida","Chicken drumstick, skinless, cooked",approved
+399,"Frango, coxa, sem pele, crua","Chicken drumstick, skinless, raw",approved
+400,"Frango, fígado, cru","Chicken liver, raw",approved
+401,"Frango, filé, à milanesa","Chicken fillet (Milanese-style), breaded, fried",approved
+402,"Frango, inteiro, com pele, cru","Chicken, whole, skin-on, raw",approved
+403,"Frango, inteiro, sem pele, assado","Chicken, whole, skinless, roasted",approved
+404,"Frango, inteiro, sem pele, cozido","Chicken, whole, skinless, cooked",approved
+405,"Frango, inteiro, sem pele, cru","Chicken, whole, skinless, raw",approved
+406,"Frango, peito, com pele, assado","Chicken breast, skin-on, roasted",approved
+407,"Frango, peito, com pele, cru","Chicken breast, skin-on, raw",approved
+408,"Frango, peito, sem pele, cozido","Chicken breast, skinless, cooked",approved
+409,"Frango, peito, sem pele, cru","Chicken breast, skinless, raw",approved
+410,"Frango, peito, sem pele, grelhado","Chicken breast, skinless, grilled",approved
+411,"Frango, sobrecoxa, com pele, assada","Chicken thigh, skin-on, roasted",approved
+412,"Frango, sobrecoxa, com pele, crua","Chicken thigh, skin-on, raw",approved
+413,"Frango, sobrecoxa, sem pele, assada","Chicken thigh, skinless, roasted",approved
+414,"Frango, sobrecoxa, sem pele, crua","Chicken thigh, skinless, raw",approved
+415,"Hambúrguer, bovino, cru","Beef hamburger patty, raw",approved
+416,"Hambúrguer, bovino, frito","Beef hamburger patty, fried",approved
+417,"Hambúrguer, bovino, grelhado","Beef hamburger patty, grilled",approved
+418,"Lingüiça, frango, crua","Chicken sausage, raw",approved
+419,"Lingüiça, frango, frita","Chicken sausage, fried",approved
+420,"Lingüiça, frango, grelhada","Chicken sausage, grilled",approved
+421,"Lingüiça, porco, crua","Pork sausage, raw",approved
+422,"Lingüiça, porco, frita","Pork sausage, fried",approved
+423,"Lingüiça, porco, grelhada","Pork sausage, grilled",approved
+424,Mortadela,"Mortadella",approved
+425,"Peru, congelado, assado","Turkey, frozen, roasted",approved
+426,"Peru, congelado, cru","Turkey, frozen, raw",approved
+427,"Porco, bisteca, crua","Pork chop, raw",approved
+428,"Porco, bisteca, frita","Pork chop, fried",approved
+429,"Porco, bisteca, grelhada","Pork chop, grilled",approved
+430,"Porco, costela, assada","Pork ribs, roasted",approved
+431,"Porco, costela, crua","Pork ribs, raw",approved
+432,"Porco, lombo, assado","Pork loin, roasted",approved
+433,"Porco, lombo, cru","Pork loin, raw",approved
+434,"Porco, orelha, salgada, crua","Pork ear, salted, raw",approved
+435,"Porco, pernil, assado","Pork leg, roasted",approved
+436,"Porco, pernil, cru","Pork leg, raw",approved
+437,"Porco, rabo, salgado, cru","Pork tail, salted, raw",approved
+438,"Presunto, com capa de gordura",Ham with fat cap,approved
+439,"Presunto, sem capa de gordura",Ham without fat cap,approved
+440,"Quibe, assado","Kibbeh, baked",approved
+441,"Quibe, cru","Kibbeh, raw",approved
+442,"Quibe, frito","Kibbeh, fried",approved
+443,Salame,Salami,approved
+444,"Toucinho, cru","Pork fatback (with skin), raw",approved
+445,"Toucinho, frito","Pork fatback (with skin), fried",approved
+446,"Bebida láctea, pêssego",Peach-flavored dairy beverage,approved
+447,Creme de Leite,Table cream,approved
+448,"Iogurte, natural",Plain yogurt,approved
+449,"Iogurte, natural, desnatado",Nonfat plain yogurt,approved
+451,"Iogurte, sabor morango",Strawberry-flavored yogurt,approved
+452,"Iogurte, sabor pêssego",Peach-flavored yogurt,approved
+453,"Leite, condensado",Condensed milk,approved
+454,"Leite, de cabra",Goat milk,approved
+455,"Leite, de vaca, achocolatado",Chocolate-flavored cow's milk,approved
+456,"Leite, de vaca, desnatado, pó","Cow's milk, nonfat, powder",approved
+457,"Leite, de vaca, desnatado, UHT","Cow's milk, nonfat, UHT",approved
+458,"Leite, de vaca, integral",Whole cow's milk,approved
+459,"Leite, de vaca, integral, pó","Cow's milk, whole, powder",approved
+460,"Leite, fermentado",Fermented milk,approved
+461,"Queijo, minas, frescal","Minas frescal cheese (fresh white cheese)",approved
+462,"Queijo, minas, meia cura","Minas meia-cura cheese (semi-cured cheese)",approved
+463,"Queijo, mozarela",Mozzarella cheese,approved
+464,"Queijo, parmesão",Parmesan cheese,approved
+465,"Queijo, pasteurizado",Pasteurized processed cheese,approved
+466,"Queijo, petit suisse, morango",Strawberry petit suisse cheese,approved
+467,"Queijo, prato","Prato cheese (mild semi-soft cheese)",approved
+468,"Queijo, requeijão, cremoso","Requeijão (creamy cheese spread)",approved
+469,"Queijo, ricota",Ricotta cheese,approved
+470,"Bebida isotônica, sabores variados","Sports drink, assorted flavors",approved
+471,"Café, infusão 10%","Coffee, brewed (10% infusion)",approved
+473,"Cana, caldo de",Sugarcane juice,approved
+474,"Cerveja, pilsen 2",Pilsner beer,approved
+475,"Chá, erva-doce, infusão 5%","Anise tea, brewed (5% infusion)",approved
+476,"Chá, mate, infusão 5%","Yerba mate tea, brewed (5% infusion)",approved
+477,"Chá, preto, infusão 5%","Black tea, brewed (5% infusion)",approved
+478,"Coco, água de",Coconut water,approved
+479,"Refrigerante, tipo água tônica",Tonic water,approved
+480,"Refrigerante, tipo cola",Cola soft drink,approved
+481,"Refrigerante, tipo guaraná",Guaraná soft drink,approved
+482,"Refrigerante, tipo laranja",Orange soft drink,approved
+483,"Refrigerante, tipo limão",Lemon-lime soda,approved
+484,"Omelete, de queijo",Cheese omelet,approved
+485,"Ovo, de codorna, inteiro, cru","Quail egg, whole, raw",approved
+486,"Ovo, de galinha, clara, cozida/10minutos","Chicken egg white, cooked for 10 minutes",approved
+487,"Ovo, de galinha, gema, cozida/10minutos","Chicken egg yolk, cooked for 10 minutes",approved
+488,"Ovo, de galinha, inteiro, cozido/10minutos","Whole chicken egg, cooked for 10 minutes",approved
+489,"Ovo, de galinha, inteiro, cru","Chicken egg, whole, raw",approved
+490,"Ovo, de galinha, inteiro, frito","Chicken egg, whole, fried",approved
+491,"Achocolatado, pó",Chocolate drink powder,approved
+492,"Açúcar, cristal","Granulated sugar",approved
+493,"Açúcar, mascavo",Muscovado sugar (unrefined brown sugar),approved
+494,"Açúcar, refinado",Refined white sugar,approved
+495,"Chocolate, ao leite",Milk chocolate,approved
+496,"Chocolate, ao leite, com castanha do Pará",Milk chocolate with Brazil nuts,approved
+497,"Chocolate, ao leite, dietético","Milk chocolate, sugar-free",approved
+498,"Chocolate, meio amargo",Semisweet chocolate,approved
+499,Cocada branca,"White cocada (coconut candy)",approved
+500,"Doce, de abóbora, cremoso",Creamy pumpkin preserve,approved
+501,"Doce, de leite, cremoso",Creamy dulce de leche,approved
+502,"Geléia, mocotó, natural","Geleia de mocotó (sweet cow foot gelatin), plain",approved
+503,Glicose de milho,Corn glucose syrup,approved
+504,Maria mole,"Maria-mole (soft gelatin candy)",approved
+505,"Maria mole, coco queimado","Maria-mole (soft gelatin candy), toasted coconut",approved
+506,Marmelada,Quince paste,approved
+507,"Mel, de abelha",Honey,approved
+508,Melado,"Sugarcane molasses",approved
+509,Quindim,"Quindim (baked coconut egg custard)",approved
+510,Rapadura,"Rapadura (unrefined cane sugar block)",approved
+511,"Café, pó, torrado","Coffee, ground, roasted",approved
+512,"Capuccino, pó","Cappuccino mix, powder",approved
+513,"Fermento em pó, químico",Baking powder,approved
+514,"Fermento, biológico, levedura, tablete",Compressed baker's yeast cake,approved
+515,"Gelatina, sabores variados, pó","Gelatin dessert mix, powder, assorted flavors",approved
+518,Shoyu,Soy sauce,approved
+519,Tempero a base de sal,Salt-based seasoning,approved
+520,"Azeitona, preta, conserva","Black olives, preserved",approved
+521,"Azeitona, verde, conserva","Green olives, preserved",approved
+522,"Chantilly, spray, com gordura vegetal",Aerosol whipped topping with vegetable fat,approved
+523,"Leite, de coco",Coconut milk,approved
+524,"Maionese, tradicional com ovos",Traditional mayonnaise with eggs,approved
+525,Acarajé,"Acarajé (fried black-eyed pea fritter)",approved
+526,Arroz carreteiro,"Arroz carreteiro (rice with cured beef)",approved
+527,"Baião de dois, arroz e feijão-de-corda","Baião de dois (rice and cowpeas)",approved
+528,Barreado,"Barreado (slow-cooked beef stew)",approved
+529,"Bife à cavalo, com contra filé","Bife a cavalo (striploin steak topped with egg)",approved
+530,Bolinho de arroz,"Bolinho de arroz (fried rice fritter)",approved
+531,Camarão à baiana,"Camarão à baiana (Bahian shrimp stew)",approved
+532,"Charuto, de repolho",Stuffed cabbage roll,approved
+533,"Cuscuz, de milho, cozido com sal","Steamed cornmeal (Cuscuz), cooked with salt",approved
+534,"Cuscuz, paulista","Cuscuz paulista (savory cornmeal cake)",approved
+535,"Cuxá, molho","Cuxá sauce (roselle and shrimp sauce)",approved
+536,Dobradinha,"Dobradinha (white bean and tripe stew)",approved
+537,Estrogonofe de carne,Beef stroganoff,approved
+538,Estrogonofe de frango,Chicken stroganoff,approved
+539,Feijão tropeiro mineiro,"Feijão tropeiro (beans with cassava flour and bacon)",approved
+540,Feijoada,"Feijoada (black bean and pork stew)",approved
+541,"Frango, com açafrão","Chicken stew with turmeric (açafrão)",approved
+542,"Macarrão, molho bolognesa",Pasta with Bolognese sauce,approved
+543,Maniçoba,"Maniçoba (cassava-leaf and pork stew)",approved
+544,Quibebe,"Quibebe (mashed winter squash stew)",approved
+545,"Salada, de legumes, com maionese",Vegetable salad with mayonnaise,approved
+546,"Salada, de legumes, cozida no vapor","Vegetable salad, steamed",approved
+547,"Salpicão, de frango","Chicken salpicão (creamy chicken salad)",approved
+548,Sarapatel,"Sarapatel (pork offal and blood stew)",approved
+549,Tabule,Tabbouleh,approved
+550,Tacacá,"Tacacá (Amazonian tucupi broth with jambu)",approved
+551,"Tapioca, com manteiga","Tapioca crepe, with butter",approved
+552,"Tucupi, com pimenta-de-cheiro","Tucupi broth, with aromatic chili",approved
+553,Vaca atolada,"Vaca atolada (beef rib and cassava stew)",approved
+554,Vatapá,"Vatapá (creamy shrimp and bread paste)",approved
+555,Virado à paulista,"Virado à paulista (mashed beans with cassava flour)",approved
+556,Yakisoba,Yakisoba,approved
+557,"Amendoim, grão, cru","Peanut kernels, raw",approved
+558,"Amendoim, torrado, salgado","Peanuts, roasted, salted",approved
+559,"Ervilha, em vagem",Peas in pods,approved
+560,"Ervilha, enlatada, drenada","Peas, canned, drained",approved
+561,"Feijão, carioca, cozido","Carioca beans (pinto beans), cooked",approved
+562,"Feijão, carioca, cru","Carioca beans (pinto beans), raw",approved
+563,"Feijão, fradinho, cozido","Black-eyed peas, cooked",approved
+564,"Feijão, fradinho, cru","Black-eyed peas, raw",approved
+565,"Feijão, jalo, cozido","Jalo beans (yellow kidney beans), cooked",approved
+566,"Feijão, jalo, cru","Jalo beans (yellow kidney beans), raw",approved
+567,"Feijão, preto, cozido","Black beans, cooked",approved
+568,"Feijão, preto, cru","Black beans, raw",approved
+569,"Feijão, rajado, cozido","Cranberry beans (Rajado), cooked",approved
+570,"Feijão, rajado, cru","Cranberry beans (Rajado), raw",approved
+571,"Feijão, rosinha, cozido","Pink beans, cooked",approved
+572,"Feijão, rosinha, cru","Pink beans, raw",approved
+573,"Feijão, roxo, cozido","Purple beans (dark kidney beans), cooked",approved
+574,"Feijão, roxo, cru","Purple beans (dark kidney beans), raw",approved
+575,"Grão-de-bico, cru","Chickpeas, raw",approved
+576,"Guandu, cru","Pigeon peas, raw",approved
+577,"Lentilha, cozida","Lentils, cooked",approved
+578,"Lentilha, crua","Lentils, raw",approved
+579,"Paçoca, amendoim","Paçoca (crumbly peanut candy)",approved
+580,"Pé-de-moleque, amendoim","Pé-de-moleque (peanut brittle)",approved
+581,"Soja, farinha",Soy flour,approved
+582,"Soja, extrato solúvel, natural, fluido","Soy milk, plain",approved
+583,"Soja, extrato solúvel, pó","Soy milk, powder",approved
+584,"Soja, queijo (tofu)",Tofu,approved
+585,"Tremoço, cru","Lupin beans, raw",approved
+586,"Tremoço, em conserva","Lupin beans, preserved",approved
+587,"Amêndoa, torrada, salgada","Almonds, roasted, salted",approved
+588,"Castanha-de-caju, torrada, salgada","Cashews, roasted, salted",approved
+589,"Castanha-do-Brasil, crua","Brazil nuts, raw",approved
+590,"Coco, cru","Coconut, raw",approved
+592,"Farinha, de mesocarpo de babaçu, crua","Babassu mesocarp flour, raw",approved
+593,"Gergelim, semente",Sesame seeds,approved
+594,"Linhaça, semente",Flaxseeds,approved
+595,"Pinhão, cozido","Parana pine nuts (Pinhão), cooked",approved
+596,"Pupunha, cozida","Peach palm fruit, cooked",approved
+597,"Noz, crua","Walnuts, raw",approved

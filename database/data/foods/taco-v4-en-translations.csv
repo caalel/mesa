@@ -1,6 +1,6 @@
 source_code,name_en
-1,Cooked brown rice
-2,Raw brown rice
+1,"Brown rice, cooked"
+2,"Brown rice, raw"
 3,"Long-grain white rice (Type 1), cooked"
 4,"Long-grain white rice (Type 1), raw"
 5,"Long-grain white rice (Type 2), cooked"
@@ -13,10 +13,10 @@ source_code,name_en
 12,Strawberry-filled wafer cookies
 13,Savory cream crackers
 14,Cake mix
-15,Ready-to-eat cassava cake
-16,Ready-to-eat chocolate cake
-17,Ready-to-eat coconut cake
-18,Ready-to-eat corn cake
+15,"Cassava cake, ready-to-eat"
+16,"Chocolate cake, ready-to-eat"
+17,"Coconut cake, ready-to-eat"
+18,"Bolo de milho (Brazilian sweet corn cake), ready-to-eat"
 19,"Canjica branca (white hominy corn), dry"
 20,"Canjica (sweet hominy porridge), with whole milk"
 21,"Corn flakes, salted"
@@ -24,26 +24,26 @@ source_code,name_en
 23,Corn-based infant cereal
 24,"Cereal mix for smoothie (wheat, barley, oat), dry"
 25,Corn breakfast cereal
-26,Sweetened corn breakfast cereal
-27,Cream of rice cereal powder
+26,"Corn breakfast cereal, sweetened"
+27,"Cream of rice cereal, powder"
 28,"Cream of corn cereal, dry"
 29,Curau (sweet corn pudding)
 30,"Curau mix (sweet corn pudding), powder"
-31,Enriched rice flour
+31,"Rice flour, enriched"
 32,Whole-grain rye flour
 33,"Yellow flaked corn flour, dry"
 34,Breadcrumbs
 35,Wheat flour
 36,"Wheat and milk cereal, powder"
-37,Cooked fresh lasagna sheets
-38,Uncooked fresh lasagna sheets
+37,"Lasagna sheets, fresh, cooked"
+38,"Lasagna sheets, fresh, raw"
 39,Instant noodles
-40,Uncooked wheat pasta
-41,Uncooked wheat pasta with eggs
-42,Raw cornstarch
-43,Raw cornmeal
-44,Raw fresh corn
-45,"Canned sweet corn, drained"
+40,"Wheat pasta, raw"
+41,"Wheat pasta with eggs, raw"
+42,"Cornstarch, raw"
+43,"Cornmeal, raw"
+44,"Corn, fresh, raw"
+45,"Sweet corn, canned, drained"
 46,"Instant porridge mix, original, powder"
 47,"Pamonha (sweet corn paste), pre-cooked bar"
 48,Oat sandwich bread
@@ -59,212 +59,212 @@ source_code,name_en
 58,"Cheese pastel (Brazilian pastry), fried"
 59,"Pastel dough, raw"
 60,"Pastel dough, fried"
-61,Unsalted popcorn with soybean oil
-62,Precooked polenta
+61,"Popcorn with soybean oil, unsalted"
+62,"Polenta, precooked"
 63,Toast made from Brazilian French rolls
-64,Cooked kabocha squash
-65,Raw kabocha squash
+64,"Kabocha squash, cooked"
+65,"Kabocha squash, raw"
 66,"Menina Brasileira squash, raw"
 67,"Moranga squash, raw"
 68,"Moranga squash, sautéed"
 69,"Butternut squash, raw"
-70,Cooked Italian zucchini
-71,Raw Italian zucchini
-72,Sautéed Italian zucchini
+70,"Italian zucchini, cooked"
+71,"Italian zucchini, raw"
+72,"Italian zucchini, sautéed"
 73,"Paulista summer squash, raw"
-74,Raw Swiss chard
-75,Raw watercress
-76,Raw celery
-77,Raw iceberg lettuce
-78,Raw curly-leaf lettuce
-79,Raw butterhead lettuce
-80,Raw red leaf lettuce
+74,Napa cabbage
+75,"Watercress, raw"
+76,"Celery, raw"
+77,"Iceberg lettuce, raw"
+78,"Curly-leaf lettuce, raw"
+79,"Butterhead lettuce, raw"
+80,"Red leaf lettuce, raw"
 81,"Clove basil, raw"
-82,Raw garlic
-83,Raw leek
+82,"Garlic, raw"
+83,"Leek, raw"
 84,"Chicory greens, raw"
 85,"Chicory greens, sautéed"
-86,Cooked arracacha
-87,Raw arracacha
-88,Cooked sweet potato
-89,Raw sweet potato
+86,"Arracacha, cooked"
+87,"Arracacha, raw"
+88,"Sweet potato, cooked"
+89,"Sweet potato, raw"
 90,Commercial potato chips
-91,Cooked white potato
-92,Raw white potato
-93,Fried white potato
-94,Sautéed white potatoes
-95,Cooked eggplant
-96,Raw eggplant
-97,Cooked beet
-98,Raw beet
+91,"Potato, cooked"
+92,"Potato, raw"
+93,"Potato, fried"
+94,"Potato, sautéed"
+95,"Eggplant, cooked"
+96,"Eggplant, raw"
+97,"Beet, cooked"
+98,"Beet, raw"
 99,Sweet cassava starch biscuits
-100,Cooked broccoli
-101,Raw broccoli
+100,"Broccoli, cooked"
+101,"Broccoli, raw"
 102,"Yam, cooked"
 103,"Yam, raw"
 104,"Amaranth greens, raw"
 105,"Catalogna chicory, raw"
 106,"Catalogna chicory, sautéed"
-107,Raw onion
-108,Raw scallions
-109,Cooked carrot
-110,Raw carrot
-111,Raw endive
-112,Cooked chayote
-113,Raw chayote
-114,Dried cilantro leaves
+107,"Onion, raw"
+108,"Scallions, raw"
+109,"Carrot, cooked"
+110,"Carrot, raw"
+111,"Endive, raw"
+112,"Chayote, cooked"
+113,"Chayote, raw"
+114,"Cilantro leaves, dried"
 115,"Collard greens, raw"
 116,"Collard greens, sautéed"
-117,Raw cauliflower
-118,Cooked cauliflower
-119,Raw New Zealand spinach
-120,Sautéed New Zealand spinach
-121,Untoasted cassava flour
-122,Toasted cassava flour
+117,"Cauliflower, raw"
+118,"Cauliflower, cooked"
+119,"New Zealand spinach, raw"
+120,"New Zealand spinach, sautéed"
+121,"Cassava flour, untoasted"
+122,"Cassava flour, toasted"
 123,"Fermented cassava flour, dry"
 124,Cassava starch
-125,Raw bean sprouts
+125,"Bean sprouts, raw"
 126,"Taro, raw"
 127,"Gilo (scarlet eggplant), raw"
 128,"Jurubeba berries, raw"
-129,Cooked cassava
-130,Raw cassava
+129,"Cassava, cooked"
+130,"Cassava, raw"
 131,"Farofa (toasted cassava flour), seasoned"
-132,Fried cassava
-133,Raw basil
+132,"Cassava, fried"
+133,"Basil, raw"
 134,"West Indian gherkin, raw"
-135,Raw mustard greens
-136,Cooked potato gnocchi
-137,Raw turnip
+135,"Mustard greens, raw"
+136,"Potato gnocchi, cooked"
+137,"Turnip, raw"
 138,"Juçara hearts of palm, canned"
-139,Preserved peach palm hearts
+139,"Peach palm hearts, preserved"
 140,"Pão de queijo (Brazilian cheese bread), baked"
 141,"Pão de queijo (Brazilian cheese bread), raw"
-142,Raw cucumber
-143,Raw yellow bell pepper
-144,Raw green bell pepper
-145,Raw red bell pepper
+142,"Cucumber, raw"
+143,"Yellow bell pepper, raw"
+144,"Green bell pepper, raw"
+145,"Red bell pepper, raw"
 146,Sweet cassava starch
-147,Raw okra
-148,Raw radish
-149,Raw white cabbage
-150,Raw red cabbage
-151,Sautéed red cabbage
-152,Raw arugula
-153,Raw parsley
-154,Canned mixed vegetables
+147,"Okra, raw"
+148,"Radish, raw"
+149,"White cabbage, raw"
+150,"Red cabbage, raw"
+151,"Red cabbage, sautéed"
+152,"Arugula, raw"
+153,"Parsley, raw"
+154,"Mixed vegetables, canned"
 155,"Sow thistle greens, raw"
 156,"Taioba greens, raw"
-157,Raw tomato with seeds
+157,"Tomato, with seeds, raw"
 158,Tomato paste
 159,Commercial tomato sauce
 160,Tomato purée
 161,"Slicing tomato, raw"
-162,Raw green beans
-163,Raw avocado
-164,Raw pineapple
-165,Frozen pineapple pulp
-166,Raw abiu
+162,"Green beans, raw"
+163,"Avocado, raw"
+164,"Pineapple, raw"
+165,"Pineapple pulp, frozen"
+166,"Abiu, raw"
 167,Açaí pulp with guaraná and glucose syrup
-168,Frozen açaí pulp
-169,Raw acerola
-170,Frozen acerola pulp
-171,Canned plums in syrup
-172,Raw plum
-173,"Canned plums in syrup, drained"
-174,Raw atemoya
-175,Raw plantain
+168,"Açaí pulp, frozen"
+169,"Acerola, raw"
+170,"Acerola pulp, frozen"
+171,"Plums in syrup, canned"
+172,"Plum, raw"
+173,"Plums in syrup, canned, drained"
+174,"Atemoya, raw"
+175,"Plantain, raw"
 176,"Sweet banana paste, bar"
 177,"Fig banana, raw"
-178,Raw apple banana
+178,"Apple banana, raw"
 179,"Cavendish banana, raw"
 180,"Baby banana, raw"
 181,"Pacova plantain, raw"
 182,"Silver banana, raw"
-183,Raw cacao
+183,"Cacao pulp, raw"
 184,"Ambarella (golden apple), raw"
 185,"Yellow mombin pulp, frozen"
-186,Raw cashew apple
-187,Frozen cashew apple pulp
-188,Bottled concentrated cashew apple juice
+186,"Cashew apple, raw"
+187,"Cashew apple pulp, frozen"
+188,"Cashew apple juice, concentrated, bottled"
 189,"Chocolate persimmon, raw"
-190,Raw star fruit
+190,"Star fruit, raw"
 191,"Spanish plum, raw"
 192,"Cupuaçu, raw"
 193,"Cupuaçu pulp, frozen"
-194,Raw fig
-195,Canned figs in syrup
-196,Raw breadfruit
-197,Raw white guava with skin
+194,"Fig, raw"
+195,"Figs in syrup, canned"
+196,"Breadfruit, raw"
+197,"White guava, with skin, raw"
 198,Guava paste
-199,Guava paste with peel
-200,Raw red guava with skin
-201,Raw soursop
-202,Frozen soursop pulp
+199,Goiabada cascão (chunky guava paste)
+200,"Red guava, with skin, raw"
+201,"Soursop, raw"
+202,"Soursop pulp, frozen"
 203,"Jabuticaba, raw"
-204,Raw jackfruit
+204,"Jackfruit, raw"
 205,"Rose apple, raw"
 206,"Java plum, raw"
-207,Raw kiwifruit
+207,"Kiwifruit, raw"
 208,"Navel orange, raw"
 209,Navel orange juice
-210,Raw sour orange
+210,"Sour orange, raw"
 211,Sour orange juice
 212,"Lima sweet orange, raw"
 213,Lima sweet orange juice
 214,"Pera orange, raw"
 215,Pera orange juice
-216,Raw Valencia orange
+216,"Valencia orange, raw"
 217,Valencia orange juice
 218,Rangpur lime juice
 219,Key lime juice
-220,Raw Persian lime
+220,"Persian lime, raw"
 221,"Red Delicious apple, with skin, raw"
-222,Raw Fuji apple with skin
+222,"Fuji apple, with skin, raw"
 223,"Macauba palm fruit, raw"
 224,"Papaya preserve in syrup, drained"
 225,"Formosa papaya, raw"
 226,"Solo papaya, raw"
 227,"Green papaya preserve in syrup, drained"
-228,Raw Haden mango
-229,Raw Palmer mango
-230,Frozen mango pulp
-231,Raw Tommy Atkins mango
-232,Raw passion fruit
-233,Frozen passion fruit pulp
-234,Packaged concentrated passion fruit juice
-235,Raw watermelon
-236,Raw melon
-237,Raw Murcott tangor
+228,"Haden mango, raw"
+229,"Palmer mango, raw"
+230,"Mango pulp, frozen"
+231,"Tommy Atkins mango, raw"
+232,"Passion fruit, raw"
+233,"Passion fruit pulp, frozen"
+234,"Passion fruit juice, concentrated, packaged"
+235,"Watermelon, raw"
+236,"Melon, raw"
+237,"Murcott mandarin, raw"
 238,"Rio mandarin, raw"
-239,Raw strawberry
-240,Raw loquat
+239,"Strawberry, raw"
+240,"Loquat, raw"
 241,"Pequi fruit, raw"
-242,Raw Park pear
-243,Raw Williams pear
-244,Raw Aurora peach
-245,Canned peaches in syrup
-246,Raw sugar apple
+242,"Packham pear (Park), raw"
+243,"Williams pear (Bartlett), raw"
+244,"Aurora peach, raw"
+245,"Peaches in syrup, canned"
+246,"Sugar apple, raw"
 247,"Surinam cherry, raw"
 248,"Surinam cherry pulp, frozen"
-249,Raw pomegranate
-250,Raw tamarind
-251,Raw Ponkan tangerine
+249,"Pomegranate, raw"
+250,"Tamarind, raw"
+251,"Ponkan tangerine, raw"
 252,Ponkan tangerine juice
 253,"Tucuma fruit, raw"
 254,"Umbu fruit, raw"
 255,"Umbu pulp, frozen"
-256,Raw Italia grapes
-257,Raw Rubi grapes
-258,Bottled concentrated grape juice
+256,"Italia grapes, raw"
+257,"Rubi grapes, raw"
+258,"Grape juice, concentrated, bottled"
 259,Red palm oil
 260,Extra-virgin olive oil
-261,Salted butter
-262,Unsalted butter
-263,Salted margarine with hydrogenated oil (65% fat)
-264,Unsalted margarine with hydrogenated oil (80% fat)
-265,Salted margarine with interesterified oil (65% fat)
-266,Unsalted margarine with interesterified oil (65% fat)
+261,"Butter, salted"
+262,"Butter, unsalted"
+263,"Margarine with hydrogenated oil (65% fat), salted"
+264,"Margarine with hydrogenated oil (80% fat), unsalted"
+265,"Margarine with interesterified oil (65% fat), salted"
+266,"Margarine with interesterified oil (65% fat), unsalted"
 267,Babassu oil
 268,Canola oil
 269,Sunflower oil
@@ -276,16 +276,16 @@ source_code,name_en
 275,"Pollock fillet, raw"
 276,"Pollock fillet, grilled"
 277,Tuna packed in oil
-278,Raw fresh tuna
-279,Raw salted cod
-280,Sautéed salted cod
-281,Fried shark steak coated with wheat flour
-282,Cooked shark steak
-283,Raw shark steak
-284,Cooked large Rio Grande shrimp
-285,Raw large Rio Grande shrimp
-286,"Fried headless, shell-on Sete Barbas shrimp"
-287,Cooked crab
+278,"Tuna, fresh, raw"
+279,"Cod, salted, raw"
+280,"Cod, salted, sautéed"
+281,"Shark steak, coated with wheat flour, fried"
+282,"Shark steak, cooked"
+283,"Shark steak, raw"
+284,"Pink shrimp, large, cooked"
+285,"Pink shrimp, large, raw"
+286,"Atlantic seabob shrimp, headless, shell-on, fried"
+287,"Crab, cooked"
 288,"Streaked prochilod (Curimbata), raw"
 289,"Streaked prochilod (Curimbata), baked"
 290,"Streaked prochilod (Curimbata), cooked"
@@ -299,9 +299,9 @@ source_code,name_en
 298,"Lambari (freshwater tetra), raw"
 299,"River anchovy, flour-coated, fried"
 300,"River anchovy, fried"
-301,Baked hake fillet
-302,Raw hake fillet
-303,Fried hake fillet
+301,"Hake fillet, baked"
+302,"Hake fillet, raw"
+303,"Hake fillet, fried"
 304,"Smooth weakfish, raw"
 305,"Smooth weakfish, fried"
 306,"Weakfish fillet, flour-coated, fried"
@@ -313,71 +313,71 @@ source_code,name_en
 312,"Spotted sorubim (Pintado), raw"
 313,"Spotted sorubim (Pintado), grilled"
 314,"Grey triggerfish, raw"
-315,Grilled fresh skin-on salmon fillet
-316,Raw fresh skinless salmon
-317,Grilled fresh skinless salmon
-318,Baked sardines
+315,"Salmon fillet, skin-on, fresh, grilled"
+316,"Salmon, skinless, fresh, raw"
+317,"Salmon, skinless, fresh, grilled"
+318,"Sardines, baked"
 319,Sardines packed in oil
-320,Fried sardines
-321,Raw whole sardines
+320,"Sardines, fried"
+321,"Sardines, whole, raw"
 322,"Peacock bass fillet, raw"
 323,Pork luncheon meat (Apresuntado)
 324,Beef bouillon cube
 325,Chicken bouillon cube
-326,Cooked ground beef chuck
-327,Raw ground beef chuck
-328,Cooked lean beef chuck
-329,Raw lean beef chuck
-330,Raw beef meatballs
-331,Fried beef meatballs
-332,Cooked beef tripe
-333,Raw beef tripe
+326,"Beef chuck, ground, cooked"
+327,"Beef chuck, ground, raw"
+328,"Beef chuck, lean, cooked"
+329,"Beef chuck, lean, raw"
+330,"Beef meatballs, raw"
+331,"Beef meatballs, fried"
+332,"Beef tripe, cooked"
+333,"Beef tripe, raw"
 334,"Beef ribeye cap, with fat, raw"
 335,"Beef ribeye cap, with fat, grilled"
 336,"Beef ribeye cap, lean, raw"
 337,"Beef ribeye cap, lean, grilled"
 338,"Charque (cured dried beef), cooked"
 339,"Charque (cured dried beef), raw"
-340,Breaded fried beef striploin (Milanese-style)
+340,"Beef striploin (Milanese-style), breaded, fried"
 341,"Beef ribeye steak, raw"
 342,"Beef ribeye steak, grilled"
-343,Raw beef striploin with fat
-344,Grilled beef striploin with fat
-345,Raw lean beef striploin
-346,Grilled lean beef striploin
-347,Roasted beef ribs
-348,Raw beef ribs
+343,"Beef striploin, with fat, raw"
+344,"Beef striploin, with fat, grilled"
+345,"Beef striploin, lean, raw"
+346,"Beef striploin, lean, grilled"
+347,"Beef ribs, roasted"
+348,"Beef ribs, raw"
 349,"Beef bottom round, lean, cooked"
 350,"Beef bottom round, lean, raw"
 351,"Beef top round, lean, cooked"
 352,"Beef top round, lean, raw"
 353,"Cupim (beef hump), roasted"
 354,"Cupim (beef hump), raw"
-355,Raw beef liver
-356,Grilled beef liver
-357,Raw lean filet mignon
-358,Grilled lean filet mignon
-359,Cooked lean flank steak
-360,Raw lean flank steak
+355,"Beef liver, raw"
+356,"Beef liver, grilled"
+357,"Filet mignon, lean, raw"
+358,"Filet mignon, lean, grilled"
+359,"Flank steak, lean, cooked"
+360,"Flank steak, lean, raw"
 361,"Fraldinha (beef flap steak), with fat, cooked"
 362,"Fraldinha (beef flap steak), with fat, raw"
 363,"Beef eye of round, cooked"
 364,"Beef eye of round, raw"
-365,Cooked beef tongue
-366,Raw beef tongue
+365,"Beef tongue, cooked"
+366,"Beef tongue, raw"
 367,"Maminha (beef tri-tip), raw"
 368,"Maminha (beef tri-tip), grilled"
 369,"Beef top sirloin, lean, raw"
 370,"Beef top sirloin, lean, grilled"
-371,Cooked lean beef shank
-372,Raw lean beef shank
-373,Raw beef shoulder with fat
-374,Cooked lean beef shoulder
-375,Raw lean beef shoulder
+371,"Beef shank, lean, cooked"
+372,"Beef shank, lean, raw"
+373,"Beef shoulder, with fat, raw"
+374,"Beef shoulder, lean, cooked"
+375,"Beef shoulder, lean, raw"
 376,"Beef sirloin tip, lean, raw"
 377,"Beef sirloin tip, lean, grilled"
-378,Cooked lean beef brisket
-379,Raw lean beef brisket
+378,"Beef brisket, lean, cooked"
+379,"Beef brisket, lean, raw"
 380,"Picanha (beef rump cap), with fat, raw"
 381,"Picanha (beef rump cap), with fat, grilled"
 382,"Picanha (beef rump cap), lean, raw"
@@ -385,62 +385,62 @@ source_code,name_en
 384,"Carne-seca (cured dried beef), cooked"
 385,"Carne-seca (cured dried beef), raw"
 386,"Chicken coxinha (croquette), fried"
-387,Uncooked meat croquette
-388,Fried meat croquette
+387,"Meat croquette, raw"
+388,"Meat croquette, fried"
 389,"Chicken empada (savory tartlet), parbaked, baked"
 390,"Chicken empada (savory tartlet), parbaked"
-391,Raw skin-on chicken wing
+391,"Chicken wing, skin-on, raw"
 392,"Free-range chicken, whole, with skin, cooked"
 393,"Free-range chicken, whole, skinless, cooked"
-394,Raw chicken heart
-395,Grilled chicken heart
-396,Roasted skin-on chicken drumstick
-397,Raw skin-on chicken drumstick
-398,Cooked skinless chicken drumstick
-399,Raw skinless chicken drumstick
-400,Raw chicken liver
-401,Breaded fried chicken fillet (Milanese-style)
-402,Raw whole skin-on chicken
-403,Roasted whole skinless chicken
-404,Cooked whole skinless chicken
-405,Raw whole skinless chicken
-406,Roasted skin-on chicken breast
-407,Raw skin-on chicken breast
-408,Cooked skinless chicken breast
-409,Raw skinless chicken breast
-410,Grilled skinless chicken breast
-411,Roasted skin-on chicken thigh
-412,Raw skin-on chicken thigh
-413,Roasted skinless chicken thigh
-414,Raw skinless chicken thigh
-415,Raw beef hamburger patty
-416,Fried beef hamburger patty
-417,Grilled beef hamburger patty
-418,Raw chicken sausage
-419,Fried chicken sausage
-420,Grilled chicken sausage
-421,Raw pork sausage
-422,Fried pork sausage
-423,Grilled pork sausage
+394,"Chicken heart, raw"
+395,"Chicken heart, grilled"
+396,"Chicken drumstick, skin-on, roasted"
+397,"Chicken drumstick, skin-on, raw"
+398,"Chicken drumstick, skinless, cooked"
+399,"Chicken drumstick, skinless, raw"
+400,"Chicken liver, raw"
+401,"Chicken fillet (Milanese-style), breaded, fried"
+402,"Chicken, whole, skin-on, raw"
+403,"Chicken, whole, skinless, roasted"
+404,"Chicken, whole, skinless, cooked"
+405,"Chicken, whole, skinless, raw"
+406,"Chicken breast, skin-on, roasted"
+407,"Chicken breast, skin-on, raw"
+408,"Chicken breast, skinless, cooked"
+409,"Chicken breast, skinless, raw"
+410,"Chicken breast, skinless, grilled"
+411,"Chicken thigh, skin-on, roasted"
+412,"Chicken thigh, skin-on, raw"
+413,"Chicken thigh, skinless, roasted"
+414,"Chicken thigh, skinless, raw"
+415,"Beef hamburger patty, raw"
+416,"Beef hamburger patty, fried"
+417,"Beef hamburger patty, grilled"
+418,"Chicken sausage, raw"
+419,"Chicken sausage, fried"
+420,"Chicken sausage, grilled"
+421,"Pork sausage, raw"
+422,"Pork sausage, fried"
+423,"Pork sausage, grilled"
 424,Mortadella
-425,Roasted frozen turkey
-426,Raw frozen turkey
-427,Raw pork chop
-428,Fried pork chop
-429,Grilled pork chop
-430,Roasted pork ribs
-431,Raw pork ribs
-432,Roasted pork loin
-433,Raw pork loin
-434,Raw salted pork ear
-435,Roasted pork leg
-436,Raw pork leg
-437,Raw salted pork tail
+425,"Turkey, frozen, roasted"
+426,"Turkey, frozen, raw"
+427,"Pork chop, raw"
+428,"Pork chop, fried"
+429,"Pork chop, grilled"
+430,"Pork ribs, roasted"
+431,"Pork ribs, raw"
+432,"Pork loin, roasted"
+433,"Pork loin, raw"
+434,"Pork ear, salted, raw"
+435,"Pork leg, roasted"
+436,"Pork leg, raw"
+437,"Pork tail, salted, raw"
 438,Ham with fat cap
 439,Ham without fat cap
-440,Baked kibbeh
-441,Raw kibbeh
-442,Fried kibbeh
+440,"Kibbeh, baked"
+441,"Kibbeh, raw"
+442,"Kibbeh, fried"
 443,Salami
 444,"Pork fatback (with skin), raw"
 445,"Pork fatback (with skin), fried"
@@ -453,10 +453,10 @@ source_code,name_en
 453,Condensed milk
 454,Goat milk
 455,Chocolate-flavored cow's milk
-456,Nonfat cow's milk powder
-457,UHT nonfat cow's milk
+456,"Cow's milk, nonfat, powder"
+457,"Cow's milk, nonfat, UHT"
 458,Whole cow's milk
-459,Whole cow's milk powder
+459,"Cow's milk, whole, powder"
 460,Fermented milk
 461,Minas frescal cheese (fresh white cheese)
 462,Minas meia-cura cheese (semi-cured cheese)
@@ -468,29 +468,29 @@ source_code,name_en
 468,Requeijão (creamy cheese spread)
 469,Ricotta cheese
 470,"Sports drink, assorted flavors"
-471,10% coffee infusion
+471,"Coffee, brewed (10% infusion)"
 473,Sugarcane juice
 474,Pilsner beer
 475,"Anise tea, brewed (5% infusion)"
-476,5% mate infusion
-477,5% black tea infusion
+476,"Yerba mate tea, brewed (5% infusion)"
+477,"Black tea, brewed (5% infusion)"
 478,Coconut water
 479,Tonic water
 480,Cola soft drink
 481,Guaraná soft drink
 482,Orange soft drink
-483,Lemon soft drink
+483,Lemon-lime soda
 484,Cheese omelet
-485,Raw whole quail egg
+485,"Quail egg, whole, raw"
 486,"Chicken egg white, cooked for 10 minutes"
 487,"Chicken egg yolk, cooked for 10 minutes"
 488,"Whole chicken egg, cooked for 10 minutes"
-489,Raw whole chicken egg
-490,Fried whole chicken egg
+489,"Chicken egg, whole, raw"
+490,"Chicken egg, whole, fried"
 491,Chocolate drink powder
 492,Granulated sugar
-493,Brown sugar
-494,Refined sugar
+493,Muscovado sugar (unrefined brown sugar)
+494,Refined white sugar
 495,Milk chocolate
 496,Milk chocolate with Brazil nuts
 497,"Milk chocolate, sugar-free"
@@ -507,15 +507,15 @@ source_code,name_en
 508,Sugarcane molasses
 509,Quindim (baked coconut egg custard)
 510,Rapadura (unrefined cane sugar block)
-511,Roasted ground coffee
+511,"Coffee, ground, roasted"
 512,"Cappuccino mix, powder"
 513,Baking powder
 514,Compressed baker's yeast cake
-515,Assorted-flavor gelatin powder
+515,"Gelatin dessert mix, powder, assorted flavors"
 518,Soy sauce
 519,Salt-based seasoning
-520,Preserved black olives
-521,Preserved green olives
+520,"Black olives, preserved"
+521,"Green olives, preserved"
 522,Aerosol whipped topping with vegetable fat
 523,Coconut milk
 524,Traditional mayonnaise with eggs
@@ -527,7 +527,7 @@ source_code,name_en
 530,Bolinho de arroz (fried rice fritter)
 531,Camarão à baiana (Bahian shrimp stew)
 532,Stuffed cabbage roll
-533,Cooked corn couscous with salt
+533,"Steamed cornmeal (Cuscuz), cooked with salt"
 534,Cuscuz paulista (savory cornmeal cake)
 535,Cuxá sauce (roselle and shrimp sauce)
 536,Dobradinha (white bean and tripe stew)
@@ -540,7 +540,7 @@ source_code,name_en
 543,Maniçoba (cassava-leaf and pork stew)
 544,Quibebe (mashed winter squash stew)
 545,Vegetable salad with mayonnaise
-546,Steamed vegetable salad
+546,"Vegetable salad, steamed"
 547,Chicken salpicão (creamy chicken salad)
 548,Sarapatel (pork offal and blood stew)
 549,Tabbouleh
@@ -551,43 +551,43 @@ source_code,name_en
 554,Vatapá (creamy shrimp and bread paste)
 555,Virado à paulista (mashed beans with cassava flour)
 556,Yakisoba
-557,Raw peanut kernels
-558,Roasted salted peanuts
+557,"Peanut kernels, raw"
+558,"Peanuts, roasted, salted"
 559,Peas in pods
-560,"Canned peas, drained"
+560,"Peas, canned, drained"
 561,"Carioca beans (pinto beans), cooked"
 562,"Carioca beans (pinto beans), raw"
-563,Cooked black-eyed peas
-564,Raw black-eyed peas
+563,"Black-eyed peas, cooked"
+564,"Black-eyed peas, raw"
 565,"Jalo beans (yellow kidney beans), cooked"
 566,"Jalo beans (yellow kidney beans), raw"
-567,Cooked black beans
-568,Raw black beans
+567,"Black beans, cooked"
+568,"Black beans, raw"
 569,"Cranberry beans (Rajado), cooked"
 570,"Cranberry beans (Rajado), raw"
 571,"Pink beans, cooked"
 572,"Pink beans, raw"
 573,"Purple beans (dark kidney beans), cooked"
 574,"Purple beans (dark kidney beans), raw"
-575,Raw chickpeas
-576,Raw pigeon peas
-577,Cooked lentils
-578,Raw lentils
+575,"Chickpeas, raw"
+576,"Pigeon peas, raw"
+577,"Lentils, cooked"
+578,"Lentils, raw"
 579,Paçoca (crumbly peanut candy)
 580,Pé-de-moleque (peanut brittle)
 581,Soy flour
 582,"Soy milk, plain"
 583,"Soy milk, powder"
 584,Tofu
-585,Raw lupin beans
-586,Preserved lupin beans
-587,Roasted salted almonds
-588,Roasted salted cashews
-589,Raw Brazil nuts
-590,Raw coconut
-592,Raw babassu mesocarp flour
+585,"Lupin beans, raw"
+586,"Lupin beans, preserved"
+587,"Almonds, roasted, salted"
+588,"Cashews, roasted, salted"
+589,"Brazil nuts, raw"
+590,"Coconut, raw"
+592,"Babassu mesocarp flour, raw"
 593,Sesame seeds
 594,Flaxseeds
 595,"Parana pine nuts (Pinhão), cooked"
-596,Cooked peach palm fruit
-597,Raw walnuts
+596,"Peach palm fruit, cooked"
+597,"Walnuts, raw"

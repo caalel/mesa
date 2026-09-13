@@ -47,7 +47,7 @@ function canonicalFoodCsv(array $rows): string
 
 function translationCatalogCsv(array $rows): string
 {
-    return "source_code,name_pt,name_en,review_status,review_notes\n".implode("\n", $rows)."\n";
+    return "source_code,name_pt,name_en,review_status\n".implode("\n", $rows)."\n";
 }
 
 function validCanonicalFoodRows(): array
@@ -62,9 +62,9 @@ function validCanonicalFoodRows(): array
 function validTranslationCatalogRows(): array
 {
     return [
-        '001,"Leite, desnatado",Skim milk,approved,',
-        '002,Pão francês,French bread,approved,Reviewed',
-        '003,Água,Water,approved,',
+        '001,"Leite, desnatado",Skim milk,approved',
+        '002,Pão francês,French bread,approved',
+        '003,Água,Water,approved',
     ];
 }
 
@@ -105,7 +105,6 @@ it('generates the operational translation CSV from a compatible approved catalog
     expect($contents)->not->toContain("\r");
     expect($contents)->not->toContain('name_pt');
     expect($contents)->not->toContain('review_status');
-    expect($contents)->not->toContain('review_notes');
 });
 
 it('deterministically replaces an existing operational translation CSV', function () {
@@ -126,7 +125,7 @@ it('deterministically replaces an existing operational translation CSV', functio
 it('rejects an unexpected catalog header without replacing the destination', function () {
     $directory = foodTranslationGeneratorDirectory();
     $canonicalSourcePath = foodTranslationGeneratorFixture($directory, 'canonical.csv', canonicalFoodCsv(validCanonicalFoodRows()));
-    $catalogPath = foodTranslationGeneratorFixture($directory, 'catalog.csv', "name_en,source_code,name_pt,review_status,review_notes\nSkim milk,001,Leite,approved,\n");
+    $catalogPath = foodTranslationGeneratorFixture($directory, 'catalog.csv', "name_en,source_code,name_pt,review_status\nSkim milk,001,Leite,approved\n");
     $outputPath = foodTranslationGeneratorFixture($directory, 'translations.csv', "preserve,this\n");
 
     expectGenerationToLeaveDestinationUnchanged($catalogPath, $canonicalSourcePath, $outputPath, "preserve,this\n");
@@ -136,9 +135,9 @@ it('rejects catalog records that are not exactly approved without replacing the 
     $directory = foodTranslationGeneratorDirectory();
     $canonicalSourcePath = foodTranslationGeneratorFixture($directory, 'canonical.csv', canonicalFoodCsv(validCanonicalFoodRows()));
     $catalogPath = foodTranslationGeneratorFixture($directory, 'catalog.csv', translationCatalogCsv([
-        '001,"Leite, desnatado",Skim milk,approved,',
-        '002,Pão francês,French bread,pending,',
-        '003,Água,Water,approved,',
+        '001,"Leite, desnatado",Skim milk,approved',
+        '002,Pão francês,French bread,pending',
+        '003,Água,Water,approved',
     ]));
     $outputPath = foodTranslationGeneratorFixture($directory, 'translations.csv', "preserve,this\n");
 
@@ -153,17 +152,17 @@ it('rejects catalog records with empty required translation fields without repla
 
     expectGenerationToLeaveDestinationUnchanged($catalogPath, $canonicalSourcePath, $outputPath, "preserve,this\n");
 })->with([
-    'empty source code' => [',"Leite, desnatado",Skim milk,approved,'],
-    'empty English name' => ['001,"Leite, desnatado",,approved,'],
+    'empty source code' => [',"Leite, desnatado",Skim milk,approved'],
+    'empty English name' => ['001,"Leite, desnatado",,approved'],
 ]);
 
 it('rejects duplicate catalog source codes without replacing the destination', function () {
     $directory = foodTranslationGeneratorDirectory();
     $canonicalSourcePath = foodTranslationGeneratorFixture($directory, 'canonical.csv', canonicalFoodCsv(validCanonicalFoodRows()));
     $catalogPath = foodTranslationGeneratorFixture($directory, 'catalog.csv', translationCatalogCsv([
-        '001,"Leite, desnatado",Skim milk,approved,',
-        '001,Pão francês,French bread,approved,',
-        '003,Água,Water,approved,',
+        '001,"Leite, desnatado",Skim milk,approved',
+        '001,Pão francês,French bread,approved',
+        '003,Água,Water,approved',
     ]));
     $outputPath = foodTranslationGeneratorFixture($directory, 'translations.csv', "preserve,this\n");
 
@@ -185,25 +184,25 @@ it('rejects catalog divergences from the canonical source without replacing the 
     'different source code' => [
         validCanonicalFoodRows(),
         [
-            '001,"Leite, desnatado",Skim milk,approved,',
-            '099,Pão francês,French bread,approved,',
-            '003,Água,Water,approved,',
+            '001,"Leite, desnatado",Skim milk,approved',
+            '099,Pão francês,French bread,approved',
+            '003,Água,Water,approved',
         ],
     ],
     'different Portuguese name' => [
         validCanonicalFoodRows(),
         [
-            '001,"Leite, desnatado",Skim milk,approved,',
-            '002,Pão integral,French bread,approved,',
-            '003,Água,Water,approved,',
+            '001,"Leite, desnatado",Skim milk,approved',
+            '002,Pão integral,French bread,approved',
+            '003,Água,Water,approved',
         ],
     ],
     'different record order' => [
         validCanonicalFoodRows(),
         [
-            '002,Pão francês,French bread,approved,Reviewed',
-            '001,"Leite, desnatado",Skim milk,approved,',
-            '003,Água,Water,approved,',
+            '002,Pão francês,French bread,approved',
+            '001,"Leite, desnatado",Skim milk,approved',
+            '003,Água,Water,approved',
         ],
     ],
 ]);
@@ -211,7 +210,7 @@ it('rejects catalog divergences from the canonical source without replacing the 
 it('rejects structurally invalid catalog CSV rows without replacing the destination', function () {
     $directory = foodTranslationGeneratorDirectory();
     $canonicalSourcePath = foodTranslationGeneratorFixture($directory, 'canonical.csv', canonicalFoodCsv(validCanonicalFoodRows()));
-    $catalogPath = foodTranslationGeneratorFixture($directory, 'catalog.csv', "source_code,name_pt,name_en,review_status,review_notes\n001,Leite,Skim milk,approved\n");
+    $catalogPath = foodTranslationGeneratorFixture($directory, 'catalog.csv', "source_code,name_pt,name_en,review_status\n001,Leite,Skim milk\n");
     $outputPath = foodTranslationGeneratorFixture($directory, 'translations.csv', "preserve,this\n");
 
     expectGenerationToLeaveDestinationUnchanged($catalogPath, $canonicalSourcePath, $outputPath, "preserve,this\n");
@@ -221,9 +220,9 @@ it('does not create an output or leave temporary files when validation fails', f
     $directory = foodTranslationGeneratorDirectory();
     $canonicalSourcePath = foodTranslationGeneratorFixture($directory, 'canonical.csv', canonicalFoodCsv(validCanonicalFoodRows()));
     $catalogPath = foodTranslationGeneratorFixture($directory, 'catalog.csv', translationCatalogCsv([
-        '001,"Leite, desnatado",Skim milk,draft,',
-        '002,Pão francês,French bread,approved,',
-        '003,Água,Water,approved,',
+        '001,"Leite, desnatado",Skim milk,draft',
+        '002,Pão francês,French bread,approved',
+        '003,Água,Water,approved',
     ]));
     $outputPath = $directory.DIRECTORY_SEPARATOR.'translations.csv';
 
