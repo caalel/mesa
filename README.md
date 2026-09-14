@@ -1,5 +1,8 @@
 # MESA
 
+[![CI](https://github.com/caalel/mesa/actions/workflows/ci.yml/badge.svg)](https://github.com/caalel/mesa/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 **Medidor de Equivalência e Síntese Alimentar**
 
 MESA brings together two practical nutritional tools: a calorie-based food comparator and a meal calculator. Users can compare equivalent food amounts or assemble meals while following calories and macronutrients.
@@ -29,6 +32,20 @@ MESA is a Laravel and Livewire MVP for clear, practical food comparison and meal
 - Artisan import command with dry-run support.
 - Database seeder integrated with Laravel's standard seeding flow.
 - Automated tests.
+
+## Screenshots
+
+### Meal Calculator
+
+![Meal Calculator](docs/screenshots/meal-calculator-demo.gif)
+
+### Nutritional Comparator
+
+![Nutritional Comparator](docs/screenshots/nutritional-comparator-demo.gif)
+
+### Responsive Interface
+
+![Responsive Interface](docs/screenshots/mobile-food-modal.png)
 
 ## Technologies
 

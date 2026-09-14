@@ -1,6 +1,20 @@
 <?php
 
 return [
+    'metadata' => [
+        'home' => [
+            'title' => 'MESA',
+            'description' => 'Compare alimentos e monte refeições com informações nutricionais de forma simples.',
+        ],
+        'comparator' => [
+            'title' => 'Comparador nutricional | MESA',
+            'description' => 'Compare alimentos com base em seus valores nutricionais.',
+        ],
+        'meals' => [
+            'title' => 'Refeições | MESA',
+            'description' => 'Monte refeições e acompanhe suas calorias e macronutrientes.',
+        ],
+    ],
     'navigation' => [
         'meals' => 'Refeições',
         'comparator' => 'Comparador',
@@ -29,6 +43,7 @@ return [
         'editing_meal' => 'Editando refeição',
         'editing_status' => 'Editando',
         'name_label' => 'Nome da refeição',
+        'name_too_long' => 'O nome da refeição pode ter no máximo 80 caracteres.',
         'add_food' => '+ Adicionar alimento',
         'add_food_to_draft' => 'Adicionar',
         'save' => 'Salvar',

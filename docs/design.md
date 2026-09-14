@@ -42,10 +42,9 @@ and Comparator centered geometrically in the header, and a `PT`/`EN` language
 selector on the right. It is transparent in its normal state. On hover or
 `focus-within`, the navigation gains a rounded white surface and a subtle shadow.
 
-The header has no active-route indicator. At widths below the content breakpoint of
-353 px, its controls no longer fit correctly on one line, so the layout stacks and
-centers them. Above that threshold, the navigation remains visually centered while
-the brand and locale selector anchor the sides.
+The header has no active-route indicator. Below the `sm` breakpoint (640 px), its
+controls stack and center. From `sm` onward, the navigation remains visually
+centered while the brand and locale selector anchor the sides.
 
 ## Home
 

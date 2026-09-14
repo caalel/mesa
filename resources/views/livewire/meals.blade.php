@@ -5,7 +5,7 @@
     </header>
 
     @if ($isMealEditorOpen)
-        <section class="w-full rounded-2xl border border-[var(--color-border)] p-5 sm:p-8" data-testid="meal-editor">
+        <section class="w-full rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 sm:p-8" data-testid="meal-editor">
             <div class="flex items-center justify-between gap-5">
                 <h2 class="text-xl font-semibold leading-tight text-[var(--color-text-primary)]">{{ __($editingMealId === null ? 'ui.meals.new_meal' : 'ui.meals.editing_meal') }}</h2>
                 <span class="text-xs font-medium text-[var(--color-text-secondary)]">{{ __($editingMealId === null ? 'ui.meals.draft_status' : 'ui.meals.editing_status') }}</span>
@@ -21,6 +21,9 @@
                     wire:model.live="mealName"
                     data-testid="meal-name"
                 >
+                @if ($mealNameValidationMessage !== null)
+                    <p class="text-sm text-[var(--color-error)]">{{ $mealNameValidationMessage }}</p>
+                @endif
             </div>
 
             <div class="mt-8 flex items-center justify-between gap-4">
@@ -127,7 +130,7 @@
 
             <div class="mt-5 grid gap-4 lg:grid-cols-2">
                 @foreach ($mealList as $meal)
-                    <article class="rounded-2xl border border-[var(--color-border)] p-5 sm:p-6" data-testid="meal-list-item" data-meal-id="{{ $meal['id'] }}">
+                    <article class="min-w-0 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 sm:p-6" data-testid="meal-list-item" data-meal-id="{{ $meal['id'] }}">
                         <div class="min-w-0">
                             <h2 class="break-words text-xl font-semibold leading-tight text-[var(--color-text-primary)]">{{ $meal['name'] }}</h2>
                             <p class="mt-1 text-sm text-[var(--color-text-secondary)]">
@@ -135,7 +138,7 @@
                             </p>
                         </div>
 
-                        <div class="mt-6 flex items-end justify-between gap-3">
+                        <div class="mt-6 flex flex-col items-start gap-4 lg:flex-row lg:items-end lg:justify-between">
                             <span class="text-3xl font-semibold tracking-[-0.05em] text-[var(--color-text-primary)]">{{ $meal['nutrition']['calories'] }} kcal</span>
                             <div class="flex shrink-0 gap-3 text-sm font-semibold">
                                 <button class="cursor-pointer text-[var(--color-primary-green)] transition-colors hover:text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-green)] focus:ring-offset-2" type="button" wire:click="editMeal({{ $meal['id'] }})" data-testid="edit-meal">
@@ -159,7 +162,7 @@
             </div>
         </section>
     @else
-        <section class="flex min-h-64 w-full flex-col items-center justify-center space-y-4 rounded-2xl border border-[var(--color-border)] p-5 text-center sm:min-h-72 sm:p-6 lg:min-h-[20.625rem]" data-testid="meals-empty-state">
+        <section class="flex min-h-64 w-full flex-col items-center justify-center space-y-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 text-center sm:min-h-72 sm:p-6 lg:min-h-[20.625rem]" data-testid="meals-empty-state">
             <div class="max-w-2xl space-y-2">
                 <h2 class="text-xl font-semibold leading-tight text-[var(--color-text-primary)]">{{ __('ui.meals.empty_title') }}</h2>
                 <p class="text-sm leading-6 text-[var(--color-text-secondary)] sm:text-base">{{ __('ui.meals.empty_description') }}</p>
@@ -266,7 +269,8 @@
                                 <p class="text-sm font-medium text-[var(--color-text-secondary)]">{{ __('ui.meals.nutrition_for_weight', ['weight' => $selectedFoodNutritionPreview['formatted_weight']]) }}</p>
                                 <p class="mt-1 text-3xl font-semibold tracking-[-0.05em] text-[var(--color-text-primary)]">{{ $selectedFoodNutritionPreview['calories'] }} kcal</p>
 
-                                <div class="mt-4 grid grid-cols-3 gap-3 border-t border-[var(--color-border)] pt-4 text-sm">
+                                {{-- Three macro labels fit side by side from 350px. --}}
+                                <div class="mt-4 grid grid-cols-1 gap-3 border-t border-[var(--color-border)] pt-4 text-sm min-[350px]:grid-cols-3">
                                     <p>
                                         <span class="block font-semibold text-[var(--color-text-primary)]">{{ $selectedFoodNutritionPreview['protein'] }} g</span>
                                         <span class="text-xs text-[var(--color-text-secondary)]">{{ __('ui.meals.protein') }}</span>

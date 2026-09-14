@@ -1,6 +1,20 @@
 <?php
 
 return [
+    'metadata' => [
+        'home' => [
+            'title' => 'MESA',
+            'description' => 'Compare foods and build meals with nutritional information in a simple way.',
+        ],
+        'comparator' => [
+            'title' => 'Nutritional Comparator | MESA',
+            'description' => 'Compare foods based on their nutritional values.',
+        ],
+        'meals' => [
+            'title' => 'Meals | MESA',
+            'description' => 'Build meals and track their calories and macronutrients.',
+        ],
+    ],
     'navigation' => [
         'meals' => 'Meals',
         'comparator' => 'Comparator',
@@ -29,6 +43,7 @@ return [
         'editing_meal' => 'Editing meal',
         'editing_status' => 'Editing',
         'name_label' => 'Meal name',
+        'name_too_long' => 'A meal name can have at most 80 characters.',
         'add_food' => '+ Add food',
         'add_food_to_draft' => 'Add',
         'save' => 'Save',
