@@ -65,6 +65,7 @@ return [
         'total_quantity_too_high' => 'The total amount of :food in the meal cannot exceed :max g.',
         'nutrition_for_weight' => 'For :weight g',
         'nutrition_summary' => 'Nutritional summary',
+        'nutrition_summary_description' => 'Nutritional values update as you add, edit, or remove foods.',
         'total_calories' => 'Total calories',
         'protein' => 'Protein',
         'carbohydrates' => 'Carbs',

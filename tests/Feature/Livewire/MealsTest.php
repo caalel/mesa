@@ -446,6 +446,17 @@ it('renders the nutritional summary for the current meal draft', function () {
         ->assertSee('10 g');
 });
 
+it('renders the localized nutritional summary description', function (string $locale, string $description) {
+    App::setLocale($locale);
+
+    Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->assertSee($description);
+})->with([
+    'Brazilian Portuguese' => ['pt_BR', 'Os valores nutricionais são atualizados conforme você adiciona, edita ou remove alimentos.'],
+    'English' => ['en', 'Nutritional values update as you add, edit, or remove foods.'],
+]);
+
 it('rejects client-side updates to meal items', function () {
     expect(fn () => Livewire::test(Meals::class)
         ->set('mealItems', [['food_id' => 1, 'weight' => 100.0]]))

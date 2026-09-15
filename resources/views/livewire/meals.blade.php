@@ -5,84 +5,82 @@
     </header>
 
     @if ($isMealEditorOpen)
-        <section class="w-full rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 sm:p-8" data-testid="meal-editor">
-            <div class="flex items-center justify-between gap-5">
-                <h2 class="text-xl font-semibold leading-tight text-[var(--color-text-primary)]">{{ __($editingMealId === null ? 'ui.meals.new_meal' : 'ui.meals.editing_meal') }}</h2>
-                <span class="text-xs font-medium text-[var(--color-text-secondary)]">{{ __($editingMealId === null ? 'ui.meals.draft_status' : 'ui.meals.editing_status') }}</span>
-            </div>
-
-            <div class="mt-7 space-y-2">
-                <label class="block text-sm font-medium text-[var(--color-text-secondary)]" for="meal-name">{{ __('ui.meals.name_label') }}</label>
-                <input
-                    class="w-full rounded-lg border border-[var(--color-border)] px-3 py-2.5 text-[var(--color-text-primary)] focus:border-[var(--color-primary-green)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary-green)]"
-                    id="meal-name"
-                    type="text"
-                    placeholder="{{ __('ui.meals.name_placeholder') }}"
-                    wire:model.live="mealName"
-                    data-testid="meal-name"
-                >
-                @if ($mealNameValidationMessage !== null)
-                    <p class="text-sm text-[var(--color-error)]">{{ $mealNameValidationMessage }}</p>
-                @endif
-            </div>
-
-            <div class="mt-8 flex items-center justify-between gap-4">
-                <div>
-                    <h3 class="font-semibold text-[var(--color-text-primary)]">{{ __('ui.meals.items_title') }}</h3>
-                    <p class="mt-1 text-sm text-[var(--color-text-secondary)]">{{ __('ui.meals.items_counter', ['count' => $mealItemsCount, 'limit' => $mealItemsLimit]) }}</p>
+        <section class="grid items-start gap-6 lg:grid-cols-[minmax(0,1.65fr)_minmax(20rem,1fr)]" data-testid="meal-editor">
+            <div class="min-w-0 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 sm:p-8">
+                <div class="flex items-center justify-between gap-5">
+                    <h2 class="text-xl font-semibold leading-tight text-[var(--color-text-primary)]">{{ __($editingMealId === null ? 'ui.meals.new_meal' : 'ui.meals.editing_meal') }}</h2>
+                    <span class="text-xs font-medium text-[var(--color-text-secondary)]">{{ __($editingMealId === null ? 'ui.meals.draft_status' : 'ui.meals.editing_status') }}</span>
                 </div>
-                @if ($canOpenFoodModal)
-                    <button class="cursor-pointer rounded-lg border border-[var(--color-border)] px-4 py-2.5 text-sm font-semibold text-[var(--color-primary-green)] transition-colors hover:bg-[var(--color-light-green)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-green)] focus:ring-offset-2" type="button" wire:click="openFoodModal" data-testid="open-food-modal-enabled">
-                        {{ __('ui.meals.add_food') }}
-                    </button>
+
+                <div class="mt-7 space-y-2">
+                    <label class="block text-sm font-medium text-[var(--color-text-secondary)]" for="meal-name">{{ __('ui.meals.name_label') }}</label>
+                    <input
+                        class="w-full rounded-lg border border-[var(--color-border)] px-3 py-2.5 text-[var(--color-text-primary)] focus:border-[var(--color-primary-green)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary-green)]"
+                        id="meal-name"
+                        type="text"
+                        placeholder="{{ __('ui.meals.name_placeholder') }}"
+                        wire:model.live="mealName"
+                        data-testid="meal-name"
+                    >
+                    @if ($mealNameValidationMessage !== null)
+                        <p class="text-sm text-[var(--color-error)]">{{ $mealNameValidationMessage }}</p>
+                    @endif
+                </div>
+
+                <div class="mt-8 flex items-center justify-between gap-4">
+                    <div>
+                        <h3 class="font-semibold text-[var(--color-text-primary)]">{{ __('ui.meals.items_title') }}</h3>
+                        <p class="mt-1 text-sm text-[var(--color-text-secondary)]">{{ __('ui.meals.items_counter', ['count' => $mealItemsCount, 'limit' => $mealItemsLimit]) }}</p>
+                    </div>
+                    @if ($canOpenFoodModal)
+                        <button class="cursor-pointer rounded-lg border border-[var(--color-border)] px-4 py-2.5 text-sm font-semibold text-[var(--color-primary-green)] transition-colors hover:bg-[var(--color-light-green)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-green)] focus:ring-offset-2" type="button" wire:click="openFoodModal" data-testid="open-food-modal-enabled">
+                            {{ __('ui.meals.add_food') }}
+                        </button>
+                    @else
+                        <button class="cursor-not-allowed rounded-lg border border-[var(--color-border)] bg-[var(--color-background)] px-4 py-2.5 text-sm font-semibold text-[var(--color-text-secondary)] opacity-70" type="button" data-testid="open-food-modal-disabled" disabled>
+                            {{ __('ui.meals.add_food') }}
+                        </button>
+                    @endif
+                </div>
+
+                @if ($hasMealItems)
+                    <div class="mt-4 space-y-3" data-testid="meal-items-list">
+                        @foreach ($mealDraftItems as $item)
+                            <article class="flex flex-col gap-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 sm:flex-row sm:items-start sm:justify-between sm:gap-4" data-testid="meal-item" data-food-id="{{ $item['food_id'] }}">
+                                <div class="min-w-0">
+                                    <h4 class="break-words font-semibold text-[var(--color-text-primary)]">{{ $item['name'] }}</h4>
+                                    <p class="mt-1 text-sm text-[var(--color-text-secondary)]">
+                                        <span class="whitespace-nowrap"><span class="font-semibold">{{ $item['formatted_weight'] }} g</span></span>
+                                        <span class="whitespace-nowrap"><span class="mx-2 text-[var(--color-warm-accent)]">•</span><span class="font-semibold">{{ $item['formatted_calories'] }} kcal</span></span>
+                                        <span class="hidden md:inline">
+                                            <span class="whitespace-nowrap"><span class="mx-2 text-[var(--color-warm-accent)]">•</span><span><span class="font-semibold">{{ $item['formatted_protein'] }} g</span> <span class="lowercase">{{ __('ui.meals.protein') }}</span></span></span>
+                                            <span class="whitespace-nowrap"><span class="mx-2 text-[var(--color-warm-accent)]">•</span><span><span class="font-semibold">{{ $item['formatted_carbs'] }} g</span> <span class="lowercase">{{ __('ui.meals.carbohydrates') }}</span></span></span>
+                                            <span class="whitespace-nowrap"><span class="mx-2 text-[var(--color-warm-accent)]">•</span><span><span class="font-semibold">{{ $item['formatted_fat'] }} g</span> <span class="lowercase">{{ __('ui.meals.fat') }}</span></span></span>
+                                        </span>
+                                    </p>
+                                </div>
+
+                                <div class="flex shrink-0 gap-3 self-start text-xs font-semibold">
+                                    <button class="cursor-pointer text-[var(--color-primary-green)] transition-colors hover:text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-green)] focus:ring-offset-2" type="button" wire:click="editMealItem({{ $item['food_id'] }})" data-testid="edit-meal-item">
+                                        {{ __('ui.meals.edit') }}
+                                    </button>
+                                    <button class="cursor-pointer text-[var(--color-text-secondary)] transition-colors hover:text-[var(--color-error)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-green)] focus:ring-offset-2" type="button" wire:click="removeMealItem({{ $item['food_id'] }})" data-testid="remove-meal-item">
+                                        {{ __('ui.meals.remove') }}
+                                    </button>
+                                </div>
+                            </article>
+                        @endforeach
+                    </div>
                 @else
-                    <button class="cursor-not-allowed rounded-lg border border-[var(--color-border)] bg-[var(--color-background)] px-4 py-2.5 text-sm font-semibold text-[var(--color-text-secondary)] opacity-70" type="button" data-testid="open-food-modal-disabled" disabled>
-                        {{ __('ui.meals.add_food') }}
-                    </button>
+                    <div class="mt-4 rounded-xl border border-dashed border-[var(--color-border)] px-5 py-8 text-center" data-testid="meal-items-empty-state">
+                        <p class="text-sm text-[var(--color-text-secondary)]">{{ __('ui.meals.items_empty_description') }}</p>
+                    </div>
                 @endif
             </div>
 
-            @if ($hasMealItems)
-                <div class="mt-4 divide-y divide-[var(--color-border)] border-y border-[var(--color-border)]" data-testid="meal-items-list">
-                    @foreach ($mealDraftItems as $item)
-                        <article class="flex items-start justify-between gap-4 py-4" data-testid="meal-item" data-food-id="{{ $item['food_id'] }}">
-                            <div class="min-w-0">
-                                <h4 class="break-words font-semibold text-[var(--color-text-primary)]">{{ $item['name'] }}</h4>
-                                <p class="mt-1 text-sm text-[var(--color-text-secondary)]">
-                                    <span class="font-semibold">{{ $item['formatted_weight'] }} g</span>
-                                    <span class="mx-2 text-[var(--color-warm-accent)]">•</span>
-                                    <span class="font-semibold">{{ $item['formatted_calories'] }} kcal</span>
-                                    <span class="hidden md:inline">
-                                        <span class="mx-2 text-[var(--color-warm-accent)]">•</span>
-                                        <span><span class="font-semibold">{{ $item['formatted_protein'] }} g</span> <span class="lowercase">{{ __('ui.meals.protein') }}</span></span>
-                                        <span class="mx-2 text-[var(--color-warm-accent)]">•</span>
-                                        <span><span class="font-semibold">{{ $item['formatted_carbs'] }} g</span> <span class="lowercase">{{ __('ui.meals.carbohydrates') }}</span></span>
-                                        <span class="mx-2 text-[var(--color-warm-accent)]">•</span>
-                                        <span><span class="font-semibold">{{ $item['formatted_fat'] }} g</span> <span class="lowercase">{{ __('ui.meals.fat') }}</span></span>
-                                    </span>
-                                </p>
-                            </div>
-
-                            <div class="flex shrink-0 gap-3 text-xs font-semibold">
-                                <button class="cursor-pointer text-[var(--color-primary-green)] transition-colors hover:text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-green)] focus:ring-offset-2" type="button" wire:click="editMealItem({{ $item['food_id'] }})" data-testid="edit-meal-item">
-                                    {{ __('ui.meals.edit') }}
-                                </button>
-                                <button class="cursor-pointer text-[var(--color-text-secondary)] transition-colors hover:text-[var(--color-error)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-green)] focus:ring-offset-2" type="button" wire:click="removeMealItem({{ $item['food_id'] }})" data-testid="remove-meal-item">
-                                    {{ __('ui.meals.remove') }}
-                                </button>
-                            </div>
-                        </article>
-                    @endforeach
-                </div>
-            @else
-                <div class="mt-4 border-y border-[var(--color-border)]" data-testid="meal-items-empty-state">
-                    <p class="py-8 text-center text-sm text-[var(--color-text-secondary)]">{{ __('ui.meals.items_empty_description') }}</p>
-                </div>
-            @endif
-
-            <section class="mt-7" data-testid="meal-nutrition-summary">
-                <h3 class="text-sm font-semibold text-[var(--color-text-primary)]">{{ __('ui.meals.nutrition_summary') }}</h3>
-                <div class="mt-3 grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-[var(--color-border)] bg-[var(--color-border)] sm:grid-cols-4">
+            <aside class="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 lg:sticky lg:top-6 lg:self-start sm:p-7" data-testid="meal-nutrition-summary">
+                <h3 class="text-xl font-semibold leading-tight text-[var(--color-text-primary)]">{{ __('ui.meals.nutrition_summary') }}</h3>
+                <div class="mt-3 grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-[var(--color-border)] bg-[var(--color-border)]">
                     <div class="bg-[var(--color-light-green)] px-4 py-4">
                         <p class="text-2xl font-semibold tracking-[-0.05em] text-[var(--color-text-primary)]">{{ $mealNutritionSummary['calories'] }} kcal</p>
                         <p class="mt-1 text-xs font-medium text-[var(--color-text-secondary)]">{{ __('ui.meals.total_calories') }}</p>
@@ -100,22 +98,26 @@
                         <p class="mt-1 text-xs font-medium text-[var(--color-text-secondary)]">{{ __('ui.meals.fat') }}</p>
                     </div>
                 </div>
-            </section>
 
-            <div class="mt-8 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
-                <button class="cursor-pointer rounded-lg px-5 py-2.5 text-sm font-semibold text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-light-green)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-green)] focus:ring-offset-2" type="button" wire:click="cancelMealEditor" data-testid="cancel-meal-editor">
-                    {{ __('ui.meals.cancel') }}
-                </button>
-                @if ($canSubmitMeal)
-                    <button class="cursor-pointer rounded-lg bg-[var(--color-primary-green)] px-5 py-2.5 text-sm font-semibold text-white hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-green)] focus:ring-offset-2" type="button" wire:click="submitMeal" data-testid="submit-meal-enabled">
-                        {{ __($editingMealId === null ? 'ui.meals.create' : 'ui.meals.save') }}
+                <p class="mt-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-background)] px-4 py-4 text-sm leading-6 text-[var(--color-text-secondary)]">
+                    {{ __('ui.meals.nutrition_summary_description') }}
+                </p>
+
+                <div class="mt-7 flex flex-col gap-3">
+                    @if ($canSubmitMeal)
+                        <button class="w-full cursor-pointer rounded-lg bg-[var(--color-primary-green)] px-5 py-2.5 text-sm font-semibold text-white hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-green)] focus:ring-offset-2" type="button" wire:click="submitMeal" data-testid="submit-meal-enabled">
+                            {{ __($editingMealId === null ? 'ui.meals.create' : 'ui.meals.save') }}
+                        </button>
+                    @else
+                        <button class="w-full cursor-not-allowed rounded-lg border border-[var(--color-border)] bg-[var(--color-background)] px-5 py-2.5 text-sm font-semibold text-[var(--color-text-secondary)] opacity-70" type="button" data-testid="submit-meal-disabled" disabled>
+                            {{ __($editingMealId === null ? 'ui.meals.create' : 'ui.meals.save') }}
+                        </button>
+                    @endif
+                    <button class="w-full cursor-pointer rounded-lg px-5 py-2.5 text-sm font-semibold text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-light-green)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-green)] focus:ring-offset-2" type="button" wire:click="cancelMealEditor" data-testid="cancel-meal-editor">
+                        {{ __('ui.meals.cancel') }}
                     </button>
-                @else
-                    <button class="cursor-not-allowed rounded-lg border border-[var(--color-border)] bg-[var(--color-background)] px-5 py-2.5 text-sm font-semibold text-[var(--color-text-secondary)] opacity-70" type="button" data-testid="submit-meal-disabled" disabled>
-                        {{ __($editingMealId === null ? 'ui.meals.create' : 'ui.meals.save') }}
-                    </button>
-                @endif
-            </div>
+                </div>
+            </aside>
         </section>
     @elseif ($hasPersistedMeals)
         <section data-testid="meal-list">

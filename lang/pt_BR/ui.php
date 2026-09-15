@@ -65,6 +65,7 @@ return [
         'total_quantity_too_high' => 'A quantidade total de :food na refeição não pode ultrapassar :max g.',
         'nutrition_for_weight' => 'Para :weight g',
         'nutrition_summary' => 'Resumo nutricional',
+        'nutrition_summary_description' => 'Os valores nutricionais são atualizados conforme você adiciona, edita ou remove alimentos.',
         'total_calories' => 'Calorias totais',
         'protein' => 'Proteínas',
         'carbohydrates' => 'Carboidratos',

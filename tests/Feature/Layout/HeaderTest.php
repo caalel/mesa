@@ -43,3 +43,21 @@ it('marks English as the active locale in the header switcher', function () {
         ->assertSeeHtml('data-testid="locale-option-en" aria-current="true"')
         ->assertDontSeeHtml('data-testid="locale-option-pt_BR" aria-current="true"');
 });
+
+it('marks only Meals as the current navigation link on the meals route', function () {
+    $response = $this->get(route('meals'));
+
+    $response
+        ->assertOk()
+        ->assertSeeHtml('href="'.route('meals').'" aria-current="page"')
+        ->assertDontSeeHtml('href="'.route('comparator').'" aria-current="page"');
+});
+
+it('marks only Comparator as the current navigation link on the comparator route', function () {
+    $response = $this->get(route('comparator'));
+
+    $response
+        ->assertOk()
+        ->assertSeeHtml('href="'.route('comparator').'" aria-current="page"')
+        ->assertDontSeeHtml('href="'.route('meals').'" aria-current="page"');
+});
