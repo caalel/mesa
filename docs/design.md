@@ -42,7 +42,8 @@ and Comparator centered geometrically in the header, and a `PT`/`EN` language
 selector on the right. It is transparent in its normal state. On hover or
 `focus-within`, the navigation gains a rounded white surface and a subtle shadow.
 
-The header has no active-route indicator. Below the `sm` breakpoint (640 px), its
+The current route is indicated with the light-green surface and primary-green
+text, and exposes `aria-current="page"`. Below the `sm` breakpoint (640 px), its
 controls stack and center. From `sm` onward, the navigation remains visually
 centered while the brand and locale selector anchor the sides.
 
@@ -80,9 +81,12 @@ The Meals page has three primary states:
 3. **List**, which presents saved meals and their nutritional totals.
 
 The editor has a meal name, an item list, a nutritional summary, and cancel and
-save actions. A meal requires a name and at least one Food. It can contain at most
-10 distinct Foods. Removing the last item returns the item area to its empty state;
-cancelling discards the current editor draft.
+save actions. At `lg` and above, its main editing area and nutritional summary use
+two columns, with the summary on the right and sticky while the page scrolls. Below
+`lg`, those regions stack vertically. Foods in the draft appear as individual cards
+with spacing between them rather than dividers. A meal requires a name and at least
+one Food. It can contain at most 10 distinct Foods. Removing the last item returns
+the item area to its empty state; cancelling discards the current editor draft.
 
 Saved meals show their Food count, calories, protein, carbohydrates, and fat. They
 can be reopened for editing or deleted immediately from the list.

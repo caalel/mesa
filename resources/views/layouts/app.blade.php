@@ -20,11 +20,25 @@
                 </a>
 
                 <div class="flex w-full items-center justify-center gap-1 sm:absolute sm:left-1/2 sm:w-auto sm:-translate-x-1/2 sm:gap-2">
-                    <a class="cursor-pointer rounded-xl px-3 py-2 text-sm font-medium text-[var(--color-text-primary)] transition hover:bg-[var(--color-light-green)] focus:bg-[var(--color-light-green)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary-green)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-surface)] sm:px-4 sm:py-2.5 sm:text-base" href="{{ route('comparator') }}">
+                    <a
+                        @class([
+                            'cursor-pointer rounded-xl px-3 py-2 text-sm font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary-green)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-surface)] sm:px-4 sm:py-2.5 sm:text-base',
+                            'bg-[var(--color-light-green)] text-[var(--color-primary-green)]' => request()->routeIs('comparator'),
+                            'text-[var(--color-text-primary)] hover:bg-[var(--color-light-green)] focus:bg-[var(--color-light-green)]' => ! request()->routeIs('comparator'),
+                        ])
+                        href="{{ route('comparator') }}"@if (request()->routeIs('comparator')) aria-current="page"@endif
+                    >
                         {{ __('ui.navigation.comparator') }}
                     </a>
 
-                    <a class="cursor-pointer rounded-xl px-3 py-2 text-sm font-medium text-[var(--color-text-primary)] transition hover:bg-[var(--color-light-green)] focus:bg-[var(--color-light-green)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary-green)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-surface)] sm:px-4 sm:py-2.5 sm:text-base" href="{{ route('meals') }}">
+                    <a
+                        @class([
+                            'cursor-pointer rounded-xl px-3 py-2 text-sm font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary-green)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-surface)] sm:px-4 sm:py-2.5 sm:text-base',
+                            'bg-[var(--color-light-green)] text-[var(--color-primary-green)]' => request()->routeIs('meals'),
+                            'text-[var(--color-text-primary)] hover:bg-[var(--color-light-green)] focus:bg-[var(--color-light-green)]' => ! request()->routeIs('meals'),
+                        ])
+                        href="{{ route('meals') }}"@if (request()->routeIs('meals')) aria-current="page"@endif
+                    >
                         {{ __('ui.navigation.meals') }}
                     </a>
                 </div>
