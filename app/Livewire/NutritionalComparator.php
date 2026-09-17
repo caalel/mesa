@@ -27,11 +27,6 @@ class NutritionalComparator extends Component
 
     public ?int $foodBId = null;
 
-    /**
-     * @var array{food_a_weight: string, food_a_name: string, food_b_weight: string, food_b_name: string, food_b_weight_is_less_than_minimum: bool}|null
-     */
-    public ?array $comparisonResult = null;
-
     protected CompareFoodsService $compareFoodsService;
 
     protected FoodSearchService $foodSearchService;
@@ -62,9 +57,9 @@ class NutritionalComparator extends Component
         $selectedFoodB = $this->selectedFoodB();
         $foodAHasUnavailableCalorieData = $this->foodHasUnavailableCalorieData($selectedFoodA);
         $foodBHasUnavailableCalorieData = $this->foodHasUnavailableCalorieData($selectedFoodB);
-        $canCompare = $this->canCompare();
         $foodAResults = $this->foodAResults();
         $foodBResults = $this->foodBResults();
+        $comparisonResult = $this->comparisonResult();
 
         return view('livewire.nutritional-comparator', [
             'selectedFoodA' => $selectedFoodA,
@@ -74,8 +69,7 @@ class NutritionalComparator extends Component
             'foodASummary' => $this->foodASummary($selectedFoodA),
             'foodAHasUnavailableCalorieData' => $foodAHasUnavailableCalorieData,
             'foodBHasUnavailableCalorieData' => $foodBHasUnavailableCalorieData,
-            'canCompare' => $canCompare,
-            'comparisonResult' => $this->comparisonResult,
+            'comparisonResult' => $comparisonResult,
             'foodAHasNoResults' => $this->hasNoSearchResults($this->foodAId, $this->foodASearch, $foodAResults),
             'foodBHasNoResults' => $this->hasNoSearchResults($this->foodBId, $this->foodBSearch, $foodBResults),
             'foodAWeightValidationMessage' => $this->foodAWeightValidationMessage(),
@@ -90,7 +84,6 @@ class NutritionalComparator extends Component
         $this->foodAId = $foodId;
         $this->foodASearch = '';
         $this->foodAWeight = '';
-        $this->comparisonResult = null;
     }
 
     public function changeFoodA(): void
@@ -98,40 +91,42 @@ class NutritionalComparator extends Component
         $this->foodAId = null;
         $this->foodASearch = '';
         $this->foodAWeight = '';
-        $this->comparisonResult = null;
     }
 
     public function selectFoodB(int $foodId): void
     {
         $this->foodBId = $foodId;
         $this->foodBSearch = '';
-        $this->comparisonResult = null;
     }
 
     public function changeFoodB(): void
     {
         $this->foodBId = null;
         $this->foodBSearch = '';
-        $this->comparisonResult = null;
     }
 
-    public function compare(): void
+    /**
+     * @return array{food_a_weight: string, food_a_name: string, food_b_weight: string, food_b_name: string, food_b_weight_is_less_than_minimum: bool}|null
+     */
+    private function comparisonResult(): ?array
     {
-        $this->comparisonResult = null;
-
-        if (! $this->canCompare()) {
-            return;
+        if ($this->foodAId === null || $this->foodBId === null) {
+            return null;
         }
 
         $foodA = $this->selectedFoodA();
         $foodB = $this->selectedFoodB();
 
         if ($foodA === null || $foodB === null) {
-            return;
+            return null;
         }
 
         if ($this->foodHasUnavailableCalorieData($foodA) || $this->foodHasUnavailableCalorieData($foodB)) {
-            return;
+            return null;
+        }
+
+        if (! $this->foodWeightInputService->isValid($this->foodAWeight)) {
+            return null;
         }
 
         $foodAWeight = (float) $this->foodWeightInputService->normalize($this->foodAWeight);
@@ -142,20 +137,13 @@ class NutritionalComparator extends Component
         );
         $foodBWeightIsLessThanMinimum = $this->localizedNutritionalValueFormatter->isPositiveValueBelowDisplayMinimum($foodBWeight);
 
-        $this->comparisonResult = [
+        return [
             'food_a_weight' => $this->localizedNutritionalValueFormatter->format($foodAWeight),
             'food_a_name' => $foodA->localized_name,
             'food_b_weight' => $foodBWeightIsLessThanMinimum ? $this->localizedNutritionalValueFormatter->format(LocalizedNutritionalValueFormatter::MINIMUM_DISPLAYABLE_POSITIVE_VALUE) : $this->localizedNutritionalValueFormatter->format($foodBWeight),
             'food_b_name' => $foodB->localized_name,
             'food_b_weight_is_less_than_minimum' => $foodBWeightIsLessThanMinimum,
         ];
-
-        $this->dispatch('comparison-result-shown');
-    }
-
-    public function updatedFoodAWeight(): void
-    {
-        $this->comparisonResult = null;
     }
 
     private function foodAResults(): Collection
@@ -206,22 +194,6 @@ class NutritionalComparator extends Component
         }
 
         return Food::find($this->foodBId);
-    }
-
-    private function canCompare(): bool
-    {
-        if ($this->foodAId === null || $this->foodBId === null) {
-            return false;
-        }
-
-        $foodA = $this->selectedFoodA();
-        $foodB = $this->selectedFoodB();
-
-        if ($this->foodHasUnavailableCalorieData($foodA) || $this->foodHasUnavailableCalorieData($foodB)) {
-            return false;
-        }
-
-        return $this->foodWeightInputService->isValid($this->foodAWeight);
     }
 
     private function foodHasUnavailableCalorieData(?Food $food): bool

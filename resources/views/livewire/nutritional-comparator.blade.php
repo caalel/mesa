@@ -94,23 +94,9 @@
             </section>
         </div>
 
-        <div class="flex justify-center">
-            @if ($canCompare)
-                <button class="w-full cursor-pointer rounded-lg bg-[var(--color-primary-green)] px-6 py-3 text-sm font-semibold text-white hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-green)] focus:ring-offset-2 sm:w-auto sm:min-w-48" type="button" wire:click="compare" data-testid="compare-button-enabled">
-                    {{ __('ui.compare.submit') }}
-                </button>
-            @else
-                <button class="w-full cursor-not-allowed rounded-lg border border-[var(--color-border)] bg-[var(--color-background)] px-6 py-3 text-sm font-semibold text-[var(--color-text-secondary)] opacity-70 sm:w-auto sm:min-w-48" type="button" data-testid="compare-button-disabled" disabled>
-                    {{ __('ui.compare.submit') }}
-                </button>
-            @endif
-        </div>
-
         @if ($comparisonResult)
             <section
                 class="w-full rounded-2xl border border-[var(--color-border)] border-l-[3px] border-l-[var(--color-warm-accent)] bg-[var(--color-surface)] p-5 sm:p-6"
-                x-data
-                x-on:comparison-result-shown.window="$el.scrollIntoView({ behavior: 'smooth', block: 'start' })"
                 data-testid="comparison-result"
             >
                 <p class="break-words text-2xl font-semibold leading-tight text-[var(--color-text-primary)] sm:text-3xl">
