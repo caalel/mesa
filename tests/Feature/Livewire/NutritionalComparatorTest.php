@@ -1,6 +1,7 @@
 <?php
 
 use App\Livewire\NutritionalComparator;
+use App\Enums\ComparisonNutrient;
 use App\Models\Food;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\App;
@@ -8,7 +9,12 @@ use Livewire\Livewire;
 
 uses(RefreshDatabase::class);
 
-it('shows foods matching the Food A portuguese name search when the user types at least two characters', function () {
+it('starts with calories as the selected comparison nutrient', function () {
+    Livewire::test(NutritionalComparator::class)
+        ->assertSet('selectedNutrient', ComparisonNutrient::Calories);
+});
+
+it('shows foods matching the Food A portuguese name search when the user types at least one character', function () {
     Food::factory()->create([
         'name_pt' => 'Banana',
         'calories_per_100g' => 89,
@@ -34,7 +40,7 @@ it('shows foods matching the Food A portuguese name search when the user types a
     ]);
 
     Livewire::test(NutritionalComparator::class)
-        ->set('foodASearch', 'Ba')
+        ->set('foodASearch', 'B')
         ->assertSee('Banana')
         ->assertSee('Banana Prata')
         ->assertDontSee('Maçã');
@@ -346,7 +352,7 @@ it('shows the translated quantity placeholder', function () {
         ->assertSeeHtml('placeholder="Informe a quantidade em gramas."');
 });
 
-it('shows foods matching the Food B portuguese name search when the user types at least two characters', function () {
+it('shows foods matching the Food B portuguese name search when the user types at least one character', function () {
     Food::factory()->create([
         'name_pt' => 'Maçã',
     ]);
@@ -360,7 +366,7 @@ it('shows foods matching the Food B portuguese name search when the user types a
     ]);
 
     Livewire::test(NutritionalComparator::class)
-        ->set('foodBSearch', 'Ma')
+        ->set('foodBSearch', 'M')
         ->assertSee('Maçã')
         ->assertSee('Mamão')
         ->assertDontSee('Banana');

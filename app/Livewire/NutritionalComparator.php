@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Enums\ComparisonNutrient;
 use App\Models\Food;
 use App\Services\CompareFoodsService;
 use App\Services\FoodSearchService;
@@ -14,6 +15,8 @@ use Livewire\Component;
 
 class NutritionalComparator extends Component
 {
+    public ComparisonNutrient $selectedNutrient = ComparisonNutrient::Calories;
+
     public string $foodASearch = '';
 
     public string $foodBSearch = '';
