@@ -93,6 +93,7 @@ return [
         'no_foods_found' => 'Nenhum alimento encontrado.',
         'quantity_label' => 'Quantidade',
         'quantity_placeholder' => 'Informe a quantidade em gramas.',
+        'summary_for_weight' => 'Valores para :weight :unit',
         'quantity_too_high' => 'Informe uma quantidade de até :max g para comparar.',
         'nutrient_data_unavailable' => 'Dados de :nutrient indisponíveis para comparação.',
         'quantity_must_be_numeric' => 'Informe uma quantidade válida em gramas.',

@@ -93,6 +93,7 @@ return [
         'no_foods_found' => 'No foods found.',
         'quantity_label' => 'Amount',
         'quantity_placeholder' => 'Enter the amount in grams.',
+        'summary_for_weight' => 'Values for :weight :unit',
         'quantity_too_high' => 'Enter an amount of up to :max g to compare.',
         'nutrient_data_unavailable' => ':nutrient data unavailable for comparison.',
         'quantity_must_be_numeric' => 'Enter a valid amount in grams.',

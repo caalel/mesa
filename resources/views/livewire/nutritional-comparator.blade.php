@@ -74,11 +74,7 @@
 
                     @if ($foodASummary)
                         <div class="mt-6 border-t border-[var(--color-border)] pt-5">
-                            <div class="rounded-xl bg-[var(--color-light-green)] px-4 py-4" data-testid="food-a-summary">
-                                <p class="break-words text-sm font-medium leading-5 text-[var(--color-text-secondary)]">{{ $foodASummary['food']->localized_name }}</p>
-                                <p class="mt-1 text-xs text-[var(--color-text-secondary)]">{{ $foodASummary['formatted_weight'] }} {{ __('ui.compare.grams_unit') }}</p>
-                                <p class="mt-2 text-2xl font-semibold leading-7 text-[var(--color-text-primary)]">{{ $foodASummary['formatted_calories'] }} {{ __('ui.compare.calories_unit') }}</p>
-                            </div>
+                            <x-compare-nutritional-summary :summary="$foodASummary" test-id="food-a-summary" />
                         </div>
                     @endif
                 @endif
@@ -93,6 +89,12 @@
                         <p class="mt-3 text-sm text-[var(--color-error)] first-letter:uppercase" data-testid="food-b-nutrient-error" role="alert">
                             {{ __('ui.compare.nutrient_data_unavailable', ['nutrient' => str(__('ui.compare.nutrients.'.$selectedNutrient->value))->lower()]) }}
                         </p>
+                    @endif
+
+                    @if ($foodBSummary)
+                        <div class="mt-6 border-t border-[var(--color-border)] pt-5">
+                            <x-compare-nutritional-summary :summary="$foodBSummary" test-id="food-b-summary" />
+                        </div>
                     @endif
                 @else
                     <div>

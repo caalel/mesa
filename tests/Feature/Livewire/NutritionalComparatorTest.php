@@ -182,40 +182,33 @@ it('returns Food A to the search state when the user changes the selected food',
         ->assertSee('Melancia');
 });
 
-it('shows the Food A weight and calories summary when the selected food has a valid weight', function () {
+it('shows the Food A nutritional summary for the entered weight', function () {
     $banana = Food::factory()->create([
         'name_pt' => 'Banana',
         'calories_per_100g' => 128,
+        'protein_per_100g' => 12,
+        'carbs_per_100g' => 30,
+        'fat_per_100g' => 4,
     ]);
 
     Livewire::test(NutritionalComparator::class)
         ->call('selectFoodA', $banana->id)
         ->set('foodAWeight', 50)
         ->assertSeeHtml('data-testid="food-a-summary"')
-        ->assertSee('50')
-        ->assertSee('64');
-});
-
-it('shows the localized English name in the Food A summary', function () {
-    App::setLocale('en');
-
-    $brownRice = Food::factory()->create([
-        'name_pt' => 'Arroz integral',
-        'name_en' => 'Brown rice',
-        'calories_per_100g' => 128,
-    ]);
-
-    $component = Livewire::test(NutritionalComparator::class)
-        ->call('selectFoodA', $brownRice->id)
-        ->set('foodAWeight', 50);
-
-    expect(substr_count($component->html(), 'Brown rice'))->toBe(2);
+        ->assertSee('Valores para 50 g')
+        ->assertSeeHtml('data-testid="food-a-summary-calories-value">64 kcal')
+        ->assertSeeHtml('data-testid="food-a-summary-protein-value">6 g')
+        ->assertSeeHtml('data-testid="food-a-summary-carbs-value">15 g')
+        ->assertSeeHtml('data-testid="food-a-summary-fat-value">2 g');
 });
 
 it('shows a less than value for positive Food A summary calories lower than one hundredth', function () {
     $banana = Food::factory()->create([
         'name_pt' => 'Banana Prata',
         'calories_per_100g' => 0.01,
+        'protein_per_100g' => 0.009,
+        'carbs_per_100g' => 0.008,
+        'fat_per_100g' => 0.007,
     ]);
 
     Livewire::test(NutritionalComparator::class)
@@ -224,19 +217,84 @@ it('shows a less than value for positive Food A summary calories lower than one 
         ->assertSeeHtml('data-testid="food-a-summary"')
         ->assertSee('1 g')
         ->assertSee('< 0,01 kcal')
+        ->assertSeeHtml('data-testid="food-a-summary-protein-value">&lt; 0,01 g')
+        ->assertSeeHtml('data-testid="food-a-summary-carbs-value">&lt; 0,01 g')
+        ->assertSeeHtml('data-testid="food-a-summary-fat-value">&lt; 0,01 g')
         ->assertDontSee('0 kcal');
 });
 
-it('does not show the Food A calories summary when Food A has unavailable calorie data', function () {
+it('shows the Food A nutritional summary when Food A has zero calories', function () {
     $agua = Food::factory()->create([
         'name_pt' => 'Água',
         'calories_per_100g' => 0,
+        'protein_per_100g' => 2,
+        'carbs_per_100g' => 3,
+        'fat_per_100g' => 4,
     ]);
 
     Livewire::test(NutritionalComparator::class)
         ->call('selectFoodA', $agua->id)
         ->set('foodAWeight', 100)
-        ->assertDontSeeHtml('data-testid="food-a-summary"');
+        ->assertSeeHtml('data-testid="food-a-summary"')
+        ->assertSeeHtml('data-testid="food-a-summary-calories-value">0 kcal')
+        ->assertSeeHtml('data-testid="food-a-summary-protein-value">2 g')
+        ->assertSeeHtml('data-testid="food-a-summary-carbs-value">3 g')
+        ->assertSeeHtml('data-testid="food-a-summary-fat-value">4 g');
+});
+
+it('shows the Food B nutritional summary for one hundred grams before an equivalence is valid', function () {
+    App::setLocale('en');
+
+    $foodB = Food::factory()->create([
+        'name_pt' => 'Alimento B',
+        'name_en' => 'Food B',
+        'calories_per_100g' => 60,
+        'protein_per_100g' => 10,
+        'carbs_per_100g' => 20,
+        'fat_per_100g' => 4,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodB', $foodB->id)
+        ->assertSeeHtml('data-testid="food-b-summary"')
+        ->assertSee('Values for 100 g')
+        ->assertSeeHtml('data-testid="food-b-summary-calories-value">60 kcal')
+        ->assertSeeHtml('data-testid="food-b-summary-protein-value">10 g')
+        ->assertSeeHtml('data-testid="food-b-summary-carbs-value">20 g')
+        ->assertSeeHtml('data-testid="food-b-summary-fat-value">4 g');
+});
+
+it('updates the Food B nutritional summary to the equivalent weight and recalculates its values', function () {
+    App::setLocale('pt_BR');
+
+    $foodA = Food::factory()->create([
+        'name_pt' => 'Alimento A',
+        'calories_per_100g' => 100,
+    ]);
+    $foodB = Food::factory()->create([
+        'name_pt' => 'Alimento B',
+        'calories_per_100g' => 50,
+        'protein_per_100g' => 5,
+        'carbs_per_100g' => 20,
+        'fat_per_100g' => 3,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $foodA->id)
+        ->set('foodAWeight', 150)
+        ->call('selectFoodB', $foodB->id)
+        ->assertSeeHtml('data-testid="comparison-result"')
+        ->assertSee('Valores para 300 g')
+        ->assertSeeHtml('data-testid="food-b-summary-calories-value">150 kcal')
+        ->assertSeeHtml('data-testid="food-b-summary-protein-value">15 g')
+        ->assertSeeHtml('data-testid="food-b-summary-carbs-value">60 g')
+        ->assertSeeHtml('data-testid="food-b-summary-fat-value">9 g')
+        ->set('foodAWeight', 50)
+        ->assertSee('Valores para 100 g')
+        ->assertSeeHtml('data-testid="food-b-summary-calories-value">50 kcal')
+        ->assertSeeHtml('data-testid="food-b-summary-protein-value">5 g')
+        ->assertSeeHtml('data-testid="food-b-summary-carbs-value">20 g')
+        ->assertSeeHtml('data-testid="food-b-summary-fat-value">3 g');
 });
 
 it('disables the Food A quantity input when Food A has unavailable calorie data', function () {

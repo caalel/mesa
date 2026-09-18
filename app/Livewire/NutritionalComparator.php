@@ -67,6 +67,7 @@ class NutritionalComparator extends Component
             'foodAResults' => $foodAResults,
             'foodBResults' => $foodBResults,
             'foodASummary' => $this->foodASummary($selectedFoodA),
+            'foodBSummary' => $this->foodBSummary($selectedFoodB, $comparisonResult),
             'foodAHasUnavailableSelectedNutrient' => $foodAHasUnavailableSelectedNutrient,
             'foodBHasUnavailableSelectedNutrient' => $foodBHasUnavailableSelectedNutrient,
             'comparisonNutrients' => ComparisonNutrient::cases(),
@@ -128,7 +129,7 @@ class NutritionalComparator extends Component
     }
 
     /**
-     * @return array{food_a_weight: string, food_a_name: string, food_b_weight: string, food_b_name: string, food_b_weight_is_less_than_minimum: bool}|null
+     * @return array{food_a_weight: string, food_a_name: string, food_b_weight: string, food_b_weight_value: float, food_b_name: string, food_b_weight_is_less_than_minimum: bool}|null
      */
     private function comparisonResult(): ?array
     {
@@ -160,6 +161,7 @@ class NutritionalComparator extends Component
             'food_a_weight' => $this->localizedNutritionalValueFormatter->format($foodAWeight),
             'food_a_name' => $foodA->localized_name,
             'food_b_weight' => $foodBWeightIsLessThanMinimum ? $this->localizedNutritionalValueFormatter->format(LocalizedNutritionalValueFormatter::MINIMUM_DISPLAYABLE_POSITIVE_VALUE) : $this->localizedNutritionalValueFormatter->format($foodBWeight),
+            'food_b_weight_value' => $foodBWeight,
             'food_b_name' => $foodB->localized_name,
             'food_b_weight_is_less_than_minimum' => $foodBWeightIsLessThanMinimum,
         ];
@@ -215,12 +217,6 @@ class NutritionalComparator extends Component
         return Food::find($this->foodBId);
     }
 
-    private function foodHasUnavailableCalorieData(?Food $food): bool
-    {
-        // Zero or negative calories cannot produce a meaningful caloric equivalence.
-        return $food !== null && (float) $food->calories_per_100g <= 0;
-    }
-
     private function foodHasUnavailableSelectedNutrient(?Food $food): bool
     {
         if ($food === null) {
@@ -258,15 +254,11 @@ class NutritionalComparator extends Component
     }
 
     /**
-     * @return array{food: Food, weight: int|float, calories: float, formatted_weight: string, formatted_calories: string}|null
+     * @return array{food: Food, weight: float, formatted_weight: string, formatted_calories: string, formatted_protein: string, formatted_carbs: string, formatted_fat: string}|null
      */
     private function foodASummary(?Food $selectedFoodA): ?array
     {
         if ($selectedFoodA === null) {
-            return null;
-        }
-
-        if ($this->foodHasUnavailableCalorieData($selectedFoodA)) {
             return null;
         }
 
@@ -276,19 +268,40 @@ class NutritionalComparator extends Component
             return null;
         }
 
-        $weight = (float) $weight;
+        return $this->foodSummary($selectedFoodA, (float) $weight);
+    }
 
-        $calories = $this->nutritionalValuesCalculator->calculateValue(
-            valuePer100g: (float) $selectedFoodA->calories_per_100g,
-            weight: $weight,
-        );
+    /**
+     * @param  array{food_b_weight_value: float}|null  $comparisonResult
+     * @return array{food: Food, weight: float, formatted_weight: string, formatted_calories: string, formatted_protein: string, formatted_carbs: string, formatted_fat: string}|null
+     */
+    private function foodBSummary(?Food $selectedFoodB, ?array $comparisonResult): ?array
+    {
+        if ($selectedFoodB === null) {
+            return null;
+        }
+
+        return $this->foodSummary($selectedFoodB, $comparisonResult['food_b_weight_value'] ?? 100.0);
+    }
+
+    /**
+     * @return array{food: Food, weight: float, formatted_weight: string, formatted_calories: string, formatted_protein: string, formatted_carbs: string, formatted_fat: string}
+     */
+    private function foodSummary(Food $food, float $weight): array
+    {
+        $calories = $this->nutritionalValuesCalculator->calculateValue((float) $food->calories_per_100g, $weight);
+        $protein = $this->nutritionalValuesCalculator->calculateValue((float) $food->protein_per_100g, $weight);
+        $carbs = $this->nutritionalValuesCalculator->calculateValue((float) $food->carbs_per_100g, $weight);
+        $fat = $this->nutritionalValuesCalculator->calculateValue((float) $food->fat_per_100g, $weight);
 
         return [
-            'food' => $selectedFoodA,
+            'food' => $food,
             'weight' => $weight,
-            'calories' => $calories,
-            'formatted_weight' => $this->localizedNutritionalValueFormatter->format($weight),
+            'formatted_weight' => $this->localizedNutritionalValueFormatter->formatDisplayValue($weight),
             'formatted_calories' => $this->localizedNutritionalValueFormatter->formatDisplayValue($calories),
+            'formatted_protein' => $this->localizedNutritionalValueFormatter->formatDisplayValue($protein),
+            'formatted_carbs' => $this->localizedNutritionalValueFormatter->formatDisplayValue($carbs),
+            'formatted_fat' => $this->localizedNutritionalValueFormatter->formatDisplayValue($fat),
         ];
     }
 }
