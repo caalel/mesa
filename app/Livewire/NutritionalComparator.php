@@ -55,8 +55,8 @@ class NutritionalComparator extends Component
     {
         $selectedFoodA = $this->selectedFoodA();
         $selectedFoodB = $this->selectedFoodB();
-        $foodAHasUnavailableCalorieData = $this->foodHasUnavailableCalorieData($selectedFoodA);
-        $foodBHasUnavailableCalorieData = $this->foodHasUnavailableCalorieData($selectedFoodB);
+        $foodAHasUnavailableSelectedNutrient = $this->foodHasUnavailableSelectedNutrient($selectedFoodA);
+        $foodBHasUnavailableSelectedNutrient = $this->foodHasUnavailableSelectedNutrient($selectedFoodB);
         $foodAResults = $this->foodAResults();
         $foodBResults = $this->foodBResults();
         $comparisonResult = $this->comparisonResult();
@@ -67,8 +67,9 @@ class NutritionalComparator extends Component
             'foodAResults' => $foodAResults,
             'foodBResults' => $foodBResults,
             'foodASummary' => $this->foodASummary($selectedFoodA),
-            'foodAHasUnavailableCalorieData' => $foodAHasUnavailableCalorieData,
-            'foodBHasUnavailableCalorieData' => $foodBHasUnavailableCalorieData,
+            'foodAHasUnavailableSelectedNutrient' => $foodAHasUnavailableSelectedNutrient,
+            'foodBHasUnavailableSelectedNutrient' => $foodBHasUnavailableSelectedNutrient,
+            'comparisonNutrients' => ComparisonNutrient::cases(),
             'comparisonResult' => $comparisonResult,
             'foodAHasNoResults' => $this->hasNoSearchResults($this->foodAId, $this->foodASearch, $foodAResults),
             'foodBHasNoResults' => $this->hasNoSearchResults($this->foodBId, $this->foodBSearch, $foodBResults),
@@ -121,7 +122,7 @@ class NutritionalComparator extends Component
             return null;
         }
 
-        if ($this->foodHasUnavailableCalorieData($foodA) || $this->foodHasUnavailableCalorieData($foodB)) {
+        if ($this->foodHasUnavailableSelectedNutrient($foodA) || $this->foodHasUnavailableSelectedNutrient($foodB)) {
             return null;
         }
 
@@ -129,11 +130,12 @@ class NutritionalComparator extends Component
             return null;
         }
 
+        $nutrientAttribute = $this->selectedNutrient->foodAttribute();
         $foodAWeight = (float) $this->foodWeightInputService->normalize($this->foodAWeight);
         $foodBWeight = $this->compareFoodsService->calculateEquivalentWeight(
-            foodAValuePer100g: (float) $foodA->calories_per_100g,
+            foodAValuePer100g: (float) $foodA->{$nutrientAttribute},
             foodAWeight: $foodAWeight,
-            foodBValuePer100g: (float) $foodB->calories_per_100g,
+            foodBValuePer100g: (float) $foodB->{$nutrientAttribute},
         );
         $foodBWeightIsLessThanMinimum = $this->localizedNutritionalValueFormatter->isPositiveValueBelowDisplayMinimum($foodBWeight);
 
@@ -200,6 +202,17 @@ class NutritionalComparator extends Component
     {
         // Zero or negative calories cannot produce a meaningful caloric equivalence.
         return $food !== null && (float) $food->calories_per_100g <= 0;
+    }
+
+    private function foodHasUnavailableSelectedNutrient(?Food $food): bool
+    {
+        if ($food === null) {
+            return false;
+        }
+
+        $nutrientAttribute = $this->selectedNutrient->foodAttribute();
+
+        return (float) $food->{$nutrientAttribute} <= 0;
     }
 
     private function foodAWeightValidationMessage(): ?string

@@ -5,13 +5,30 @@
     </header>
 
     <div class="space-y-7">
+        <section class="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 sm:p-6" data-testid="comparison-nutrient-selector">
+            <p class="text-sm font-semibold text-[var(--color-text-primary)]">{{ __('ui.compare.compare_by') }}</p>
+            <div class="mt-4 grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-[var(--color-border)] bg-[var(--color-border)] sm:inline-flex sm:rounded-lg">
+                @foreach ($comparisonNutrients as $nutrient)
+                    <button
+                        class="cursor-pointer px-4 py-3 text-sm font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--color-primary-green)] {{ $selectedNutrient === $nutrient ? 'bg-[var(--color-light-green)] text-[var(--color-primary-green)]' : 'bg-[var(--color-surface)] text-[var(--color-text-secondary)] hover:bg-[var(--color-background)]' }}"
+                        type="button"
+                        wire:click="$set('selectedNutrient', '{{ $nutrient->value }}')"
+                        aria-pressed="{{ $selectedNutrient === $nutrient ? 'true' : 'false' }}"
+                        data-testid="comparison-nutrient-{{ $nutrient->value }}"
+                    >
+                        {{ __('ui.compare.nutrients.'.$nutrient->value) }}
+                    </button>
+                @endforeach
+            </div>
+        </section>
+
         <div class="grid items-start gap-5 lg:grid-cols-2">
             <section class="min-w-0 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 sm:p-6">
                 <h2 class="text-lg font-semibold leading-6 text-[var(--color-text-primary)]">{{ __('ui.compare.food_a_section') }}</h2>
 
                 @if ($selectedFoodA)
                     <x-compare-selected-food :name="$selectedFoodA->localized_name" wire:click="changeFoodA" />
-                    @if ($foodAHasUnavailableCalorieData)
+                    @if ($selectedNutrient === \App\Enums\ComparisonNutrient::Calories && $foodAHasUnavailableSelectedNutrient)
                         <p class="mt-3 text-sm text-[var(--color-error)]">{{ __('ui.compare.calorie_data_unavailable') }}</p>
                     @endif
                 @else
@@ -43,7 +60,7 @@
                                 type="number"
                                 placeholder="{{ __('ui.compare.quantity_placeholder') }}"
                                 wire:model.live.debounce.300ms="foodAWeight"
-                                @disabled($foodAHasUnavailableCalorieData)
+                                @disabled($foodAHasUnavailableSelectedNutrient)
                             >
                             <span class="shrink-0 text-sm font-medium text-[var(--color-text-secondary)]">{{ __('ui.compare.grams_unit') }}</span>
                         </div>
@@ -70,7 +87,7 @@
 
                 @if ($selectedFoodB)
                     <x-compare-selected-food :name="$selectedFoodB->localized_name" wire:click="changeFoodB" />
-                    @if ($foodBHasUnavailableCalorieData)
+                    @if ($selectedNutrient === \App\Enums\ComparisonNutrient::Calories && $foodBHasUnavailableSelectedNutrient)
                         <p class="mt-3 text-sm text-[var(--color-error)]">{{ __('ui.compare.calorie_data_unavailable') }}</p>
                     @endif
                 @else
@@ -99,7 +116,8 @@
                 class="w-full rounded-2xl border border-[var(--color-border)] border-l-[3px] border-l-[var(--color-warm-accent)] bg-[var(--color-surface)] p-5 sm:p-6"
                 data-testid="comparison-result"
             >
-                <p class="break-words text-2xl font-semibold leading-tight text-[var(--color-text-primary)] sm:text-3xl">
+                <p class="text-sm font-semibold text-[var(--color-primary-green)]">{{ __('ui.compare.equivalence_by', ['nutrient' => __('ui.compare.nutrients.'.$selectedNutrient->value)]) }}</p>
+                <p class="mt-2 break-words text-2xl font-semibold leading-tight text-[var(--color-text-primary)] sm:text-3xl">
                     @if ($comparisonResult['food_b_weight_is_less_than_minimum'])
                         {{ __('ui.compare.calorie_equivalence_less_than', [
                             'foodAWeight' => $comparisonResult['food_a_weight'],

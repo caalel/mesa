@@ -79,6 +79,14 @@ return [
     'compare' => [
         'title' => 'Compare alimentos',
         'subtitle' => 'Descubra quanto de um alimento equivale a outro em calorias.',
+        'compare_by' => 'Comparar por',
+        'nutrients' => [
+            'calories' => 'Calorias',
+            'protein' => 'Proteínas',
+            'carbohydrates' => 'Carboidratos',
+            'fat' => 'Gorduras',
+        ],
+        'equivalence_by' => 'Equivalência por :nutrient',
         'food_a_section' => 'Alimento de referência',
         'search_food' => 'Buscar alimento',
         'search_placeholder' => 'Digite o nome do alimento',
@@ -95,8 +103,8 @@ return [
         'food_b_section' => 'Alimento para comparar',
         'submit' => 'Comparar',
         'calorie_equivalence' => ':foodAWeight g de :foodAName ≈ :foodBWeight g de :foodBName.',
-        'calorie_equivalence_less_than' => ':foodAWeight g de :foodAName equivale a menos de :foodBWeight g de :foodBName em calorias.',
-        'calorie_equivalence_description' => 'Para consumir as mesmas calorias contidas em :foodAWeight g de :foodAName, você precisaria consumir cerca de :foodBWeight g de :foodBName.',
-        'calorie_equivalence_less_than_description' => 'Para consumir as mesmas calorias contidas em :foodAWeight g de :foodAName, você precisaria consumir menos de :foodBWeight g de :foodBName.',
+        'calorie_equivalence_less_than' => ':foodAWeight g de :foodAName equivale a menos de :foodBWeight g de :foodBName.',
+        'calorie_equivalence_description' => 'Para obter uma quantidade equivalente à de :foodAWeight g de :foodAName, você precisaria consumir cerca de :foodBWeight g de :foodBName.',
+        'calorie_equivalence_less_than_description' => 'Para obter uma quantidade equivalente à de :foodAWeight g de :foodAName, você precisaria consumir menos de :foodBWeight g de :foodBName.',
     ],
 ];

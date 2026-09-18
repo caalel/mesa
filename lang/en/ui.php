@@ -79,6 +79,14 @@ return [
     'compare' => [
         'title' => 'Compare foods',
         'subtitle' => 'Find out how much of one food is equivalent to another in calories.',
+        'compare_by' => 'Compare by',
+        'nutrients' => [
+            'calories' => 'Calories',
+            'protein' => 'Protein',
+            'carbohydrates' => 'Carbohydrates',
+            'fat' => 'Fat',
+        ],
+        'equivalence_by' => 'Equivalence by :nutrient',
         'food_a_section' => 'Reference food',
         'search_food' => 'Search for a food',
         'search_placeholder' => 'Type the food name',
@@ -96,7 +104,7 @@ return [
         'submit' => 'Compare',
         'calorie_equivalence' => ':foodAWeight g of :foodAName ≈ :foodBWeight g of :foodBName.',
         'calorie_equivalence_less_than' => ':foodAWeight g of :foodAName ≈ less than :foodBWeight g of :foodBName.',
-        'calorie_equivalence_description' => 'To match the calories in :foodAWeight g of :foodAName, you would need about :foodBWeight g of :foodBName.',
-        'calorie_equivalence_less_than_description' => 'To match the calories in :foodAWeight g of :foodAName, you would need less than :foodBWeight g of :foodBName.',
+        'calorie_equivalence_description' => 'To obtain an amount equivalent to :foodAWeight g of :foodAName, you would need about :foodBWeight g of :foodBName.',
+        'calorie_equivalence_less_than_description' => 'To obtain an amount equivalent to :foodAWeight g of :foodAName, you would need less than :foodBWeight g of :foodBName.',
     ],
 ];

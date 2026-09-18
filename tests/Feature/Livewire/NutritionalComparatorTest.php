@@ -528,6 +528,83 @@ it('shows the comparison result automatically when the state is valid', function
         ]));
 });
 
+it('calculates the comparison result with each selected nutrient', function (ComparisonNutrient $nutrient, string $expectedFoodBWeight) {
+    $foodA = Food::factory()->create([
+        'name_pt' => 'Alimento A',
+        'calories_per_100g' => 100,
+        'protein_per_100g' => 20,
+        'carbs_per_100g' => 30,
+        'fat_per_100g' => 40,
+    ]);
+    $foodB = Food::factory()->create([
+        'name_pt' => 'Alimento B',
+        'calories_per_100g' => 25,
+        'protein_per_100g' => 8,
+        'carbs_per_100g' => 60,
+        'fat_per_100g' => 100,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $foodA->id)
+        ->set('foodAWeight', 100)
+        ->call('selectFoodB', $foodB->id)
+        ->set('selectedNutrient', $nutrient->value)
+        ->assertSeeHtml('data-testid="comparison-result"')
+        ->assertSee($expectedFoodBWeight.' g de Alimento B');
+})->with([
+    [ComparisonNutrient::Calories, '400'],
+    [ComparisonNutrient::Protein, '250'],
+    [ComparisonNutrient::Carbohydrates, '50'],
+    [ComparisonNutrient::Fat, '40'],
+]);
+
+it('recalculates with the selected nutrient without changing the selected foods or weight', function () {
+    $foodA = Food::factory()->create([
+        'name_pt' => 'Alimento A',
+        'calories_per_100g' => 100,
+        'protein_per_100g' => 20,
+    ]);
+    $foodB = Food::factory()->create([
+        'name_pt' => 'Alimento B',
+        'calories_per_100g' => 25,
+        'protein_per_100g' => 80,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $foodA->id)
+        ->set('foodAWeight', 100)
+        ->call('selectFoodB', $foodB->id)
+        ->assertSee('400 g de Alimento B')
+        ->set('selectedNutrient', ComparisonNutrient::Protein->value)
+        ->assertSet('foodAId', $foodA->id)
+        ->assertSet('foodAWeight', '100')
+        ->assertSet('foodBId', $foodB->id)
+        ->assertSee('25 g de Alimento B');
+});
+
+it('does not calculate when the selected nutrient is not positive in either food', function (float $foodAProtein, float $foodBProtein) {
+    $foodA = Food::factory()->create([
+        'name_pt' => 'Alimento A',
+        'protein_per_100g' => $foodAProtein,
+    ]);
+    $foodB = Food::factory()->create([
+        'name_pt' => 'Alimento B',
+        'protein_per_100g' => $foodBProtein,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $foodA->id)
+        ->set('foodAWeight', 100)
+        ->call('selectFoodB', $foodB->id)
+        ->set('selectedNutrient', ComparisonNutrient::Protein->value)
+        ->assertDontSeeHtml('data-testid="comparison-result"');
+})->with([
+    [0, 10],
+    [-1, 10],
+    [10, 0],
+    [10, -1],
+]);
+
 it('shows localized English food names in the comparison result', function () {
     App::setLocale('en');
 
