@@ -94,7 +94,7 @@ return [
         'quantity_label' => 'Amount',
         'quantity_placeholder' => 'Enter the amount in grams.',
         'quantity_too_high' => 'Enter an amount of up to :max g to compare.',
-        'calorie_data_unavailable' => 'Calorie data unavailable for comparison.',
+        'nutrient_data_unavailable' => ':nutrient data unavailable for comparison.',
         'quantity_must_be_numeric' => 'Enter a valid amount in grams.',
         'quantity_must_be_positive' => 'Enter an amount greater than zero.',
         'grams_unit' => 'g',

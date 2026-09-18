@@ -478,23 +478,6 @@ it('returns Food B to the search state when the user changes the selected food',
 });
 
 
-it('does not show a comparison result when Food A has unavailable calorie data', function () {
-    $agua = Food::factory()->create([
-        'name_pt' => 'Água',
-        'calories_per_100g' => 0,
-    ]);
-    $maca = Food::factory()->create([
-        'name_pt' => 'Maçã',
-        'calories_per_100g' => 52,
-    ]);
-
-    Livewire::test(NutritionalComparator::class)
-        ->call('selectFoodA', $agua->id)
-        ->set('foodAWeight', 100)
-        ->call('selectFoodB', $maca->id)
-        ->assertDontSeeHtml('data-testid="comparison-result"');
-});
-
 it('shows the comparison result automatically when the state is valid', function () {
     $banana = Food::factory()->create([
         'name_pt' => 'Banana',
@@ -525,7 +508,8 @@ it('shows the comparison result automatically when the state is valid', function
             'foodAName' => 'Banana',
             'foodBWeight' => '171,15',
             'foodBName' => 'Maçã',
-        ]));
+        ]))
+        ->assertDispatched('comparison-result-available');
 });
 
 it('calculates the comparison result with each selected nutrient', function (ComparisonNutrient $nutrient, string $expectedFoodBWeight) {
@@ -595,15 +579,75 @@ it('does not calculate when the selected nutrient is not positive in either food
     Livewire::test(NutritionalComparator::class)
         ->call('selectFoodA', $foodA->id)
         ->set('foodAWeight', 100)
-        ->call('selectFoodB', $foodB->id)
         ->set('selectedNutrient', ComparisonNutrient::Protein->value)
-        ->assertDontSeeHtml('data-testid="comparison-result"');
+        ->call('selectFoodB', $foodB->id)
+        ->assertDontSeeHtml('data-testid="comparison-result"')
+        ->assertNotDispatched('comparison-result-available');
 })->with([
     [0, 10],
     [-1, 10],
     [10, 0],
     [10, -1],
 ]);
+
+it('shows a localized unavailable selected nutrient message for Food A without a weight or Food B', function (string $locale, string $message) {
+    App::setLocale($locale);
+
+    $foodA = Food::factory()->create([
+        'name_pt' => 'Alimento A',
+        'name_en' => 'Food A',
+        'protein_per_100g' => 0,
+    ]);
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $foodA->id)
+        ->set('selectedNutrient', ComparisonNutrient::Protein->value)
+        ->assertSeeHtml('data-testid="food-a-nutrient-error"')
+        ->assertSee($message);
+})->with([
+    ['pt_BR', 'Dados de proteínas indisponíveis para comparação.'],
+    ['en', 'protein data unavailable for comparison.'],
+]);
+
+it('shows an unavailable selected nutrient message for Food B without Food A', function () {
+    App::setLocale('en');
+
+    $foodB = Food::factory()->create([
+        'name_pt' => 'Alimento B',
+        'name_en' => 'Food B',
+        'fat_per_100g' => 0,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodB', $foodB->id)
+        ->set('selectedNutrient', ComparisonNutrient::Fat->value)
+        ->assertSeeHtml('data-testid="food-b-nutrient-error"')
+        ->assertSee('fat data unavailable for comparison.');
+});
+
+it('replaces the unavailable state with an equivalence when the selected nutrient becomes valid', function () {
+    $foodA = Food::factory()->create([
+        'name_pt' => 'Alimento A',
+        'calories_per_100g' => 100,
+        'protein_per_100g' => 0,
+    ]);
+    $foodB = Food::factory()->create([
+        'name_pt' => 'Alimento B',
+        'calories_per_100g' => 50,
+        'protein_per_100g' => 10,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $foodA->id)
+        ->set('foodAWeight', 100)
+        ->set('selectedNutrient', ComparisonNutrient::Protein->value)
+        ->call('selectFoodB', $foodB->id)
+        ->assertSeeHtml('data-testid="food-a-nutrient-error"')
+        ->set('selectedNutrient', ComparisonNutrient::Calories->value)
+        ->assertDontSeeHtml('data-testid="food-a-nutrient-error"')
+        ->assertSeeHtml('data-testid="comparison-result"')
+        ->assertSee('200 g de Alimento B')
+        ->assertDispatched('comparison-result-available');
+});
 
 it('shows localized English food names in the comparison result', function () {
     App::setLocale('en');
@@ -687,28 +731,6 @@ it('shows the comparison result description using a less than phrase for positiv
             'foodBWeight' => '0',
             'foodBName' => 'Maçã',
         ]));
-});
-
-it('shows a friendly message when Food A has unavailable calorie data', function () {
-    $agua = Food::factory()->create([
-        'name_pt' => 'Água',
-        'calories_per_100g' => 0,
-    ]);
-
-    Livewire::test(NutritionalComparator::class)
-        ->call('selectFoodA', $agua->id)
-        ->assertSee(__('ui.compare.calorie_data_unavailable'));
-});
-
-it('shows a friendly message when Food B has unavailable calorie data', function () {
-    $agua = Food::factory()->create([
-        'name_pt' => 'Água',
-        'calories_per_100g' => 0,
-    ]);
-
-    Livewire::test(NutritionalComparator::class)
-        ->call('selectFoodB', $agua->id)
-        ->assertSee(__('ui.compare.calorie_data_unavailable'));
 });
 
 it('shows the comparison result preserving decimal Food A weight', function () {

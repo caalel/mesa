@@ -28,8 +28,10 @@
 
                 @if ($selectedFoodA)
                     <x-compare-selected-food :name="$selectedFoodA->localized_name" wire:click="changeFoodA" />
-                    @if ($selectedNutrient === \App\Enums\ComparisonNutrient::Calories && $foodAHasUnavailableSelectedNutrient)
-                        <p class="mt-3 text-sm text-[var(--color-error)]">{{ __('ui.compare.calorie_data_unavailable') }}</p>
+                    @if ($foodAHasUnavailableSelectedNutrient)
+                        <p class="mt-3 text-sm text-[var(--color-error)] first-letter:uppercase" data-testid="food-a-nutrient-error" role="alert">
+                            {{ __('ui.compare.nutrient_data_unavailable', ['nutrient' => str(__('ui.compare.nutrients.'.$selectedNutrient->value))->lower()]) }}
+                        </p>
                     @endif
                 @else
                     <div>
@@ -87,8 +89,10 @@
 
                 @if ($selectedFoodB)
                     <x-compare-selected-food :name="$selectedFoodB->localized_name" wire:click="changeFoodB" />
-                    @if ($selectedNutrient === \App\Enums\ComparisonNutrient::Calories && $foodBHasUnavailableSelectedNutrient)
-                        <p class="mt-3 text-sm text-[var(--color-error)]">{{ __('ui.compare.calorie_data_unavailable') }}</p>
+                    @if ($foodBHasUnavailableSelectedNutrient)
+                        <p class="mt-3 text-sm text-[var(--color-error)] first-letter:uppercase" data-testid="food-b-nutrient-error" role="alert">
+                            {{ __('ui.compare.nutrient_data_unavailable', ['nutrient' => str(__('ui.compare.nutrients.'.$selectedNutrient->value))->lower()]) }}
+                        </p>
                     @endif
                 @else
                     <div>
@@ -115,6 +119,8 @@
             <section
                 class="w-full rounded-2xl border border-[var(--color-border)] border-l-[3px] border-l-[var(--color-warm-accent)] bg-[var(--color-surface)] p-5 sm:p-6"
                 data-testid="comparison-result"
+                x-data
+                x-on:comparison-result-available.window="$el.scrollIntoView({ behavior: 'smooth', block: 'start' })"
             >
                 <p class="text-sm font-semibold text-[var(--color-primary-green)]">{{ __('ui.compare.equivalence_by', ['nutrient' => __('ui.compare.nutrients.'.$selectedNutrient->value)]) }}</p>
                 <p class="mt-2 break-words text-2xl font-semibold leading-tight text-[var(--color-text-primary)] sm:text-3xl">

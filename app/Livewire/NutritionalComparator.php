@@ -85,6 +85,8 @@ class NutritionalComparator extends Component
         $this->foodAId = $foodId;
         $this->foodASearch = '';
         $this->foodAWeight = '';
+
+        $this->dispatchComparisonResultAvailable();
     }
 
     public function changeFoodA(): void
@@ -98,12 +100,31 @@ class NutritionalComparator extends Component
     {
         $this->foodBId = $foodId;
         $this->foodBSearch = '';
+
+        $this->dispatchComparisonResultAvailable();
     }
 
     public function changeFoodB(): void
     {
         $this->foodBId = null;
         $this->foodBSearch = '';
+    }
+
+    public function updatedFoodAWeight(): void
+    {
+        $this->dispatchComparisonResultAvailable();
+    }
+
+    public function updatedSelectedNutrient(): void
+    {
+        $this->dispatchComparisonResultAvailable();
+    }
+
+    private function dispatchComparisonResultAvailable(): void
+    {
+        if ($this->comparisonResult() !== null) {
+            $this->dispatch('comparison-result-available');
+        }
     }
 
     /**
@@ -118,15 +139,11 @@ class NutritionalComparator extends Component
         $foodA = $this->selectedFoodA();
         $foodB = $this->selectedFoodB();
 
-        if ($foodA === null || $foodB === null) {
+        if ($foodA === null || $foodB === null || ! $this->foodWeightInputService->isValid($this->foodAWeight)) {
             return null;
         }
 
         if ($this->foodHasUnavailableSelectedNutrient($foodA) || $this->foodHasUnavailableSelectedNutrient($foodB)) {
-            return null;
-        }
-
-        if (! $this->foodWeightInputService->isValid($this->foodAWeight)) {
             return null;
         }
 
