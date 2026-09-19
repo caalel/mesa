@@ -3,8 +3,8 @@
 ## Purpose
 
 MESA is an MVP with two nutritional tools. The Nutritional Comparator calculates
-caloric equivalence between two Foods. Meals lets the user assemble a meal and see
-calculated calories and macronutrients for its Foods and total.
+equivalent amounts between two Foods by a selected nutrient. Meals lets the user
+assemble a meal and see calculated calories and macronutrients for its Foods and total.
 
 ## Current Stack
 
@@ -33,7 +33,8 @@ data-import operations.
 * `Meals` is the full-page Livewire component for meal drafts, localized Food
   search and selection, nutritional previews and totals, and session-backed meal
   creation, editing, and deletion.
-* `CompareFoodsService` calculates the equivalent weight from caloric values.
+* `CompareFoodsService` calculates the equivalent weight from values of the selected
+  nutrient.
 * `FoodWeightInputService` normalizes and validates Food weights.
 * `NutritionalValuesCalculator` calculates a nutritional value for a given weight.
 * `LocalizedNutritionalValueFormatter` formats nutritional values for the active
@@ -121,18 +122,28 @@ Results are ranked in the database as follows:
 3. other names that contain every searched term;
 4. alphabetical order by the active locale's name column within the same level.
 
-## Caloric Comparison
+## Nutrient Comparison
 
-Nutritional values are stored per 100 g. Equivalence is calculated from calories,
-not from complete nutritional equivalence.
+Nutritional values are stored per 100 g. The Comparator can calculate equivalence
+by calories, protein, carbohydrates, or fat; calories is the default criterion.
+`ComparisonNutrient` maps each criterion to its Food attribute, and
+`CompareFoodsService` remains the single equivalence algorithm.
+
+The comparison result is derived from the selected Foods, Food A weight, and
+selected nutrient. It updates automatically when any of those inputs changes; no
+comparison action or mutable result state exists. Each equivalence matches only the
+selected nutrient, not complete nutritional equivalence.
 
 Food A weight accepts a point or comma as its decimal separator. The component
 normalizes the value only for validation and calculations, preserving the public
 input state. The weight must be greater than zero and no more than 10,000 g.
 
-The same food may be selected on both sides. Foods with zero or negative calories
-cannot produce a caloric equivalence. Food summaries and comparison results use
-number formatting for the active locale.
+The same food may be selected on both sides. A Food with a zero or negative value
+for the selected nutrient cannot produce an equivalence and shows a local
+unavailable-data message. Food A's summary uses its entered weight. Food B's summary
+uses 100 g before a valid equivalence and the calculated equivalent weight after one.
+Both summaries show calories, protein, carbohydrates, and fat. Food summaries and
+comparison results use number formatting for the active locale.
 
 ## Persistence and Source Identity
 

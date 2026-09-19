@@ -1,6 +1,7 @@
 <?php
 
 use App\Livewire\NutritionalComparator;
+use App\Enums\ComparisonNutrient;
 use App\Models\Food;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\App;
@@ -8,7 +9,12 @@ use Livewire\Livewire;
 
 uses(RefreshDatabase::class);
 
-it('shows foods matching the Food A portuguese name search when the user types at least two characters', function () {
+it('starts with calories as the selected comparison nutrient', function () {
+    Livewire::test(NutritionalComparator::class)
+        ->assertSet('selectedNutrient', ComparisonNutrient::Calories);
+});
+
+it('shows foods matching the Food A portuguese name search when the user types at least one character', function () {
     Food::factory()->create([
         'name_pt' => 'Banana',
         'calories_per_100g' => 89,
@@ -34,7 +40,7 @@ it('shows foods matching the Food A portuguese name search when the user types a
     ]);
 
     Livewire::test(NutritionalComparator::class)
-        ->set('foodASearch', 'Ba')
+        ->set('foodASearch', 'B')
         ->assertSee('Banana')
         ->assertSee('Banana Prata')
         ->assertDontSee('Maçã');
@@ -176,40 +182,33 @@ it('returns Food A to the search state when the user changes the selected food',
         ->assertSee('Melancia');
 });
 
-it('shows the Food A weight and calories summary when the selected food has a valid weight', function () {
+it('shows the Food A nutritional summary for the entered weight', function () {
     $banana = Food::factory()->create([
         'name_pt' => 'Banana',
         'calories_per_100g' => 128,
+        'protein_per_100g' => 12,
+        'carbs_per_100g' => 30,
+        'fat_per_100g' => 4,
     ]);
 
     Livewire::test(NutritionalComparator::class)
         ->call('selectFoodA', $banana->id)
         ->set('foodAWeight', 50)
         ->assertSeeHtml('data-testid="food-a-summary"')
-        ->assertSee('50')
-        ->assertSee('64');
+        ->assertSee('Valores para 50 g')
+        ->assertSeeHtml('data-testid="food-a-summary-calories-value">64 kcal')
+        ->assertSeeHtml('data-testid="food-a-summary-protein-value">6 g')
+        ->assertSeeHtml('data-testid="food-a-summary-carbs-value">15 g')
+        ->assertSeeHtml('data-testid="food-a-summary-fat-value">2 g');
 });
 
-it('shows the localized English name in the Food A summary', function () {
-    App::setLocale('en');
-
-    $brownRice = Food::factory()->create([
-        'name_pt' => 'Arroz integral',
-        'name_en' => 'Brown rice',
-        'calories_per_100g' => 128,
-    ]);
-
-    $component = Livewire::test(NutritionalComparator::class)
-        ->call('selectFoodA', $brownRice->id)
-        ->set('foodAWeight', 50);
-
-    expect(substr_count($component->html(), 'Brown rice'))->toBe(2);
-});
-
-it('shows a less than value for positive Food A summary calories lower than one hundredth', function () {
+it('shows a less than value for positive Food A summary values lower than one hundredth', function () {
     $banana = Food::factory()->create([
         'name_pt' => 'Banana Prata',
         'calories_per_100g' => 0.01,
+        'protein_per_100g' => 0.009,
+        'carbs_per_100g' => 0.008,
+        'fat_per_100g' => 0.007,
     ]);
 
     Livewire::test(NutritionalComparator::class)
@@ -218,22 +217,87 @@ it('shows a less than value for positive Food A summary calories lower than one 
         ->assertSeeHtml('data-testid="food-a-summary"')
         ->assertSee('1 g')
         ->assertSee('< 0,01 kcal')
+        ->assertSeeHtml('data-testid="food-a-summary-protein-value">&lt; 0,01 g')
+        ->assertSeeHtml('data-testid="food-a-summary-carbs-value">&lt; 0,01 g')
+        ->assertSeeHtml('data-testid="food-a-summary-fat-value">&lt; 0,01 g')
         ->assertDontSee('0 kcal');
 });
 
-it('does not show the Food A calories summary when Food A has unavailable calorie data', function () {
+it('shows the Food A nutritional summary when Food A has zero calories', function () {
     $agua = Food::factory()->create([
         'name_pt' => 'Água',
         'calories_per_100g' => 0,
+        'protein_per_100g' => 2,
+        'carbs_per_100g' => 3,
+        'fat_per_100g' => 4,
     ]);
 
     Livewire::test(NutritionalComparator::class)
         ->call('selectFoodA', $agua->id)
         ->set('foodAWeight', 100)
-        ->assertDontSeeHtml('data-testid="food-a-summary"');
+        ->assertSeeHtml('data-testid="food-a-summary"')
+        ->assertSeeHtml('data-testid="food-a-summary-calories-value">0 kcal')
+        ->assertSeeHtml('data-testid="food-a-summary-protein-value">2 g')
+        ->assertSeeHtml('data-testid="food-a-summary-carbs-value">3 g')
+        ->assertSeeHtml('data-testid="food-a-summary-fat-value">4 g');
 });
 
-it('disables the Food A quantity input when Food A has unavailable calorie data', function () {
+it('shows the Food B nutritional summary for one hundred grams before an equivalence is valid', function () {
+    App::setLocale('en');
+
+    $foodB = Food::factory()->create([
+        'name_pt' => 'Alimento B',
+        'name_en' => 'Food B',
+        'calories_per_100g' => 60,
+        'protein_per_100g' => 10,
+        'carbs_per_100g' => 20,
+        'fat_per_100g' => 4,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodB', $foodB->id)
+        ->assertSeeHtml('data-testid="food-b-summary"')
+        ->assertSee('Values for 100 g')
+        ->assertSeeHtml('data-testid="food-b-summary-calories-value">60 kcal')
+        ->assertSeeHtml('data-testid="food-b-summary-protein-value">10 g')
+        ->assertSeeHtml('data-testid="food-b-summary-carbs-value">20 g')
+        ->assertSeeHtml('data-testid="food-b-summary-fat-value">4 g');
+});
+
+it('updates the Food B nutritional summary to the equivalent weight and recalculates its values', function () {
+    App::setLocale('pt_BR');
+
+    $foodA = Food::factory()->create([
+        'name_pt' => 'Alimento A',
+        'calories_per_100g' => 100,
+    ]);
+    $foodB = Food::factory()->create([
+        'name_pt' => 'Alimento B',
+        'calories_per_100g' => 50,
+        'protein_per_100g' => 5,
+        'carbs_per_100g' => 20,
+        'fat_per_100g' => 3,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $foodA->id)
+        ->set('foodAWeight', 150)
+        ->call('selectFoodB', $foodB->id)
+        ->assertSeeHtml('data-testid="comparison-result"')
+        ->assertSee('Valores para 300 g')
+        ->assertSeeHtml('data-testid="food-b-summary-calories-value">150 kcal')
+        ->assertSeeHtml('data-testid="food-b-summary-protein-value">15 g')
+        ->assertSeeHtml('data-testid="food-b-summary-carbs-value">60 g')
+        ->assertSeeHtml('data-testid="food-b-summary-fat-value">9 g')
+        ->set('foodAWeight', 50)
+        ->assertSee('Valores para 100 g')
+        ->assertSeeHtml('data-testid="food-b-summary-calories-value">50 kcal')
+        ->assertSeeHtml('data-testid="food-b-summary-protein-value">5 g')
+        ->assertSeeHtml('data-testid="food-b-summary-carbs-value">20 g')
+        ->assertSeeHtml('data-testid="food-b-summary-fat-value">3 g');
+});
+
+it('disables the Food A quantity input when Food A has unavailable selected nutrient data', function () {
     $agua = Food::factory()->create([
         'name_pt' => 'Água',
         'calories_per_100g' => 0,
@@ -249,7 +313,7 @@ it('disables the Food A quantity input when Food A has unavailable calorie data'
     expect($matches[0])->toContain('disabled');
 });
 
-it('does not show the Food A calories summary when no Food A is selected', function () {
+it('does not show the Food A nutritional summary when no Food A is selected', function () {
     Food::factory()->create([
         'name_pt' => 'Banana',
         'calories_per_100g' => 128,
@@ -260,7 +324,7 @@ it('does not show the Food A calories summary when no Food A is selected', funct
         ->assertDontSeeHtml('data-testid="food-a-summary"');
 });
 
-it('does not show the Food A calories summary when the weight is empty', function () {
+it('does not show the Food A nutritional summary when the weight is empty', function () {
     $banana = Food::factory()->create([
         'name_pt' => 'Banana',
         'calories_per_100g' => 128,
@@ -346,7 +410,7 @@ it('shows the translated quantity placeholder', function () {
         ->assertSeeHtml('placeholder="Informe a quantidade em gramas."');
 });
 
-it('shows foods matching the Food B portuguese name search when the user types at least two characters', function () {
+it('shows foods matching the Food B portuguese name search when the user types at least one character', function () {
     Food::factory()->create([
         'name_pt' => 'Maçã',
     ]);
@@ -360,7 +424,7 @@ it('shows foods matching the Food B portuguese name search when the user types a
     ]);
 
     Livewire::test(NutritionalComparator::class)
-        ->set('foodBSearch', 'Ma')
+        ->set('foodBSearch', 'M')
         ->assertSee('Maçã')
         ->assertSee('Mamão')
         ->assertDontSee('Banana');
@@ -471,132 +535,10 @@ it('returns Food B to the search state when the user changes the selected food',
         ->assertSee('Laranja');
 });
 
-it('keeps the compare button disabled when Food A is not selected', function () {
-    $maca = Food::factory()->create([
-        'name_pt' => 'Maçã',
-        'calories_per_100g' => 52,
-    ]);
 
-    Livewire::test(NutritionalComparator::class)
-        ->set('foodAWeight', 100)
-        ->call('selectFoodB', $maca->id)
-        ->assertSeeHtml('data-testid="compare-button-disabled"');
-});
+it('shows the comparison result automatically when the state is valid', function () {
+    App::setLocale('pt_BR');
 
-it('keeps the compare button disabled when Food A weight is missing', function () {
-    $banana = Food::factory()->create([
-        'name_pt' => 'Banana',
-        'calories_per_100g' => 89,
-    ]);
-    $maca = Food::factory()->create([
-        'name_pt' => 'Maçã',
-        'calories_per_100g' => 52,
-    ]);
-
-    Livewire::test(NutritionalComparator::class)
-        ->call('selectFoodA', $banana->id)
-        ->call('selectFoodB', $maca->id)
-        ->assertSeeHtml('data-testid="compare-button-disabled"');
-});
-
-it('keeps the compare button disabled when Food A weight is zero', function () {
-    $banana = Food::factory()->create([
-        'name_pt' => 'Banana',
-        'calories_per_100g' => 89,
-    ]);
-    $maca = Food::factory()->create([
-        'name_pt' => 'Maçã',
-        'calories_per_100g' => 52,
-    ]);
-
-    Livewire::test(NutritionalComparator::class)
-        ->call('selectFoodA', $banana->id)
-        ->set('foodAWeight', 0)
-        ->call('selectFoodB', $maca->id)
-        ->assertSeeHtml('data-testid="compare-button-disabled"');
-});
-
-it('keeps the compare button disabled when Food A weight is negative', function () {
-    $banana = Food::factory()->create([
-        'name_pt' => 'Banana',
-        'calories_per_100g' => 89,
-    ]);
-    $maca = Food::factory()->create([
-        'name_pt' => 'Maçã',
-        'calories_per_100g' => 52,
-    ]);
-
-    Livewire::test(NutritionalComparator::class)
-        ->call('selectFoodA', $banana->id)
-        ->set('foodAWeight', -100)
-        ->call('selectFoodB', $maca->id)
-        ->assertSeeHtml('data-testid="compare-button-disabled"');
-});
-
-it('keeps the compare button disabled when Food A weight is not numeric', function () {
-    $banana = Food::factory()->create([
-        'name_pt' => 'Banana',
-        'calories_per_100g' => 89,
-    ]);
-    $maca = Food::factory()->create([
-        'name_pt' => 'Maçã',
-        'calories_per_100g' => 52,
-    ]);
-
-    Livewire::test(NutritionalComparator::class)
-        ->call('selectFoodA', $banana->id)
-        ->set('foodAWeight', 'invalid')
-        ->call('selectFoodB', $maca->id)
-        ->assertSeeHtml('data-testid="compare-button-disabled"');
-});
-
-it('enables the compare button when Food A weight is exactly 10000 grams', function () {
-    $banana = Food::factory()->create([
-        'name_pt' => 'Banana',
-        'calories_per_100g' => 89,
-    ]);
-    $maca = Food::factory()->create([
-        'name_pt' => 'Maçã',
-        'calories_per_100g' => 52,
-    ]);
-
-    Livewire::test(NutritionalComparator::class)
-        ->call('selectFoodA', $banana->id)
-        ->set('foodAWeight', 10000)
-        ->call('selectFoodB', $maca->id)
-        ->assertSeeHtml('data-testid="compare-button-enabled"');
-});
-
-it('keeps the compare button disabled when Food A weight is greater than 10000 grams', function () {
-    $banana = Food::factory()->create([
-        'name_pt' => 'Banana',
-        'calories_per_100g' => 89,
-    ]);
-    $maca = Food::factory()->create([
-        'name_pt' => 'Maçã',
-        'calories_per_100g' => 52,
-    ]);
-
-    Livewire::test(NutritionalComparator::class)
-        ->call('selectFoodA', $banana->id)
-        ->set('foodAWeight', 10001)
-        ->call('selectFoodB', $maca->id)
-        ->assertSeeHtml('data-testid="compare-button-disabled"');
-});
-
-it('keeps the compare button disabled when Food B is not selected', function () {
-    $banana = Food::factory()->create([
-        'name_pt' => 'Banana',
-        'calories_per_100g' => 89,
-    ]);
-
-    Livewire::test(NutritionalComparator::class)
-        ->call('selectFoodA', $banana->id)
-        ->set('foodAWeight', 100)
-        ->assertSeeHtml('data-testid="compare-button-disabled"');
-});
-
-it('enables the compare button when Food A, valid weight, and Food B are selected', function () {
     $banana = Food::factory()->create([
         'name_pt' => 'Banana',
         'calories_per_100g' => 89,
@@ -610,134 +552,154 @@ it('enables the compare button when Food A, valid weight, and Food B are selecte
         ->call('selectFoodA', $banana->id)
         ->set('foodAWeight', 100)
         ->call('selectFoodB', $maca->id)
-        ->assertSeeHtml('data-testid="compare-button-enabled"');
-});
-
-it('keeps the compare button disabled when Food A has unavailable calorie data', function () {
-    $agua = Food::factory()->create([
-        'name_pt' => 'Água',
-        'calories_per_100g' => 0,
-    ]);
-    $maca = Food::factory()->create([
-        'name_pt' => 'Maçã',
-        'calories_per_100g' => 52,
-    ]);
-
-    Livewire::test(NutritionalComparator::class)
-        ->call('selectFoodA', $agua->id)
-        ->set('foodAWeight', 100)
-        ->call('selectFoodB', $maca->id)
-        ->assertSeeHtml('data-testid="compare-button-disabled"');
-});
-
-it('keeps the compare button disabled when Food B has unavailable calorie data', function () {
-    $banana = Food::factory()->create([
-        'name_pt' => 'Banana',
-        'calories_per_100g' => 89,
-    ]);
-    $agua = Food::factory()->create([
-        'name_pt' => 'Água',
-        'calories_per_100g' => 0,
-    ]);
-
-    Livewire::test(NutritionalComparator::class)
-        ->call('selectFoodA', $banana->id)
-        ->set('foodAWeight', 100)
-        ->call('selectFoodB', $agua->id)
-        ->assertSeeHtml('data-testid="compare-button-disabled"');
-});
-
-it('keeps the compare button disabled when Food B has negative calorie data', function () {
-    $banana = Food::factory()->create([
-        'name_pt' => 'Banana',
-        'calories_per_100g' => 89,
-    ]);
-    $agua = Food::factory()->create([
-        'name_pt' => 'Água',
-        'calories_per_100g' => -1,
-    ]);
-
-    Livewire::test(NutritionalComparator::class)
-        ->call('selectFoodA', $banana->id)
-        ->set('foodAWeight', 100)
-        ->call('selectFoodB', $agua->id)
-        ->assertSeeHtml('data-testid="compare-button-disabled"');
-});
-
-it('does not show a comparison result when compare is called with incomplete state', function () {
-    Livewire::test(NutritionalComparator::class)
-        ->call('compare')
-        ->assertDontSeeHtml('data-testid="comparison-result"');
-});
-
-it('does not show a comparison result when compare is called with Food A unavailable calorie data', function () {
-    $agua = Food::factory()->create([
-        'name_pt' => 'Água',
-        'calories_per_100g' => 0,
-    ]);
-    $maca = Food::factory()->create([
-        'name_pt' => 'Maçã',
-        'calories_per_100g' => 52,
-    ]);
-
-    Livewire::test(NutritionalComparator::class)
-        ->call('selectFoodA', $agua->id)
-        ->set('foodAWeight', 100)
-        ->call('selectFoodB', $maca->id)
-        ->call('compare')
-        ->assertDontSeeHtml('data-testid="comparison-result"');
-});
-
-it('does not show a comparison result when compare is called with Food B unavailable calorie data', function () {
-    $banana = Food::factory()->create([
-        'name_pt' => 'Banana',
-        'calories_per_100g' => 89,
-    ]);
-    $agua = Food::factory()->create([
-        'name_pt' => 'Água',
-        'calories_per_100g' => 0,
-    ]);
-
-    Livewire::test(NutritionalComparator::class)
-        ->call('selectFoodA', $banana->id)
-        ->set('foodAWeight', 100)
-        ->call('selectFoodB', $agua->id)
-        ->call('compare')
-        ->assertDontSeeHtml('data-testid="comparison-result"');
-});
-
-it('shows the comparison result when compare is called with valid state', function () {
-    $banana = Food::factory()->create([
-        'name_pt' => 'Banana',
-        'calories_per_100g' => 89,
-    ]);
-    $maca = Food::factory()->create([
-        'name_pt' => 'Maçã',
-        'calories_per_100g' => 52,
-    ]);
-
-    Livewire::test(NutritionalComparator::class)
-        ->call('selectFoodA', $banana->id)
-        ->set('foodAWeight', 100)
-        ->call('selectFoodB', $maca->id)
-        ->call('compare')
         ->assertSeeHtml('data-testid="comparison-result"')
         ->assertSee('100 g')
         ->assertSee('Banana')
         ->assertSee('171,15 g')
         ->assertSee('Maçã')
-        ->assertSee(__('ui.compare.calorie_equivalence', [
-            'foodAWeight' => '100',
-            'foodAName' => 'Banana',
-            'foodBWeight' => '171,15',
-            'foodBName' => 'Maçã',
-        ]))
-        ->assertSee(__('ui.compare.calorie_equivalence_description', [
-            'foodAWeight' => '100',
-            'foodAName' => 'Banana',
-            'foodBWeight' => '171,15',
-            'foodBName' => 'Maçã',
-        ]));
+        ->assertSee('89 kcal em cada porção')
+        ->assertDispatched('comparison-result-available');
+});
+
+it('calculates the comparison result with each selected nutrient', function (ComparisonNutrient $nutrient, string $expectedFoodBWeight) {
+    $foodA = Food::factory()->create([
+        'name_pt' => 'Alimento A',
+        'calories_per_100g' => 100,
+        'protein_per_100g' => 20,
+        'carbs_per_100g' => 30,
+        'fat_per_100g' => 40,
+    ]);
+    $foodB = Food::factory()->create([
+        'name_pt' => 'Alimento B',
+        'calories_per_100g' => 25,
+        'protein_per_100g' => 8,
+        'carbs_per_100g' => 60,
+        'fat_per_100g' => 100,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $foodA->id)
+        ->set('foodAWeight', 100)
+        ->call('selectFoodB', $foodB->id)
+        ->set('selectedNutrient', $nutrient->value)
+        ->assertSeeHtml('data-testid="comparison-result"')
+        ->assertSee($expectedFoodBWeight.' g de Alimento B');
+})->with([
+    [ComparisonNutrient::Calories, '400'],
+    [ComparisonNutrient::Protein, '250'],
+    [ComparisonNutrient::Carbohydrates, '50'],
+    [ComparisonNutrient::Fat, '40'],
+]);
+
+it('recalculates with the selected nutrient without changing the selected foods or weight', function () {
+    App::setLocale('pt_BR');
+
+    $foodA = Food::factory()->create([
+        'name_pt' => 'Alimento A',
+        'calories_per_100g' => 100,
+        'protein_per_100g' => 20,
+    ]);
+    $foodB = Food::factory()->create([
+        'name_pt' => 'Alimento B',
+        'calories_per_100g' => 25,
+        'protein_per_100g' => 80,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $foodA->id)
+        ->set('foodAWeight', 100)
+        ->call('selectFoodB', $foodB->id)
+        ->assertSee('400 g de Alimento B')
+        ->assertSee('100 kcal em cada porção')
+        ->set('selectedNutrient', ComparisonNutrient::Protein->value)
+        ->assertSet('foodAId', $foodA->id)
+        ->assertSet('foodAWeight', '100')
+        ->assertSet('foodBId', $foodB->id)
+        ->assertSee('25 g de Alimento B')
+        ->assertSee('20 g de proteínas em cada porção');
+});
+
+it('does not calculate when the selected nutrient is not positive in either food', function (float $foodAProtein, float $foodBProtein) {
+    $foodA = Food::factory()->create([
+        'name_pt' => 'Alimento A',
+        'protein_per_100g' => $foodAProtein,
+    ]);
+    $foodB = Food::factory()->create([
+        'name_pt' => 'Alimento B',
+        'protein_per_100g' => $foodBProtein,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $foodA->id)
+        ->set('foodAWeight', 100)
+        ->set('selectedNutrient', ComparisonNutrient::Protein->value)
+        ->call('selectFoodB', $foodB->id)
+        ->assertDontSeeHtml('data-testid="comparison-result"')
+        ->assertNotDispatched('comparison-result-available');
+})->with([
+    [0, 10],
+    [-1, 10],
+    [10, 0],
+    [10, -1],
+]);
+
+it('shows a localized unavailable selected nutrient message for Food A without a weight or Food B', function (string $locale, string $message) {
+    App::setLocale($locale);
+
+    $foodA = Food::factory()->create([
+        'name_pt' => 'Alimento A',
+        'name_en' => 'Food A',
+        'protein_per_100g' => 0,
+    ]);
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $foodA->id)
+        ->set('selectedNutrient', ComparisonNutrient::Protein->value)
+        ->assertSeeHtml('data-testid="food-a-nutrient-error"')
+        ->assertSee($message);
+})->with([
+    ['pt_BR', 'Dados de proteínas indisponíveis para comparação.'],
+    ['en', 'protein data unavailable for comparison.'],
+]);
+
+it('shows an unavailable selected nutrient message for Food B without Food A', function () {
+    App::setLocale('en');
+
+    $foodB = Food::factory()->create([
+        'name_pt' => 'Alimento B',
+        'name_en' => 'Food B',
+        'fat_per_100g' => 0,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodB', $foodB->id)
+        ->set('selectedNutrient', ComparisonNutrient::Fat->value)
+        ->assertSeeHtml('data-testid="food-b-nutrient-error"')
+        ->assertSee('fat data unavailable for comparison.');
+});
+
+it('replaces the unavailable state with an equivalence when the selected nutrient becomes valid', function () {
+    $foodA = Food::factory()->create([
+        'name_pt' => 'Alimento A',
+        'calories_per_100g' => 100,
+        'protein_per_100g' => 0,
+    ]);
+    $foodB = Food::factory()->create([
+        'name_pt' => 'Alimento B',
+        'calories_per_100g' => 50,
+        'protein_per_100g' => 10,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $foodA->id)
+        ->set('foodAWeight', 100)
+        ->set('selectedNutrient', ComparisonNutrient::Protein->value)
+        ->call('selectFoodB', $foodB->id)
+        ->assertSeeHtml('data-testid="food-a-nutrient-error"')
+        ->set('selectedNutrient', ComparisonNutrient::Calories->value)
+        ->assertDontSeeHtml('data-testid="food-a-nutrient-error"')
+        ->assertSeeHtml('data-testid="comparison-result"')
+        ->assertSee('200 g de Alimento B')
+        ->assertDispatched('comparison-result-available');
 });
 
 it('shows localized English food names in the comparison result', function () {
@@ -757,20 +719,19 @@ it('shows localized English food names in the comparison result', function () {
     $component = Livewire::test(NutritionalComparator::class)
         ->call('selectFoodA', $brownRice->id)
         ->set('foodAWeight', 100)
-        ->call('selectFoodB', $blackBeans->id)
-        ->call('compare');
-
-    expect($component->get('comparisonResult')['food_a_name'])->toBe('Brown rice');
-    expect($component->get('comparisonResult')['food_b_name'])->toBe('Black beans');
+        ->call('selectFoodB', $blackBeans->id);
 
     $component
         ->assertSee('Brown rice')
         ->assertSee('Black beans')
+        ->assertSee('111 kcal in each portion')
         ->assertDontSee('Arroz integral')
         ->assertDontSee('Feijão preto');
 });
 
-it('shows the comparison result using a less than phrase for positive equivalent weight lower than one hundredth', function () {
+it('shows the comparison result with a less than equivalent weight for positive values lower than one hundredth', function () {
+    App::setLocale('pt_BR');
+
     $banana = Food::factory()->create([
         'name_pt' => 'Banana Prata',
         'calories_per_100g' => 0.01,
@@ -784,23 +745,13 @@ it('shows the comparison result using a less than phrase for positive equivalent
         ->call('selectFoodA', $banana->id)
         ->set('foodAWeight', 1)
         ->call('selectFoodB', $maca->id)
-        ->call('compare')
         ->assertSeeHtml('data-testid="comparison-result"')
-        ->assertSee(__('ui.compare.calorie_equivalence_less_than', [
-            'foodAWeight' => '1',
-            'foodAName' => 'Banana Prata',
-            'foodBWeight' => '0,01',
-            'foodBName' => 'Maçã',
-        ]))
-        ->assertDontSee(__('ui.compare.calorie_equivalence', [
-            'foodAWeight' => '1',
-            'foodAName' => 'Banana Prata',
-            'foodBWeight' => '0',
-            'foodBName' => 'Maçã',
-        ]));
+        ->assertSee('1 g de Banana Prata ≈ menos de 0,01 g de Maçã.');
 });
 
-it('shows the comparison result description using a less than phrase for positive equivalent weight lower than one hundredth', function () {
+it('shows the matched nutrient value for a positive equivalent weight lower than one hundredth', function () {
+    App::setLocale('pt_BR');
+
     $banana = Food::factory()->create([
         'name_pt' => 'Banana Prata',
         'calories_per_100g' => 0.01,
@@ -814,78 +765,8 @@ it('shows the comparison result description using a less than phrase for positiv
         ->call('selectFoodA', $banana->id)
         ->set('foodAWeight', 1)
         ->call('selectFoodB', $maca->id)
-        ->call('compare')
         ->assertSeeHtml('data-testid="comparison-result"')
-        ->assertSee(__('ui.compare.calorie_equivalence_less_than_description', [
-            'foodAWeight' => '1',
-            'foodAName' => 'Banana Prata',
-            'foodBWeight' => '0,01',
-            'foodBName' => 'Maçã',
-        ]))
-        ->assertDontSee(__('ui.compare.calorie_equivalence_description', [
-            'foodAWeight' => '1',
-            'foodAName' => 'Banana Prata',
-            'foodBWeight' => '0',
-            'foodBName' => 'Maçã',
-        ]));
-});
-
-it('dispatches an event when the comparison result is shown', function () {
-    $banana = Food::factory()->create([
-        'name_pt' => 'Banana',
-        'calories_per_100g' => 89,
-    ]);
-    $maca = Food::factory()->create([
-        'name_pt' => 'Maçã',
-        'calories_per_100g' => 52,
-    ]);
-
-    Livewire::test(NutritionalComparator::class)
-        ->call('selectFoodA', $banana->id)
-        ->set('foodAWeight', 100)
-        ->call('selectFoodB', $maca->id)
-        ->call('compare')
-        ->assertDispatched('comparison-result-shown');
-});
-
-it('does not dispatch an event when compare is called with unavailable calorie data', function () {
-    $banana = Food::factory()->create([
-        'name_pt' => 'Banana',
-        'calories_per_100g' => 89,
-    ]);
-    $agua = Food::factory()->create([
-        'name_pt' => 'Água',
-        'calories_per_100g' => 0,
-    ]);
-
-    Livewire::test(NutritionalComparator::class)
-        ->call('selectFoodA', $banana->id)
-        ->set('foodAWeight', 100)
-        ->call('selectFoodB', $agua->id)
-        ->call('compare')
-        ->assertNotDispatched('comparison-result-shown');
-});
-
-it('shows a friendly message when Food A has unavailable calorie data', function () {
-    $agua = Food::factory()->create([
-        'name_pt' => 'Água',
-        'calories_per_100g' => 0,
-    ]);
-
-    Livewire::test(NutritionalComparator::class)
-        ->call('selectFoodA', $agua->id)
-        ->assertSee(__('ui.compare.calorie_data_unavailable'));
-});
-
-it('shows a friendly message when Food B has unavailable calorie data', function () {
-    $agua = Food::factory()->create([
-        'name_pt' => 'Água',
-        'calories_per_100g' => 0,
-    ]);
-
-    Livewire::test(NutritionalComparator::class)
-        ->call('selectFoodB', $agua->id)
-        ->assertSee(__('ui.compare.calorie_data_unavailable'));
+        ->assertSee('< 0,01 kcal em cada porção');
 });
 
 it('shows the comparison result preserving decimal Food A weight', function () {
@@ -902,13 +783,12 @@ it('shows the comparison result preserving decimal Food A weight', function () {
         ->call('selectFoodA', $banana->id)
         ->set('foodAWeight', '50.5')
         ->call('selectFoodB', $maca->id)
-        ->call('compare')
         ->assertSeeHtml('data-testid="comparison-result"')
         ->assertSee('50,5 g')
         ->assertSee('86,43 g');
 });
 
-it('clears the comparison result immediately when Food A weight changes', function () {
+it('recalculates the comparison result when Food A weight changes', function () {
     $banana = Food::factory()->create([
         'name_pt' => 'Banana',
         'calories_per_100g' => 89,
@@ -922,9 +802,28 @@ it('clears the comparison result immediately when Food A weight changes', functi
         ->call('selectFoodA', $banana->id)
         ->set('foodAWeight', 100)
         ->call('selectFoodB', $maca->id)
-        ->call('compare')
         ->assertSeeHtml('data-testid="comparison-result"')
         ->set('foodAWeight', 120)
+        ->assertSeeHtml('data-testid="comparison-result"')
+        ->assertSee('205,38 g');
+});
+
+it('removes the derived comparison result when Food A weight becomes invalid', function () {
+    $banana = Food::factory()->create([
+        'name_pt' => 'Banana',
+        'calories_per_100g' => 89,
+    ]);
+    $maca = Food::factory()->create([
+        'name_pt' => 'Maçã',
+        'calories_per_100g' => 52,
+    ]);
+
+    Livewire::test(NutritionalComparator::class)
+        ->call('selectFoodA', $banana->id)
+        ->set('foodAWeight', 100)
+        ->call('selectFoodB', $maca->id)
+        ->assertSeeHtml('data-testid="comparison-result"')
+        ->set('foodAWeight', 0)
         ->assertDontSeeHtml('data-testid="comparison-result"');
 });
 
@@ -942,13 +841,7 @@ it('compares foods when Food A weight uses a comma decimal separator', function 
         ->call('selectFoodA', $foodA->id)
         ->set('foodAWeight', '50,5')
         ->call('selectFoodB', $foodB->id)
-        ->call('compare')
-        ->assertSet('comparisonResult', [
-            'food_a_weight' => '50,5',
-            'food_a_name' => 'Alimento A',
-            'food_b_weight' => '101',
-            'food_b_name' => 'Alimento B',
-            'food_b_weight_is_less_than_minimum' => false,
-        ])
+        ->assertSeeHtml('data-testid="comparison-result"')
+        ->assertSee('50,5 g de Alimento A ≈ 101 g de Alimento B.')
         ->assertDontSee(__('ui.compare.quantity_must_be_numeric'));
 });

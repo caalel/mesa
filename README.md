@@ -5,7 +5,7 @@
 
 **Medidor de Equivalência e Síntese Alimentar**
 
-MESA brings together two practical nutritional tools: a calorie-based food comparator and a meal calculator. Users can compare equivalent food amounts or assemble meals while following calories and macronutrients.
+MESA brings together two practical nutritional tools: a food comparator with nutrient-based equivalence and a meal calculator. Users can compare equivalent food amounts by calories, protein, carbohydrates, or fat, or assemble meals while tracking calories and macronutrients.
 
 ## About the project
 
@@ -17,7 +17,7 @@ MESA is a Laravel and Livewire MVP for clear, practical food comparison and meal
 - Localized food names and interface copy in `pt_BR` and `en`, without fallback between food-name languages.
 - Initial language detection from `Accept-Language`, with a manual language selector remembered in the session.
 - Home page with direct access to both tools.
-- Nutritional Comparator: Food A and Food B selection, weight validation, calorie summary, and approximate caloric equivalence.
+- Nutritional Comparator: Food A and Food B selection, Food A weight validation, automatic equivalence by calories, protein, carbohydrates, or fat, and complete nutritional summaries for both foods.
 - Meals: create, edit, and delete meals in the current session.
 - Meal drafts with localized Food search, nutritional preview by weight, duplicate-weight merging, editing and removal of Foods, and a maximum of 10 distinct Foods.
 - Nutritional summaries for meal drafts and saved meals, including calories, protein, carbohydrates, and fat.
@@ -208,7 +208,7 @@ The test command validates domain, Livewire, HTTP, import, command, seeder, Comp
 
 ## MVP limitations
 
-- Equivalence is based only on calories.
+- Each equivalence matches one selected nutrient; it does not establish complete nutritional equivalence.
 - Nutritional values are references per 100 g.
 - Real composition may vary by brand, origin, preparation, and processing.
 - The project does not replace professional nutritional guidance.

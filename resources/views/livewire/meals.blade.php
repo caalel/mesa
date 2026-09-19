@@ -46,19 +46,8 @@
                 @if ($hasMealItems)
                     <div class="mt-4 space-y-3" data-testid="meal-items-list">
                         @foreach ($mealDraftItems as $item)
-                            <article class="flex flex-col gap-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 sm:flex-row sm:items-start sm:justify-between sm:gap-4" data-testid="meal-item" data-food-id="{{ $item['food_id'] }}">
-                                <div class="min-w-0">
-                                    <h4 class="break-words font-semibold text-[var(--color-text-primary)]">{{ $item['name'] }}</h4>
-                                    <p class="mt-1 text-sm text-[var(--color-text-secondary)]">
-                                        <span class="whitespace-nowrap"><span class="font-semibold">{{ $item['formatted_weight'] }} g</span></span>
-                                        <span class="whitespace-nowrap"><span class="mx-2 text-[var(--color-warm-accent)]">•</span><span class="font-semibold">{{ $item['formatted_calories'] }} kcal</span></span>
-                                        <span class="hidden md:inline">
-                                            <span class="whitespace-nowrap"><span class="mx-2 text-[var(--color-warm-accent)]">•</span><span><span class="font-semibold">{{ $item['formatted_protein'] }} g</span> <span class="lowercase">{{ __('ui.meals.protein') }}</span></span></span>
-                                            <span class="whitespace-nowrap"><span class="mx-2 text-[var(--color-warm-accent)]">•</span><span><span class="font-semibold">{{ $item['formatted_carbs'] }} g</span> <span class="lowercase">{{ __('ui.meals.carbohydrates') }}</span></span></span>
-                                            <span class="whitespace-nowrap"><span class="mx-2 text-[var(--color-warm-accent)]">•</span><span><span class="font-semibold">{{ $item['formatted_fat'] }} g</span> <span class="lowercase">{{ __('ui.meals.fat') }}</span></span></span>
-                                        </span>
-                                    </p>
-                                </div>
+                            <article class="grid gap-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 sm:grid-cols-[minmax(0,1fr)_auto] sm:gap-x-4 sm:gap-y-1" data-testid="meal-item" data-food-id="{{ $item['food_id'] }}">
+                                <h4 class="min-w-0 break-words font-semibold text-[var(--color-text-primary)]">{{ $item['name'] }}</h4>
 
                                 <div class="flex shrink-0 gap-3 self-start text-xs font-semibold">
                                     <button class="cursor-pointer text-[var(--color-primary-green)] transition-colors hover:text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-green)] focus:ring-offset-2" type="button" wire:click="editMealItem({{ $item['food_id'] }})" data-testid="edit-meal-item">
@@ -68,6 +57,16 @@
                                         {{ __('ui.meals.remove') }}
                                     </button>
                                 </div>
+
+                                <p class="text-sm text-[var(--color-text-secondary)] sm:col-span-2 sm:col-start-1 sm:row-start-2">
+                                    <span class="whitespace-nowrap"><span class="font-semibold">{{ $item['formatted_weight'] }} g</span></span>
+                                    <span class="whitespace-nowrap"><span class="mx-2 text-[var(--color-warm-accent)]">•</span><span class="font-semibold">{{ $item['formatted_calories'] }} kcal</span></span>
+                                    <span class="hidden md:inline">
+                                        <span class="whitespace-nowrap"><span class="mx-2 text-[var(--color-warm-accent)]">•</span><span><span class="font-semibold">{{ $item['formatted_protein'] }} g</span> <span class="lowercase">{{ __('ui.meals.protein') }}</span></span></span>
+                                        <span class="whitespace-nowrap"><span class="mx-2 text-[var(--color-warm-accent)]">•</span><span><span class="font-semibold">{{ $item['formatted_carbs'] }} g</span> <span class="lowercase">{{ __('ui.meals.carbohydrates') }}</span></span></span>
+                                        <span class="whitespace-nowrap"><span class="mx-2 text-[var(--color-warm-accent)]">•</span><span><span class="font-semibold">{{ $item['formatted_fat'] }} g</span> <span class="lowercase">{{ __('ui.meals.fat') }}</span></span></span>
+                                    </span>
+                                </p>
                             </article>
                         @endforeach
                     </div>

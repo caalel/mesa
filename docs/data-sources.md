@@ -3,7 +3,7 @@
 This document records the origin, preparation, explicit decisions, traceability,
 and attribution of the nutritional dataset used by MESA. The application uses a
 reviewed local CSV at runtime; it does not query third-party composition tables
-during food search, caloric comparison, or meal calculations.
+during food search, nutrient comparison, or meal calculations.
 
 ## Source Chain
 
@@ -269,8 +269,8 @@ Five TACO records are excluded from the final dataset:
 | --- | --- | --- |
 | 450 | Iogurte, sabor abacaxi | Incomplete composition and no reliable complementary source for the exact food. |
 | 472 | Cana, aguardente 1 | Calories exist, but protein, carbohydrates, and fat required by MESA are absent. |
-| 516 | Sal, dietético | Zero calories and no practical use for caloric equivalence. |
-| 517 | Sal, grosso | Zero calories and no practical use for caloric equivalence. |
+| 516 | Sal, dietético | Zero calories, protein, carbohydrates, and fat, so no practical use for nutrient comparison. |
+| 517 | Sal, grosso | Zero calories, protein, carbohydrates, and fat, so no practical use for nutrient comparison. |
 | 591 | Coco, verde, cru | Incomplete composition and no reliable specific source for raw green coconut. |
 
 Generic coconut or coconut-water sources were not treated as equivalent to TACO 591.
@@ -395,10 +395,10 @@ They are documented approximations and are not original TACO measurements.
 
 ## Scientific Limitations
 
-Values are reference composition values per 100 g. MESA compares foods by calories;
-it does not establish complete nutritional equivalence. Food composition can vary by
-origin, brand, processing, preparation, sampling, laboratory method, and regional
-or publication differences.
+Values are reference composition values per 100 g. MESA can compare foods by
+calories, protein, carbohydrates, or fat; it does not establish complete nutritional
+equivalence. Food composition can vary by origin, brand, processing, preparation,
+sampling, laboratory method, and regional or publication differences.
 
 The USDA decisions for TACO 457 and 458 are documented approximations. This dataset
 does not replace professional nutritional guidance or act as a clinical database.
