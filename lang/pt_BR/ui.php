@@ -25,7 +25,7 @@ return [
         'introduction' => 'Compare alimentos, monte refeições e entenda melhor as relações entre calorias e macronutrientes.',
         'tools_title' => 'Ferramentas',
         'comparator_title' => 'Comparador nutricional',
-        'comparator_description' => 'Descubra a quantidade equivalente entre dois alimentos com base nas calorias.',
+        'comparator_description' => 'Compare alimentos e descubra quantidades equivalentes com base em calorias, proteínas, carboidratos ou gorduras.',
         'open_comparator' => 'Abrir comparador',
         'meals_description' => 'Crie, salve e consulte refeições acompanhando calorias e macronutrientes.',
         'open_meals' => 'Ver refeições',
@@ -78,7 +78,7 @@ return [
     ],
     'compare' => [
         'title' => 'Compare alimentos',
-        'subtitle' => 'Descubra quanto de um alimento equivale a outro em calorias.',
+        'subtitle' => 'Compare alimentos e descubra quantidades equivalentes com base em calorias, proteínas, carboidratos ou gorduras.',
         'compare_by' => 'Comparar por',
         'nutrients' => [
             'calories' => 'Calorias',
@@ -102,10 +102,9 @@ return [
         'calories_unit' => 'kcal',
         'change_food' => 'Alterar',
         'food_b_section' => 'Alimento para comparar',
-        'submit' => 'Comparar',
-        'calorie_equivalence' => ':foodAWeight g de :foodAName ≈ :foodBWeight g de :foodBName.',
-        'calorie_equivalence_less_than' => ':foodAWeight g de :foodAName equivale a menos de :foodBWeight g de :foodBName.',
-        'calorie_equivalence_description' => 'Para obter uma quantidade equivalente à de :foodAWeight g de :foodAName, você precisaria consumir cerca de :foodBWeight g de :foodBName.',
-        'calorie_equivalence_less_than_description' => 'Para obter uma quantidade equivalente à de :foodAWeight g de :foodAName, você precisaria consumir menos de :foodBWeight g de :foodBName.',
+        'equivalence' => ':foodAWeight g de :foodAName ≈ :foodBWeight g de :foodBName.',
+        'equivalence_less_than' => ':foodAWeight g de :foodAName ≈ menos de :foodBWeight g de :foodBName.',
+        'equivalence_value_calories' => ':value kcal em cada porção',
+        'equivalence_value_nutrient' => ':value g de :nutrient em cada porção',
     ],
 ];

@@ -129,7 +129,7 @@ class NutritionalComparator extends Component
     }
 
     /**
-     * @return array{food_a_weight: string, food_a_name: string, food_b_weight: string, food_b_weight_value: float, food_b_name: string, food_b_weight_is_less_than_minimum: bool}|null
+     * @return array{food_a_weight: string, food_a_name: string, food_b_weight: string, food_b_weight_value: float, food_b_name: string, food_b_weight_is_less_than_minimum: bool, formatted_matched_nutrient_value: string, matched_nutrient_is_calories: bool}|null
      */
     private function comparisonResult(): ?array
     {
@@ -150,6 +150,10 @@ class NutritionalComparator extends Component
 
         $nutrientAttribute = $this->selectedNutrient->foodAttribute();
         $foodAWeight = (float) $this->foodWeightInputService->normalize($this->foodAWeight);
+        $matchedNutrientValue = $this->nutritionalValuesCalculator->calculateValue(
+            valuePer100g: (float) $foodA->{$nutrientAttribute},
+            weight: $foodAWeight,
+        );
         $foodBWeight = $this->compareFoodsService->calculateEquivalentWeight(
             foodAValuePer100g: (float) $foodA->{$nutrientAttribute},
             foodAWeight: $foodAWeight,
@@ -164,6 +168,8 @@ class NutritionalComparator extends Component
             'food_b_weight_value' => $foodBWeight,
             'food_b_name' => $foodB->localized_name,
             'food_b_weight_is_less_than_minimum' => $foodBWeightIsLessThanMinimum,
+            'formatted_matched_nutrient_value' => $this->localizedNutritionalValueFormatter->formatDisplayValue($matchedNutrientValue),
+            'matched_nutrient_is_calories' => $this->selectedNutrient === ComparisonNutrient::Calories,
         ];
     }
 

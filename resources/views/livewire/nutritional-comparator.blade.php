@@ -127,14 +127,14 @@
                 <p class="text-sm font-semibold text-[var(--color-primary-green)]">{{ __('ui.compare.equivalence_by', ['nutrient' => __('ui.compare.nutrients.'.$selectedNutrient->value)]) }}</p>
                 <p class="mt-2 break-words text-2xl font-semibold leading-tight text-[var(--color-text-primary)] sm:text-3xl">
                     @if ($comparisonResult['food_b_weight_is_less_than_minimum'])
-                        {{ __('ui.compare.calorie_equivalence_less_than', [
+                        {{ __('ui.compare.equivalence_less_than', [
                             'foodAWeight' => $comparisonResult['food_a_weight'],
                             'foodAName' => $comparisonResult['food_a_name'],
                             'foodBWeight' => $comparisonResult['food_b_weight'],
                             'foodBName' => $comparisonResult['food_b_name'],
                         ]) }}
                     @else
-                        {{ __('ui.compare.calorie_equivalence', [
+                        {{ __('ui.compare.equivalence', [
                             'foodAWeight' => $comparisonResult['food_a_weight'],
                             'foodAName' => $comparisonResult['food_a_name'],
                             'foodBWeight' => $comparisonResult['food_b_weight'],
@@ -143,19 +143,14 @@
                     @endif
                 </p>
                 <p class="mt-5 break-words border-t border-[var(--color-border)] pt-5 text-sm leading-6 text-[var(--color-text-secondary)] sm:text-base">
-                    @if ($comparisonResult['food_b_weight_is_less_than_minimum'])
-                        {{ __('ui.compare.calorie_equivalence_less_than_description', [
-                            'foodAWeight' => $comparisonResult['food_a_weight'],
-                            'foodAName' => $comparisonResult['food_a_name'],
-                            'foodBWeight' => $comparisonResult['food_b_weight'],
-                            'foodBName' => $comparisonResult['food_b_name'],
+                    @if ($comparisonResult['matched_nutrient_is_calories'])
+                        {{ __('ui.compare.equivalence_value_calories', [
+                            'value' => $comparisonResult['formatted_matched_nutrient_value'],
                         ]) }}
                     @else
-                        {{ __('ui.compare.calorie_equivalence_description', [
-                            'foodAWeight' => $comparisonResult['food_a_weight'],
-                            'foodAName' => $comparisonResult['food_a_name'],
-                            'foodBWeight' => $comparisonResult['food_b_weight'],
-                            'foodBName' => $comparisonResult['food_b_name'],
+                        {{ __('ui.compare.equivalence_value_nutrient', [
+                            'value' => $comparisonResult['formatted_matched_nutrient_value'],
+                            'nutrient' => str(__('ui.compare.nutrients.'.$selectedNutrient->value))->lower(),
                         ]) }}
                     @endif
                 </p>

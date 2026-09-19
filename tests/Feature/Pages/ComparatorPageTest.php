@@ -35,6 +35,7 @@ it('renders the comparison nutrient selector in Brazilian Portuguese', function 
     $response
         ->assertOk()
         ->assertSee('Comparar por')
+        ->assertSee('Compare alimentos e descubra quantidades equivalentes com base em calorias, proteínas, carboidratos ou gorduras.')
         ->assertSee('Calorias')
         ->assertSee('Proteínas')
         ->assertSee('Carboidratos')
@@ -48,7 +49,7 @@ it('renders the nutritional comparator interface in English', function () {
         ->assertOk()
         ->assertSeeHtml('<html lang="en">')
         ->assertSee('Compare foods')
-        ->assertSee('Find out how much of one food is equivalent to another in calories.')
+        ->assertSee('Compare foods and find equivalent amounts based on calories, protein, carbohydrates, or fat.')
         ->assertSee('Reference food')
         ->assertSee('Food to compare')
         ->assertSee('Compare')

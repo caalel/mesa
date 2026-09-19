@@ -537,6 +537,8 @@ it('returns Food B to the search state when the user changes the selected food',
 
 
 it('shows the comparison result automatically when the state is valid', function () {
+    App::setLocale('pt_BR');
+
     $banana = Food::factory()->create([
         'name_pt' => 'Banana',
         'calories_per_100g' => 89,
@@ -555,18 +557,7 @@ it('shows the comparison result automatically when the state is valid', function
         ->assertSee('Banana')
         ->assertSee('171,15 g')
         ->assertSee('Maçã')
-        ->assertSee(__('ui.compare.calorie_equivalence', [
-            'foodAWeight' => '100',
-            'foodAName' => 'Banana',
-            'foodBWeight' => '171,15',
-            'foodBName' => 'Maçã',
-        ]))
-        ->assertSee(__('ui.compare.calorie_equivalence_description', [
-            'foodAWeight' => '100',
-            'foodAName' => 'Banana',
-            'foodBWeight' => '171,15',
-            'foodBName' => 'Maçã',
-        ]))
+        ->assertSee('89 kcal em cada porção')
         ->assertDispatched('comparison-result-available');
 });
 
@@ -601,6 +592,8 @@ it('calculates the comparison result with each selected nutrient', function (Com
 ]);
 
 it('recalculates with the selected nutrient without changing the selected foods or weight', function () {
+    App::setLocale('pt_BR');
+
     $foodA = Food::factory()->create([
         'name_pt' => 'Alimento A',
         'calories_per_100g' => 100,
@@ -617,11 +610,13 @@ it('recalculates with the selected nutrient without changing the selected foods 
         ->set('foodAWeight', 100)
         ->call('selectFoodB', $foodB->id)
         ->assertSee('400 g de Alimento B')
+        ->assertSee('100 kcal em cada porção')
         ->set('selectedNutrient', ComparisonNutrient::Protein->value)
         ->assertSet('foodAId', $foodA->id)
         ->assertSet('foodAWeight', '100')
         ->assertSet('foodBId', $foodB->id)
-        ->assertSee('25 g de Alimento B');
+        ->assertSee('25 g de Alimento B')
+        ->assertSee('20 g de proteínas em cada porção');
 });
 
 it('does not calculate when the selected nutrient is not positive in either food', function (float $foodAProtein, float $foodBProtein) {
@@ -729,11 +724,14 @@ it('shows localized English food names in the comparison result', function () {
     $component
         ->assertSee('Brown rice')
         ->assertSee('Black beans')
+        ->assertSee('111 kcal in each portion')
         ->assertDontSee('Arroz integral')
         ->assertDontSee('Feijão preto');
 });
 
-it('shows the comparison result using a less than phrase for positive equivalent weight lower than one hundredth', function () {
+it('shows the comparison result with a less than equivalent weight for positive values lower than one hundredth', function () {
+    App::setLocale('pt_BR');
+
     $banana = Food::factory()->create([
         'name_pt' => 'Banana Prata',
         'calories_per_100g' => 0.01,
@@ -748,21 +746,12 @@ it('shows the comparison result using a less than phrase for positive equivalent
         ->set('foodAWeight', 1)
         ->call('selectFoodB', $maca->id)
         ->assertSeeHtml('data-testid="comparison-result"')
-        ->assertSee(__('ui.compare.calorie_equivalence_less_than', [
-            'foodAWeight' => '1',
-            'foodAName' => 'Banana Prata',
-            'foodBWeight' => '0,01',
-            'foodBName' => 'Maçã',
-        ]))
-        ->assertDontSee(__('ui.compare.calorie_equivalence', [
-            'foodAWeight' => '1',
-            'foodAName' => 'Banana Prata',
-            'foodBWeight' => '0',
-            'foodBName' => 'Maçã',
-        ]));
+        ->assertSee('1 g de Banana Prata ≈ menos de 0,01 g de Maçã.');
 });
 
-it('shows the comparison result description using a less than phrase for positive equivalent weight lower than one hundredth', function () {
+it('shows the matched nutrient value for a positive equivalent weight lower than one hundredth', function () {
+    App::setLocale('pt_BR');
+
     $banana = Food::factory()->create([
         'name_pt' => 'Banana Prata',
         'calories_per_100g' => 0.01,
@@ -777,18 +766,7 @@ it('shows the comparison result description using a less than phrase for positiv
         ->set('foodAWeight', 1)
         ->call('selectFoodB', $maca->id)
         ->assertSeeHtml('data-testid="comparison-result"')
-        ->assertSee(__('ui.compare.calorie_equivalence_less_than_description', [
-            'foodAWeight' => '1',
-            'foodAName' => 'Banana Prata',
-            'foodBWeight' => '0,01',
-            'foodBName' => 'Maçã',
-        ]))
-        ->assertDontSee(__('ui.compare.calorie_equivalence_description', [
-            'foodAWeight' => '1',
-            'foodAName' => 'Banana Prata',
-            'foodBWeight' => '0',
-            'foodBName' => 'Maçã',
-        ]));
+        ->assertSee('< 0,01 kcal em cada porção');
 });
 
 it('shows the comparison result preserving decimal Food A weight', function () {
