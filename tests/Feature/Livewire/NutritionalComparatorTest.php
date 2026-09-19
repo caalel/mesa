@@ -202,7 +202,7 @@ it('shows the Food A nutritional summary for the entered weight', function () {
         ->assertSeeHtml('data-testid="food-a-summary-fat-value">2 g');
 });
 
-it('shows a less than value for positive Food A summary calories lower than one hundredth', function () {
+it('shows a less than value for positive Food A summary values lower than one hundredth', function () {
     $banana = Food::factory()->create([
         'name_pt' => 'Banana Prata',
         'calories_per_100g' => 0.01,
@@ -297,7 +297,7 @@ it('updates the Food B nutritional summary to the equivalent weight and recalcul
         ->assertSeeHtml('data-testid="food-b-summary-fat-value">3 g');
 });
 
-it('disables the Food A quantity input when Food A has unavailable calorie data', function () {
+it('disables the Food A quantity input when Food A has unavailable selected nutrient data', function () {
     $agua = Food::factory()->create([
         'name_pt' => 'Água',
         'calories_per_100g' => 0,
@@ -313,7 +313,7 @@ it('disables the Food A quantity input when Food A has unavailable calorie data'
     expect($matches[0])->toContain('disabled');
 });
 
-it('does not show the Food A calories summary when no Food A is selected', function () {
+it('does not show the Food A nutritional summary when no Food A is selected', function () {
     Food::factory()->create([
         'name_pt' => 'Banana',
         'calories_per_100g' => 128,
@@ -324,7 +324,7 @@ it('does not show the Food A calories summary when no Food A is selected', funct
         ->assertDontSeeHtml('data-testid="food-a-summary"');
 });
 
-it('does not show the Food A calories summary when the weight is empty', function () {
+it('does not show the Food A nutritional summary when the weight is empty', function () {
     $banana = Food::factory()->create([
         'name_pt' => 'Banana',
         'calories_per_100g' => 128,

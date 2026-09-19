@@ -33,7 +33,7 @@ The current CSS tokens are:
 | Primary green | `#315E46` | Main action, focus states, and emphasis. |
 | Light green | `#EAF1EB` | Selected-food state and interactive highlights. |
 | Warm accent | `#C7803D` | Result-card left border. |
-| Error | `#B42318` | Validation and unavailable-calorie feedback. |
+| Error | `#B42318` | Validation and unavailable-nutrient feedback. |
 
 ## Global Header
 
@@ -60,11 +60,10 @@ The comparator page contains:
 
 1. the global header;
 2. a main area with the comparator title and introductory text;
-3. the Food A card;
-4. the Food B card;
-5. the Food A summary, when applicable;
-6. the comparison button;
-7. the result block, after a successful comparison.
+3. a persistent nutrient criterion selector;
+4. the Food A card and its summary, when applicable;
+5. the Food B card and its summary, when applicable;
+6. the result block, after a valid equivalence is derived.
 
 Each food card contains either a search state or a selected-food state. The selected
 state displays the food name and an action that returns the card to its search state.
@@ -102,12 +101,17 @@ weight rather than producing another distinct item.
 
 ## Comparator Flow
 
-1. The user searches for and selects Food A.
-2. The user enters Food A weight.
-3. A valid Food A selection and weight display a calorie summary.
-4. The user searches for and selects Food B.
-5. When all required inputs are valid, the user triggers the comparison.
-6. The result appears below the form and the page scrolls smoothly to it.
+1. Calories is selected by default; the user can select calories, protein,
+   carbohydrates, or fat at any time.
+2. The user searches for and selects Food A, then enters Food A weight.
+3. A valid Food A selection and weight display a complete nutritional summary.
+4. The user searches for and selects Food B, whose summary initially represents
+   100 g.
+5. When Food A, a valid Food A weight, Food B, and positive values for the selected
+   nutrient are available, the equivalence is derived automatically.
+6. The result and Food B summary update automatically whenever either Food, Food A
+   weight, or the selected nutrient changes. The page scrolls smoothly to a new or
+   recalculated valid result.
 
 The same food can be selected on both sides. In that case, its equivalent weight is
 mathematically the same as the entered Food A weight.
@@ -154,39 +158,45 @@ The interface provides friendly feedback for:
 * zero or a negative value;
 * a weight above the maximum.
 
-Changing Food A weight clears any previous result.
+Changing Food A weight updates the derived result when the remaining inputs permit
+an equivalence; otherwise no result is shown.
 
 ## Comparison Availability and Unavailable Data
 
-The comparison action is available only when Food A and Food B are selected, both
-have positive calorie values available, and Food A weight is valid and within the
-maximum.
+The result is available only when Food A and Food B are selected, Food A weight is
+valid and within the maximum, and both Foods have a positive value for the selected
+nutrient. The result is derived rather than stored as mutable component state.
 
-Foods with zero or negative calories present clear textual feedback about unavailable
-calorie data. They cannot participate in a caloric equivalence. When Food A has
-unavailable calorie data, its weight input is disabled; unavailable data on either
-side prevents comparison.
-
-Changing either selected food also clears a previous result.
+A selected Food with a zero or negative value for the active criterion presents a
+local unavailable-nutrient message in that Food's card, even before the other inputs
+are complete. Food A's weight input is disabled in that state. Changing to a
+criterion with available values removes the message and can produce the result
+immediately.
 
 ## Summary and Result
 
-The Food A summary shows its localized name, formatted weight, and calories
-calculated from the entered weight. Values use number formatting for the active
-locale. Search results, selected foods, summaries, and comparison results all use
+Both Food summaries show calories, protein, carbohydrates, and fat using locale-aware
+number formatting. Food A's summary represents the entered weight. Food B's summary
+represents 100 g before a valid equivalence and the calculated equivalent weight
+after one. Search results, selected foods, summaries, and comparison results all use
 `localized_name`.
 
-The result presents an approximate caloric equivalence and uses a warm-accent left
-border to distinguish it from the form. Positive values below `0,01` are displayed
-as `< 0,01` instead of zero.
+The result presents the selected criterion, approximate equivalent amounts, and the
+matched nutritional value in each portion. It uses a warm-accent left border to
+distinguish it from the form. Positive values below `0,01` are displayed as
+`< 0,01` instead of zero, including an equivalent Food B weight below that minimum.
 
-After a successful comparison, the page scrolls smoothly to bring the result into view.
+The page scrolls smoothly to the result only after a valid equivalence is produced or
+recalculated.
 
 ## Responsive Layout
 
-On smaller screens, the Food A and Food B cards stack in a single column. At larger
-layout widths, they are displayed in two columns, with the comparison control and
-result below them.
+On smaller screens, the nutrient selector uses two columns and the Food A and Food B
+cards stack in a single column. At larger layout widths, the selector is horizontal
+and the Food cards are displayed in two columns, with the result below them.
+
+Each nutritional summary uses a compact responsive two-by-two grid for calories,
+protein, carbohydrates, and fat. Its weight indicator uses the warm accent.
 
 Cards and controls use constrained widths, `min-w-0`, and responsive spacing to
 avoid overflow. Food names, search results, and result text can break across lines;
@@ -214,9 +224,9 @@ The interface uses native buttons for actions and links for navigation. Form inp
 have associated labels, and validation or empty states provide textual feedback.
 
 Interactive controls expose visible focus styles. Native controls support keyboard
-interaction, while disabled comparison and unavailable-calorie states communicate
-their status visually and through text. This document does not claim a complete
-accessibility or WCAG audit.
+interaction, while the selected nutrient, disabled Food A weight input, and local
+unavailable-nutrient states communicate their status visually and through text. This
+document does not claim a complete accessibility or WCAG audit.
 
 ## Documentation Boundaries
 
