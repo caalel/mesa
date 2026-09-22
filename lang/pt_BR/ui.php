@@ -71,6 +71,13 @@ return [
         'empty_description' => 'Crie uma refeição para começar a organizar seus alimentos e acompanhar os totais nutricionais.',
         'create' => 'Criar refeição',
         'saved_meals_count' => '{1} :count refeição salva|[2,*] :count refeições salvas',
+        'auth_callout' => [
+            'heading' => 'Mantenha suas refeições salvas',
+            'description' => 'Entre ou crie uma conta para acessar suas refeições a qualquer momento. As refeições desta sessão serão adicionadas à sua conta.',
+            'login' => 'Entrar',
+            'registration' => 'Criar conta',
+            'dismiss' => 'Dispensar convite de autenticação',
+        ],
         'foods_count' => '{1} :count alimento|[2,*] :count alimentos',
         'new_meal' => 'Nova refeição',
         'draft_status' => 'Ainda não salva',

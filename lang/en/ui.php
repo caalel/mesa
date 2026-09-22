@@ -71,6 +71,13 @@ return [
         'empty_description' => 'Create a meal to start organizing your foods and tracking nutritional totals.',
         'create' => 'Create meal',
         'saved_meals_count' => '{1} :count saved meal|[2,*] :count saved meals',
+        'auth_callout' => [
+            'heading' => 'Keep your meals saved',
+            'description' => 'Sign in or create an account to access your meals anytime. Meals from this session will be added to your account.',
+            'login' => 'Sign in',
+            'registration' => 'Create account',
+            'dismiss' => 'Dismiss authentication invitation',
+        ],
         'foods_count' => '{1} :count food|[2,*] :count foods',
         'new_meal' => 'New meal',
         'draft_status' => 'Not saved yet',

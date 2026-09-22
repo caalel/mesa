@@ -2,6 +2,7 @@
 
 use App\Livewire\Meals;
 use App\Models\Food;
+use App\Models\User;
 use App\Services\FoodWeightInputService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\App;
@@ -36,7 +37,8 @@ it('shows the initial empty state without an open meal editor', function () {
         ->assertSet('isMealEditorOpen', false)
         ->assertSeeHtml('data-testid="meals-empty-state"')
         ->assertSeeHtml('data-testid="create-meal"')
-        ->assertDontSeeHtml('data-testid="meal-editor"');
+        ->assertDontSeeHtml('data-testid="meal-editor"')
+        ->assertDontSeeHtml('data-testid="meal-auth-callout"');
 });
 
 it('renders persisted meals instead of the empty state', function () {
@@ -371,6 +373,7 @@ it('submits a valid meal to the session', function () {
         ->assertSet('foodSearch', '')
         ->assertSet('selectedFoodId', null)
         ->assertSet('editingMealItemFoodId', null)
+        ->assertSeeHtml('data-testid="meal-auth-callout"')
         ->assertSet('foodWeight', '');
 
     expect(session()->get('meals'))->toEqual([
@@ -386,6 +389,106 @@ it('submits a valid meal to the session', function () {
         ],
     ]);
 });
+
+it('renders only one authentication callout after additional meals are created', function () {
+    $food = Food::factory()->create();
+
+    $component = Livewire::test(Meals::class)
+        ->call('createMeal')
+        ->set('mealName', 'Almoço')
+        ->call('openFoodModal')
+        ->call('selectFood', $food->id)
+        ->set('foodWeight', '100')
+        ->call('addFoodToDraft')
+        ->call('submitMeal')
+        ->call('createMeal')
+        ->set('mealName', 'Jantar')
+        ->call('openFoodModal')
+        ->call('selectFood', $food->id)
+        ->set('foodWeight', '100')
+        ->call('addFoodToDraft')
+        ->call('submitMeal');
+
+    expect(substr_count($component->html(), 'data-testid="meal-auth-callout"'))->toBe(1);
+});
+
+it('does not render the authentication callout for an authenticated user', function () {
+    $user = User::query()->create([
+        'name' => 'MESA User',
+        'email' => 'user@example.com',
+        'password' => 'password',
+    ]);
+
+    session()->put('meals', [
+        ['id' => 1, 'name' => 'Almoço', 'items' => []],
+    ]);
+
+    Livewire::actingAs($user);
+
+    Livewire::test(Meals::class)
+        ->assertDontSeeHtml('data-testid="meal-auth-callout"');
+});
+
+it('does not render the authentication callout again after it is dismissed', function () {
+    session()->put('meals', [
+        ['id' => 1, 'name' => 'Almoço', 'items' => []],
+    ]);
+
+    Livewire::test(Meals::class)
+        ->assertSeeHtml('data-testid="meal-auth-callout"')
+        ->call('dismissAuthCallout')
+        ->assertDontSeeHtml('data-testid="meal-auth-callout"');
+
+    expect(session()->get('meal_auth_callout_handled'))->toBeTrue();
+});
+
+it('marks the authentication callout as handled and preserves the meals destination when following an authentication action', function (string $action, string $routeName) {
+    session()->put('meals', [
+        ['id' => 1, 'name' => 'Almoço', 'items' => []],
+    ]);
+
+    Livewire::test(Meals::class)
+        ->call($action)
+        ->assertRedirect(route($routeName));
+
+    expect(session()->get('meal_auth_callout_handled'))->toBeTrue();
+    expect(session()->get('url.intended'))->toBe(route('meals'));
+
+    Livewire::test(Meals::class)
+        ->assertDontSeeHtml('data-testid="meal-auth-callout"');
+})->with([
+    'login' => ['redirectToLogin', 'login'],
+    'registration' => ['redirectToRegistration', 'register'],
+]);
+
+it('localizes the authentication callout in Brazilian Portuguese and English', function (string $locale, string $heading, string $description, string $login, string $registration) {
+    App::setLocale($locale);
+
+    session()->put('meals', [
+        ['id' => 1, 'name' => 'Almoço', 'items' => []],
+    ]);
+
+    Livewire::test(Meals::class)
+        ->assertSee($heading)
+        ->assertSee($description)
+        ->assertSee($login)
+        ->assertSee($registration);
+})->with([
+    'Brazilian Portuguese' => [
+        'pt_BR',
+        'Mantenha suas refeições salvas',
+        'Entre ou crie uma conta para acessar suas refeições a qualquer momento. As refeições desta sessão serão adicionadas à sua conta.',
+        'Entrar',
+        'Criar conta',
+    ],
+    'English' => [
+        'en',
+        'Keep your meals saved',
+        'Sign in or create an account to access your meals anytime. Meals from this session will be added to your account.',
+        'Sign in',
+        'Create account',
+    ],
+]);
 
 it('does not submit an invalid meal when called directly', function () {
     $food = Food::factory()->create();

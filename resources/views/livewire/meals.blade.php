@@ -129,6 +129,32 @@
                 </button>
             </div>
 
+            @if ($shouldShowAuthCallout)
+                <aside class="relative mt-6 rounded-2xl border border-[var(--color-primary-green)]/20 bg-[var(--color-light-green)]/50 p-5 sm:p-6" aria-labelledby="meal-auth-callout-title" data-testid="meal-auth-callout">
+                    <button class="absolute right-3 top-3 flex h-8 w-8 cursor-pointer items-center justify-center rounded-md text-xl leading-none text-[var(--color-text-secondary)] transition hover:bg-[var(--color-surface)] hover:text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-green)] focus:ring-offset-2" type="button" wire:click="dismissAuthCallout" aria-label="{{ __('ui.meals.auth_callout.dismiss') }}" data-testid="dismiss-meal-auth-callout">
+                        &times;
+                    </button>
+
+                    <div class="max-w-2xl pr-8">
+                        <h2 class="text-xl font-semibold leading-tight text-[var(--color-text-primary)]" id="meal-auth-callout-title">
+                            {{ __('ui.meals.auth_callout.heading') }}
+                        </h2>
+                        <p class="mt-2 text-sm leading-6 text-[var(--color-text-secondary)] sm:text-base">
+                            {{ __('ui.meals.auth_callout.description') }}
+                        </p>
+                    </div>
+
+                    <div class="mt-5 flex flex-wrap gap-3">
+                        <button class="cursor-pointer rounded-lg bg-[var(--color-primary-green)] px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-green)] focus:ring-offset-2" type="button" wire:click="redirectToLogin" data-testid="meal-auth-login">
+                            {{ __('ui.meals.auth_callout.login') }}
+                        </button>
+                        <button class="cursor-pointer rounded-lg border border-[var(--color-primary-green)] px-5 py-2.5 text-sm font-semibold text-[var(--color-primary-green)] transition-colors hover:bg-[var(--color-surface)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-green)] focus:ring-offset-2" type="button" wire:click="redirectToRegistration" data-testid="meal-auth-register">
+                            {{ __('ui.meals.auth_callout.registration') }}
+                        </button>
+                    </div>
+                </aside>
+            @endif
+
             <div class="mt-5 grid gap-4 lg:grid-cols-2">
                 @foreach ($mealList as $meal)
                     <article class="min-w-0 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 sm:p-6" data-testid="meal-list-item" data-meal-id="{{ $meal['id'] }}">

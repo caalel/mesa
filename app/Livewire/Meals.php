@@ -84,6 +84,7 @@ class Meals extends Component
             'hasPersistedMeals' => $persistedMeals !== [],
             'persistedMealsCount' => count($persistedMeals),
             'mealList' => $this->isMealEditorOpen ? [] : $this->mealList($persistedMeals),
+            'shouldShowAuthCallout' => $this->shouldShowAuthCallout($persistedMeals),
         ])->layout('layouts.app', [
             'title' => __('ui.metadata.meals.title'),
             'description' => __('ui.metadata.meals.description'),
@@ -129,6 +130,21 @@ class Meals extends Component
 
             return;
         }
+    }
+
+    public function dismissAuthCallout(): void
+    {
+        session()->put('meal_auth_callout_handled', true);
+    }
+
+    public function redirectToLogin(): void
+    {
+        $this->redirectToAuthenticationRoute('login');
+    }
+
+    public function redirectToRegistration(): void
+    {
+        $this->redirectToAuthenticationRoute('register');
     }
 
     public function openFoodModal(): void
@@ -494,6 +510,24 @@ class Meals extends Component
     private function persistedMeals(): array
     {
         return session()->get('meals', []);
+    }
+
+    /**
+     * @param  array<int, array{id: int, name: string, items: array<int, array{food_id: int, weight: float}>}>  $persistedMeals
+     */
+    private function shouldShowAuthCallout(array $persistedMeals): bool
+    {
+        return auth()->guest()
+            && $persistedMeals !== []
+            && ! (bool) session()->get('meal_auth_callout_handled', false);
+    }
+
+    private function redirectToAuthenticationRoute(string $routeName): void
+    {
+        session()->put('meal_auth_callout_handled', true);
+        session()->put('url.intended', route('meals'));
+
+        $this->redirectRoute($routeName);
     }
 
     /**
