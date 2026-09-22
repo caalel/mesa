@@ -1,5 +1,12 @@
 <?php
 
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Hash;
+
+uses(RefreshDatabase::class);
+
 /*
 |--------------------------------------------------------------------------
 | Helpers
@@ -61,3 +68,54 @@ it('marks only Comparator as the current navigation link on the comparator route
         ->assertSeeHtml('href="'.route('comparator').'" aria-current="page"')
         ->assertDontSeeHtml('href="'.route('meals').'" aria-current="page"');
 });
+
+it('shows the guest login action without authenticated account controls', function () {
+    $this->get('/')
+        ->assertOk()
+        ->assertSeeHtml('data-testid="header-locale-region"')
+        ->assertSeeHtml('data-testid="header-auth-region"')
+        ->assertSeeHtml('data-testid="header-login"')
+        ->assertSeeHtml('href="'.route('login').'"')
+        ->assertDontSeeHtml('data-testid="account-menu-trigger"')
+        ->assertDontSeeHtml('data-testid="account-menu"');
+});
+
+it('shows the authenticated account menu without the guest login action', function () {
+    $user = User::query()->create([
+        'name' => 'Ana Silva',
+        'email' => 'ana@example.com',
+        'password' => Hash::make('correct-horse-battery-staple'),
+    ]);
+
+    $this->actingAs($user)
+        ->get('/')
+        ->assertOk()
+        ->assertSeeHtml('data-testid="account-menu-trigger"')
+        ->assertSeeHtml('data-testid="account-menu"')
+        ->assertSeeHtml('data-testid="account-logout"')
+        ->assertSee('Ana Silva')
+        ->assertSee('ana@example.com')
+        ->assertDontSeeHtml('data-testid="header-login"');
+});
+
+it('localizes header authentication actions', function (string $locale, string $login, string $logout) {
+    App::setLocale($locale);
+
+    $this->withSession(['locale' => $locale])
+        ->get('/')
+        ->assertSee($login);
+
+    $user = User::query()->create([
+        'name' => 'Ana Silva',
+        'email' => 'ana@example.com',
+        'password' => Hash::make('correct-horse-battery-staple'),
+    ]);
+
+    $this->actingAs($user)
+        ->withSession(['locale' => $locale])
+        ->get('/')
+        ->assertSee($logout);
+})->with([
+    'Brazilian Portuguese' => ['pt_BR', 'Entrar', 'Sair'],
+    'English' => ['en', 'Sign in', 'Sign out'],
+]);

@@ -49,6 +49,9 @@ return [
             'not_registered' => 'Ainda não tem uma conta?',
             'register' => 'Criar conta',
         ],
+        'header' => [
+            'logout' => 'Sair',
+        ],
     ],
     'homepage' => [
         'name' => 'MESA',

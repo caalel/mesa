@@ -49,6 +49,9 @@ return [
             'not_registered' => "Don't have an account yet?",
             'register' => 'Create account',
         ],
+        'header' => [
+            'logout' => 'Sign out',
+        ],
     ],
     'homepage' => [
         'name' => 'MESA',
