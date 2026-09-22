@@ -41,6 +41,13 @@ return [
         ],
         'login' => [
             'title' => 'Entrar',
+            'introduction' => 'Entre para continuar no MESA.',
+            'description' => 'Acesse suas refeições salvas e os recursos associados à sua conta.',
+            'email' => 'E-mail',
+            'password' => 'Senha',
+            'submit' => 'Entrar',
+            'not_registered' => 'Ainda não tem uma conta?',
+            'register' => 'Criar conta',
         ],
     ],
     'homepage' => [

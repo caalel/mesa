@@ -41,6 +41,13 @@ return [
         ],
         'login' => [
             'title' => 'Sign in',
+            'introduction' => 'Sign in to continue with MESA.',
+            'description' => 'Access your saved meals and the features associated with your account.',
+            'email' => 'Email',
+            'password' => 'Password',
+            'submit' => 'Sign in',
+            'not_registered' => "Don't have an account yet?",
+            'register' => 'Create account',
         ],
     ],
     'homepage' => [

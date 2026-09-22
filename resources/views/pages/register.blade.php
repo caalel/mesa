@@ -92,7 +92,7 @@
                 >
             </div>
 
-            <button class="cursor-pointer mt-8  w-full rounded-lg bg-[var(--color-primary-green)] px-5 py-3 text-sm font-semibold text-white transition hover:opacity-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary-green)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-surface)]" type="submit" data-testid="registration-submit">
+            <button class="mt-8  w-full cursor-pointer rounded-lg bg-[var(--color-primary-green)] px-5 py-3 text-sm font-semibold text-white transition hover:opacity-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary-green)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-surface)]" type="submit" data-testid="registration-submit">
                 {{ __('ui.auth.register.submit') }}
             </button>
 
