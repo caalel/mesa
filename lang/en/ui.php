@@ -14,10 +14,34 @@ return [
             'title' => 'Meals | MESA',
             'description' => 'Build meals and track their calories and macronutrients.',
         ],
+        'register' => [
+            'title' => 'Create account | MESA',
+            'description' => 'Create your MESA account to keep your meals saved.',
+        ],
+        'login' => [
+            'title' => 'Sign in | MESA',
+        ],
     ],
     'navigation' => [
         'meals' => 'Meals',
         'comparator' => 'Comparator',
+    ],
+    'auth' => [
+        'register' => [
+            'title' => 'Create account',
+            'introduction' => 'Create your MESA account.',
+            'description' => 'Keep your meals saved and access the features associated with your account.',
+            'name' => 'Name',
+            'email' => 'Email',
+            'password' => 'Password',
+            'password_confirmation' => 'Confirm password',
+            'submit' => 'Create account',
+            'already_registered' => 'Already have an account?',
+            'login' => 'Sign in',
+        ],
+        'login' => [
+            'title' => 'Sign in',
+        ],
     ],
     'homepage' => [
         'name' => 'MESA',

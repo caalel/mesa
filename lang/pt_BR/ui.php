@@ -14,10 +14,34 @@ return [
             'title' => 'Refeições | MESA',
             'description' => 'Monte refeições e acompanhe suas calorias e macronutrientes.',
         ],
+        'register' => [
+            'title' => 'Criar conta | MESA',
+            'description' => 'Crie sua conta no MESA para manter suas refeições salvas.',
+        ],
+        'login' => [
+            'title' => 'Entrar | MESA',
+        ],
     ],
     'navigation' => [
         'meals' => 'Refeições',
         'comparator' => 'Comparador',
+    ],
+    'auth' => [
+        'register' => [
+            'title' => 'Criar conta',
+            'introduction' => 'Crie sua conta no MESA.',
+            'description' => 'Mantenha suas refeições salvas e acesse os recursos associados à sua conta.',
+            'name' => 'Nome',
+            'email' => 'E-mail',
+            'password' => 'Senha',
+            'password_confirmation' => 'Confirmar senha',
+            'submit' => 'Criar conta',
+            'already_registered' => 'Já tem uma conta?',
+            'login' => 'Entrar',
+        ],
+        'login' => [
+            'title' => 'Entrar',
+        ],
     ],
     'homepage' => [
         'name' => 'MESA',
