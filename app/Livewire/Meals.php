@@ -3,12 +3,15 @@
 namespace App\Livewire;
 
 use App\Models\Food;
+use App\Models\Meal;
+use App\Models\User;
 use App\Services\FoodSearchService;
 use App\Services\FoodWeightInputService;
 use App\Services\LocalizedNutritionalValueFormatter;
 use App\Services\NutritionalValuesCalculator;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
@@ -117,6 +120,14 @@ class Meals extends Component
 
     public function deleteMeal(int $mealId): void
     {
+        $user = $this->authenticatedUser();
+
+        if ($user !== null) {
+            $user->meals()->whereKey($mealId)->first()?->delete();
+
+            return;
+        }
+
         $meals = $this->persistedMeals();
 
         foreach ($meals as $index => $meal) {
@@ -307,6 +318,16 @@ class Meals extends Component
     public function submitMeal(): void
     {
         if (! $this->canSubmitMeal()) {
+            return;
+        }
+
+        $user = $this->authenticatedUser();
+
+        if ($user !== null) {
+            if ($this->persistAuthenticatedMeal($user)) {
+                $this->resetMealEditorState();
+            }
+
             return;
         }
 
@@ -509,7 +530,74 @@ class Meals extends Component
      */
     private function persistedMeals(): array
     {
+        $user = $this->authenticatedUser();
+
+        if ($user !== null) {
+            return $user->meals()
+                ->with('items')
+                ->orderBy('id')
+                ->get()
+                ->map(fn (Meal $meal): array => [
+                    'id' => $meal->id,
+                    'name' => $meal->name,
+                    'items' => $meal->items
+                        ->map(fn ($item): array => [
+                            'food_id' => $item->food_id,
+                            'weight' => $item->weight,
+                        ])
+                        ->all(),
+                ])
+                ->all();
+        }
+
         return session()->get('meals', []);
+    }
+
+    private function authenticatedUser(): ?User
+    {
+        $user = auth()->user();
+
+        return $user instanceof User ? $user : null;
+    }
+
+    private function persistAuthenticatedMeal(User $user): bool
+    {
+        return DB::transaction(function () use ($user): bool {
+            if (! $this->hasExistingMealItemFoods()) {
+                return false;
+            }
+
+            if ($this->editingMealId === null) {
+                $meal = $user->meals()->create([
+                    'name' => trim($this->mealName),
+                ]);
+            } else {
+                $meal = $user->meals()->whereKey($this->editingMealId)->first();
+
+                if ($meal === null) {
+                    return false;
+                }
+
+                $meal->update([
+                    'name' => trim($this->mealName),
+                ]);
+                $meal->items()->delete();
+            }
+
+            $meal->items()->createMany($this->mealItems);
+
+            return true;
+        });
+    }
+
+    private function hasExistingMealItemFoods(): bool
+    {
+        $foodIds = collect($this->mealItems)
+            ->pluck('food_id')
+            ->unique()
+            ->values();
+
+        return Food::query()->whereKey($foodIds)->count() === $foodIds->count();
     }
 
     /**

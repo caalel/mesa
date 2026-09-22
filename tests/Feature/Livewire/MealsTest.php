@@ -2,6 +2,8 @@
 
 use App\Livewire\Meals;
 use App\Models\Food;
+use App\Models\Meal;
+use App\Models\MealItem;
 use App\Models\User;
 use App\Services\FoodWeightInputService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -248,6 +250,8 @@ it('updates the persisted meal when submitting an edit', function () {
             ],
         ],
     ]);
+    expect(Meal::query()->count())->toBe(0);
+    expect(MealItem::query()->count())->toBe(0);
 });
 
 it('deletes a persisted meal', function () {

@@ -31,8 +31,9 @@ data-import operations.
 * `NutritionalComparator` is the full-page Livewire component for food selection,
   weight validation, summaries, and comparison results.
 * `Meals` is the full-page Livewire component for meal drafts, localized Food
-  search and selection, nutritional previews and totals, and session-backed meal
-  creation, editing, and deletion.
+  search and selection, nutritional previews and totals, and meal creation,
+  editing, and deletion backed by the session for guests and MySQL for authenticated
+  users.
 * `CompareFoodsService` calculates the equivalent weight from values of the selected
   nutrient.
 * `FoodWeightInputService` normalizes and validates Food weights.
@@ -73,15 +74,14 @@ POST /locale/{locale}
 `POST /locale/{locale}` accepts `pt_BR` and `en`, stores the selection in the
 session, and redirects back. The Livewire interface uses services directly.
 
-## Meal State and Session Persistence
+## Meal State and Persistence
 
 Foods are persisted in MySQL and remain the source of nutritional values. A Meals
 editor keeps its UI and draft state in Livewire. State that identifies selected
 Foods, draft items, or an edited Meal is protected with `#[Locked]`; user-entered
 searches, name, and weight remain reactive input.
 
-Saved Meals are temporary session data, not database records or user-level
-persistence. Each Meal has this shape:
+Guest saved Meals are temporary session data. Each guest Meal has this shape:
 
 ```text
 id
@@ -94,6 +94,11 @@ items:
 Food names, localized display values, calories, macros, and totals are not copied
 to the session. `Meals` reloads persisted Foods and derives those values at runtime
 from each `food_id` and weight.
+
+Authenticated saved Meals use the `meals` and `meal_items` tables. A Meal belongs to
+one User and has many MealItems; each MealItem belongs to one Food and stores its
+weight. Nutritional values remain derived at runtime from the referenced Food and
+weight; they are not snapshotted on MealItems.
 
 ### Artisan Commands
 

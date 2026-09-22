@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Food extends Model
 {
@@ -18,5 +19,10 @@ class Food extends Model
             'pt_BR' => $this->name_pt,
             'en' => $this->name_en,
         };
+    }
+
+    public function mealItems(): HasMany
+    {
+        return $this->hasMany(MealItem::class);
     }
 }
