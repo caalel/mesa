@@ -34,6 +34,10 @@ data-import operations.
   search and selection, nutritional previews and totals, and meal creation,
   editing, and deletion backed by the session for guests and MySQL for authenticated
   users.
+* `Laravel Fortify` provides the backend endpoints for registration, login, and
+  logout. MESA owns the Blade views and header controls for those flows.
+* `GuestMealsMigrator` moves the guest Meal representation into the authenticated
+  user's Meal relationships when authentication succeeds.
 * `CompareFoodsService` calculates the equivalent weight from values of the selected
   nutrient.
 * `FoodWeightInputService` normalizes and validates Food weights.
@@ -74,6 +78,24 @@ POST /locale/{locale}
 `POST /locale/{locale}` accepts `pt_BR` and `en`, stores the selection in the
 session, and redirects back. The Livewire interface uses services directly.
 
+### Optional authentication
+
+Accounts are optional: the comparator and Meal Calculator remain available to
+guests. MESA uses Laravel Fortify as headless authentication infrastructure for
+`POST /register`, `POST /login`, and `POST /logout`; its own guest-only `GET
+/register` and `GET /login` Blade pages provide the interface. Successful
+authentication uses Laravel's intended-url behavior, so the authentication callout
+can return a guest to `/meals`.
+
+Only registration, login, and logout are part of the current product scope. There
+is no Remember me control, password reset flow, email verification, social login,
+profile management, password-update interface, two-factor authentication, or
+passkey interface.
+
+MESA owns the Blade pages and header controls, including its CSRF-protected logout
+form. Their visual composition and interaction states are documented in
+[`docs/design.md`](design.md).
+
 ## Meal State and Persistence
 
 Foods are persisted in MySQL and remain the source of nutritional values. A Meals
@@ -81,7 +103,8 @@ editor keeps its UI and draft state in Livewire. State that identifies selected
 Foods, draft items, or an edited Meal is protected with `#[Locked]`; user-entered
 searches, name, and weight remain reactive input.
 
-Guest saved Meals are temporary session data. Each guest Meal has this shape:
+Guest saved Meals are temporary `session('meals')` data. Each guest Meal has this
+shape:
 
 ```text
 id
@@ -93,12 +116,40 @@ items:
 
 Food names, localized display values, calories, macros, and totals are not copied
 to the session. `Meals` reloads persisted Foods and derives those values at runtime
-from each `food_id` and weight.
+from each `food_id` and weight. A session-only `meal_auth_callout_handled` flag is
+independent of Meal storage and migration; its presentation and interaction rules
+are documented in [`docs/design.md`](design.md).
 
 Authenticated saved Meals use the `meals` and `meal_items` tables. A Meal belongs to
 one User and has many MealItems; each MealItem belongs to one Food and stores its
 weight. Nutritional values remain derived at runtime from the referenced Food and
-weight; they are not snapshotted on MealItems.
+weight; they are not snapshotted on MealItems. All authenticated Meal reads and
+writes are scoped through the authenticated User's `meals()` relationship, rather
+than by globally trusting a Meal ID.
+
+The database enforces the same ownership and history invariants: deleting a User
+cascades to its Meals, deleting a Meal cascades to its MealItems, and a Food with
+referencing MealItems is restricted from deletion. This preserves the Food source
+needed to derive nutrition for saved Meals.
+
+### Guest Meal migration
+
+Guest Meal IDs are temporary session identifiers and are never reused as database
+identities. On login to an existing account, the synchronous authentication listener
+migrates every guest Meal and MealItem in one database transaction. Existing account
+Meals are preserved, identical content is not deduplicated, and `session('meals')`
+is cleared only after that transaction succeeds. A failure rolls back all migrated
+rows, preserves the guest session data, and clears the partial authenticated session.
+
+Registration needs a different transaction boundary because Fortify creates the
+User before it logs that User in. `CreateNewUser` therefore creates the User and
+migrates guest Meals in one transaction before login. It clears `session('meals')`
+only after commit; a migration failure rolls back both the new User and all Meal
+rows while retaining the guest session. The later login event sees no guest Meals
+and completes normally.
+
+Logout does not migrate data in either direction: account Meals remain in the
+database, and the returning guest starts with independent session-backed storage.
 
 ### Artisan Commands
 
@@ -184,19 +235,9 @@ taco-v4-en-translation-catalog.csv
 → foods table
 ```
 
-TACO 4, normalized through `brolesi/taco`, is the primary dataset. The preparation
-script combines it with explicit overrides and the operational translation CSV to
-generate `database/data/foods/taco-v4.csv`. The translation generator validates
-the editorial catalog against its configured canonical source before writing its
-output. USDA FoodData Central values are used only in documented overrides of the
-prepared dataset, never as a runtime API or fallback.
-
-The canonical CSV and its required generated inputs are versioned. A normal clean
-clone can run migrations and seed directly; generation and preparation are dataset
-maintenance operations, not installation prerequisites.
-
-Scientific provenance, transformations, overrides, and attribution belong in
-[`docs/data-sources.md`](data-sources.md).
+The versioned prepared CSV is the operational input for imports and seeding. Its
+scientific provenance, generation inputs, transformations, overrides, and
+attribution are documented in [`docs/data-sources.md`](data-sources.md).
 
 ## Import Operations
 

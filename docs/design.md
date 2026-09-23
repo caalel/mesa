@@ -37,15 +37,30 @@ The current CSS tokens are:
 
 ## Global Header
 
-The global header contains the `MESA` brand on the left, navigation for Meals
-and Comparator centered geometrically in the header, and a `PT`/`EN` language
-selector on the right. It is transparent in its normal state. On hover or
-`focus-within`, the navigation gains a rounded white surface and a subtle shadow.
+The global header contains the `MESA` brand, navigation for Meals and Comparator,
+the `PT`/`EN` language selector, and an authentication action. Guests see a subtle
+user-icon sign-in link. Authenticated users see their truncated name and user icon
+in a native disclosure control; its menu shows the full name, email, and a red text
+sign-out action. There is no account-management link. The header is transparent in
+its normal state. On hover or `focus-within`, the navigation gains a rounded white
+surface and a subtle shadow.
 
 The current route is indicated with the light-green surface and primary-green
-text, and exposes `aria-current="page"`. Below the `sm` breakpoint (640 px), its
-controls stack and center. From `sm` onward, the navigation remains visually
-centered while the brand and locale selector anchor the sides.
+text, and exposes `aria-current="page"`. Below the `lg` breakpoint (1024 px), the
+brand, geometrically centered locale selector, and authentication action occupy the
+first row; primary navigation occupies a second centered row. From `lg` onward,
+navigation remains visually centered while the brand and locale/authentication
+controls anchor the sides.
+
+## Authentication
+
+Guests can open dedicated registration and sign-in pages that retain the global
+header and use a single responsive form card. Registration has name, email,
+password, and password-confirmation fields with field-level validation feedback.
+Sign-in has email and password fields and presents a single generic credentials
+error, without indicating which credential failed. The pages link to each other;
+the current interface intentionally has no Remember me, password recovery, or
+account-management controls.
 
 ## Home
 
@@ -89,6 +104,12 @@ the item area to its empty state; cancelling discards the current editor draft.
 
 Saved meals show their Food count, calories, protein, carbohydrates, and fat. They
 can be reopened for editing or deleted immediately from the list.
+
+After a guest saves the first Meal, the list can show an inline authentication
+callout. It offers sign in as the primary action, account creation as the secondary
+action, and a discreet dismissal control. It is not a modal or toast, does not show
+for authenticated users, and does not repeat during the same session after dismissal
+or either authentication action.
 
 ### Food Details Modal
 
@@ -204,19 +225,11 @@ controls remain usable at mobile widths.
 
 ## Language and Interface Copy
 
-The interface supports `pt_BR` and `en`. User-facing text is centralized in
-`lang/pt_BR/ui.php` and `lang/en/ui.php` and rendered through localization keys.
-A valid locale stored in the session takes precedence; otherwise, the initial
-request uses `Accept-Language`, mapping Portuguese variants to `pt_BR`, English to
-`en`, and unsupported languages to `pt_BR`. The header selector lets the user
-change this choice manually.
-
-Food-name localization is separate from interface-copy localization. English food
-names are editorial translations of the Brazilian catalog, and may deliberately
-retain Brazilian Portuguese terms where a literal English equivalent would be less
-clear or would distort the food's culinary identity. The active locale determines
-which stored name is searched and displayed; it does not imply an international
-food-database equivalence.
+The interface supports `pt_BR` and `en`. User-facing copy is rendered through
+localization keys, and the header selector lets the user change the active language.
+Locale resolution, session storage, and localized Food-search behavior are
+documented in [`docs/architecture.md`](architecture.md). The editorial policy for
+Food names belongs in [`docs/data-sources.md`](data-sources.md).
 
 ## Accessibility and Interaction
 

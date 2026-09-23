@@ -148,9 +148,9 @@ Nutritional previews by weight, meal-draft summaries, saved-meal totals, and
 localized names shown in the interface are derived at runtime from persisted Foods
 and the informed weight. They are not independent source data.
 
-### Temporary Meal Session Data
+### Guest Meal Session Data
 
-Meals are stored only in the current session in this form:
+Guest Meals are stored in the current session in this form:
 
 ```text
 id
@@ -161,8 +161,10 @@ items:
 ```
 
 The session does not duplicate Food names, calories, macros, or totals. It is not a
-new nutritional source and does not represent domain persistence or permanent user
-data.
+new nutritional source and does not represent permanent domain data. This document
+describes the Food data used by Meals; storage, ownership, and guest-to-account
+migration are architectural concerns documented in
+[`docs/architecture.md`](architecture.md).
 
 ## Reproducible Transformations
 

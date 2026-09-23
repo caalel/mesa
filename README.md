@@ -18,7 +18,11 @@ MESA is a Laravel and Livewire MVP for clear, practical food comparison and meal
 - Initial language detection from `Accept-Language`, with a manual language selector remembered in the session.
 - Home page with direct access to both tools.
 - Nutritional Comparator: Food A and Food B selection, Food A weight validation, automatic equivalence by calories, protein, carbohydrates, or fat, and complete nutritional summaries for both foods.
-- Meals: create, edit, and delete meals in the current session.
+- Optional accounts with registration, sign in, and sign out.
+- Meals: create, edit, and delete meals in the current session as a guest or in
+  the database when signed in.
+- Guest Meals migrate atomically to an account after successful registration or
+  sign in; existing account Meals are preserved.
 - Meal drafts with localized Food search, nutritional preview by weight, duplicate-weight merging, editing and removal of Foods, and a maximum of 10 distinct Foods.
 - Nutritional summaries for meal drafts and saved meals, including calories, protein, carbohydrates, and fat.
 - A maximum of eight search results.
@@ -212,8 +216,12 @@ The test command validates domain, Livewire, HTTP, import, command, seeder, Comp
 - Nutritional values are references per 100 g.
 - Real composition may vary by brand, origin, preparation, and processing.
 - The project does not replace professional nutritional guidance.
-- The MVP has no authentication.
-- Meals are available only in the current session; there are no accounts, synchronization, or user-level persistence.
+- Authentication is intentionally limited to registration, sign in, and sign out;
+  it has no password recovery, email verification, social login, two-factor
+  authentication, passkeys, or account-management interface.
+- Guest Meals are limited to the current session. Signed-in users have
+  user-owned persisted Meals, and guest Meals migrate to the account after a
+  successful authentication.
 - The MVP has no user-created custom foods.
 - Search does not include typo-tolerant fuzzy matching.
 
