@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\User;
+use App\Models\Food;
+use App\Models\Meal;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Hash;
@@ -53,6 +55,79 @@ it('registers and authenticates a valid user through Fortify', function () {
         'name' => 'Ana Silva',
         'email' => 'ana@example.com',
     ]);
+});
+
+it('migrates guest meals after a successful Fortify registration', function () {
+    $food = Food::factory()->create();
+
+    $this->withSession([
+        'meals' => [
+            [
+                'id' => 27,
+                'name' => 'Guest dinner',
+                'items' => [
+                    ['food_id' => $food->id, 'weight' => 250.0],
+                ],
+            ],
+        ],
+        'url.intended' => route('meals'),
+    ])
+        ->from('/register')
+        ->post('/register', [
+            'name' => 'Ana Silva',
+            'email' => 'ana@example.com',
+            'password' => 'correct-horse-battery-staple',
+            'password_confirmation' => 'correct-horse-battery-staple',
+        ])
+        ->assertRedirect(route('meals'))
+        ->assertSessionMissing('meals');
+
+    $user = User::query()->where('email', 'ana@example.com')->sole();
+
+    $this->assertAuthenticatedAs($user);
+    $this->assertDatabaseHas('meals', [
+        'user_id' => $user->id,
+        'name' => 'Guest dinner',
+    ]);
+
+    $meal = Meal::query()->with('items')->sole();
+
+    expect($meal->items->pluck('food_id')->all())->toBe([$food->id]);
+    expect($meal->items->pluck('weight')->all())->toBe([250.0]);
+});
+
+it('leaves guest meals available without authenticating when migration fails during registration', function () {
+    $guestMeals = [
+        [
+            'id' => 1,
+            'name' => 'Invalid guest meal',
+            'items' => [
+                ['food_id' => 999999, 'weight' => 100.0],
+            ],
+        ],
+    ];
+    $guardSessionKey = auth()->guard()->getName();
+
+    $this->withSession([
+        'meals' => $guestMeals,
+        'meal_auth_callout_handled' => true,
+        'url.intended' => route('meals'),
+    ])
+        ->post('/register', [
+            'name' => 'Ana Silva',
+            'email' => 'ana@example.com',
+            'password' => 'correct-horse-battery-staple',
+            'password_confirmation' => 'correct-horse-battery-staple',
+        ])
+        ->assertStatus(500)
+        ->assertSessionHas('meals', $guestMeals)
+        ->assertSessionHas('meal_auth_callout_handled', true)
+        ->assertSessionHas('url.intended', route('meals'))
+        ->assertSessionMissing($guardSessionKey);
+
+    $this->assertGuest();
+    $this->assertDatabaseMissing('users', ['email' => 'ana@example.com']);
+    $this->assertDatabaseCount('meals', 0);
 });
 
 it('rejects invalid registration data and displays field errors', function () {

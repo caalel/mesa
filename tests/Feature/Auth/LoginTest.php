@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\User;
+use App\Models\Food;
+use App\Models\Meal;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Hash;
@@ -51,6 +53,84 @@ it('authenticates a user with valid credentials through Fortify', function () {
         ->assertRedirect('/');
 
     $this->assertAuthenticatedAs($user);
+});
+
+it('migrates guest meals after a successful Fortify login', function () {
+    $user = User::query()->create([
+        'name' => 'Ana Silva',
+        'email' => 'ana@example.com',
+        'password' => Hash::make('correct-horse-battery-staple'),
+    ]);
+    $food = Food::factory()->create();
+
+    $this->withSession([
+        'meals' => [
+            [
+                'id' => 42,
+                'name' => 'Guest lunch',
+                'items' => [
+                    ['food_id' => $food->id, 'weight' => 125.5],
+                ],
+            ],
+        ],
+        'meal_auth_callout_handled' => true,
+        'url.intended' => route('meals'),
+    ])
+        ->from('/login')
+        ->post('/login', [
+            'email' => $user->email,
+            'password' => 'correct-horse-battery-staple',
+        ])
+        ->assertRedirect(route('meals'))
+        ->assertSessionMissing('meals')
+        ->assertSessionHas('meal_auth_callout_handled', true);
+
+    $this->assertAuthenticatedAs($user);
+    $this->assertDatabaseHas('meals', [
+        'user_id' => $user->id,
+        'name' => 'Guest lunch',
+    ]);
+
+    $meal = Meal::query()->with('items')->sole();
+
+    expect($meal->items->pluck('food_id')->all())->toBe([$food->id]);
+    expect($meal->items->pluck('weight')->all())->toBe([125.5]);
+});
+
+it('leaves guest meals available without authenticating when migration fails during login', function () {
+    $user = User::query()->create([
+        'name' => 'Ana Silva',
+        'email' => 'ana@example.com',
+        'password' => Hash::make('correct-horse-battery-staple'),
+    ]);
+    $guestMeals = [
+        [
+            'id' => 1,
+            'name' => 'Invalid guest meal',
+            'items' => [
+                ['food_id' => 999999, 'weight' => 100.0],
+            ],
+        ],
+    ];
+    $guardSessionKey = auth()->guard()->getName();
+
+    $this->withSession([
+        'meals' => $guestMeals,
+        'meal_auth_callout_handled' => true,
+        'url.intended' => route('meals'),
+    ])
+        ->post('/login', [
+            'email' => $user->email,
+            'password' => 'correct-horse-battery-staple',
+        ])
+        ->assertStatus(500)
+        ->assertSessionHas('meals', $guestMeals)
+        ->assertSessionHas('meal_auth_callout_handled', true)
+        ->assertSessionHas('url.intended', route('meals'))
+        ->assertSessionMissing($guardSessionKey);
+
+    $this->assertGuest();
+    $this->assertDatabaseCount('meals', 0);
 });
 
 it('rejects invalid credentials and renders the generic error state', function () {
