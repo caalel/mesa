@@ -14,12 +14,12 @@
     </head>
     <body>
         <header class="mx-auto w-full max-w-6xl px-4 pt-4 sm:px-6 lg:pt-6">
-            <nav class="relative grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-x-3 gap-y-4 rounded-3xl px-5 py-4 transition duration-200 hover:bg-[var(--color-surface)] hover:shadow-[0_12px_28px_rgba(29,38,32,0.10)] focus-within:bg-[var(--color-surface)] focus-within:shadow-[0_12px_28px_rgba(29,38,32,0.10)] sm:flex sm:justify-between sm:gap-3 sm:px-7 sm:py-5">
+            <nav class="relative grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-x-3 gap-y-4 rounded-3xl px-5 py-4 transition duration-200 hover:bg-[var(--color-surface)] hover:shadow-[0_12px_28px_rgba(29,38,32,0.10)] focus-within:bg-[var(--color-surface)] focus-within:shadow-[0_12px_28px_rgba(29,38,32,0.10)] lg:flex lg:justify-between lg:gap-3 lg:px-7 lg:py-5">
                 <a class="justify-self-start text-xl font-semibold tracking-tight text-[var(--color-text-primary)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary-green)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-background)] sm:shrink-0 sm:text-2xl" href="{{ route('home') }}">
                     {{ config('app.name') }}
                 </a>
 
-                <div class="contents sm:flex sm:shrink-0 sm:items-center sm:gap-3">
+                <div class="contents lg:flex lg:shrink-0 lg:items-center lg:gap-3">
                     <div class="col-start-2 row-start-1 justify-self-center" data-testid="header-locale-region">
                         <div class="flex overflow-hidden rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)]" data-testid="locale-switcher">
                             <form method="POST" action="{{ route('locale.switch', ['locale' => 'pt_BR']) }}">
@@ -82,7 +82,7 @@
                     </div>
                 </div>
 
-                <div class="col-span-3 row-start-2 flex items-center justify-center gap-1 sm:absolute sm:left-1/2 sm:top-1/2 sm:w-auto sm:-translate-x-1/2 sm:-translate-y-1/2 sm:gap-2" data-testid="header-navigation">
+                <div class="col-span-3 row-start-2 flex items-center justify-center gap-1 lg:absolute lg:left-1/2 lg:top-1/2 lg:w-auto lg:-translate-x-1/2 lg:-translate-y-1/2 lg:gap-2" data-testid="header-navigation">
                     <a
                         @class([
                             'cursor-pointer rounded-xl px-3 py-2 text-sm font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary-green)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-surface)] sm:px-4 sm:py-2.5 sm:text-base',
