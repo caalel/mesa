@@ -1,0 +1,112 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  php-tests:
+    name: PHP tests
+    runs-on: ubuntu-latest
+    env:
+      DB_CONNECTION: mysql
+      DB_HOST: 127.0.0.1
+      DB_PORT: 3306
+      DB_DATABASE: mesa_testing
+      DB_USERNAME: root
+      DB_PASSWORD: mesa_ci_password
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_DATABASE: mesa_testing
+          MYSQL_ROOT_PASSWORD: mesa_ci_password
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -pmesa_ci_password"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: ctype, mbstring, pdo_mysql, xml
+      - run: composer install --no-interaction --prefer-dist --optimize-autoloader
+      - run: cp .env.testing.example .env.testing
+      - run: php artisan key:generate --env=testing
+      - run: php artisan test
+
+  frontend-build:
+    name: Frontend build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22.12.0
+          cache: npm
+          cache-dependency-path: package-lock.json
+      - run: npm ci
+      - run: npm run build
+
+  deploy:
+    name: Deploy to Northflank
+    runs-on: ubuntu-latest
+    needs: [php-tests, frontend-build]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    concurrency:
+      group: mesa-production-deploy
+      cancel-in-progress: false
+    steps:
+      - name: Trigger production workflow
+        env:
+          COMMIT_SHA: ${{ github.sha }}
+          REPOSITORY: ${{ github.repository }}
+          SERVER_URL: ${{ github.server_url }}
+          NORTHFLANK_WEBHOOK_URL: ${{ secrets.NORTHFLANK_WEBHOOK_URL }}
+        run: |
+          set -euo pipefail
+
+          if ! remote_ref="$(git ls-remote --exit-code "${SERVER_URL}/${REPOSITORY}.git" refs/heads/main)"; then
+            echo "::error::Could not read refs/heads/main from the source repository."
+            exit 1
+          fi
+
+          if [[ ! "$remote_ref" =~ ^([0-9a-f]{40})[[:space:]]refs/heads/main$ ]]; then
+            echo "::error::The remote main reference did not return a valid commit SHA."
+            exit 1
+          fi
+
+          remote_sha="${BASH_REMATCH[1]}"
+
+          if [[ "$remote_sha" != "$COMMIT_SHA" ]]; then
+            echo "Skipping deployment: $COMMIT_SHA is no longer the HEAD of main."
+            exit 0
+          fi
+
+          if [[ -z "$NORTHFLANK_WEBHOOK_URL" ]]; then
+            echo "::error::NORTHFLANK_WEBHOOK_URL is not configured."
+            exit 1
+          fi
+
+          http_status="$(curl --fail --silent --show-error \
+            --get \
+            --data-urlencode "commit_sha=${COMMIT_SHA}" \
+            --output /dev/null \
+            --write-out '%{http_code}' \
+            "$NORTHFLANK_WEBHOOK_URL")"
+
+          if [[ ! "$http_status" =~ ^2[0-9]{2}$ ]]; then
+            echo "::error::Northflank webhook returned HTTP $http_status."
+            exit 1
+          fi
+
+          echo "Northflank workflow triggered for $COMMIT_SHA."
