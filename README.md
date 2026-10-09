@@ -7,6 +7,8 @@
 
 MESA brings together two practical nutritional tools: a food comparator with nutrient-based equivalence and a meal calculator. Users can compare equivalent food amounts by calories, protein, carbohydrates, or fat, or assemble meals while tracking calories and macronutrients.
 
+**[LIVE DEMO →](https://mesa--web--gpbj9lmc4t6r.code.run)**
+
 ## Features
 
 ### Nutrition & Search
@@ -67,7 +69,7 @@ MESA brings together two practical nutritional tools: a food comparator with nut
 
 - **300+ automated tests with Pest/PHPUnit** covering service logic, Livewire flows, authentication, session and database persistence, localization, data imports, Artisan commands, seeders, and regression-critical behavior.
 - **TDD is used for behavior changes**, with tests written to define the expected contract before production code is changed.
-- **GitHub Actions CI** runs the automated test suite and production frontend build on pushes and pull requests to `main`.
+- **GitHub Actions CI/CD** runs PHP tests and the production frontend build on pushes and pull requests to `main`. Successful pushes to `main` trigger the Northflank release workflow if the commit is still the branch HEAD.
 - **Dedicated MySQL test environment** keeps the test suite isolated from development data and fails safely if the expected testing database is unavailable.
 
 ## Nutritional data
@@ -144,6 +146,7 @@ npm run build
 ## Documentation
 
 - [Architecture](docs/architecture.md)
+- [Production deployment](docs/deployment.md)
 - [Interface design](docs/design.md)
 - [Data sources and preparation](docs/data-sources.md)
 

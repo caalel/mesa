@@ -17,6 +17,9 @@ assemble a meal and see calculated calories and macronutrients for its Foods and
 * MySQL.
 * Pest/PHPUnit.
 
+Production infrastructure and release operations are documented in
+[production deployment](deployment.md).
+
 ## Application Architecture
 
 The application uses Laravel's MVC foundation with Blade and Livewire. The Home is
